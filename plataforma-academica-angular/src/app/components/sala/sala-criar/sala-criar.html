@@ -1,0 +1,30 @@
+<div class="sala-criar">
+  <h2>Criar Sala de Aula</h2>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div>
+      <label for="nome">Nome</label>
+      <input id="nome" formControlName="nome" />
+      <div *ngIf="form.controls['nome'].invalid && (form.controls['nome'].dirty || form.controls['nome'].touched)" class="erro">
+        Nome é obrigatório (mínimo 3 caracteres).
+      </div>
+    </div>
+
+    <div>
+      <label for="descricao">Descrição</label>
+      <textarea id="descricao" formControlName="descricao"></textarea>
+    </div>
+
+    <div>
+      <label for="codigoAcesso">Código de Acesso (opcional)</label>
+      <input id="codigoAcesso" formControlName="codigoAcesso" />
+    </div>
+
+    <div class="actions">
+      <button type="submit" [disabled]="carregando">Criar Sala</button>
+      <a routerLink="/salas" class="btn-cancel">Voltar às Salas</a>
+    </div>
+  </form>
+
+  <div *ngIf="mensagem" class="mensagem">{{ mensagem }}</div>
+</div>

@@ -1,0 +1,70 @@
+package com.plataforma_academica.plataforma.mapper;
+
+import com.plataforma_academica.plataforma.dto.AtividadeDTO;
+import com.plataforma_academica.plataforma.dto.AtividadeResponseDTO;
+import com.plataforma_academica.plataforma.model.Atividade;
+import com.plataforma_academica.plataforma.model.SaladeAula;
+import com.plataforma_academica.plataforma.model.Usuario;
+
+public class AtividadeMapper {
+
+    // ======================================================
+    // DTO → ENTIDADE  (entrada: criação / edição)
+    // ======================================================
+    public static Atividade toEntity(AtividadeDTO dto, Usuario autor, SaladeAula sala) {
+        if (dto == null) return null;
+
+        Atividade atividade = new Atividade();
+
+        atividade.setId(dto.getId());
+        atividade.setTitulo(dto.getTitulo());
+        atividade.setDescricao(dto.getDescricao());
+        atividade.setTipoDocumentoSubmissao(dto.getTipoDocumentoSubmissao());
+        atividade.setDataEntrega(dto.getDataEntrega());
+        atividade.setPontos(dto.getPontos());
+
+        atividade.setAutor(autor);      // entidade carregada no service
+        atividade.setSalaDeAula(sala);  // entidade carregada no service
+
+        return atividade;
+    }
+
+    // ======================================================
+    // ENTIDADE → RESPONSE DTO (saída para o cliente)
+    // ======================================================
+    public static AtividadeResponseDTO toResponse(Atividade entidade) {
+        if (entidade == null) return null;
+
+        AtividadeResponseDTO response = new AtividadeResponseDTO();
+
+        response.setId(entidade.getId());
+        response.setTitulo(entidade.getTitulo());
+        response.setDescricao(entidade.getDescricao());
+        response.setTipoDocumentoSubmissao(entidade.getTipoDocumentoSubmissao());
+        response.setDataEntrega(entidade.getDataEntrega());
+        response.setPontos(entidade.getPontos());
+
+        if (entidade.getAutor() != null) {
+            response.setAutorId(entidade.getAutor().getId());
+            response.setAutorNome(entidade.getAutor().getNome());
+        }
+
+        if (entidade.getSalaDeAula() != null) {
+            response.setSalaId(entidade.getSalaDeAula().getId());
+            response.setSalaNome(entidade.getSalaDeAula().getNome());
+        }
+
+        return response;
+    }
+
+    // ======================================================
+    // Atualizar entidade existente (edição)
+    // ======================================================
+    public static void updateEntity(Atividade entidade, AtividadeDTO dto) {
+        entidade.setTitulo(dto.getTitulo());
+        entidade.setDescricao(dto.getDescricao());
+        entidade.setTipoDocumentoSubmissao(dto.getTipoDocumentoSubmissao());
+        entidade.setDataEntrega(dto.getDataEntrega());
+        entidade.setPontos(dto.getPontos());
+    }
+}

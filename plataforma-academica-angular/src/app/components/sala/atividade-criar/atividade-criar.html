@@ -1,0 +1,19 @@
+<div class="atividade-criar">
+  <h3>Criar Atividade</h3>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label for="titulo">Título</label>
+    <input id="titulo" formControlName="titulo" />
+
+    <label for="descricao">Descrição</label>
+    <textarea id="descricao" formControlName="descricao"></textarea>
+
+    <label for="dataEntrega">Data de Entrega</label>
+    <input id="dataEntrega" type="date" formControlName="dataEntrega" />
+
+    <div class="actions">
+      <button type="submit" [disabled]="carregando">Criar</button>
+      <a routerLink="/salas" class="btn-cancel">Cancelar</a>
+    </div>
+  </form>
+  <div *ngIf="mensagem" class="mensagem">{{ mensagem }}</div>
+</div>

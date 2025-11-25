@@ -1,0 +1,12 @@
+/* Container principal */
+.with-sidebar {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+
+/* Ajuste para telas menores */
+@media (max-width: 768px) {
+  .with-sidebar {
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,78 @@
+<div class="sala-list-container">
+  <!-- Header -->
+  <div class="sala-list-header">
+    <h1>📚 Salas de Aula</h1>
+    <p class="subtitle">Gerencie suas salas de aula e atividades</p>
+  </div>
+
+  <!-- Ações -->
+  <div class="sala-actions">
+    <button (click)="createTestSala()" [disabled]="criando" class="btn-create">
+      <span class="icon">➕</span>
+      {{ criando ? 'Criando...' : 'Criar Nova Sala' }}
+    </button>
+    <div *ngIf="mensagemCriar" class="mensagem-sucesso">
+      <span class="icon">✅</span>
+      {{ mensagemCriar }}
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="carregando" class="loading-state">
+    <div class="spinner"></div>
+    <p>Carregando salas...</p>
+  </div>
+
+  <!-- Erro -->
+  <div *ngIf="erro && !carregando" class="error-state">
+    <span class="icon">⚠️</span>
+    <p>{{ erro }}</p>
+  </div>
+
+  <!-- Grid de Salas -->
+  <div *ngIf="!carregando && salas.length" class="salas-grid">
+    <div *ngFor="let sala of salas" class="sala-card">
+      <div class="sala-card-header">
+        <div class="sala-icon">📖</div>
+        <h3 class="sala-nome">{{ sala.nome }}</h3>
+      </div>
+      
+      <div class="sala-card-body">
+        <p class="sala-descricao">{{ sala.descricao || 'Sem descrição' }}</p>
+        
+        <div class="sala-info">
+          <div class="info-item">
+            <span class="info-label">Código:</span>
+            <span class="info-value">{{ sala.codigoAcesso || 'N/A' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Criador ID:</span>
+            <span class="info-value">{{ sala.criadoPorId || 'N/A' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sala-card-footer">
+        <a [routerLink]="['/salas', sala.id]" class="btn btn-primary">
+          <span class="icon">🚪</span>
+          Entrar
+        </a>
+        <a [routerLink]="['/salas', sala.id, 'atividades']" class="btn btn-secondary">
+          <span class="icon">📝</span>
+          Atividades
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estado vazio -->
+  <div *ngIf="!carregando && !salas.length && !erro" class="empty-state">
+    <div class="empty-icon">📭</div>
+    <h3>Nenhuma sala encontrada</h3>
+    <p>Comece criando sua primeira sala de aula!</p>
+    <button (click)="createTestSala()" class="btn btn-primary">
+      <span class="icon">➕</span>
+      Criar Primeira Sala
+    </button>
+  </div>
+</div>

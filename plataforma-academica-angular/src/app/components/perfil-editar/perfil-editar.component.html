@@ -1,0 +1,99 @@
+<div class="perfil-editar-container">
+  <!-- Header -->
+  <div class="editar-header">
+    <h1>{{ modo === 'criar' ? 'Criar Perfil' : 'Editar Perfil' }}</h1>
+    <p class="subtitle">{{ modo === 'criar' ? 'Complete seus dados de perfil' : 'Atualize suas informações' }}</p>
+  </div>
+
+  <!-- Indicador de carregamento -->
+  <div *ngIf="carregando" class="loading">
+    <p>Carregando...</p>
+  </div>
+
+  <!-- Conteúdo principal -->
+  <div *ngIf="!carregando" class="editar-form-wrapper">
+    <!-- Mensagem de erro -->
+    <div *ngIf="mensagemErro" class="alert alert-error">
+      {{ mensagemErro }}
+    </div>
+
+    <!-- Mensagem de sucesso -->
+    <div *ngIf="mensagemSucesso" class="alert alert-success">
+      {{ mensagemSucesso }}
+    </div>
+
+    <!-- Formulário -->
+    <form [formGroup]="formulario" (ngSubmit)="salvarPerfil()" class="editar-form">
+      
+      <!-- Foto de Perfil -->
+      <div class="form-section">
+        <h3>Foto de Perfil</h3>
+        <div class="foto-upload">
+          <div *ngIf="previewFoto" class="foto-preview">
+            <img [src]="previewFoto" alt="Preview da foto" />
+          </div>
+          <div *ngIf="!previewFoto" class="foto-placeholder">
+            <span>Nenhuma foto selecionada</span>
+          </div>
+          <input 
+            type="file" 
+            accept="image/*" 
+            (change)="onFotoSelecionada($event)"
+            class="foto-input"
+          />
+          <label class="btn btn-secondary">
+            Selecionar Foto
+            <input type="file" accept="image/*" (change)="onFotoSelecionada($event)" hidden />
+          </label>
+        </div>
+      </div>
+
+      <!-- Bio -->
+      <div class="form-group">
+        <label for="bio">Sobre Mim (Bio)</label>
+        <textarea
+          id="bio"
+          formControlName="bio"
+          placeholder="Conte um pouco sobre você, seus interesses e objetivos..."
+          [ngClass]="{ 'input-error': bio?.invalid && bio?.touched }"
+          rows="5"
+        ></textarea>
+        <span *ngIf="bio?.invalid && bio?.touched" class="error-message">
+          <span *ngIf="bio?.errors?.['required']">Bio é obrigatória</span>
+          <span *ngIf="bio?.errors?.['minlength']">Bio deve ter no mínimo 10 caracteres</span>
+        </span>
+        <small class="char-count">{{ bio?.value?.length || 0 }} caracteres</small>
+      </div>
+
+      <!-- Curso -->
+      <div class="form-group">
+        <label for="curso">Curso</label>
+        <input
+          type="text"
+          id="curso"
+          formControlName="curso"
+          placeholder="Ex: Engenharia de Software, Administração..."
+          [ngClass]="{ 'input-error': curso?.invalid && curso?.touched }"
+        />
+        <span *ngIf="curso?.invalid && curso?.touched" class="error-message">
+          <span *ngIf="curso?.errors?.['required']">Curso é obrigatório</span>
+        </span>
+      </div>
+
+      <!-- Botões -->
+      <div class="form-actions">
+        <button
+          type="submit"
+          [disabled]="formulario.invalid || carregandoSalvar"
+          class="btn btn-primary"
+        >
+          <span *ngIf="!carregandoSalvar">
+            {{ modo === 'criar' ? 'Criar Perfil' : 'Atualizar Perfil' }}
+          </span>
+          <span *ngIf="carregandoSalvar">Salvando...</span>
+        </button>
+        <a routerLink="/perfil" class="btn btn-secondary">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>

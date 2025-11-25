@@ -1,0 +1,333 @@
+.usuario-list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+}
+
+.usuario-list-header {
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.usuario-list-header h2 {
+  font-size: 28px;
+  color: #333;
+  margin: 0;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 14px;
+  margin: 10px 0 0 0;
+}
+
+.btn-refresh {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-refresh:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-refresh:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Indicador de carregamento */
+.loading {
+  text-align: center;
+  padding: 40px;
+  background: white;
+  border-radius: 8px;
+  color: #667eea;
+  font-weight: 600;
+}
+
+/* Tabela de usuários */
+.usuarios-table-wrapper {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.usuarios-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.usuarios-table thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.usuarios-table th {
+  padding: 16px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.usuarios-table tbody tr {
+  border-bottom: 1px solid #ecf0f1;
+  transition: background-color 0.3s;
+}
+
+.usuarios-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.usuarios-table td {
+  padding: 16px;
+  font-size: 14px;
+  color: #555;
+}
+
+.nome-column {
+  font-weight: 500;
+  color: #333;
+}
+
+.email-column {
+  color: #667eea;
+  word-break: break-word;
+}
+
+/* Status Badges */
+.badge-ativo {
+  display: inline-block;
+  background-color: #d5f4e6;
+  color: #27ae60;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-inativo {
+  display: inline-block;
+  background-color: #fadbd8;
+  color: #c0392b;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Estado vazio */
+.empty-state {
+  background: white;
+  border-radius: 8px;
+  padding: 60px 20px;
+  text-align: center;
+  color: #999;
+  font-size: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.empty-hint {
+  font-size: 14px;
+  color: #bbb;
+  margin-top: 10px;
+}
+
+/* Estatísticas */
+.stats {
+  margin-top: 20px;
+  text-align: center;
+  padding: 15px;
+  background: white;
+  border-radius: 8px;
+  color: #666;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stats strong {
+  color: #667eea;
+  font-size: 16px;
+}
+
+/* Alertas */
+.alert {
+  padding: 0;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  font-size: 14px;
+  background: white;
+  box-shadow: 0 4px 20px rgba(231, 76, 60, 0.15);
+  overflow: hidden;
+}
+
+.alert-error {
+  background: white;
+  border: 2px solid #e74c3c;
+  border-radius: 12px;
+  display: flex;
+  gap: 20px;
+  padding: 0;
+}
+
+.error-icon {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  font-size: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.error-content {
+  flex: 1;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.error-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #c0392b;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.error-message {
+  margin: 0;
+  color: #555;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.error-help {
+  background: #f8f9fa;
+  border-left: 4px solid #667eea;
+  border-radius: 6px;
+  padding: 15px;
+  margin-top: 10px;
+}
+
+.help-title {
+  margin: 0 0 10px 0;
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.help-steps {
+  margin: 10px 0 0 0;
+  padding-left: 20px;
+  color: #555;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.help-steps li {
+  margin-bottom: 8px;
+}
+
+.help-steps code {
+  background: #e9ecef;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+.error-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-retry {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-retry:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+}
+
+.btn-retry:active {
+  transform: translateY(0);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .usuario-list-container {
+    padding: 20px 10px;
+  }
+
+  .usuario-list-header h2 {
+    font-size: 22px;
+  }
+
+  .usuarios-table th,
+  .usuarios-table td {
+    padding: 12px 8px;
+    font-size: 12px;
+  }
+
+  .usuarios-table {
+    font-size: 12px;
+  }
+
+  .alert-error {
+    flex-direction: column;
+  }
+
+  .error-icon {
+    min-width: 100%;
+    padding: 20px;
+    font-size: 36px;
+  }
+
+  .error-content {
+    padding: 20px;
+  }
+
+  .error-title {
+    font-size: 18px;
+  }
+
+  .help-steps {
+    font-size: 13px;
+  }
+}

@@ -1,0 +1,73 @@
+<div class="atividade-list-container">
+  <!-- Header -->
+  <div class="atividade-list-header">
+    <div class="header-content">
+      <h1>
+        <span class="header-icon">📋</span>
+        Atividades da Sala
+      </h1>
+      <p class="subtitle">Gerencie e acompanhe todas as atividades</p>
+    </div>
+    <a routerLink="/salas" class="btn btn-secondary">
+      <span class="icon">⬅️</span>
+      Voltar
+    </a>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="carregando" class="loading-state">
+    <div class="spinner"></div>
+    <p>Carregando atividades...</p>
+  </div>
+
+  <!-- Grid de Atividades -->
+  <div *ngIf="!carregando && atividades.length" class="atividades-grid">
+    <div *ngFor="let a of atividades" class="atividade-card">
+      <div class="atividade-card-header">
+        <div class="atividade-icon">📝</div>
+        <div class="atividade-title-section">
+          <h2>{{ a.titulo }}</h2>
+          <div class="atividade-meta-top">
+            <span *ngIf="a.dataEntrega" class="meta-item">
+              <span class="meta-icon">📅</span>
+              Entrega: {{ a.dataEntrega | date:'short' }}
+            </span>
+            <span *ngIf="a.pontos" class="meta-item">
+              <span class="meta-icon">⭐</span>
+              {{ a.pontos }} pontos
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="atividade-card-body">
+        <p class="atividade-descricao">{{ a.descricao || 'Sem descrição disponível' }}</p>
+        
+        <div class="atividade-info" *ngIf="a.tipoDocumentoSubmissao">
+          <div class="info-row">
+            <span class="info-label">Tipo de Documento:</span>
+            <span class="info-value">{{ a.tipoDocumentoSubmissao }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="atividade-card-footer">
+        <button class="btn btn-primary btn-full">
+          <span class="icon">👁️</span>
+          Ver Detalhes
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estado vazio -->
+  <div *ngIf="!carregando && !atividades.length" class="empty-state">
+    <div class="empty-icon">📭</div>
+    <h3>Nenhuma atividade encontrada</h3>
+    <p>Esta sala ainda não possui atividades cadastradas.</p>
+    <a routerLink="/salas" class="btn btn-primary">
+      <span class="icon">⬅️</span>
+      Voltar às Salas
+    </a>
+  </div>
+</div>

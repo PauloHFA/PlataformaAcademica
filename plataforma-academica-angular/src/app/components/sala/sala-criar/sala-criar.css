@@ -1,0 +1,6 @@
+.sala-criar { padding: 1rem; max-width: 700px; }
+.sala-criar label { display:block; margin-top:0.5rem; }
+.sala-criar input, .sala-criar textarea { width:100%; padding:0.4rem; margin-top:0.2rem }
+.sala-criar .actions { margin-top:1rem }
+.erro { color:#a00; font-size:0.9rem }
+.mensagem { margin-top:0.7rem; color:green }

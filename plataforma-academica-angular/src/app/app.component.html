@@ -1,0 +1,8 @@
+<!-- Exibir Sidebar apenas se logado e não estiver na home -->
+<app-sidebar *ngIf="isLoggedIn && !isHomePage"></app-sidebar>
+
+<!-- Container principal com margem se sidebar estiver visível -->
+<div [class.with-sidebar]="isLoggedIn && !isHomePage">
+  <!-- Onde os componentes vão ser renderizados -->
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,65 @@
+<div class="sidebar" [class.open]="isOpen">
+  <!-- Header da Sidebar -->
+  <div class="sidebar-header">
+    <h2>Plataforma Acadêmica</h2>
+    <button class="toggle-btn" (click)="toggleSidebar()">
+      {{ isOpen ? '✕' : '☰' }}
+    </button>
+  </div>
+
+  <!-- Perfil do Usuário -->
+  <div class="user-profile" *ngIf="usuarioNome">
+    <div class="user-avatar">
+      {{ usuarioNome.charAt(0).toUpperCase() }}
+    </div>
+    <div class="user-info" *ngIf="isOpen">
+      <p class="user-name">{{ usuarioNome }}</p>
+      <p class="user-email">{{ usuarioEmail }}</p>
+    </div>
+  </div>
+
+  <!-- Menu de Navegação -->
+  <nav class="sidebar-menu">
+    <ul>
+      <!-- Salas -->
+      <li>
+        <button (click)="navegarPara('/salas')" class="menu-item">
+          <span class="icon">📚</span>
+          <span class="label" *ngIf="isOpen">Salas de Aula</span>
+        </button>
+      </li>
+
+      <!-- Usuários -->
+      <li>
+        <button (click)="navegarPara('/usuarios')" class="menu-item">
+          <span class="icon">👥</span>
+          <span class="label" *ngIf="isOpen">Usuários</span>
+        </button>
+      </li>
+
+      <!-- Perfil -->
+      <li>
+        <button (click)="navegarPara('/perfil')" class="menu-item">
+          <span class="icon">👤</span>
+          <span class="label" *ngIf="isOpen">Meu Perfil</span>
+        </button>
+      </li>
+
+      <!-- Atividades -->
+      <li>
+        <button (click)="navegarPara('/salas')" class="menu-item">
+          <span class="icon">✓</span>
+          <span class="label" *ngIf="isOpen">Atividades</span>
+        </button>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Logout -->
+  <div class="sidebar-footer">
+    <button (click)="logout()" class="logout-btn">
+      <span class="icon">🚪</span>
+      <span class="label" *ngIf="isOpen">Sair</span>
+    </button>
+  </div>
+</div>

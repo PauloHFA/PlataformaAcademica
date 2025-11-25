@@ -1,0 +1,61 @@
+<div class="home-container">
+  <!-- Fundo Acadêmico com Gradiente -->
+  <div class="background-decoration">
+    <div class="floating-element element-1">📚</div>
+    <div class="floating-element element-2">🎓</div>
+    <div class="floating-element element-3">✏️</div>
+    <div class="floating-element element-4">📖</div>
+    <div class="floating-element element-5">🖊️</div>
+  </div>
+
+  <!-- Container Principal -->
+  <div class="main-content">
+    <!-- Logo/Título -->
+    <div class="header-section">
+      <h1 class="main-title">{{ title }}</h1>
+      <p class="subtitle">Sua Plataforma Acadêmica Online</p>
+    </div>
+
+    <!-- Cards de Login e Cadastro -->
+    <div class="auth-cards">
+      <!-- Card Login -->
+      <div class="auth-card login-card">
+        <div class="card-header">
+          <span class="card-icon">🔐</span>
+          <h2>Já Tem Conta?</h2>
+        </div>
+        <div class="card-content">
+          <p>Acesse sua conta e explore todas as funcionalidades da plataforma.</p>
+          <a routerLink="/login" class="btn btn-primary btn-large">
+            Fazer Login
+          </a>
+        </div>
+      </div>
+
+      <!-- Card Cadastro -->
+      <div class="auth-card signup-card">
+        <div class="card-header">
+          <span class="card-icon">✨</span>
+          <h2>Novo Por Aqui?</h2>
+        </div>
+        <div class="card-content">
+          <p>Crie sua conta gratuitamente e comece a aprender agora mesmo.</p>
+          <a routerLink="/cadastro" class="btn btn-secondary btn-large">
+            Criar Conta
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recursos -->
+    <div class="features-section">
+      <h3>O que você pode fazer:</h3>
+      <ul class="features-list">
+        <li>📚 Acesse salas de aula</li>
+        <li>✓ Realize atividades e tarefas</li>
+        <li>👥 Conecte-se com outros usuários</li>
+        <li>📊 Acompanhe seu progresso</li>
+      </ul>
+    </div>
+  </div>
+</div>

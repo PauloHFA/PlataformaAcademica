@@ -1,0 +1,76 @@
+<div class="usuario-list-container">
+  <div class="usuario-list-header">
+    <h2>Gerenciamento de Usuários</h2>
+    <p class="subtitle">Lista de todos os usuários cadastrados na plataforma</p>
+    <button (click)="listarUsuarios()" [disabled]="carregando" class="btn-refresh">
+      🔄 {{ carregando ? 'Carregando...' : 'Atualizar Lista' }}
+    </button>
+  </div>
+
+  <!-- Mensagem de erro -->
+  <div *ngIf="mensagemErro && !carregando" class="alert alert-error">
+    <div class="error-icon">⚠️</div>
+    <div class="error-content">
+      <h3 class="error-title">Não foi possível conectar ao servidor</h3>
+      <p class="error-message">{{ mensagemErro }}</p>
+      <div class="error-help" *ngIf="mensagemErro.includes('conectar ao servidor')">
+        <p class="help-title">📋 Como resolver:</p>
+        <ol class="help-steps">
+          <li>Verifique se o backend Spring Boot está rodando</li>
+          <li>Confirme que o servidor está na porta <strong>8080</strong></li>
+          <li>Verifique a URL: <code>http://localhost:8080</code></li>
+          <li>Tente iniciar o backend novamente</li>
+        </ol>
+      </div>
+      <div class="error-actions">
+        <button (click)="listarUsuarios()" class="btn-retry">
+          🔄 Tentar Novamente
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Indicador de carregamento -->
+  <div *ngIf="carregando" class="loading">
+    <p>Carregando usuários...</p>
+  </div>
+
+  <!-- Lista de Usuários -->
+  <div *ngIf="!carregando && usuarios.length > 0" class="usuarios-table-wrapper">
+    <table class="usuarios-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Data de Cadastro</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let usuario of usuarios; trackBy: trackByUsuarioId" class="usuario-row">
+          <td>{{ usuario.id || '-' }}</td>
+          <td class="nome-column">{{ usuario.nome || '-' }}</td>
+          <td class="email-column">{{ usuario.email || '-' }}</td>
+          <td>{{ usuario.dataCadastro ? (usuario.dataCadastro | date:'short') : 'N/A' }}</td>
+          <td>
+            <span [ngClass]="usuario.ativo !== false ? 'badge-ativo' : 'badge-inativo'">
+              {{ usuario.ativo !== false ? 'Ativo' : 'Inativo' }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Mensagem quando não há usuários -->
+  <div *ngIf="!carregando && usuarios.length === 0 && !mensagemErro" class="empty-state">
+    <p>📋 Nenhum usuário cadastrado ainda na plataforma.</p>
+    <p class="empty-hint">Os usuários aparecerão aqui assim que forem cadastrados.</p>
+  </div>
+
+  <!-- Estatísticas -->
+  <div *ngIf="!carregando && usuarios.length > 0" class="stats">
+    <p>Total de usuários: <strong>{{ usuarios.length }}</strong></p>
+  </div>
+</div>

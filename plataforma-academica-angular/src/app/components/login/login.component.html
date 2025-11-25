@@ -1,0 +1,66 @@
+<div class="login-container">
+  <div class="login-box">
+    <h2>Login - Plataforma Acadêmica</h2>
+
+    <!-- Mensagem de erro -->
+    <div *ngIf="mensagemErro" class="alert alert-error">
+      {{ mensagemErro }}
+    </div>
+
+    <!-- Mensagem de sucesso -->
+    <div *ngIf="usuarioLogado" class="alert alert-success">
+      Bem-vindo, {{ usuarioLogado.nome }}!
+    </div>
+
+    <!-- Formulário de Login -->
+    <form [formGroup]="formulario" (ngSubmit)="fazerLogin()" class="login-form">
+      
+      <!-- Campo Email -->
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="seu.email@exemplo.com"
+          [ngClass]="{ 'input-error': email?.invalid && email?.touched }"
+        />
+        <span *ngIf="email?.invalid && email?.touched" class="error-message">
+          <span *ngIf="email?.errors?.['required']">Email é obrigatório</span>
+          <span *ngIf="email?.errors?.['email']">Email inválido</span>
+        </span>
+      </div>
+
+      <!-- Campo Senha -->
+      <div class="form-group">
+        <label for="senha">Senha:</label>
+        <input
+          type="password"
+          id="senha"
+          formControlName="senha"
+          placeholder="Digite sua senha"
+          [ngClass]="{ 'input-error': senha?.invalid && senha?.touched }"
+        />
+        <span *ngIf="senha?.invalid && senha?.touched" class="error-message">
+          <span *ngIf="senha?.errors?.['required']">Senha é obrigatória</span>
+          <span *ngIf="senha?.errors?.['minlength']">Senha deve ter no mínimo 6 caracteres</span>
+        </span>
+      </div>
+
+      <!-- Botão de Envio -->
+      <button
+        type="submit"
+        [disabled]="formulario.invalid || carregando"
+        class="btn btn-primary"
+      >
+        <span *ngIf="!carregando">Fazer Login</span>
+        <span *ngIf="carregando">Carregando...</span>
+      </button>
+    </form>
+
+    <!-- Link para Cadastro -->
+    <div class="login-footer">
+      <p>Não tem conta? <a routerLink="/cadastro">Faça o cadastro aqui</a></p>
+    </div>
+  </div>
+</div>

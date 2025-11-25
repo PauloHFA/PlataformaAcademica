@@ -1,0 +1,79 @@
+<div class="perfil-container">
+  <!-- Header -->
+  <div class="perfil-header">
+    <h1>Meu Perfil</h1>
+    <p class="subtitle">Visualize e edite suas informações pessoais</p>
+  </div>
+
+  <!-- Indicador de carregamento -->
+  <div *ngIf="carregando" class="loading">
+    <p>Carregando perfil...</p>
+  </div>
+
+  <!-- Mensagem de erro -->
+  <div *ngIf="!carregando && mensagemErro" class="alert alert-error">
+    <div class="error-content">
+      <p class="error-message">{{ mensagemErro }}</p>
+      <button *ngIf="!perfil" (click)="editarPerfil()" class="btn btn-primary btn-create-profile">
+        ✨ Criar Perfil
+      </button>
+    </div>
+  </div>
+
+  <!-- Perfil encontrado -->
+  <div *ngIf="!carregando && perfil" class="perfil-card">
+    <!-- Foto de Perfil -->
+    <div class="perfil-foto-section">
+      <div class="perfil-foto">
+        <img 
+          *ngIf="perfil.fotoPerfil" 
+          [src]="perfil.fotoPerfil" 
+          alt="Foto de perfil"
+          class="foto-imagem"
+        />
+        <div *ngIf="!perfil.fotoPerfil" class="foto-placeholder">
+          <span>Sem foto</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Informações do Perfil -->
+    <div class="perfil-info">
+      <!-- Nome do Usuário -->
+      <div class="info-section">
+        <h2>{{ usuarioLogado?.nome }}</h2>
+        <p class="email">{{ usuarioLogado?.email }}</p>
+      </div>
+
+      <!-- Curso -->
+      <div class="info-item">
+        <label>Curso</label>
+        <p>{{ perfil.curso || 'Não informado' }}</p>
+      </div>
+
+      <!-- Bio -->
+      <div class="info-item">
+        <label>Sobre Mim</label>
+        <p>{{ perfil.bio || 'Nenhuma bio adicionada' }}</p>
+      </div>
+
+      <!-- Datas -->
+      <div class="info-dates">
+        <div class="date-item">
+          <small>Criado em:</small>
+          <p>{{ perfil.dataCriacao ? (perfil.dataCriacao | date:'short') : 'N/A' }}</p>
+        </div>
+        <div class="date-item">
+          <small>Atualizado em:</small>
+          <p>{{ perfil.dataAtualizacao ? (perfil.dataAtualizacao | date:'short') : 'N/A' }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botões de Ação -->
+    <div class="perfil-actions">
+      <button (click)="editarPerfil()" class="btn btn-primary">Editar Perfil</button>
+      <a routerLink="/home" class="btn btn-secondary">Voltar</a>
+    </div>
+  </div>
+</div>

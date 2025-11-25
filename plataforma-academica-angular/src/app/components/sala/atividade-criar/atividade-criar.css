@@ -1,0 +1,4 @@
+.atividade-criar { padding: 1rem }
+.atividade-criar label { display:block; margin-top:0.4rem }
+.atividade-criar input, .atividade-criar textarea { width:100%; padding:0.4rem }
+.mensagem { color: green; margin-top:0.6rem }

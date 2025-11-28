@@ -2,6 +2,9 @@
 .with-sidebar {
   margin-left: 250px;
   transition: margin-left 0.3s ease;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  min-height: 100vh;
 }
 
 /* Ajuste para telas menores */
@@ -9,4 +12,10 @@
   .with-sidebar {
     margin-left: 0;
   }
+}
+
+/* Garantir que o router-outlet use o tema */
+router-outlet + * {
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }

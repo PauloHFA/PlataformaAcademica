@@ -4,7 +4,7 @@
 .home-container {
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--bg-color);
   position: relative;
   overflow: hidden;
   display: flex;
@@ -29,6 +29,7 @@
   position: absolute;
   font-size: 80px;
   opacity: 0.1;
+  color: var(--primary-color);
   animation: float 6s ease-in-out infinite;
 }
 
@@ -78,7 +79,7 @@
   position: relative;
   z-index: 1;
   text-align: center;
-  color: white;
+  color: var(--text-color);
   max-width: 1000px;
   width: 100%;
   animation: fadeIn 0.8s ease-out;
@@ -132,10 +133,11 @@
 }
 
 .auth-card {
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--bg-color);
+  border: 2px solid var(--primary-color);
   border-radius: 20px;
   padding: 40px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 60px var(--shadow);
   transition: transform 0.3s, box-shadow 0.3s;
   animation: slideUp 0.8s ease-out backwards;
 }
@@ -176,13 +178,14 @@
 
 .card-header h2 {
   font-size: 24px;
-  color: #333;
+  color: var(--text-color);
   margin: 0;
   font-weight: 700;
 }
 
 .card-content p {
-  color: #666;
+  color: var(--text-color);
+  opacity: 0.8;
   font-size: 16px;
   margin: 15px 0 30px 0;
   line-height: 1.6;
@@ -203,9 +206,9 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+  background: var(--primary-color);
+  color: var(--secondary-color);
+  box-shadow: 0 10px 25px var(--shadow);
 }
 
 .btn-primary:hover {
@@ -214,15 +217,15 @@
 }
 
 .btn-secondary {
-  background: #f0f0f0;
-  color: #667eea;
-  border: 2px solid #667eea;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  background: var(--bg-color);
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 10px 25px var(--shadow);
 }
 
 .btn-secondary:hover {
-  background: #667eea;
-  color: white;
+  background: var(--primary-color);
+  color: var(--secondary-color);
   transform: translateY(-3px);
 }
 
@@ -233,11 +236,11 @@
 
 /* Features Section */
 .features-section {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--hover-color);
   border-radius: 15px;
   padding: 40px;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--border-color);
 }
 
 .features-section h3 {
@@ -265,7 +268,7 @@
 .features-list li {
   font-size: 18px;
   padding: 12px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .features-list li:last-child {

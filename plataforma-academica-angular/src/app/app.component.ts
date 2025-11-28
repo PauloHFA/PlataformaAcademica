@@ -2,12 +2,14 @@ import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { RouterOutlet, RouterModule, Router, NavigationEnd } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { SidebarComponent } from "./components/sidebar/sidebar.component";
+import { ThemeToggleComponent } from "./components/theme-toggle/theme-toggle.component";
+import { ThemeService } from "./services/theme.service";
 import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterOutlet, SidebarComponent],
+  imports: [CommonModule, RouterModule, RouterOutlet, SidebarComponent, ThemeToggleComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -18,6 +20,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private themeService: ThemeService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 

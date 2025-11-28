@@ -3,14 +3,15 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--bg-color);
   padding: 20px;
 }
 
 .cadastro-box {
-  background: white;
+  background: var(--bg-color);
+  border: 2px solid var(--primary-color);
   border-radius: 10px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 25px var(--shadow);
   padding: 40px;
   width: 100%;
   max-width: 450px;
@@ -18,7 +19,7 @@
 
 .cadastro-box h2 {
   text-align: center;
-  color: #333;
+  color: var(--text-color);
   margin-bottom: 30px;
   font-size: 24px;
 }
@@ -37,21 +38,23 @@
 
 .form-group label {
   font-weight: 600;
-  color: #555;
+  color: var(--text-color);
   font-size: 14px;
 }
 
 .form-group input {
   padding: 12px;
-  border: 2px solid #ddd;
+  border: 2px solid var(--border-color);
   border-radius: 5px;
   font-size: 14px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   transition: border-color 0.3s;
 }
 
 .form-group input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: var(--primary-color);
 }
 
 .form-group input.input-error {
@@ -75,13 +78,14 @@
 }
 
 .btn-primary {
-  background-color: #667eea;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
   margin-top: 10px;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: #5568d3;
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 .btn:disabled {
@@ -112,11 +116,11 @@
   text-align: center;
   margin-top: 20px;
   font-size: 14px;
-  color: #555;
+  color: var(--text-color);
 }
 
 .cadastro-footer a {
-  color: #667eea;
+  color: var(--primary-color);
   text-decoration: none;
   font-weight: 600;
 }

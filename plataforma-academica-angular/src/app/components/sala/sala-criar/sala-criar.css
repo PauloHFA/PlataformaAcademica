@@ -1,6 +1,72 @@
-.sala-criar { padding: 1rem; max-width: 700px; }
-.sala-criar label { display:block; margin-top:0.5rem; }
-.sala-criar input, .sala-criar textarea { width:100%; padding:0.4rem; margin-top:0.2rem }
-.sala-criar .actions { margin-top:1rem }
-.erro { color:#a00; font-size:0.9rem }
-.mensagem { margin-top:0.7rem; color:green }
+.sala-criar {
+  padding: 2rem;
+  max-width: 700px;
+  margin: 0 auto;
+  background: var(--bg-color);
+  color: var(--text-color);
+  min-height: 100vh;
+}
+
+.sala-criar h2 {
+  color: var(--text-color);
+  margin-bottom: 1.5rem;
+}
+
+.sala-criar label {
+  display: block;
+  margin-top: 1rem;
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+.sala-criar input,
+.sala-criar textarea {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 0.5rem;
+  border: 2px solid var(--border-color);
+  border-radius: 5px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: border-color 0.3s;
+}
+
+.sala-criar input:focus,
+.sala-criar textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.sala-criar .actions {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.sala-criar button {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  background: var(--primary-color);
+  color: var(--secondary-color);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.sala-criar button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.erro {
+  color: #e74c3c;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.mensagem {
+  margin-top: 1rem;
+  color: #27ae60;
+  font-weight: 600;
+}

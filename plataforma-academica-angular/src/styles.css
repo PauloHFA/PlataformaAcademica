@@ -1,1 +1,103 @@
-/* You can add global styles to this file, and also import other style files */
+/* Variáveis do tema claro */
+:root {
+  --primary-color: #181823;
+  --secondary-color: #FFFFFF;
+  --bg-color: #FFFFFF;
+  --text-color: #181823;
+  --border-color: #e5e7eb;
+  --hover-color: #f3f4f6;
+  --shadow: rgba(24, 24, 35, 0.1);
+}
+
+/* Variáveis do tema escuro */
+body.dark-theme {
+  --primary-color: #FFFFFF;
+  --secondary-color: #181823;
+  --bg-color: #181823;
+  --text-color: #FFFFFF;
+  --border-color: #374151;
+  --hover-color: #374151;
+  --shadow: rgba(255, 255, 255, 0.1);
+}
+
+/* Estilos globais */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  background-color: var(--bg-color);
+  transition: background-color 0.3s ease;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+}
+
+/* Garantir que todos os componentes herdem o tema */
+app-root {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  display: block;
+}
+
+/* Estilos para inputs e botões */
+input, textarea, select {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+button {
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  border: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* Links */
+a {
+  color: var(--primary-color);
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--hover-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color);
+}

@@ -4,12 +4,12 @@
   top: 0;
   height: 100vh;
   width: 250px;
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-  color: white;
+  background: var(--primary-color);
+  color: var(--secondary-color);
   transition: width 0.3s ease;
   display: flex;
   flex-direction: column;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 0 10px var(--shadow);
   z-index: 1000;
 }
 
@@ -26,7 +26,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 2px solid var(--border-color);
 }
 
 .sidebar-header h2 {
@@ -39,9 +39,9 @@
 }
 
 .toggle-btn {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--hover-color);
   border: none;
-  color: white;
+  color: var(--secondary-color);
   cursor: pointer;
   width: 36px;
   height: 36px;
@@ -51,7 +51,7 @@
 }
 
 .toggle-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--border-color);
 }
 
 .user-profile {
@@ -59,13 +59,13 @@
   align-items: center;
   gap: 12px;
   padding: 20px;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 2px solid var(--border-color);
 }
 
 .user-avatar {
   width: 45px;
   height: 45px;
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--hover-color);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -118,7 +118,7 @@
   padding: 12px 20px;
   background: none;
   border: none;
-  color: white;
+  color: var(--secondary-color);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -129,7 +129,7 @@
 }
 
 .menu-item:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--hover-color);
   padding-left: 24px;
 }
 
@@ -148,13 +148,13 @@
 
 .sidebar-footer {
   padding: 20px;
-  border-top: 2px solid rgba(255, 255, 255, 0.1);
+  border-top: 2px solid var(--border-color);
 }
 
 .logout-btn {
   width: 100%;
   padding: 12px 20px;
-  background: rgba(255, 68, 68, 0.8);
+  background: #dc2626;
   border: none;
   color: white;
   cursor: pointer;
@@ -168,7 +168,7 @@
 }
 
 .logout-btn:hover {
-  background: rgba(255, 68, 68, 1);
+  background: #b91c1c;
 }
 
 .logout-btn .icon {

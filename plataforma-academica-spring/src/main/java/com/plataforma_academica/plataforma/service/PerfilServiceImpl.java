@@ -23,9 +23,15 @@ public class PerfilServiceImpl implements PerfilService {
 
     @Override
     public Perfil salvar(PerfilDTO dto) {
+        System.out.println("=== CRIANDO PERFIL ===");
+        System.out.println("UsuarioId recebido: " + dto.getUsuarioId());
+        System.out.println("Bio: " + dto.getBio());
+        System.out.println("Curso: " + dto.getCurso());
 
         Usuario usuario = usuarioRepository.findById(dto.getUsuarioId())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com ID: " + dto.getUsuarioId()));
+
+        System.out.println("Usuário encontrado: " + usuario.getNome());
 
         Perfil perfil = new Perfil();
         perfil.setBio(dto.getBio());
@@ -33,7 +39,9 @@ public class PerfilServiceImpl implements PerfilService {
         perfil.setCurso(dto.getCurso());
         perfil.setUsuario(usuario);
 
-        return perfilRepository.save(perfil);
+        Perfil salvo = perfilRepository.save(perfil);
+        System.out.println("Perfil salvo com ID: " + salvo.getId());
+        return salvo;
     }
 
     @Override

@@ -42,10 +42,13 @@ export class PerfilEditarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
+      const usuarioId = localStorage.getItem('usuarioId');
       const usuarioStr = localStorage.getItem('usuario');
-      if (usuarioStr) {
+      
+      if (usuarioId) {
         try {
-          this.usuarioLogado = JSON.parse(usuarioStr);
+          this.usuarioLogado = usuarioStr ? JSON.parse(usuarioStr) : {};
+          this.usuarioLogado.id = parseInt(usuarioId);
           this.inicializarFormulario();
           this.verificarModo();
         } catch (e) {

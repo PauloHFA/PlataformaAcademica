@@ -21,6 +21,7 @@ export class FeedComponent implements OnInit {
   mostrarForm = false;
   novaPostagem: Postagem = { titulo: '', conteudo: '' };
   enviando = false;
+  previewImagem: string | null = null;
 
   constructor(
     private postagemService: PostagemService,
@@ -85,7 +86,25 @@ export class FeedComponent implements OnInit {
     this.mostrarForm = !this.mostrarForm;
     if (!this.mostrarForm) {
       this.novaPostagem = { titulo: '', conteudo: '' };
+      this.previewImagem = null;
     }
+  }
+
+  onImagemSelecionada(event: any): void {
+    const arquivo = event.target.files[0];
+    if (arquivo) {
+      const leitor = new FileReader();
+      leitor.onload = (e: any) => {
+        this.previewImagem = e.target.result;
+        this.novaPostagem.imagemUrl = e.target.result;
+      };
+      leitor.readAsDataURL(arquivo);
+    }
+  }
+
+  removerImagem(): void {
+    this.previewImagem = null;
+    this.novaPostagem.imagemUrl = undefined;
   }
 
   publicar(): void {
@@ -106,6 +125,7 @@ export class FeedComponent implements OnInit {
     this.postagemService.publicar(this.novaPostagem).subscribe({
       next: () => {
         this.novaPostagem = { titulo: '', conteudo: '' };
+        this.previewImagem = null;
         this.mostrarForm = false;
         this.carregarPostagens();
         this.enviando = false;

@@ -62,6 +62,32 @@
           required
         ></textarea>
       </div>
+      
+      <!-- Upload de Imagem -->
+      <div class="form-group">
+        <label>Imagem (opcional)</label>
+        <div class="image-upload-area">
+          <div *ngIf="!previewImagem" class="upload-placeholder">
+            <input 
+              type="file" 
+              accept="image/*" 
+              (change)="onImagemSelecionada($event)"
+              id="imagemInput"
+              hidden
+            />
+            <label for="imagemInput" class="upload-label">
+              🖼️ Adicionar Imagem
+            </label>
+          </div>
+          <div *ngIf="previewImagem" class="image-preview">
+            <img [src]="previewImagem" alt="Preview" />
+            <button type="button" (click)="removerImagem()" class="btn-remove-image">
+              ✖ Remover
+            </button>
+          </div>
+        </div>
+      </div>
+
       <button type="submit" class="btn btn-primary" [disabled]="enviando">
         <span class="icon">{{ enviando ? '⏳' : '📤' }}</span>
         {{ enviando ? 'Publicando...' : 'Publicar' }}
@@ -99,6 +125,9 @@
       <div class="postagem-body">
         <h2>{{ post.titulo }}</h2>
         <p>{{ post.conteudo }}</p>
+        <div *ngIf="post.imagemUrl" class="postagem-imagem">
+          <img [src]="post.imagemUrl" alt="Imagem da postagem" />
+        </div>
       </div>
 
       <div class="postagem-actions">

@@ -46,15 +46,15 @@
       </div>
 
       <!-- Curso -->
-      <div class="info-item">
+      <div class="info-item" *ngIf="perfil.curso">
         <label>Curso</label>
-        <p>{{ perfil.curso || 'Não informado' }}</p>
+        <p>{{ perfil.curso }}</p>
       </div>
 
       <!-- Bio -->
-      <div class="info-item">
+      <div class="info-item" *ngIf="perfil.bio">
         <label>Sobre Mim</label>
-        <p>{{ perfil.bio || 'Nenhuma bio adicionada' }}</p>
+        <p>{{ perfil.bio }}</p>
       </div>
 
       <!-- Datas -->

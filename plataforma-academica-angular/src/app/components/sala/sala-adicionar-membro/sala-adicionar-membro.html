@@ -1,12 +1,67 @@
-<div class="adicionar-membro">
-  <h3>Adicionar Membro</h3>
-  <form [formGroup]="form" (ngSubmit)="submit()">
-    <label for="membroId">ID do Usuário</label>
-    <input id="membroId" formControlName="membroId" />
-    <div class="actions">
-      <button type="submit" [disabled]="carregando">Adicionar</button>
-      <a routerLink="/salas" class="btn-cancel">Cancelar</a>
+<div class="adicionar-membro-container">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-content">
+      <h1>
+        <span class="icon">👥</span>
+        Adicionar Membro
+      </h1>
+      <p class="subtitle">Selecione um usuário para adicionar à sala</p>
     </div>
-  </form>
-  <div *ngIf="mensagem" class="mensagem">{{ mensagem }}</div>
+    <a [routerLink]="['/salas', salaId]" class="btn btn-secondary">
+      <span class="icon">⬅️</span>
+      Voltar
+    </a>
+  </div>
+
+  <!-- Busca -->
+  <div class="search-box">
+    <input
+      type="text"
+      [(ngModel)]="busca"
+      (input)="filtrarUsuarios()"
+      placeholder="🔍 Buscar por nome, email ou ID..."
+      class="search-input"
+    />
+  </div>
+
+  <!-- Mensagem -->
+  <div *ngIf="mensagem" class="alert" [class.alert-success]="mensagem.includes('sucesso')">
+    {{ mensagem }}
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="carregando && !usuarios.length" class="loading-state">
+    <div class="spinner"></div>
+    <p>Carregando usuários...</p>
+  </div>
+
+  <!-- Lista de Usuários -->
+  <div *ngIf="!carregando || usuarios.length" class="usuarios-list">
+    <div *ngFor="let usuario of usuariosFiltrados" class="usuario-card">
+      <div class="usuario-info">
+        <div class="avatar">{{ (usuario.nome || 'U')[0].toUpperCase() }}</div>
+        <div class="usuario-details">
+          <h3>{{ usuario.nome }}</h3>
+          <p class="email">{{ usuario.email }}</p>
+          <span class="user-id">ID: {{ usuario.id }}</span>
+        </div>
+      </div>
+      <button
+        (click)="adicionarMembro(usuario.id!)"
+        class="btn btn-primary"
+        [disabled]="carregando"
+      >
+        <span class="icon">➕</span>
+        Adicionar
+      </button>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!usuariosFiltrados.length" class="empty-state">
+      <div class="empty-icon">🔍</div>
+      <h3>Nenhum usuário encontrado</h3>
+      <p>Tente buscar com outros termos</p>
+    </div>
+  </div>
 </div>

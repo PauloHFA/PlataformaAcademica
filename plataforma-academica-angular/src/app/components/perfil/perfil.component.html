@@ -48,13 +48,19 @@
 
       <!-- Curso -->
       <div class="info-item" *ngIf="perfil.curso">
-        <label>Curso</label>
+        <div class="info-item-header">
+          <label>Curso</label>
+          <button (click)="editarPerfil()" class="btn-editar-campo" title="Editar curso">✏️</button>
+        </div>
         <p>{{ perfil.curso }}</p>
       </div>
 
       <!-- Bio -->
       <div class="info-item" *ngIf="perfil.bio">
-        <label>Sobre Mim</label>
+        <div class="info-item-header">
+          <label>Sobre Mim</label>
+          <button (click)="editarPerfil()" class="btn-editar-campo" title="Editar bio">✏️</button>
+        </div>
         <p>{{ perfil.bio }}</p>
       </div>
 

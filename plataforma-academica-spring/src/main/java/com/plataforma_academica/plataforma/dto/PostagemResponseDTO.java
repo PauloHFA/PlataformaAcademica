@@ -16,4 +16,5 @@ public class PostagemResponseDTO {
     private String plataformaNome;
     
     private Integer curtidas;
+    private String imagemUrl;
 }

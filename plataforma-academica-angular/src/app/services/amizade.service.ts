@@ -19,6 +19,14 @@ export class AmizadeService {
     return this.http.patch<Amizade>(`${this.apiUrl}/${id}/resposta`, null, { params: { acao } });
   }
 
+  aceitarSolicitacao(id: number): Observable<Amizade> {
+    return this.responderSolicitacao(id, 'aceitar');
+  }
+
+  recusarSolicitacao(id: number): Observable<Amizade> {
+    return this.responderSolicitacao(id, 'recusar');
+  }
+
   removerAmizade(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }

@@ -23,4 +23,7 @@ public interface PostagemService {
     PostagemResponseDTO curtir(Long id);
     List<PostagemResponseDTO> listarDeAmigos(Long usuarioId);
     List<PostagemResponseDTO> listarMaisCurtidas();
+    
+    // Suporta criação com upload de imagem (multipart)
+    PostagemResponseDTO publicarComImagemResponse(PostagemDTO postagemDTO, org.springframework.web.multipart.MultipartFile imagem);
 }

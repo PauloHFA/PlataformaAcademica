@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import org.springframework.http.MediaType;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * ============================================================================
@@ -146,6 +148,28 @@ public class PostagemController {
                 .created(URI.create("/api/postagens/" + salvo.getId()))
                 .body(salvo);
     }
+
+        // Endpoint que aceita multipart/form-data com imagem
+        @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+        public ResponseEntity<PostagemResponseDTO> publicarComImagem(
+            @RequestParam String titulo,
+            @RequestParam String conteudo,
+            @RequestParam Long autorId,
+            @RequestParam Long plataformaId,
+            @RequestPart(required = false) MultipartFile imagem
+        ) {
+        PostagemDTO dto = new PostagemDTO();
+        dto.setTitulo(titulo);
+        dto.setConteudo(conteudo);
+        dto.setAutorId(autorId);
+        dto.setPlataformaId(plataformaId);
+
+        PostagemResponseDTO salvo = postagemService.publicarComImagemResponse(dto, imagem);
+
+        return ResponseEntity
+            .created(URI.create("/api/postagens/" + salvo.getId()))
+            .body(salvo);
+        }
 
     // =========================================================================
     // ATUALIZAR POSTAGEM EXISTENTE

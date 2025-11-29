@@ -30,6 +30,36 @@ public class PostagemServiceImpl implements PostagemService {
     @Autowired
     AmizadeService amizadeService;
 
+    // pasta onde as imagens serão salvas (relativa ao diretório de trabalho)
+    private final java.nio.file.Path uploadDir = java.nio.file.Paths.get("uploads").toAbsolutePath();
+
+    private void ensureUploadDir() {
+        try {
+            java.nio.file.Files.createDirectories(uploadDir);
+        } catch (Exception e) {
+            throw new RuntimeException("Não foi possível criar pasta de uploads", e);
+        }
+    }
+
+    private String storeFile(org.springframework.web.multipart.MultipartFile file) {
+        if (file == null || file.isEmpty()) return null;
+        ensureUploadDir();
+        String original = file.getOriginalFilename();
+        String ext = "";
+        if (original != null && original.contains(".")) {
+            ext = original.substring(original.lastIndexOf('.'));
+        }
+        String filename = java.util.UUID.randomUUID().toString() + ext;
+        java.nio.file.Path target = uploadDir.resolve(filename);
+        try (java.io.InputStream is = file.getInputStream()) {
+            java.nio.file.Files.copy(is, target, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            throw new RuntimeException("Falha ao salvar arquivo", e);
+        }
+        // URL pública relativa
+        return "/uploads/" + filename;
+    }
+
     @Override
     public PostagemDTO publicar(PostagemDTO dto) {
 
@@ -114,6 +144,25 @@ public class PostagemServiceImpl implements PostagemService {
     @Override
     public PostagemResponseDTO atualizarResponse(PostagemDTO dto) {
         return publicarResponse(dto);
+    }
+
+    @Override
+    public PostagemResponseDTO publicarComImagemResponse(PostagemDTO dto, org.springframework.web.multipart.MultipartFile imagem) {
+        Usuario autor = usuarioRepository.findById(dto.getAutorId())
+                .orElseThrow(() -> new RuntimeException("Autor não encontrado"));
+
+        Plataforma plataforma = plataformaRepository.findById(dto.getPlataformaId())
+                .orElseThrow(() -> new RuntimeException("Plataforma não encontrada"));
+
+        Postagem postagem = PostagemMapper.toEntity(dto, autor, plataforma);
+
+        // salvar imagem se fornecida
+        if (imagem != null && !imagem.isEmpty()) {
+            String url = storeFile(imagem);
+            postagem.setImagemUrl(url);
+        }
+
+        return PostagemMapper.toResponse(postagemRepository.save(postagem));
     }
 
     @Override

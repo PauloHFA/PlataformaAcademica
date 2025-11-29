@@ -22,6 +22,7 @@ export class FeedComponent implements OnInit {
   novaPostagem: Postagem = { titulo: '', conteudo: '' };
   enviando = false;
   previewImagem: string | null = null;
+  selectedFile: File | null = null;
 
   constructor(
     private postagemService: PostagemService,
@@ -92,19 +93,24 @@ export class FeedComponent implements OnInit {
   }
 
   onImagemSelecionada(event: any): void {
-    const arquivo = event.target.files[0];
+    const arquivo: File = event.target.files && event.target.files[0];
     if (arquivo) {
+      this.selectedFile = arquivo;
       const leitor = new FileReader();
       leitor.onload = (e: any) => {
-        this.previewImagem = e.target.result;
-        this.novaPostagem.imagemUrl = e.target.result;
+        this.previewImagem = e.target.result as string;
+        // mantemos o preview como dataURL para visualização
       };
       leitor.readAsDataURL(arquivo);
+    } else {
+      this.selectedFile = null;
+      this.previewImagem = null;
     }
   }
 
   removerImagem(): void {
     this.previewImagem = null;
+    this.selectedFile = null;
     this.novaPostagem.imagemUrl = undefined;
   }
 
@@ -123,6 +129,33 @@ export class FeedComponent implements OnInit {
     this.novaPostagem.autorId = this.currentUserId;
     this.novaPostagem.plataformaId = 1; // ID fixo da plataforma
 
+    // Se houver arquivo selecionado, enviar como FormData
+    if (this.selectedFile) {
+      const form = new FormData();
+      form.append('imagem', this.selectedFile, this.selectedFile.name);
+      form.append('titulo', this.novaPostagem.titulo);
+      form.append('conteudo', this.novaPostagem.conteudo);
+      if (this.novaPostagem.autorId) form.append('autorId', String(this.novaPostagem.autorId));
+      if (this.novaPostagem.plataformaId) form.append('plataformaId', String(this.novaPostagem.plataformaId));
+
+      this.postagemService.publicarComImagem(form).subscribe({
+        next: () => {
+          this.novaPostagem = { titulo: '', conteudo: '' };
+          this.previewImagem = null;
+          this.selectedFile = null;
+          this.mostrarForm = false;
+          this.carregarPostagens();
+          this.enviando = false;
+        },
+        error: () => {
+          alert('Erro ao publicar');
+          this.enviando = false;
+        }
+      });
+      return;
+    }
+
+    // Sem arquivo: enviar JSON
     this.postagemService.publicar(this.novaPostagem).subscribe({
       next: () => {
         this.novaPostagem = { titulo: '', conteudo: '' };

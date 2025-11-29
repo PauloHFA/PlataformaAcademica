@@ -11,4 +11,5 @@ public class PostagemDTO {
 
     private Long autorId;
     private Long plataformaId;
+    private String imagemUrl;
 }

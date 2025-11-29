@@ -23,8 +23,15 @@ export class PostagemService {
     return this.http.get<Postagem[]>(`${this.apiUrl}/titulo`, { params: { titulo } });
   }
 
-  publicar(postagem: Postagem): Observable<Postagem> {
-    return this.http.post<Postagem>(this.apiUrl, postagem);
+  // Suporta tanto JSON (Postagem) quanto FormData (upload de imagem)
+  publicar(postagemOrForm: Postagem | FormData): Observable<Postagem> {
+    // se for FormData, HttpClient detecta automaticamente o Content-Type multipart/form-data
+    return this.http.post<Postagem>(this.apiUrl, postagemOrForm as any);
+  }
+
+  // Método explícito para uploads multipart (FormData)
+  publicarComImagem(form: FormData): Observable<Postagem> {
+    return this.http.post<Postagem>(this.apiUrl, form);
   }
 
   atualizar(id: number, postagem: Postagem): Observable<Postagem> {

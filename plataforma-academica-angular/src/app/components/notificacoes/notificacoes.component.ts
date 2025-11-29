@@ -85,7 +85,7 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
         next: () => {
           this.notificacoes = this.notificacoes.filter(n => n.id !== notificacao.id);
         },
-        error: (err) => alert('Erro ao aceitar amizade')
+        error: (_err: any) => alert('Erro ao aceitar amizade')
       });
   }
 
@@ -96,7 +96,7 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
         next: () => {
           this.notificacoes = this.notificacoes.filter(n => n.id !== notificacao.id);
         },
-        error: (err) => alert('Erro ao recusar amizade')
+        error: (_err: any) => alert('Erro ao recusar amizade')
       });
   }
 

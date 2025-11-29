@@ -27,6 +27,7 @@ public class PostagemMapper {
         dto.setPlataformaId(
                 postagem.getPlataforma() != null ? postagem.getPlataforma().getId() : null
         );
+        dto.setImagemUrl(postagem.getImagemUrl());
 
         return dto;
     }
@@ -54,6 +55,7 @@ public class PostagemMapper {
         }
         
         response.setCurtidas(postagem.getCurtidas() != null ? postagem.getCurtidas() : 0);
+            response.setImagemUrl(postagem.getImagemUrl());
 
         return response;
     }
@@ -71,6 +73,7 @@ public class PostagemMapper {
         postagem.setConteudo(dto.getConteudo());
         postagem.setAutor(autor);
         postagem.setPlataforma(plataforma);
+        postagem.setImagemUrl(dto.getImagemUrl());
 
         return postagem;
     }

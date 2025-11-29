@@ -29,5 +29,7 @@ public class Postagem {
     private Plataforma plataforma;
 
     private Integer curtidas = 0;
+    
+    private String imagemUrl;
 
 }

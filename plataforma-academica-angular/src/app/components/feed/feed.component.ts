@@ -84,6 +84,7 @@ export class FeedComponent implements OnInit {
 
   toggleForm(): void {
     this.mostrarForm = !this.mostrarForm;
+    console.log('Form visível:', this.mostrarForm);
     if (!this.mostrarForm) {
       this.novaPostagem = { titulo: '', conteudo: '' };
       this.previewImagem = null;

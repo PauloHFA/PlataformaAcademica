@@ -7,20 +7,21 @@ export interface Usuario {
   nome: string;
   email: string;
   senha?: string;
-  dataCadastro?: string;
-  ativo?: boolean;
-  [key: string]: any; // Permite propriedades adicionais se necessário
+  avatarUrl?: string;      // URL do avatar para exibição
+  avatarBase64?: string;   // Base64 do avatar para upload
+  plataformaId?: number;
 }
 
 /**
  * Resposta de login contendo o usuário autenticado
+ * Correspondente ao UsuarioResponseDTO do backend
  */
 export interface LoginResponse {
   id: number;
   nome: string;
   email: string;
-  dataCadastro?: string;
-  ativo?: boolean;
+  avatarUrl?: string;
+  avatarBase64?: string;
 }
 
 /**

@@ -26,13 +26,13 @@
     <div class="perfil-foto-section">
       <div class="perfil-foto">
         <img 
-          *ngIf="perfil.fotoPerfil" 
-          [src]="perfil.fotoPerfil" 
+          *ngIf="perfil.fotoPerfil || usuarioLogado?.avatarUrl || usuarioLogado?.avatarBase64" 
+          [src]="perfil.fotoPerfil || usuarioLogado?.avatarUrl || usuarioLogado?.avatarBase64" 
           alt="Foto de perfil"
           class="foto-imagem"
         />
-        <div *ngIf="!perfil.fotoPerfil" class="foto-placeholder">
-          <span>Sem foto</span>
+        <div *ngIf="!perfil.fotoPerfil && !usuarioLogado?.avatarUrl && !usuarioLogado?.avatarBase64" class="foto-placeholder">
+          <span>{{ usuarioLogado?.nome?.charAt(0)?.toUpperCase() || '?' }}</span>
         </div>
       </div>
     </div>

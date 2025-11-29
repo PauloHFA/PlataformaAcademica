@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AmizadeService } from '../../services/amizade.service';
 import { UsuarioService } from '../../services/usuario.service';
@@ -25,7 +25,8 @@ export class AmigosComponent implements OnInit {
 
   constructor(
     private amizadeService: AmizadeService,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit(): void {
@@ -36,8 +37,11 @@ export class AmigosComponent implements OnInit {
   }
 
   getCurrentUserId(): number | null {
-    const id = localStorage.getItem('usuarioId');
-    return id ? Number(id) : null;
+    if (isPlatformBrowser(this.platformId)) {
+      const id = localStorage.getItem('usuarioId');
+      return id ? Number(id) : null;
+    }
+    return null;
   }
 
   carregarDados(): void {

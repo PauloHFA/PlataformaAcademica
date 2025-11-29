@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PostagemService } from '../../services/postagem.service';
 import { Postagem } from '../../models/postagem.model';
@@ -22,7 +22,10 @@ export class FeedComponent implements OnInit {
   novaPostagem: Postagem = { titulo: '', conteudo: '' };
   enviando = false;
 
-  constructor(private postagemService: PostagemService) {}
+  constructor(
+    private postagemService: PostagemService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit(): void {
     this.currentUserId = this.getCurrentUserId();
@@ -30,8 +33,11 @@ export class FeedComponent implements OnInit {
   }
 
   getCurrentUserId(): number | null {
-    const id = localStorage.getItem('usuarioId');
-    return id ? Number(id) : null;
+    if (isPlatformBrowser(this.platformId)) {
+      const id = localStorage.getItem('usuarioId');
+      return id ? Number(id) : null;
+    }
+    return null;
   }
 
   carregarPostagens(): void {

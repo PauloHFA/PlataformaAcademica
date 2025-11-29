@@ -38,11 +38,13 @@ export class AppComponent implements OnInit {
   }
 
   checkLoginStatus() {
-    // Verificar se está no navegador antes de acessar localStorage
     if (isPlatformBrowser(this.platformId)) {
-      const usuario = localStorage.getItem('usuario'); // string JSON (objeto com id)
-      const usuarioId = localStorage.getItem('usuarioId'); // id em string, se existir
-      this.isLoggedIn = !!usuarioId;
+      const usuarioId = localStorage.getItem('usuarioId');
+      const isAuthPage = this.router.url === '/' || 
+                         this.router.url === '/home' || 
+                         this.router.url === '/login' || 
+                         this.router.url === '/cadastro';
+      this.isLoggedIn = !!usuarioId && !isAuthPage;
     } else {
       this.isLoggedIn = false;
     }

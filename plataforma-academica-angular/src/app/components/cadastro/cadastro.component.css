@@ -125,6 +125,10 @@
   font-weight: 600;
 }
 
+:root[data-theme="dark"] .cadastro-footer a {
+  color: white;
+}
+
 .cadastro-footer a:hover {
   text-decoration: underline;
 }

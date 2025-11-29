@@ -55,19 +55,20 @@
 }
 
 .perfil-foto {
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
   background: var(--secondary-color);
-  border: 4px solid var(--secondary-color);
+  border: 4px solid var(--primary-color);
   overflow: hidden;
-  box-shadow: 0 4px 12px var(--shadow);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
 .foto-imagem {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
 }
 
 .foto-placeholder {

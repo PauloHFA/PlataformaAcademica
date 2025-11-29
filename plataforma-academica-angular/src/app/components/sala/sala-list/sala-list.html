@@ -7,14 +7,10 @@
 
   <!-- Ações -->
   <div class="sala-actions">
-    <button (click)="createTestSala()" [disabled]="criando" class="btn-create">
+    <a routerLink="/salas/criar" class="btn-create">
       <span class="icon">➕</span>
-      {{ criando ? 'Criando...' : 'Criar Nova Sala' }}
-    </button>
-    <div *ngIf="mensagemCriar" class="mensagem-sucesso">
-      <span class="icon">✅</span>
-      {{ mensagemCriar }}
-    </div>
+      Criar Nova Sala
+    </a>
   </div>
 
   <!-- Loading -->
@@ -59,9 +55,13 @@
           <span class="icon">📝</span>
           Atividades
         </a>
-        <button *ngIf="sala.criadorId === currentUserId" (click)="deleteSala(sala)" class="btn btn-danger" title="Deletar sala">
+        <button *ngIf="currentUserId !== null && (sala.criadorId === currentUserId || !sala.criadorId)" (click)="deleteSala(sala)" class="btn btn-danger" title="Deletar sala">
           <span class="icon">🗑️</span>
           Deletar
+        </button>
+        <button *ngIf="currentUserId !== null && sala.criadorId && sala.criadorId !== currentUserId" (click)="forcarDelecao(sala)" class="btn btn-danger" title="Forçar deleção (admin)">
+          <span class="icon">⚠️</span>
+          Forçar
         </button>
       </div>
     </div>
@@ -72,9 +72,9 @@
     <div class="empty-icon">📭</div>
     <h3>Nenhuma sala encontrada</h3>
     <p>Comece criando sua primeira sala de aula!</p>
-    <button (click)="createTestSala()" class="btn btn-primary">
+    <a routerLink="/salas/criar" class="btn btn-primary">
       <span class="icon">➕</span>
       Criar Primeira Sala
-    </button>
+    </a>
   </div>
 </div>

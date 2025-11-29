@@ -1,19 +1,56 @@
-<div class="atividade-criar">
-  <h3>Criar Atividade</h3>
-  <form [formGroup]="form" (ngSubmit)="submit()">
-    <label for="titulo">Título</label>
-    <input id="titulo" formControlName="titulo" />
+<div class="atividade-criar-container">
+  <div class="atividade-criar-header">
+    <h2>📝 Criar Nova Atividade</h2>
+    <p class="subtitle">Preencha os dados da atividade para sua sala de aula</p>
+  </div>
 
-    <label for="descricao">Descrição</label>
-    <textarea id="descricao" formControlName="descricao"></textarea>
+  <form [formGroup]="form" (ngSubmit)="submit()" class="atividade-form">
+    <div class="form-group">
+      <label for="titulo">📌 Título da Atividade</label>
+      <input 
+        id="titulo" 
+        formControlName="titulo" 
+        class="form-control"
+        placeholder="Ex: Trabalho de Matemática"
+      />
+      <div *ngIf="form.controls['titulo'].invalid && form.controls['titulo'].touched" class="erro">
+        Título é obrigatório
+      </div>
+    </div>
 
-    <label for="dataEntrega">Data de Entrega</label>
-    <input id="dataEntrega" type="date" formControlName="dataEntrega" />
+    <div class="form-group">
+      <label for="descricao">📝 Descrição</label>
+      <textarea 
+        id="descricao" 
+        formControlName="descricao"
+        class="form-control"
+        rows="5"
+        placeholder="Descreva os detalhes da atividade..."
+      ></textarea>
+      <div *ngIf="form.controls['descricao'].invalid && form.controls['descricao'].touched" class="erro">
+        Descrição é obrigatória
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="dataEntrega">📅 Data de Entrega</label>
+      <input 
+        id="dataEntrega" 
+        type="datetime-local" 
+        formControlName="dataEntrega"
+        class="form-control"
+      />
+    </div>
 
     <div class="actions">
-      <button type="submit" [disabled]="carregando">Criar</button>
-      <a routerLink="/salas" class="btn-cancel">Cancelar</a>
+      <button type="submit" [disabled]="carregando || form.invalid" class="btn-primary">
+        {{ carregando ? 'Criando...' : '✅ Criar Atividade' }}
+      </button>
+      <a routerLink="/salas" class="btn-cancel">❌ Cancelar</a>
     </div>
   </form>
-  <div *ngIf="mensagem" class="mensagem">{{ mensagem }}</div>
+
+  <div *ngIf="mensagem" class="mensagem" [class.sucesso]="!mensagem.includes('Erro')">
+    {{ mensagem }}
+  </div>
 </div>

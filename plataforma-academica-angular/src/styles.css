@@ -53,21 +53,21 @@
   --glass-border: rgba(229, 231, 235, 0.8);
 }
 
-/* Tema Escuro - Inversão Elegante */
+/* Tema Escuro - Roxo Praticamente Preto */
 body.dark-theme {
-  /* Primárias - Roxo Claro no Escuro */
-  --primary-color: #A78BFA; /* Roxo claro */
-  --primary-hover: #C4B5FD; /* Roxo hover claro */
-  --primary-light: #DDD6FE; /* Roxo muito claro */
-  --primary-dark: #8B5CF6; /* Roxo médio */
+  /* Primárias - Roxo Quase Preto */
+  --primary-color: #0A0412; /* Roxo praticamente preto */
+  --primary-hover: #150820; /* Roxo muito escuro hover */
+  --primary-light: #1A0B2E; /* Roxo escuro */
+  --primary-dark: #050208; /* Roxo quase 100% preto */
   
   /* Secundárias - Tons Escuros */
-  --secondary-color: #1F2937;
+  --secondary-color: #FFFFFF;
   --bg-color: #111827; /* Fundo escuro principal */
   --bg-secondary: #1F2937; /* Fundo secundário */
-  --text-color: #F9FAFB; /* Texto claro */
-  --text-secondary: #D1D5DB; /* Texto secundário */
-  --text-muted: #9CA3AF; /* Texto esmaecido */
+  --text-color: #FFFFFF; /* Texto branco */
+  --text-secondary: #FFFFFF; /* Texto secundário branco */
+  --text-muted: #E5E7EB; /* Texto esmaecido claro */
   
   /* Bordas e Divisores */
   --border-color: #374151;

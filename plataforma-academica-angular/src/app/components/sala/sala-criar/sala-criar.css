@@ -1,6 +1,6 @@
 .sala-criar {
-  padding: 2rem;
-  max-width: 700px;
+  padding: 40px 20px;
+  max-width: 600px;
   margin: 0 auto;
   background: var(--bg-color);
   color: var(--text-color);
@@ -9,64 +9,128 @@
 
 .sala-criar h2 {
   color: var(--text-color);
-  margin-bottom: 1.5rem;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 25px;
 }
 
 .sala-criar label {
   display: block;
-  margin-top: 1rem;
+  margin-bottom: 8px;
   color: var(--text-color);
   font-weight: 600;
+  font-size: 14px;
 }
 
-.sala-criar input,
-.sala-criar textarea {
+.form-control {
   width: 100%;
-  padding: 0.8rem;
-  margin-top: 0.5rem;
+  padding: 14px 16px;
   border: 2px solid var(--border-color);
-  border-radius: 5px;
-  background-color: var(--bg-color);
+  border-radius: 8px;
+  background-color: var(--card-bg);
   color: var(--text-color);
-  transition: border-color 0.3s;
+  font-size: 16px;
+  transition: all 0.2s;
+  box-sizing: border-box;
 }
 
-.sala-criar input:focus,
-.sala-criar textarea:focus {
+.form-control:focus {
   outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(91, 33, 182, 0.1);
+}
+
+.form-control::placeholder {
+  color: var(--text-muted);
+}
+
+.actions {
+  margin-top: 30px;
+  display: flex;
+  gap: 12px;
+}
+
+.btn-primary {
+  flex: 1;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 8px;
+  background: var(--primary-color);
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-cancel {
+  padding: 14px 24px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-color);
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-cancel:hover {
+  background: var(--hover-color);
   border-color: var(--primary-color);
 }
 
-.sala-criar .actions {
-  margin-top: 2rem;
-  display: flex;
-  gap: 1rem;
-}
-
-.sala-criar button {
-  padding: 0.8rem 1.5rem;
-  border: none;
-  border-radius: 5px;
-  background: var(--primary-color);
-  color: var(--secondary-color);
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.sala-criar button:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-}
-
 .erro {
-  color: #e74c3c;
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
+  color: var(--accent-red);
+  font-size: 13px;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.erro::before {
+  content: '⚠️';
 }
 
 .mensagem {
-  margin-top: 1rem;
-  color: #27ae60;
+  margin-top: 20px;
+  padding: 14px 18px;
+  border-radius: 8px;
   font-weight: 600;
+  text-align: center;
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--accent-red);
+  border: 1px solid var(--accent-red);
+}
+
+.mensagem.sucesso {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--accent-green);
+  border: 1px solid var(--accent-green);
+}
+
+.mensagem.sucesso::before {
+  content: '✅ ';
 }

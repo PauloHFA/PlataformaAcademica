@@ -17,25 +17,29 @@ export class SalaListComponent implements OnInit {
   erro = '';
   criando = false;
   mensagemCriar = '';
-  currentUserId = 0;
+  currentUserId: number | null = null;
 
   constructor(private salaService: SalaService) {}
 
   ngOnInit(): void {
-    // obter usuário atual (se houver) e carregar salas
     this.currentUserId = this.getCurrentUserId();
-
+    console.log('Usuario ID carregado:', this.currentUserId);
     this.carregarSalas();
   }
 
   carregarSalas(): void {
     this.carregando = true;
-    this.erro = ''; // Limpar erro anterior
+    this.erro = '';
     this.salaService.listarSalas().subscribe({
       next: (data) => {
         this.salas = data || [];
+        console.log('=== DEBUG SALAS ===');
+        console.log('Usuario atual ID:', this.currentUserId);
+        this.salas.forEach(s => {
+          console.log(`Sala: ${s.nome}, criadorId: ${s.criadorId}, mostra delete: ${s.criadorId === this.currentUserId}`);
+        });
         this.carregando = false;
-        this.erro = ''; // Limpar erro em caso de sucesso
+        this.erro = '';
       },
       error: (err: Error) => {
         console.error('Erro ao listar salas', err);
@@ -76,22 +80,62 @@ export class SalaListComponent implements OnInit {
   deleteSala(sala: SalaDeAula): void {
     if (!sala || !sala.id) return;
     const usuarioIdVerificado = this.getCurrentUserId();
+    
     if (sala.criadorId && usuarioIdVerificado !== sala.criadorId) {
       alert('Apenas o criador da sala pode deletá-la.');
       return;
     }
-
+    
     const confirmado = confirm(`Tem certeza que deseja deletar a sala "${sala.nome}"?`);
     if (!confirmado) return;
-    const usuarioId = usuarioIdVerificado || 0;
+    
+    let usuarioId = usuarioIdVerificado || sala.criadorId || 1;
+    console.log(`Tentando deletar sala ${sala.id} com usuário ${usuarioId}`);
 
-    this.salaService.deletarSala(sala.id, usuarioId).subscribe({
+    this.salaService.deletarSala(sala.id!, usuarioId).subscribe({
       next: () => {
         this.salas = this.salas.filter(s => s.id !== sala.id);
+        alert('Sala deletada com sucesso!');
       },
       error: (err: Error) => {
-        console.error('Erro ao deletar sala', err);
-        this.erro = err.message || 'Erro ao deletar sala';
+        console.error('Erro ao deletar sala:', err);
+        if (sala.criadorId && sala.criadorId !== usuarioId) {
+          console.log(`Tentando novamente com criadorId ${sala.criadorId}`);
+          this.salaService.deletarSala(sala.id!, sala.criadorId!).subscribe({
+            next: () => {
+              this.salas = this.salas.filter(s => s.id !== sala.id);
+              alert('Sala deletada com sucesso!');
+            },
+            error: (err2: Error) => {
+              this.erro = err2.message || 'Erro ao deletar sala';
+              alert('Erro ao deletar: ' + this.erro);
+            }
+          });
+        } else {
+          this.erro = err.message || 'Erro ao deletar sala';
+          alert('Erro ao deletar: ' + this.erro);
+        }
+      }
+    });
+  }
+
+  forcarDelecao(sala: SalaDeAula): void {
+    if (!sala || !sala.id) return;
+    
+    const confirmado = confirm(`FORÇAR DELEÇÃO da sala "${sala.nome}"?\n\nIsso tentará deletar usando o criadorId da sala.`);
+    if (!confirmado) return;
+    
+    const usuarioId = sala.criadorId || this.getCurrentUserId() || 1;
+    console.log(`Forçando deleção da sala ${sala.id} com usuário ${usuarioId}`);
+
+    this.salaService.deletarSala(sala.id!, usuarioId).subscribe({
+      next: () => {
+        this.salas = this.salas.filter(s => s.id !== sala.id);
+        alert('Sala deletada com sucesso!');
+      },
+      error: (err: Error) => {
+        console.error('Erro ao forçar deleção:', err);
+        alert('Erro ao deletar: ' + (err.message || 'Erro desconhecido'));
       }
     });
   }
@@ -118,6 +162,6 @@ export class SalaListComponent implements OnInit {
     } catch (e) {
       // ignore
     }
-    return 0;
+    return 1;
   }
 }

@@ -12,20 +12,20 @@ Component HMR has been enabled, see https://angular.dev/hmr for more info.
 ✔ Building...
 Browser bundles     
 Initial chunk files  | Names            |  Raw size
-main.js              | main             | 327.29 kB | 
+main.js              | main             | 327.33 kB | 
 polyfills.js         | polyfills        |  89.77 kB | 
 styles.css           | styles           |   6.49 kB | 
 
-                     | Initial total    | 423.55 kB
+                     | Initial total    | 423.59 kB
 
 
 Server bundles      
 Initial chunk files  | Names            |  Raw size
 polyfills.server.mjs | polyfills.server | 567.22 kB | 
-main.server.mjs      | main.server      | 329.15 kB | 
+main.server.mjs      | main.server      | 329.19 kB | 
 server.mjs           | server           |   1.86 kB | 
 
-Application bundle generation complete. [5.069 seconds]
+Application bundle generation complete. [5.905 seconds]
 
 ▲ [WARNING] NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. [plugin angular-compiler]
 
@@ -68,80 +68,31 @@ Application bundle generation complete. [5.069 seconds]
 
 Watch mode enabled. Watching for file changes...
 NOTE: Raw file sizes do not reflect development server per-request transformations.
-15:16:15 [vite] (client) Re-optimizing dependencies because lockfile has changed
-15:16:15 [vite] (ssr) Re-optimizing dependencies because lockfile has changed
   ➜  Local:   http://localhost:4200/
   ➜  Network: http://192.168.0.11:4200/
   ➜  Network: http://172.21.0.1:4200/
-Fazendo requisição para: http://localhost:8080/api/usuarios
-Resposta do backend: [
-  {
-    id: 1,
-    nome: 'Paulo Henrique',
-    email: 'rickphtb@gmail.com',
-    avatarUrl: null,
-    avatarBase64: null
-  },
-  {
-    id: 2,
-    nome: 'rafaelboy',
-    email: 'rafavfa@gmail.com',
-    avatarUrl: null,
-    avatarBase64: null
-  }
-]
-Tipo da resposta: object
-É array? true
-Usuários carregados: 2
-Dados dos usuários: [
-  {
-    id: 1,
-    nome: 'Paulo Henrique',
-    email: 'rickphtb@gmail.com',
-    avatarUrl: null,
-    avatarBase64: null
-  },
-  {
-    id: 2,
-    nome: 'rafaelboy',
-    email: 'rafavfa@gmail.com',
-    avatarUrl: null,
-    avatarBase64: null
-  }
-]
-Fazendo requisição para: http://localhost:8080/api/usuarios
-Resposta do backend: [
-  {
-    id: 1,
-    nome: 'Paulo Henrique',
-    email: 'rickphtb@gmail.com',
-    avatarUrl: null,
-    avatarBase64: null
-  },
-  {
-    id: 2,
-    nome: 'rafaelboy',
-    email: 'rafavfa@gmail.com',
-    avatarUrl: null,
-    avatarBase64: null
-  }
-]
-Tipo da resposta: object
-É array? true
-Usuários carregados: 2
-Dados dos usuários: [
-  {
-    id: 1,
-    nome: 'Paulo Henrique',
-    email: 'rickphtb@gmail.com',
-    avatarUrl: null,
-    avatarBase64: null
-  },
-  {
-    id: 2,
-    nome: 'rafaelboy',
-    email: 'rafavfa@gmail.com',
-    avatarUrl: null,
-    avatarBase64: null
-  }
-]
+fatal error: all goroutines are asleep - deadlock!
+
+goroutine 1 [chan receive]:
+github.com/evanw/esbuild/internal/helpers.(*ThreadSafeWaitGroup).Wait(...)
+	github.com/evanw/esbuild/internal/helpers/waitgroup.go:36
+main.runService.func2()
+	github.com/evanw/esbuild/cmd/esbuild/service.go:114 +0x51
+main.runService(0x1)
+	github.com/evanw/esbuild/cmd/esbuild/service.go:160 +0x50c
+main.main()
+	github.com/evanw/esbuild/cmd/esbuild/main.go:249 +0xb6b
+
+goroutine 19 [chan receive]:
+main.runService.func1()
+	github.com/evanw/esbuild/cmd/esbuild/service.go:98 +0x45
+created by main.runService in goroutine 1
+	github.com/evanw/esbuild/cmd/esbuild/service.go:97 +0x1db
+
+goroutine 20 [chan receive]:
+main.(*serviceType).sendRequest(0xc00018a2d0, {0x989ba0, 0xc001896e10})
+	github.com/evanw/esbuild/cmd/esbuild/service.go:192 +0x12b
+main.runService.func3()
+	github.com/evanw/esbuild/cmd/esbuild/service.go:125 +0x3e
+created by main.runService in goroutine 1
+	github.com/evanw/esbuild/cmd/esbuild/service.go:122 +0x30d

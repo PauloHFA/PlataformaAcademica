@@ -1,6 +1,7 @@
 package com.plataforma_academica.plataforma.controller;
 
 import com.plataforma_academica.plataforma.dto.PostagemDTO;
+import com.plataforma_academica.plataforma.dto.PostagemResponseDTO;
 import com.plataforma_academica.plataforma.service.PostagemService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -64,8 +65,8 @@ public class PostagemController {
      * @return lista de PostagemDTO
      */
     @GetMapping
-    public ResponseEntity<List<PostagemDTO>> listar() {
-        return ResponseEntity.ok(postagemService.listarTodas());
+    public ResponseEntity<List<PostagemResponseDTO>> listar() {
+        return ResponseEntity.ok(postagemService.listarTodasResponse());
     }
 
     // =========================================================================
@@ -81,8 +82,8 @@ public class PostagemController {
      * @return PostagemDTO encontrada ou erro 404
      */
     @GetMapping("/{id}")
-    public ResponseEntity<PostagemDTO> buscarPorId(@PathVariable Long id) {
-        PostagemDTO p = postagemService.buscarPorId(id);
+    public ResponseEntity<PostagemResponseDTO> buscarPorId(@PathVariable Long id) {
+        PostagemResponseDTO p = postagemService.buscarPorIdResponse(id);
 
         if (p == null) {
             return ResponseEntity.notFound().build();
@@ -107,8 +108,8 @@ public class PostagemController {
      * @return lista de PostagemDTO contendo resultados
      */
     @GetMapping("/titulo")
-    public ResponseEntity<List<PostagemDTO>> buscarPorTitulo(@RequestParam String titulo) {
-        List<PostagemDTO> resultados = postagemService.buscarPorTitulo(titulo);
+    public ResponseEntity<List<PostagemResponseDTO>> buscarPorTitulo(@RequestParam String titulo) {
+        List<PostagemResponseDTO> resultados = postagemService.buscarPorTituloResponse(titulo);
 
         if (resultados.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -138,8 +139,8 @@ public class PostagemController {
      * @return postagem criada + URI de localização
      */
     @PostMapping
-    public ResponseEntity<PostagemDTO> publicar(@Valid @RequestBody PostagemDTO request) {
-        PostagemDTO salvo = postagemService.publicar(request);
+    public ResponseEntity<PostagemResponseDTO> publicar(@Valid @RequestBody PostagemDTO request) {
+        PostagemResponseDTO salvo = postagemService.publicarResponse(request);
 
         return ResponseEntity
                 .created(URI.create("/api/postagens/" + salvo.getId()))
@@ -162,12 +163,12 @@ public class PostagemController {
      * @return postagem atualizada
      */
     @PutMapping("/{id}")
-    public ResponseEntity<PostagemDTO> atualizar(
+    public ResponseEntity<PostagemResponseDTO> atualizar(
             @PathVariable Long id,
             @Valid @RequestBody PostagemDTO request
     ) {
         request.setId(id); // garantir consistência
-        PostagemDTO atualizado = postagemService.atualizar(request);
+        PostagemResponseDTO atualizado = postagemService.atualizarResponse(request);
 
         return ResponseEntity.ok(atualizado);
     }

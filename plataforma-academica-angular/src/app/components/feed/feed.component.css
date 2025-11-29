@@ -1,74 +1,300 @@
 .feed-container {
-  padding: 20px;
-  background-color: var(--bg-color);
-  color: var(--text-color);
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
   min-height: 100vh;
+  background: var(--bg-color);
 }
 
 .feed-header {
-  margin-bottom: 30px;
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
 }
 
 .feed-header h1 {
-  color: var(--text-color);
   font-size: 2rem;
-  margin-bottom: 10px;
-}
-
-.feed-content {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.post-card {
-  background: var(--card-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
-}
-
-.post-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.post-author {
-  font-weight: 600;
-  color: #FFFFFF;
-  margin-bottom: 10px;
-  opacity: 0.9;
-}
-
-.post-content {
-  color: #FFFFFF;
-  line-height: 1.6;
-  margin-bottom: 15px;
-}
-
-.post-actions {
+  color: var(--text-color);
+  margin: 0;
   display: flex;
-  gap: 15px;
-  padding-top: 15px;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nova-postagem-card {
+  background: var(--card-bg);
+  border: 2px solid var(--primary-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-md);
+}
+
+.nova-postagem-card h2 {
+  font-size: 1.3rem;
+  margin: 0 0 1.5rem 0;
+}
+
+:root[data-theme="light"] .nova-postagem-card h2 {
+  color: var(--primary-color);
+}
+
+:root[data-theme="dark"] .nova-postagem-card h2 {
+  color: white;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-color);
+  color: var(--text-color);
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-color-alpha);
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--border-color);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.postagens-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.postagem-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s;
+}
+
+.postagem-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-color);
+}
+
+.postagem-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.autor-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.autor-details h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--text-color);
+}
+
+.post-id {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.btn-delete {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.btn-delete:hover {
+  background: rgba(239, 68, 68, 0.1);
+  transform: scale(1.1);
+}
+
+.postagem-body {
+  padding: 1.5rem;
+}
+
+.postagem-body h2 {
+  font-size: 1.5rem;
+  margin: 0 0 1rem 0;
+}
+
+:root[data-theme="light"] .postagem-body h2 {
+  color: var(--primary-color);
+}
+
+:root[data-theme="dark"] .postagem-body h2 {
+  color: white;
+}
+
+.postagem-body p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.postagem-footer {
+  padding: 1rem 1.5rem;
+  background: var(--hover-color);
   border-top: 1px solid var(--border-color);
 }
 
-.action-btn {
-  background: none;
-  border: none;
-  color: #FFFFFF;
-  cursor: pointer;
-  padding: 5px 10px;
-  border-radius: 5px;
-  transition: background-color 0.2s ease;
+.plataforma-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--primary-color);
+  color: white;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
-.action-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.icon {
+  font-size: 1.2em;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  font-size: 1.5rem;
+  color: var(--text-color);
+  margin: 0 0 0.5rem 0;
+}
+
+.empty-state p {
+  color: var(--text-muted);
+  margin: 0 0 2rem 0;
+}
+
+@media (max-width: 768px) {
+  .feed-container {
+    padding: 1rem;
+  }
+
+  .feed-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .feed-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .postagem-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .btn-delete {
+    align-self: flex-end;
+  }
 }

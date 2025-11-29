@@ -45,6 +45,7 @@
           <th>Email</th>
           <th>Data de Cadastro</th>
           <th>Status</th>
+          <th>Ações</th>
         </tr>
       </thead>
       <tbody>
@@ -57,6 +58,15 @@
             <span [ngClass]="usuario.ativo !== false ? 'badge-ativo' : 'badge-inativo'">
               {{ usuario.ativo !== false ? 'Ativo' : 'Inativo' }}
             </span>
+          </td>
+          <td>
+            <button 
+              *ngIf="usuario.id !== currentUserId"
+              (click)="solicitarAmizade(usuario.id!)" 
+              class="btn-add-friend"
+              title="Solicitar amizade">
+              🤝 Adicionar
+            </button>
           </td>
         </tr>
       </tbody>

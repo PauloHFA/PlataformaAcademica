@@ -1,6 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { UsuarioService } from '../../../services/usuario.service';
+import { AmizadeService } from '../../../services/amizade.service';
 import { Usuario } from '../../../models/usuario.model';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -17,14 +18,23 @@ import { takeUntil } from 'rxjs/operators';
   styleUrl: './usuario-list.css'
 })
 export class UsuarioListComponent implements OnInit, OnDestroy {
-  usuarios: Usuario[] = []; // Lista de usuários
+  usuarios: Usuario[] = [];
   carregando = false;
   mensagemErro = '';
+  currentUserId: number | null = null;
   private destroy$ = new Subject<void>();
 
-  constructor(private usuarioService: UsuarioService) { }
+  constructor(
+    private usuarioService: UsuarioService,
+    private amizadeService: AmizadeService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
 
   ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      const usuarioId = localStorage.getItem('usuarioId');
+      this.currentUserId = usuarioId ? parseInt(usuarioId) : null;
+    }
     this.listarUsuarios();
   }
 
@@ -73,8 +83,26 @@ export class UsuarioListComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Limpa recursos ao destruir o componente
+   * Envia solicitação de amizade
    */
+  solicitarAmizade(amigoId: number): void {
+    if (!this.currentUserId) {
+      alert('Você precisa estar logado');
+      return;
+    }
+
+    this.amizadeService.enviarSolicitacao(this.currentUserId, amigoId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          alert('Solicitação de amizade enviada!');
+        },
+        error: (err) => {
+          alert(err.message || 'Erro ao enviar solicitação');
+        }
+      });
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

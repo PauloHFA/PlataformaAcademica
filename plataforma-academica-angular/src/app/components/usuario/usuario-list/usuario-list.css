@@ -298,6 +298,28 @@
   transform: translateY(0);
 }
 
+/* Botão de adicionar amigo */
+.btn-add-friend {
+  padding: 8px 16px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-add-friend:hover {
+  background: var(--secondary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(91, 33, 182, 0.3);
+}
+
 /* Responsivo */
 @media (max-width: 768px) {
   .usuario-list-container {

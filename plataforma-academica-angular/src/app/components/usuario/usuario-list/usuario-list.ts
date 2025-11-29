@@ -34,6 +34,8 @@ export class UsuarioListComponent implements OnInit, OnDestroy {
     if (isPlatformBrowser(this.platformId)) {
       const usuarioId = localStorage.getItem('usuarioId');
       this.currentUserId = usuarioId ? parseInt(usuarioId) : null;
+      console.log('=== USUARIO LIST DEBUG ===');
+      console.log('Current User ID:', this.currentUserId);
     }
     this.listarUsuarios();
   }
@@ -50,16 +52,14 @@ export class UsuarioListComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data: Usuario[]) => {
-          console.log('Resposta do backend:', data);
-          console.log('Tipo da resposta:', typeof data);
-          console.log('É array?', Array.isArray(data));
           this.usuarios = data || [];
           this.carregando = false;
-          console.log('Usuários carregados:', this.usuarios.length);
-          console.log('Dados dos usuários:', this.usuarios);
-          if (this.usuarios.length === 0) {
-            console.log('Nenhum usuário encontrado no backend');
-          }
+          console.log('=== USUARIOS CARREGADOS ===');
+          console.log('Total:', this.usuarios.length);
+          console.log('Current User ID:', this.currentUserId);
+          this.usuarios.forEach(u => {
+            console.log(`Usuario ID: ${u.id}, Nome: ${u.nome}, É o mesmo? ${u.id === this.currentUserId}`);
+          });
         },
         error: (err: Error) => {
           console.error('Erro ao listar usuários', err);

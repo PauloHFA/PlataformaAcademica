@@ -320,19 +320,18 @@
   box-shadow: 0 4px 12px rgba(91, 33, 182, 0.3);
 }
 
-.btn-add-friend:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.actions-column {
+  min-width: 120px;
 }
 
 .badge-self {
   display: inline-block;
-  background: rgba(91, 33, 182, 0.1);
+  background: rgba(91, 33, 182, 0.15);
   color: var(--primary-color);
-  padding: 6px 12px;
+  padding: 8px 16px;
   border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
 }
 
 /* Responsivo */

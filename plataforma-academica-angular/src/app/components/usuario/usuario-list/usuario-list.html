@@ -59,15 +59,15 @@
               {{ usuario.ativo !== false ? 'Ativo' : 'Inativo' }}
             </span>
           </td>
-          <td>
+          <td class="actions-column">
+            <span *ngIf="usuario.id === currentUserId" class="badge-self">Você</span>
             <button 
+              *ngIf="usuario.id !== currentUserId"
               (click)="solicitarAmizade(usuario.id!)" 
               class="btn-add-friend"
-              [disabled]="usuario.id === currentUserId"
               title="Solicitar amizade">
               🤝 Adicionar
             </button>
-            <span *ngIf="usuario.id === currentUserId" class="badge-self">Você</span>
           </td>
         </tr>
       </tbody>

@@ -64,27 +64,19 @@
       </div>
       
       <!-- Upload de Imagem -->
-      <div class="form-group">
-        <label>Imagem (opcional)</label>
-        <div class="image-upload-area">
-          <div *ngIf="!previewImagem" class="upload-placeholder">
-            <input 
-              type="file" 
-              accept="image/*" 
-              (change)="onImagemSelecionada($event)"
-              id="imagemInput"
-              hidden
-            />
-            <label for="imagemInput" class="upload-label">
-              🖼️ Adicionar Imagem
-            </label>
-          </div>
-          <div *ngIf="previewImagem" class="image-preview">
-            <img [src]="previewImagem" alt="Preview" />
-            <button type="button" (click)="removerImagem()" class="btn-remove-image">
-              ✖ Remover
-            </button>
-          </div>
+      <div class="form-group" style="background: rgba(255,0,0,0.1); padding: 10px; border: 2px solid red;">
+        <label style="color: red; font-weight: bold;">IMAGEM (TESTE - DEVE APARECER)</label>
+        <input 
+          type="file" 
+          accept="image/*" 
+          (change)="onImagemSelecionada($event)"
+          style="display: block; width: 100%; padding: 10px; background: white; border: 2px solid blue;"
+        />
+        <div *ngIf="previewImagem" style="margin-top: 10px;">
+          <img [src]="previewImagem" alt="Preview" style="max-width: 200px; border: 2px solid green;" />
+          <button type="button" (click)="removerImagem()" style="display: block; margin-top: 10px; padding: 10px; background: red; color: white;">
+            ✖ Remover Imagem
+          </button>
         </div>
       </div>
 

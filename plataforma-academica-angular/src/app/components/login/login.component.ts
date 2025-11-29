@@ -108,7 +108,7 @@ export class LoginComponent implements OnInit {
       },
       error: () => {
         // Se não existir, cria o usuário
-        this.usuarioService.cadastrar({
+        this.usuarioService.cadastrarUsuario({
           nome: 'Usuário Google (Demo)',
           email: email,
           senha: senha
@@ -140,7 +140,7 @@ export class LoginComponent implements OnInit {
       },
       error: () => {
         // Se não existir, cria o usuário
-        this.usuarioService.cadastrar({
+        this.usuarioService.cadastrarUsuario({
           nome: 'Usuário Facebook (Demo)',
           email: email,
           senha: senha

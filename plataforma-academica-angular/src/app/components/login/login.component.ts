@@ -94,67 +94,17 @@ export class LoginComponent implements OnInit {
   }
 
   /**
-   * Login com Google (DEMO - cria usuário no banco)
+   * Login com Google (Em desenvolvimento)
    */
   loginComGoogle(): void {
-    this.carregando = true;
-    const email = 'google.demo@plataforma.com';
-    const senha = 'demo123456';
-    
-    // Tenta fazer login primeiro
-    this.usuarioService.login(email, senha).subscribe({
-      next: (resposta: LoginResponse) => {
-        this.salvarUsuarioENavegar(resposta);
-      },
-      error: () => {
-        // Se não existir, cria o usuário
-        this.usuarioService.cadastrarUsuario({
-          nome: 'Usuário Google (Demo)',
-          email: email,
-          senha: senha
-        }).subscribe({
-          next: (usuario: any) => {
-            this.salvarUsuarioENavegar(usuario);
-          },
-          error: (erro) => {
-            this.mensagemErro = 'Erro ao criar usuário demo';
-            this.carregando = false;
-          }
-        });
-      }
-    });
+    alert('Login com Google em desenvolvimento. Por favor, use o login tradicional.');
   }
 
   /**
-   * Login com Facebook (DEMO - cria usuário no banco)
+   * Login com Facebook (Em desenvolvimento)
    */
   loginComFacebook(): void {
-    this.carregando = true;
-    const email = 'facebook.demo@plataforma.com';
-    const senha = 'demo123456';
-    
-    // Tenta fazer login primeiro
-    this.usuarioService.login(email, senha).subscribe({
-      next: (resposta: LoginResponse) => {
-        this.salvarUsuarioENavegar(resposta);
-      },
-      error: () => {
-        // Se não existir, cria o usuário
-        this.usuarioService.cadastrarUsuario({
-          nome: 'Usuário Facebook (Demo)',
-          email: email,
-          senha: senha
-        }).subscribe({
-          next: (usuario: any) => {
-            this.salvarUsuarioENavegar(usuario);
-          },
-          error: (erro) => {
-            this.mensagemErro = 'Erro ao criar usuário demo';
-            this.carregando = false;
-          }
-        });
-      }
-    });
+    alert('Login com Facebook em desenvolvimento. Por favor, use o login tradicional.');
   }
 
   /**

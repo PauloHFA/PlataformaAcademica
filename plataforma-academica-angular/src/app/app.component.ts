@@ -3,13 +3,14 @@ import { RouterOutlet, RouterModule, Router, NavigationEnd } from '@angular/rout
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { SidebarComponent } from "./components/sidebar/sidebar.component";
 import { ThemeToggleComponent } from "./components/theme-toggle/theme-toggle.component";
+import { NotificacoesComponent } from "./components/notificacoes/notificacoes.component";
 import { ThemeService } from "./services/theme.service";
 import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterOutlet, SidebarComponent, ThemeToggleComponent],
+  imports: [CommonModule, RouterModule, RouterOutlet, SidebarComponent, ThemeToggleComponent, NotificacoesComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

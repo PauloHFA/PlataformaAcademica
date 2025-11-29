@@ -1,6 +1,9 @@
 <!-- Botão de toggle do tema -->
 <app-theme-toggle></app-theme-toggle>
 
+<!-- Notificações -->
+<app-notificacoes *ngIf="isLoggedIn"></app-notificacoes>
+
 <!-- Exibir Sidebar apenas se logado -->
 <app-sidebar *ngIf="isLoggedIn"></app-sidebar>
 

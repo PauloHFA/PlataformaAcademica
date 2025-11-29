@@ -1,0 +1,34 @@
+<div class="notificacoes-container">
+  <button class="notificacoes-btn" (click)="toggleDropdown()" title="Notificações">
+    🔔
+    <span *ngIf="totalNotificacoes > 0" class="badge">{{ totalNotificacoes }}</span>
+  </button>
+
+  <div *ngIf="mostrarDropdown" class="notificacoes-dropdown">
+    <div class="dropdown-header">
+      <h3>Notificações</h3>
+      <button (click)="toggleDropdown()" class="btn-close">✕</button>
+    </div>
+
+    <div class="notificacoes-list">
+      <div *ngIf="notificacoes.length === 0" class="empty-state">
+        <p>📭 Nenhuma notificação</p>
+      </div>
+
+      <div *ngFor="let notificacao of notificacoes" class="notificacao-item">
+        <div class="notificacao-icon">👤</div>
+        <div class="notificacao-content">
+          <p class="notificacao-mensagem">{{ notificacao.mensagem }}</p>
+          <div class="notificacao-actions">
+            <button (click)="aceitarAmizade(notificacao)" class="btn-aceitar">
+              ✓ Aceitar
+            </button>
+            <button (click)="recusarAmizade(notificacao)" class="btn-recusar">
+              ✕ Recusar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

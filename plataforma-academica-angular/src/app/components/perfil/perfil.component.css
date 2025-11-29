@@ -87,6 +87,7 @@
   margin-bottom: 30px;
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 20px;
+  position: relative;
 }
 
 .info-section h2 {
@@ -98,8 +99,27 @@
 
 .email {
   color: var(--text-secondary);
-  margin: 0;
+  margin: 0 0 15px 0;
   font-size: 15px;
+}
+
+.btn-editar-inline {
+  padding: 10px 24px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(91, 33, 182, 0.3);
+}
+
+.btn-editar-inline:hover {
+  background: var(--secondary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(91, 33, 182, 0.4);
 }
 
 .info-item {
@@ -191,57 +211,7 @@
   box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
 
-/* Botões */
-.perfil-actions {
-  display: flex;
-  gap: 15px;
-  padding: 30px;
-  background: var(--hover-color);
-  border-top: 1px solid var(--border-color);
-  justify-content: center;
-  flex-wrap: wrap;
-}
 
-.btn {
-  padding: 12px 30px;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 14px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s;
-  display: inline-block;
-}
-
-.btn-primary {
-  background: var(--primary-color);
-  color: white;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(91, 33, 182, 0.3);
-}
-
-.btn-primary:hover {
-  background: var(--secondary-color);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(91, 33, 182, 0.4);
-}
-
-.btn-secondary {
-  background: var(--card-bg);
-  color: var(--text-color);
-  border: 2px solid var(--border-color);
-}
-
-.btn-secondary:hover {
-  background: var(--hover-color);
-  border-color: var(--primary-color);
-}
-
-.btn-small {
-  padding: 8px 15px;
-  font-size: 12px;
-}
 
 /* Responsivo */
 @media (max-width: 768px) {

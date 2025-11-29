@@ -43,6 +43,7 @@
       <div class="info-section">
         <h2>{{ usuarioLogado?.nome }}</h2>
         <p class="email">{{ usuarioLogado?.email }}</p>
+        <button (click)="editarPerfil()" class="btn-editar-inline">✏️ Editar Perfil</button>
       </div>
 
       <!-- Curso -->
@@ -70,10 +71,6 @@
       </div>
     </div>
 
-    <!-- Botões de Ação -->
-    <div class="perfil-actions">
-      <button (click)="editarPerfil()" class="btn btn-primary">Editar Perfil</button>
-      <a routerLink="/home" class="btn btn-secondary">Voltar</a>
-    </div>
+
   </div>
 </div>

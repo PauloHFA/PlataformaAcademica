@@ -26,6 +26,9 @@ public class PostagemServiceImpl implements PostagemService {
 
     @Autowired
     PlataformaRepository plataformaRepository;
+    
+    @Autowired
+    AmizadeService amizadeService;
 
     @Override
     public PostagemDTO publicar(PostagemDTO dto) {
@@ -111,5 +114,41 @@ public class PostagemServiceImpl implements PostagemService {
     @Override
     public PostagemResponseDTO atualizarResponse(PostagemDTO dto) {
         return publicarResponse(dto);
+    }
+
+    @Override
+    public PostagemResponseDTO curtir(Long id) {
+        Postagem postagem = postagemRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Postagem não encontrada"));
+        postagem.setCurtidas(postagem.getCurtidas() + 1);
+        return PostagemMapper.toResponse(postagemRepository.save(postagem));
+    }
+
+    @Override
+    public List<PostagemResponseDTO> listarDeAmigos(Long usuarioId) {
+        List<Long> amigosIds = amizadeService.listarAmigos(usuarioId)
+                .stream()
+                .map(amizade -> 
+                    amizade.getSolicitante().getId().equals(usuarioId) 
+                        ? amizade.getDestinatario().getId() 
+                        : amizade.getSolicitante().getId()
+                )
+                .collect(Collectors.toList());
+        
+        return postagemRepository.findAll()
+                .stream()
+                .filter(p -> amigosIds.contains(p.getAutor().getId()))
+                .map(PostagemMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PostagemResponseDTO> listarMaisCurtidas() {
+        return postagemRepository.findAll()
+                .stream()
+                .sorted((p1, p2) -> Integer.compare(p2.getCurtidas(), p1.getCurtidas()))
+                .limit(10)
+                .map(PostagemMapper::toResponse)
+                .collect(Collectors.toList());
     }
 }

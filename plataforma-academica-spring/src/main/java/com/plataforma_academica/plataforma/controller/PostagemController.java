@@ -190,4 +190,29 @@ public class PostagemController {
         postagemService.deletar(id);
         return ResponseEntity.noContent().build();
     }
+
+    // =========================================================================
+    // CURTIR POSTAGEM
+    // =========================================================================
+    @PostMapping("/{id}/curtir")
+    public ResponseEntity<PostagemResponseDTO> curtir(@PathVariable Long id) {
+        PostagemResponseDTO postagem = postagemService.curtir(id);
+        return ResponseEntity.ok(postagem);
+    }
+
+    // =========================================================================
+    // LISTAR POSTAGENS DE AMIGOS
+    // =========================================================================
+    @GetMapping("/amigos/{usuarioId}")
+    public ResponseEntity<List<PostagemResponseDTO>> listarDeAmigos(@PathVariable Long usuarioId) {
+        return ResponseEntity.ok(postagemService.listarDeAmigos(usuarioId));
+    }
+
+    // =========================================================================
+    // LISTAR MAIS CURTIDAS
+    // =========================================================================
+    @GetMapping("/mais-curtidas")
+    public ResponseEntity<List<PostagemResponseDTO>> listarMaisCurtidas() {
+        return ResponseEntity.ok(postagemService.listarMaisCurtidas());
+    }
 }

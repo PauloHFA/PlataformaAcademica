@@ -19,4 +19,8 @@ public interface PostagemService {
     PostagemResponseDTO buscarPorIdResponse(Long id);
     List<PostagemResponseDTO> buscarPorTituloResponse(String titulo);
     PostagemResponseDTO atualizarResponse(PostagemDTO postagemDTO);
+    
+    PostagemResponseDTO curtir(Long id);
+    List<PostagemResponseDTO> listarDeAmigos(Long usuarioId);
+    List<PostagemResponseDTO> listarMaisCurtidas();
 }

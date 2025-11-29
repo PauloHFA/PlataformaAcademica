@@ -34,4 +34,16 @@ export class PostagemService {
   deletar(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  curtir(id: number): Observable<Postagem> {
+    return this.http.post<Postagem>(`${this.apiUrl}/${id}/curtir`, null);
+  }
+
+  listarDeAmigos(usuarioId: number): Observable<Postagem[]> {
+    return this.http.get<Postagem[]>(`${this.apiUrl}/amigos/${usuarioId}`);
+  }
+
+  listarMaisCurtidas(): Observable<Postagem[]> {
+    return this.http.get<Postagem[]>(`${this.apiUrl}/mais-curtidas`);
+  }
 }

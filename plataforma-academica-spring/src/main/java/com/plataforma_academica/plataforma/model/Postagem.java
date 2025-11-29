@@ -28,4 +28,6 @@ public class Postagem {
     @JoinColumn(name = "plataforma_id")
     private Plataforma plataforma;
 
+    private Integer curtidas = 0;
+
 }

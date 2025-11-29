@@ -11,6 +11,31 @@
     </button>
   </div>
 
+  <!-- Filtros -->
+  <div class="filtros">
+    <button 
+      (click)="mudarFiltro('todas')" 
+      [class.active]="filtro === 'todas'"
+      class="filtro-btn"
+    >
+      🌍 Todas
+    </button>
+    <button 
+      (click)="mudarFiltro('amigos')" 
+      [class.active]="filtro === 'amigos'"
+      class="filtro-btn"
+    >
+      👥 Amigos
+    </button>
+    <button 
+      (click)="mudarFiltro('curtidas')" 
+      [class.active]="filtro === 'curtidas'"
+      class="filtro-btn"
+    >
+      ⭐ Mais Curtidas
+    </button>
+  </div>
+
   <!-- Form Nova Postagem -->
   <div *ngIf="mostrarForm" class="nova-postagem-card">
     <h2>✍️ Criar Nova Postagem</h2>
@@ -74,6 +99,13 @@
       <div class="postagem-body">
         <h2>{{ post.titulo }}</h2>
         <p>{{ post.conteudo }}</p>
+      </div>
+
+      <div class="postagem-actions">
+        <button (click)="curtir(post.id)" class="btn-curtir">
+          <span class="icon">❤️</span>
+          {{ post.curtidas || 0 }} curtidas
+        </button>
       </div>
 
       <div class="postagem-footer" *ngIf="post.plataformaNome">

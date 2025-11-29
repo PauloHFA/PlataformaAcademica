@@ -6,4 +6,5 @@ export interface Postagem {
   autorNome?: string;
   plataformaId?: number;
   plataformaNome?: string;
+  curtidas?: number;
 }

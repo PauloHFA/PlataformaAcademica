@@ -52,6 +52,8 @@ public class PostagemMapper {
             response.setPlataformaId(postagem.getPlataforma().getId());
             response.setPlataformaNome(postagem.getPlataforma().getNome());
         }
+        
+        response.setCurtidas(postagem.getCurtidas() != null ? postagem.getCurtidas() : 0);
 
         return response;
     }

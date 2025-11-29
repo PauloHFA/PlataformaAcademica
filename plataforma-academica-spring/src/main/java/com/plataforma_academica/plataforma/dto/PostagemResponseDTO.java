@@ -14,4 +14,6 @@ public class PostagemResponseDTO {
 
     private Long plataformaId;
     private String plataformaNome;
+    
+    private Integer curtidas;
 }

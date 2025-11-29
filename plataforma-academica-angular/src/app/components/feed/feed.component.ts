@@ -15,6 +15,7 @@ export class FeedComponent implements OnInit {
   postagens: Postagem[] = [];
   carregando = true;
   currentUserId: number | null = null;
+  filtro: 'todas' | 'amigos' | 'curtidas' = 'todas';
   
   // Form nova postagem
   mostrarForm = false;
@@ -35,13 +36,41 @@ export class FeedComponent implements OnInit {
 
   carregarPostagens(): void {
     this.carregando = true;
-    this.postagemService.listarTodas().subscribe({
+    let observable;
+    
+    if (this.filtro === 'amigos' && this.currentUserId) {
+      observable = this.postagemService.listarDeAmigos(this.currentUserId);
+    } else if (this.filtro === 'curtidas') {
+      observable = this.postagemService.listarMaisCurtidas();
+    } else {
+      observable = this.postagemService.listarTodas();
+    }
+    
+    observable.subscribe({
       next: (postagens) => {
-        this.postagens = postagens.sort((a, b) => (b.id || 0) - (a.id || 0));
+        this.postagens = this.filtro === 'curtidas' ? postagens : postagens.sort((a, b) => (b.id || 0) - (a.id || 0));
         this.carregando = false;
       },
       error: () => {
         this.carregando = false;
+      }
+    });
+  }
+
+  mudarFiltro(filtro: 'todas' | 'amigos' | 'curtidas'): void {
+    this.filtro = filtro;
+    this.carregarPostagens();
+  }
+
+  curtir(id: number | undefined): void {
+    if (!id) return;
+    
+    this.postagemService.curtir(id).subscribe({
+      next: () => {
+        this.carregarPostagens();
+      },
+      error: () => {
+        alert('Erro ao curtir');
       }
     });
   }

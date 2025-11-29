@@ -127,7 +127,7 @@ export class FeedComponent implements OnInit {
 
     this.enviando = true;
     this.novaPostagem.autorId = this.currentUserId;
-    this.novaPostagem.plataformaId = 1; // ID fixo da plataforma
+    // plataformaId é opcional
 
     // Se houver arquivo selecionado, enviar como FormData
     if (this.selectedFile) {

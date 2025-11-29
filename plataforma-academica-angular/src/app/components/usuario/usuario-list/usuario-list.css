@@ -314,10 +314,25 @@
   gap: 6px;
 }
 
-.btn-add-friend:hover {
+.btn-add-friend:hover:not(:disabled) {
   background: var(--secondary-color);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(91, 33, 182, 0.3);
+}
+
+.btn-add-friend:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.badge-self {
+  display: inline-block;
+  background: rgba(91, 33, 182, 0.1);
+  color: var(--primary-color);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 /* Responsivo */

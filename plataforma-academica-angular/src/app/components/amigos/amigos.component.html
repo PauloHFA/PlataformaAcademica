@@ -76,7 +76,7 @@
       <div *ngFor="let pendente of pendentes" class="pendente-card">
         <div class="pendente-info">
           <div class="avatar">
-            {{ (isRecebida(pendente) ? pendente.solicitanteNome : pendente.destinatarioNome || 'U')[0].toUpperCase() }}
+            {{ (isRecebida(pendente) ? (pendente.solicitanteNome || 'U') : (pendente.destinatarioNome || 'U'))[0].toUpperCase() }}
           </div>
           <div class="pendente-details">
             <h3>{{ isRecebida(pendente) ? (pendente.solicitanteNome || 'Usuário') : (pendente.destinatarioNome || 'Usuário') }}</h3>

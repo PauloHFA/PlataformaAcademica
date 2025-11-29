@@ -65,13 +65,16 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
   }
 
   private processarPendentes(pendentes: any[]): void {
-    this.notificacoes = pendentes.map(p => ({
-      id: p.id,
-      remetenteId: p.usuarioId,
-      remetenteNome: p.usuarioNome || 'Usuário',
-      tipo: 'AMIZADE' as const,
-      mensagem: `${p.usuarioNome || 'Alguém'} enviou uma solicitação de amizade`
-    }));
+    // Filtrar apenas solicitações onde o usuário atual é o destinatário
+    this.notificacoes = pendentes
+      .filter(p => p.destinatarioId === this.currentUserId)
+      .map(p => ({
+        id: p.id,
+        remetenteId: p.solicitanteId,
+        remetenteNome: p.solicitanteNome || 'Usuário',
+        tipo: 'AMIZADE' as const,
+        mensagem: `${p.solicitanteNome || 'Alguém'} enviou uma solicitação de amizade`
+      }));
   }
 
   toggleDropdown(): void {

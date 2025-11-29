@@ -11,6 +11,7 @@ import { SalaDetalhesComponent } from './components/sala/sala-detalhes/sala-deta
 import { SalaAdicionarMembroComponent } from './components/sala/sala-adicionar-membro/sala-adicionar-membro';
 import { AtividadeCriarComponent } from './components/sala/atividade-criar/atividade-criar';
 import { AtividadeListComponent } from './components/sala/atividade-list/atividade-list';
+import { AtividadeDetalhesComponent } from './components/sala/atividade-detalhes/atividade-detalhes.component';
 
 /**
  * Rotas principais da aplicação SPA
@@ -28,6 +29,7 @@ export const routes: Routes = [
   { path: 'salas/:id/adicionar-membro', component: SalaAdicionarMembroComponent },
   { path: 'salas/:id/atividades', component: AtividadeListComponent },
   { path: 'salas/:id/atividades/criar', component: AtividadeCriarComponent },
+  { path: 'salas/:id/atividades/:atividadeId', component: AtividadeDetalhesComponent },
   { path: 'perfil', component: PerfilComponent },
   { path: 'perfil-criar', component: PerfilEditarComponent },
   { path: 'perfil-editar', component: PerfilEditarComponent },

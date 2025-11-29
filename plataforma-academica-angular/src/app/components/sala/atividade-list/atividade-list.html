@@ -52,10 +52,10 @@
       </div>
 
       <div class="atividade-card-footer">
-        <button class="btn btn-primary btn-full">
+        <a [routerLink]="['/salas', salaId, 'atividades', a.id]" class="btn btn-primary btn-full">
           <span class="icon">👁️</span>
           Ver Detalhes
-        </button>
+        </a>
       </div>
     </div>
   </div>

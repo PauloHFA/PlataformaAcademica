@@ -1,0 +1,124 @@
+<div class="atividade-detalhes-container">
+  <!-- Loading -->
+  <div *ngIf="carregando" class="loading-state">
+    <div class="spinner"></div>
+    <p>Carregando atividade...</p>
+  </div>
+
+  <!-- Conteúdo -->
+  <div *ngIf="!carregando && atividade" class="content">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-content">
+        <h1>
+          <span class="icon">📝</span>
+          {{ atividade.titulo }}
+        </h1>
+        <div class="meta-info">
+          <span *ngIf="atividade.dataEntrega" class="meta-item">
+            <span class="icon">📅</span>
+            Entrega: {{ atividade.dataEntrega | date:'dd/MM/yyyy HH:mm' }}
+          </span>
+          <span *ngIf="atividade.pontos" class="meta-item">
+            <span class="icon">⭐</span>
+            {{ atividade.pontos }} pontos
+          </span>
+        </div>
+      </div>
+      <button (click)="voltar()" class="btn btn-secondary">
+        <span class="icon">⬅️</span>
+        Voltar
+      </button>
+    </div>
+
+    <!-- Descrição -->
+    <div class="card">
+      <h2>📋 Descrição</h2>
+      <p>{{ atividade.descricao || 'Sem descrição disponível' }}</p>
+      <div *ngIf="atividade.tipoDocumentoSubmissao" class="info-row">
+        <strong>Tipo de documento:</strong> {{ atividade.tipoDocumentoSubmissao }}
+      </div>
+    </div>
+
+    <!-- Minha Submissão -->
+    <div class="card" *ngIf="!minhaSubmissao">
+      <h2>📤 Enviar Submissão</h2>
+      <form (ngSubmit)="enviarSubmissao()">
+        <div class="form-group">
+          <label for="urlDocumento">
+            <span class="icon">🔗</span>
+            URL do Documento
+          </label>
+          <input
+            type="url"
+            id="urlDocumento"
+            [(ngModel)]="urlDocumento"
+            name="urlDocumento"
+            placeholder="https://drive.google.com/..."
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="enviandoSubmissao">
+          <span class="icon">{{ enviandoSubmissao ? '⏳' : '📤' }}</span>
+          {{ enviandoSubmissao ? 'Enviando...' : 'Enviar Submissão' }}
+        </button>
+      </form>
+    </div>
+
+    <!-- Submissão Enviada -->
+    <div class="card card-success" *ngIf="minhaSubmissao">
+      <h2>✅ Submissão Enviada</h2>
+      <div class="submissao-info">
+        <div class="info-row">
+          <strong>Data de envio:</strong>
+          {{ minhaSubmissao.dataSubmissao | date:'dd/MM/yyyy HH:mm' }}
+        </div>
+        <div class="info-row">
+          <strong>Documento:</strong>
+          <a [href]="minhaSubmissao.urlDocumento" target="_blank">
+            {{ minhaSubmissao.urlDocumento }}
+          </a>
+        </div>
+        <div class="info-row" *ngIf="minhaSubmissao.nota !== null && minhaSubmissao.nota !== undefined">
+          <strong>Nota:</strong>
+          <span class="nota">{{ minhaSubmissao.nota }}</span>
+        </div>
+        <div class="info-row" *ngIf="minhaSubmissao.feedback">
+          <strong>Feedback:</strong>
+          <p class="feedback">{{ minhaSubmissao.feedback }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lista de Submissões (para professores) -->
+    <div class="card" *ngIf="submissoes.length > 0">
+      <h2>📊 Submissões ({{ submissoes.length }})</h2>
+      <div class="submissoes-list">
+        <div *ngFor="let sub of submissoes" class="submissao-item">
+          <div class="submissao-header">
+            <span class="aluno-nome">{{ sub.alunoNome || 'Aluno #' + sub.alunoId }}</span>
+            <span class="data">{{ sub.dataSubmissao | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+          <div class="submissao-body">
+            <a [href]="sub.urlDocumento" target="_blank" class="doc-link">
+              🔗 Ver documento
+            </a>
+            <span *ngIf="sub.nota !== null && sub.nota !== undefined" class="nota-badge">
+              Nota: {{ sub.nota }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Erro -->
+  <div *ngIf="!carregando && !atividade" class="empty-state">
+    <div class="empty-icon">❌</div>
+    <h3>Atividade não encontrada</h3>
+    <button (click)="voltar()" class="btn btn-primary">
+      <span class="icon">⬅️</span>
+      Voltar
+    </button>
+  </div>
+</div>

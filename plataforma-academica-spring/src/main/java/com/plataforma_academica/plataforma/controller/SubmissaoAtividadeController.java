@@ -1,11 +1,15 @@
 package com.plataforma_academica.plataforma.controller;
 
+import com.plataforma_academica.plataforma.dto.SubmissaoAtividadeDTO;
+import com.plataforma_academica.plataforma.dto.SubmissaoAtividadeResponseDTO;
+import com.plataforma_academica.plataforma.mapper.SubmissaoAtividadeMapper;
 import com.plataforma_academica.plataforma.model.SubmissaoAtividade;
 import com.plataforma_academica.plataforma.service.SubmissaoAtividadeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * ================================================================================
@@ -80,13 +84,13 @@ public class SubmissaoAtividadeController {
      * @return objeto SubmissaoAtividade salvo
      */
     @PostMapping("/atividade/{atividadeId}/aluno/{alunoId}")
-    public ResponseEntity<SubmissaoAtividade> enviarSubmissao(
+    public ResponseEntity<SubmissaoAtividadeResponseDTO> enviarSubmissao(
             @PathVariable Long atividadeId,
             @PathVariable Long alunoId,
-            @RequestBody SubmissaoAtividade submissao) {
+            @RequestBody SubmissaoAtividadeDTO submissao) {
 
         SubmissaoAtividade enviada = submissaoService.enviarSubmissao(atividadeId, alunoId, submissao);
-        return ResponseEntity.ok(enviada);
+        return ResponseEntity.ok(SubmissaoAtividadeMapper.toResponse(enviada));
     }
 
     // =========================================================================================
@@ -102,8 +106,12 @@ public class SubmissaoAtividadeController {
      * @return lista de submissões
      */
     @GetMapping("/atividade/{atividadeId}")
-    public ResponseEntity<List<SubmissaoAtividade>> listarPorAtividade(@PathVariable Long atividadeId) {
-        return ResponseEntity.ok(submissaoService.listarSubmissoesPorAtividade(atividadeId));
+    public ResponseEntity<List<SubmissaoAtividadeResponseDTO>> listarPorAtividade(@PathVariable Long atividadeId) {
+        List<SubmissaoAtividadeResponseDTO> response = submissaoService.listarSubmissoesPorAtividade(atividadeId)
+                .stream()
+                .map(SubmissaoAtividadeMapper::toResponse)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(response);
     }
 
     // =========================================================================================
@@ -117,12 +125,12 @@ public class SubmissaoAtividadeController {
      * @return submissão do aluno, caso exista
      */
     @GetMapping("/atividade/{atividadeId}/aluno/{alunoId}")
-    public ResponseEntity<SubmissaoAtividade> buscarSubmissaoAluno(
+    public ResponseEntity<SubmissaoAtividadeResponseDTO> buscarSubmissaoAluno(
             @PathVariable Long atividadeId,
             @PathVariable Long alunoId) {
 
         SubmissaoAtividade sub = submissaoService.buscarSubmissaoDoAluno(atividadeId, alunoId);
-        return ResponseEntity.ok(sub);
+        return ResponseEntity.ok(SubmissaoAtividadeMapper.toResponse(sub));
     }
 
     // =========================================================================================
@@ -142,12 +150,12 @@ public class SubmissaoAtividadeController {
      * @return submissão corrigida
      */
     @PutMapping("/corrigir/{submissaoId}")
-    public ResponseEntity<SubmissaoAtividade> corrigirSubmissao(
+    public ResponseEntity<SubmissaoAtividadeResponseDTO> corrigirSubmissao(
             @PathVariable Long submissaoId,
             @RequestParam Double nota,
             @RequestParam(required = false) String feedback) {
 
         SubmissaoAtividade corrigida = submissaoService.corrigirSubmissao(submissaoId, nota, feedback);
-        return ResponseEntity.ok(corrigida);
+        return ResponseEntity.ok(SubmissaoAtividadeMapper.toResponse(corrigida));
     }
 }

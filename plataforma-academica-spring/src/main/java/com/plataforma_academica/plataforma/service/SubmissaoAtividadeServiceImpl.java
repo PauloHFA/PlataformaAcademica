@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import com.plataforma_academica.plataforma.dto.SubmissaoAtividadeDTO;
+import com.plataforma_academica.plataforma.mapper.SubmissaoAtividadeMapper;
 import com.plataforma_academica.plataforma.model.Atividade;
 import com.plataforma_academica.plataforma.model.SaladeAula;
 import com.plataforma_academica.plataforma.model.SubmissaoAtividade;
@@ -65,6 +67,18 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
         submissao.setDataSubmissao(LocalDateTime.now());
 
         return submissaoRepository.save(submissao);
+    }
+
+    @Override
+    public SubmissaoAtividade enviarSubmissao(Long atividadeId, Long alunoId, SubmissaoAtividadeDTO dto) {
+        Atividade atividade = atividadeRepository.findById(atividadeId)
+                .orElseThrow(() -> new EntityNotFoundException("Atividade não encontrada."));
+
+        Usuario aluno = usuarioRepository.findById(alunoId)
+                .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado."));
+
+        SubmissaoAtividade submissao = SubmissaoAtividadeMapper.toEntity(dto, atividade, aluno);
+        return enviarSubmissao(atividadeId, alunoId, submissao);
     }
 
     // ---------------------------------------------------------------

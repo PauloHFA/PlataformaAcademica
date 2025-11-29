@@ -214,6 +214,10 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+a.btn {
+  text-decoration: none;
+}
+
 .btn-primary {
   background: var(--primary-color);
   color: white;

@@ -55,13 +55,9 @@
           <span class="icon">📝</span>
           Atividades
         </a>
-        <button *ngIf="currentUserId !== null && (sala.criadorId === currentUserId || !sala.criadorId)" (click)="deleteSala(sala)" class="btn btn-danger" title="Deletar sala">
+        <button *ngIf="currentUserId !== null && sala.criadorId === currentUserId" (click)="deleteSala(sala)" class="btn btn-danger" title="Deletar sala">
           <span class="icon">🗑️</span>
           Deletar
-        </button>
-        <button *ngIf="currentUserId !== null && sala.criadorId && sala.criadorId !== currentUserId" (click)="forcarDelecao(sala)" class="btn btn-danger" title="Forçar deleção (admin)">
-          <span class="icon">⚠️</span>
-          Forçar
         </button>
       </div>
     </div>

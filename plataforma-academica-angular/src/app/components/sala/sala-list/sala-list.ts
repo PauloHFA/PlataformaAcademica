@@ -119,26 +119,7 @@ export class SalaListComponent implements OnInit {
     });
   }
 
-  forcarDelecao(sala: SalaDeAula): void {
-    if (!sala || !sala.id) return;
-    
-    const confirmado = confirm(`FORÇAR DELEÇÃO da sala "${sala.nome}"?\n\nIsso tentará deletar usando o criadorId da sala.`);
-    if (!confirmado) return;
-    
-    const usuarioId = sala.criadorId || this.getCurrentUserId() || 1;
-    console.log(`Forçando deleção da sala ${sala.id} com usuário ${usuarioId}`);
 
-    this.salaService.deletarSala(sala.id!, usuarioId).subscribe({
-      next: () => {
-        this.salas = this.salas.filter(s => s.id !== sala.id);
-        alert('Sala deletada com sucesso!');
-      },
-      error: (err: Error) => {
-        console.error('Erro ao forçar deleção:', err);
-        alert('Erro ao deletar: ' + (err.message || 'Erro desconhecido'));
-      }
-    });
-  }
 
   private getCurrentUserId(): number {
     try {

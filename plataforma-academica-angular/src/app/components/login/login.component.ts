@@ -94,44 +94,78 @@ export class LoginComponent implements OnInit {
   }
 
   /**
-   * Login com Google (DEMO - sem OAuth real)
+   * Login com Google (DEMO - cria usuário no banco)
    */
   loginComGoogle(): void {
-    // DEMO: Simula login com Google
-    const demoUser = {
-      id: 999,
-      nome: 'Usuário Google (Demo)',
-      email: 'google.demo@plataforma.com',
-      provider: 'google'
-    };
+    this.carregando = true;
+    const email = 'google.demo@plataforma.com';
+    const senha = 'demo123456';
     
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('usuario', JSON.stringify(demoUser));
-      localStorage.setItem('usuarioId', demoUser.id.toString());
-      this.router.navigate(['/salas']);
-    }
-    
-    // Para implementação real, veja: CONFIGURACAO_LOGIN_SOCIAL.md
+    // Tenta fazer login primeiro
+    this.usuarioService.login(email, senha).subscribe({
+      next: (resposta: LoginResponse) => {
+        this.salvarUsuarioENavegar(resposta);
+      },
+      error: () => {
+        // Se não existir, cria o usuário
+        this.usuarioService.cadastrar({
+          nome: 'Usuário Google (Demo)',
+          email: email,
+          senha: senha
+        }).subscribe({
+          next: (usuario: any) => {
+            this.salvarUsuarioENavegar(usuario);
+          },
+          error: (erro) => {
+            this.mensagemErro = 'Erro ao criar usuário demo';
+            this.carregando = false;
+          }
+        });
+      }
+    });
   }
 
   /**
-   * Login com Facebook (DEMO - sem OAuth real)
+   * Login com Facebook (DEMO - cria usuário no banco)
    */
   loginComFacebook(): void {
-    // DEMO: Simula login com Facebook
-    const demoUser = {
-      id: 998,
-      nome: 'Usuário Facebook (Demo)',
-      email: 'facebook.demo@plataforma.com',
-      provider: 'facebook'
-    };
+    this.carregando = true;
+    const email = 'facebook.demo@plataforma.com';
+    const senha = 'demo123456';
     
+    // Tenta fazer login primeiro
+    this.usuarioService.login(email, senha).subscribe({
+      next: (resposta: LoginResponse) => {
+        this.salvarUsuarioENavegar(resposta);
+      },
+      error: () => {
+        // Se não existir, cria o usuário
+        this.usuarioService.cadastrar({
+          nome: 'Usuário Facebook (Demo)',
+          email: email,
+          senha: senha
+        }).subscribe({
+          next: (usuario: any) => {
+            this.salvarUsuarioENavegar(usuario);
+          },
+          error: (erro) => {
+            this.mensagemErro = 'Erro ao criar usuário demo';
+            this.carregando = false;
+          }
+        });
+      }
+    });
+  }
+
+  /**
+   * Salva usuário no localStorage e navega para salas
+   */
+  private salvarUsuarioENavegar(usuario: any): void {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('usuario', JSON.stringify(demoUser));
-      localStorage.setItem('usuarioId', demoUser.id.toString());
-      this.router.navigate(['/salas']);
+      localStorage.setItem('usuario', JSON.stringify(usuario));
+      localStorage.setItem('usuarioId', usuario.id.toString());
+      localStorage.setItem('token', usuario.id.toString());
     }
-    
-    // Para implementação real, veja: CONFIGURACAO_LOGIN_SOCIAL.md
+    this.router.navigate(['/salas']);
   }
 }

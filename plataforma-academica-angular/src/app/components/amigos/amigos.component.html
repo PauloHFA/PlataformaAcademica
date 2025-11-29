@@ -1,1 +1,142 @@
-<p>amigos works!</p>
+<div class="amigos-container">
+  <!-- Header -->
+  <div class="header">
+    <h1>
+      <span class="icon">👥</span>
+      Amigos
+    </h1>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button
+      (click)="mudarAba('amigos')"
+      [class.active]="abaAtiva === 'amigos'"
+      class="tab"
+    >
+      <span class="icon">✓</span>
+      Meus Amigos ({{ amigos.length }})
+    </button>
+    <button
+      (click)="mudarAba('pendentes')"
+      [class.active]="abaAtiva === 'pendentes'"
+      class="tab"
+    >
+      <span class="icon">⏳</span>
+      Pendentes ({{ pendentes.length }})
+    </button>
+    <button
+      (click)="mudarAba('adicionar')"
+      [class.active]="abaAtiva === 'adicionar'"
+      class="tab"
+    >
+      <span class="icon">➕</span>
+      Adicionar
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="carregando" class="loading-state">
+    <div class="spinner"></div>
+    <p>Carregando...</p>
+  </div>
+
+  <!-- Aba Amigos -->
+  <div *ngIf="!carregando && abaAtiva === 'amigos'" class="content">
+    <div *ngIf="amigos.length" class="amigos-list">
+      <div *ngFor="let amigo of amigos" class="amigo-card">
+        <div class="amigo-info">
+          <div class="avatar">{{ getAmigoNome(amigo)[0].toUpperCase() }}</div>
+          <div class="amigo-details">
+            <h3>{{ getAmigoNome(amigo) }}</h3>
+            <span class="badge badge-success">Amigos</span>
+          </div>
+        </div>
+        <button (click)="remover(amigo.id!)" class="btn btn-danger">
+          <span class="icon">🗑️</span>
+          Remover
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="!amigos.length" class="empty-state">
+      <div class="empty-icon">😔</div>
+      <h3>Você ainda não tem amigos</h3>
+      <p>Adicione amigos para começar a interagir!</p>
+      <button (click)="mudarAba('adicionar')" class="btn btn-primary">
+        <span class="icon">➕</span>
+        Adicionar Amigos
+      </button>
+    </div>
+  </div>
+
+  <!-- Aba Pendentes -->
+  <div *ngIf="!carregando && abaAtiva === 'pendentes'" class="content">
+    <div *ngIf="pendentes.length" class="pendentes-list">
+      <div *ngFor="let pendente of pendentes" class="pendente-card">
+        <div class="pendente-info">
+          <div class="avatar">
+            {{ (isRecebida(pendente) ? pendente.solicitanteNome : pendente.destinatarioNome || 'U')[0].toUpperCase() }}
+          </div>
+          <div class="pendente-details">
+            <h3>{{ isRecebida(pendente) ? pendente.solicitanteNome : pendente.destinatarioNome }}</h3>
+            <span class="badge badge-warning">
+              {{ isRecebida(pendente) ? 'Solicitação recebida' : 'Aguardando resposta' }}
+            </span>
+          </div>
+        </div>
+        <div class="actions" *ngIf="isRecebida(pendente)">
+          <button (click)="responder(pendente.id!, 'aceitar')" class="btn btn-success">
+            <span class="icon">✓</span>
+            Aceitar
+          </button>
+          <button (click)="responder(pendente.id!, 'recusar')" class="btn btn-danger">
+            <span class="icon">✖</span>
+            Recusar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!pendentes.length" class="empty-state">
+      <div class="empty-icon">📭</div>
+      <h3>Nenhuma solicitação pendente</h3>
+      <p>Você não tem solicitações de amizade no momento</p>
+    </div>
+  </div>
+
+  <!-- Aba Adicionar -->
+  <div *ngIf="abaAtiva === 'adicionar'" class="content">
+    <div class="search-box">
+      <input
+        type="text"
+        [(ngModel)]="busca"
+        (input)="filtrarUsuarios()"
+        placeholder="🔍 Buscar usuários..."
+        class="search-input"
+      />
+    </div>
+
+    <div *ngIf="usuariosFiltrados.length" class="usuarios-list">
+      <div *ngFor="let usuario of usuariosFiltrados" class="usuario-card">
+        <div class="usuario-info">
+          <div class="avatar">{{ (usuario.nome || 'U')[0].toUpperCase() }}</div>
+          <div class="usuario-details">
+            <h3>{{ usuario.nome }}</h3>
+            <p class="email">{{ usuario.email }}</p>
+          </div>
+        </div>
+        <button (click)="enviarSolicitacao(usuario.id!)" class="btn btn-primary">
+          <span class="icon">➕</span>
+          Adicionar
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="!usuariosFiltrados.length && usuarios.length" class="empty-state">
+      <div class="empty-icon">🔍</div>
+      <h3>Nenhum usuário encontrado</h3>
+      <p>Tente buscar com outros termos</p>
+    </div>
+  </div>
+</div>

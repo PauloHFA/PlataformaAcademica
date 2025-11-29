@@ -13,6 +13,7 @@ import { AtividadeCriarComponent } from './components/sala/atividade-criar/ativi
 import { AtividadeListComponent } from './components/sala/atividade-list/atividade-list';
 import { AtividadeDetalhesComponent } from './components/sala/atividade-detalhes/atividade-detalhes.component';
 import { FeedComponent } from './components/feed/feed.component';
+import { AmigosComponent } from './components/amigos/amigos.component';
 
 /**
  * Rotas principais da aplicação SPA
@@ -35,5 +36,6 @@ export const routes: Routes = [
   { path: 'perfil-criar', component: PerfilEditarComponent },
   { path: 'perfil-editar', component: PerfilEditarComponent },
   { path: 'feed', component: FeedComponent },
+  { path: 'amigos', component: AmigosComponent },
   { path: '**', redirectTo: '' }
 ];

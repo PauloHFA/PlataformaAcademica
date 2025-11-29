@@ -1,157 +1,313 @@
 .amigos-container {
+  max-width: 900px;
+  margin: 0 auto;
   padding: 2rem;
-  background: var(--bg-color);
-  color: var(--text-color);
   min-height: 100vh;
+  background: var(--bg-color);
 }
 
-.amigos-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.amigos-header h1 {
-  color: var(--text-color);
+.header h1 {
   font-size: 2rem;
-  margin-bottom: 0.5rem;
+  color: var(--text-color);
+  margin: 0 0 2rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.search-bar {
-  max-width: 500px;
-  margin: 0 auto 2rem;
-  position: relative;
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.tab {
+  padding: 1rem 1.5rem;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tab:hover {
+  color: var(--text-color);
+  background: var(--hover-color);
+}
+
+.tab.active {
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--border-color);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.content {
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.search-box {
+  margin-bottom: 1.5rem;
 }
 
 .search-input {
   width: 100%;
   padding: 1rem;
   border: 2px solid var(--border-color);
-  border-radius: 25px;
-  background: var(--bg-color);
+  border-radius: 12px;
+  background: var(--card-bg);
   color: var(--text-color);
   font-size: 1rem;
-  transition: border-color 0.3s;
+  transition: all 0.2s;
 }
 
 .search-input:focus {
   outline: none;
   border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-color-alpha);
 }
 
-.amigos-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
-  max-width: 1200px;
-  margin: 0 auto;
+.amigos-list,
+.pendentes-list,
+.usuarios-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.amigo-card {
+.amigo-card,
+.pendente-card,
+.usuario-card {
   background: var(--card-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
   padding: 1.5rem;
-  text-align: center;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
 }
 
-.amigo-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+.amigo-card:hover,
+.pendente-card:hover,
+.usuario-card:hover {
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
-.amigo-avatar {
-  width: 80px;
-  height: 80px;
+.amigo-info,
+.pendente-info,
+.usuario-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  background: #FFFFFF;
-  color: var(--custom-purple);
+  background: var(--primary-color);
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
-  font-weight: 600;
-  margin: 0 auto 1rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  flex-shrink: 0;
 }
 
-.amigo-name {
-  color: #FFFFFF;
+.amigo-details,
+.pendente-details,
+.usuario-details {
+  flex: 1;
+}
+
+.amigo-details h3,
+.pendente-details h3,
+.usuario-details h3 {
+  margin: 0 0 0.5rem 0;
   font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.amigo-email {
-  color: #FFFFFF;
-  opacity: 0.7;
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
-}
-
-.amigo-status {
-  display: inline-block;
-  padding: 0.3rem 0.8rem;
-  border-radius: 15px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.status-online {
-  background: #d4edda;
-  color: #155724;
-}
-
-.status-offline {
-  background: var(--hover-color);
   color: var(--text-color);
 }
 
-.amigo-actions {
+.email {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.badge-success {
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+}
+
+.badge-warning {
+  background: rgba(245, 158, 11, 0.1);
+  color: #d97706;
+}
+
+.actions {
   display: flex;
   gap: 0.5rem;
-  justify-content: center;
 }
 
 .btn {
-  padding: 0.6rem 1rem;
+  padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s;
-  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
 }
 
 .btn-primary {
-  background: #FFFFFF;
-  color: var(--custom-purple);
-  font-weight: 600;
+  background: var(--primary-color);
+  color: white;
 }
 
-.btn-secondary {
-  background: rgba(255, 255, 255, 0.1);
-  color: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
-.btn:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
+.btn-success {
+  background: #10b981;
+  color: white;
+}
+
+.btn-success:hover {
+  background: #059669;
+  transform: translateY(-2px);
+}
+
+.btn-danger {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+}
+
+.icon {
+  font-size: 1.2em;
 }
 
 .empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
   text-align: center;
-  padding: 3rem;
-  color: var(--text-color);
-  opacity: 0.7;
 }
 
 .empty-icon {
   font-size: 4rem;
   margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  font-size: 1.5rem;
+  color: var(--text-color);
+  margin: 0 0 0.5rem 0;
+}
+
+.empty-state p {
+  color: var(--text-muted);
+  margin: 0 0 2rem 0;
+}
+
+@media (max-width: 768px) {
+  .amigos-container {
+    padding: 1rem;
+  }
+
+  .header h1 {
+    font-size: 1.5rem;
+  }
+
+  .tabs {
+    flex-direction: column;
+  }
+
+  .tab {
+    border-bottom: none;
+    border-left: 3px solid transparent;
+  }
+
+  .tab.active {
+    border-left-color: var(--primary-color);
+    border-bottom-color: transparent;
+  }
+
+  .amigo-card,
+  .pendente-card,
+  .usuario-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .btn {
+    flex: 1;
+    justify-content: center;
+  }
 }

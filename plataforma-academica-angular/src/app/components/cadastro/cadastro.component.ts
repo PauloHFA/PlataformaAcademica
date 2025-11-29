@@ -117,18 +117,40 @@ export class CadastroComponent implements OnInit {
   }
 
   /**
-   * Cadastro com Google (placeholder - requer configuração OAuth)
+   * Cadastro com Google (DEMO - sem OAuth real)
    */
   cadastroComGoogle(): void {
-    alert('Cadastro com Google em desenvolvimento.\n\nPara implementar:\n1. Configurar Google OAuth 2.0\n2. Obter Client ID\n3. Integrar com backend');
-    // TODO: Implementar integração com Google OAuth
+    // DEMO: Simula cadastro com Google
+    const demoUser = {
+      id: 999,
+      nome: 'Usuário Google (Demo)',
+      email: 'google.demo@plataforma.com',
+      provider: 'google'
+    };
+    
+    localStorage.setItem('usuario', JSON.stringify(demoUser));
+    localStorage.setItem('usuarioId', demoUser.id.toString());
+    this.router.navigate(['/salas']);
+    
+    // Para implementação real, veja: CONFIGURACAO_LOGIN_SOCIAL.md
   }
 
   /**
-   * Cadastro com Facebook (placeholder - requer configuração OAuth)
+   * Cadastro com Facebook (DEMO - sem OAuth real)
    */
   cadastroComFacebook(): void {
-    alert('Cadastro com Facebook em desenvolvimento.\n\nPara implementar:\n1. Configurar Facebook App\n2. Obter App ID\n3. Integrar com backend');
-    // TODO: Implementar integração com Facebook OAuth
+    // DEMO: Simula cadastro com Facebook
+    const demoUser = {
+      id: 998,
+      nome: 'Usuário Facebook (Demo)',
+      email: 'facebook.demo@plataforma.com',
+      provider: 'facebook'
+    };
+    
+    localStorage.setItem('usuario', JSON.stringify(demoUser));
+    localStorage.setItem('usuarioId', demoUser.id.toString());
+    this.router.navigate(['/salas']);
+    
+    // Para implementação real, veja: CONFIGURACAO_LOGIN_SOCIAL.md
   }
 }

@@ -79,7 +79,7 @@
             {{ (isRecebida(pendente) ? pendente.solicitanteNome : pendente.destinatarioNome || 'U')[0].toUpperCase() }}
           </div>
           <div class="pendente-details">
-            <h3>{{ isRecebida(pendente) ? pendente.solicitanteNome : pendente.destinatarioNome }}</h3>
+            <h3>{{ isRecebida(pendente) ? (pendente.solicitanteNome || 'Usuário') : (pendente.destinatarioNome || 'Usuário') }}</h3>
             <span class="badge badge-warning">
               {{ isRecebida(pendente) ? 'Solicitação recebida' : 'Aguardando resposta' }}
             </span>

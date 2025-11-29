@@ -115,4 +115,20 @@ export class CadastroComponent implements OnInit {
   get senhasNaoIguais() {
     return this.formulario.hasError('senhasNaoIguais');
   }
+
+  /**
+   * Cadastro com Google (placeholder - requer configuração OAuth)
+   */
+  cadastroComGoogle(): void {
+    alert('Cadastro com Google em desenvolvimento.\n\nPara implementar:\n1. Configurar Google OAuth 2.0\n2. Obter Client ID\n3. Integrar com backend');
+    // TODO: Implementar integração com Google OAuth
+  }
+
+  /**
+   * Cadastro com Facebook (placeholder - requer configuração OAuth)
+   */
+  cadastroComFacebook(): void {
+    alert('Cadastro com Facebook em desenvolvimento.\n\nPara implementar:\n1. Configurar Facebook App\n2. Obter App ID\n3. Integrar com backend');
+    // TODO: Implementar integração com Facebook OAuth
+  }
 }

@@ -92,4 +92,20 @@ export class LoginComponent implements OnInit {
   get senha() {
     return this.formulario.get('senha');
   }
+
+  /**
+   * Login com Google (placeholder - requer configuração OAuth)
+   */
+  loginComGoogle(): void {
+    alert('Login com Google em desenvolvimento.\n\nPara implementar:\n1. Configurar Google OAuth 2.0\n2. Obter Client ID\n3. Integrar com backend');
+    // TODO: Implementar integração com Google OAuth
+  }
+
+  /**
+   * Login com Facebook (placeholder - requer configuração OAuth)
+   */
+  loginComFacebook(): void {
+    alert('Login com Facebook em desenvolvimento.\n\nPara implementar:\n1. Configurar Facebook App\n2. Obter App ID\n3. Integrar com backend');
+    // TODO: Implementar integração com Facebook OAuth
+  }
 }

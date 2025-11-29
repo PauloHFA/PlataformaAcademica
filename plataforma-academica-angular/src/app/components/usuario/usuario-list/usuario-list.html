@@ -43,8 +43,6 @@
           <th>ID</th>
           <th>Nome</th>
           <th>Email</th>
-          <th>Data de Cadastro</th>
-          <th>Status</th>
           <th>Ações</th>
         </tr>
       </thead>
@@ -53,12 +51,6 @@
           <td>{{ usuario.id || '-' }}</td>
           <td class="nome-column">{{ usuario.nome || '-' }}</td>
           <td class="email-column">{{ usuario.email || '-' }}</td>
-          <td>{{ usuario.dataCadastro ? (usuario.dataCadastro | date:'short') : 'N/A' }}</td>
-          <td>
-            <span [ngClass]="usuario.ativo !== false ? 'badge-ativo' : 'badge-inativo'">
-              {{ usuario.ativo !== false ? 'Ativo' : 'Inativo' }}
-            </span>
-          </td>
           <td class="actions-column">
             <span *ngIf="usuario.id === currentUserId" class="badge-self">Você</span>
             <button 

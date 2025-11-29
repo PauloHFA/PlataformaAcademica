@@ -1,6 +1,8 @@
 package com.plataforma_academica.plataforma.controller;
 
 import com.plataforma_academica.plataforma.dto.AtividadeDTO;
+import com.plataforma_academica.plataforma.dto.AtividadeResponseDTO;
+import com.plataforma_academica.plataforma.mapper.AtividadeMapper;
 import com.plataforma_academica.plataforma.model.Atividade;
 import com.plataforma_academica.plataforma.service.AtividadeService;
 import org.springframework.http.ResponseEntity;
@@ -72,13 +74,13 @@ public class AtividadeController {
      * @return A atividade criada
      */
     @PostMapping("/sala/{salaId}/autor/{autorId}")
-    public ResponseEntity<Atividade> criarAtividade(
+    public ResponseEntity<AtividadeResponseDTO> criarAtividade(
             @PathVariable Long salaId,
             @PathVariable Long autorId,
             @RequestBody AtividadeDTO dto
     ) {
         Atividade atividadeCriada = atividadeService.criarAtividade(salaId, dto, autorId);
-        return ResponseEntity.ok(atividadeCriada);
+        return ResponseEntity.ok(AtividadeMapper.toResponse(atividadeCriada));
     }
 
     // ========================================================================
@@ -93,10 +95,11 @@ public class AtividadeController {
      * @return A atividade encontrada
      */
     @GetMapping("/{atividadeId}")
-    public ResponseEntity<Atividade> buscarAtividadePorId(
+    public ResponseEntity<AtividadeResponseDTO> buscarAtividadePorId(
             @PathVariable Long atividadeId
     ) {
-        return ResponseEntity.ok(atividadeService.buscarAtividadePorId(atividadeId));
+        Atividade atividade = atividadeService.buscarAtividadePorId(atividadeId);
+        return ResponseEntity.ok(AtividadeMapper.toResponse(atividade));
     }
 
     // ========================================================================
@@ -113,10 +116,11 @@ public class AtividadeController {
      * @return Lista contendo atividades da sala
      */
     @GetMapping("/sala/{salaId}")
-    public ResponseEntity<List<Atividade>> listarPorSala(
+    public ResponseEntity<List<AtividadeResponseDTO>> listarPorSala(
             @PathVariable Long salaId
     ) {
-        return ResponseEntity.ok(atividadeService.listarAtividadesPorSala(salaId));
+        List<Atividade> lista = atividadeService.listarAtividadesPorSala(salaId);
+        return ResponseEntity.ok(lista.stream().map(AtividadeMapper::toResponse).toList());
     }
 
     // ========================================================================
@@ -132,10 +136,11 @@ public class AtividadeController {
      * @return Lista de atividades criadas pelo autor
      */
     @GetMapping("/autor/{autorId}")
-    public ResponseEntity<List<Atividade>> listarPorAutor(
+    public ResponseEntity<List<AtividadeResponseDTO>> listarPorAutor(
             @PathVariable Long autorId
     ) {
-        return ResponseEntity.ok(atividadeService.listarAtividadesPorAutor(autorId));
+        List<Atividade> lista = atividadeService.listarAtividadesPorAutor(autorId);
+        return ResponseEntity.ok(lista.stream().map(AtividadeMapper::toResponse).toList());
     }
 
     // ========================================================================
@@ -157,14 +162,13 @@ public class AtividadeController {
      * @return A atividade após atualização
      */
     @PutMapping("/{atividadeId}/autor/{autorId}")
-    public ResponseEntity<Atividade> atualizarAtividade(
+    public ResponseEntity<AtividadeResponseDTO> atualizarAtividade(
             @PathVariable Long atividadeId,
             @PathVariable Long autorId,
-            @RequestBody Atividade atividadeAtualizada
+            @RequestBody AtividadeDTO dto
     ) {
-        return ResponseEntity.ok(
-                atividadeService.atualizarAtividade(atividadeId, atividadeAtualizada, autorId)
-        );
+        Atividade atualizada = atividadeService.atualizarAtividade(atividadeId, dto, autorId);
+        return ResponseEntity.ok(AtividadeMapper.toResponse(atualizada));
     }
 
     // ========================================================================

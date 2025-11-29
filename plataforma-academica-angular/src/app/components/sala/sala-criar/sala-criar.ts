@@ -20,9 +20,7 @@ export class SalaCriarComponent {
 
   constructor(private fb: FormBuilder, private salaService: SalaService, private router: Router) {
     this.form = this.fb.group({
-      nome: ['', [Validators.required, Validators.minLength(3)]],
-      descricao: [''],
-      codigoAcesso: ['']
+      nome: ['', [Validators.required, Validators.minLength(3)]]
     });
   }
 
@@ -30,9 +28,7 @@ export class SalaCriarComponent {
     if (this.form.invalid) return;
     this.carregando = true;
     const sala: SalaDeAula = {
-      nome: this.form.value.nome,
-      descricao: this.form.value.descricao,
-      codigoAcesso: this.form.value.codigoAcesso
+      nome: this.form.value.nome
     };
 
     // Para teste inicial, usamos id do usuário logado se existir

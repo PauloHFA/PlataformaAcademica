@@ -2,7 +2,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 30px 20px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: var(--bg-color);
   min-height: 100vh;
 }
 
@@ -14,12 +14,13 @@
 
 .usuario-list-header h2 {
   font-size: 28px;
-  color: #333;
+  color: var(--text-color);
   margin: 0;
+  font-weight: 700;
 }
 
 .subtitle {
-  color: #666;
+  color: var(--text-secondary);
   font-size: 14px;
   margin: 10px 0 0 0;
 }
@@ -27,19 +28,20 @@
 .btn-refresh {
   margin-top: 15px;
   padding: 10px 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--primary-color);
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.2s;
 }
 
 .btn-refresh:hover:not(:disabled) {
+  background: var(--primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: var(--shadow-md);
 }
 
 .btn-refresh:disabled {
@@ -51,18 +53,20 @@
 .loading {
   text-align: center;
   padding: 40px;
-  background: white;
-  border-radius: 8px;
-  color: #667eea;
+  background: var(--card-bg);
+  border-radius: 12px;
+  color: var(--primary-color);
   font-weight: 600;
+  box-shadow: var(--shadow-md);
 }
 
 /* Tabela de usuários */
 .usuarios-table-wrapper {
-  background: white;
-  border-radius: 8px;
+  background: var(--card-bg);
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-color);
 }
 
 .usuarios-table {
@@ -71,7 +75,7 @@
 }
 
 .usuarios-table thead {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--primary-color);
   color: white;
 }
 
@@ -84,35 +88,35 @@
 }
 
 .usuarios-table tbody tr {
-  border-bottom: 1px solid #ecf0f1;
-  transition: background-color 0.3s;
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s;
 }
 
 .usuarios-table tbody tr:hover {
-  background-color: #f8f9fa;
+  background-color: var(--hover-color);
 }
 
 .usuarios-table td {
   padding: 16px;
   font-size: 14px;
-  color: #555;
+  color: var(--text-secondary);
 }
 
 .nome-column {
-  font-weight: 500;
-  color: #333;
+  font-weight: 600;
+  color: var(--text-color);
 }
 
 .email-column {
-  color: #667eea;
+  color: var(--primary-color);
   word-break: break-word;
 }
 
 /* Status Badges */
 .badge-ativo {
   display: inline-block;
-  background-color: #d5f4e6;
-  color: #27ae60;
+  background-color: rgba(16, 185, 129, 0.1);
+  color: var(--accent-green);
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 12px;
@@ -121,8 +125,8 @@
 
 .badge-inativo {
   display: inline-block;
-  background-color: #fadbd8;
-  color: #c0392b;
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--accent-red);
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 12px;
@@ -131,18 +135,19 @@
 
 /* Estado vazio */
 .empty-state {
-  background: white;
-  border-radius: 8px;
+  background: var(--card-bg);
+  border-radius: 12px;
   padding: 60px 20px;
   text-align: center;
-  color: #999;
+  color: var(--text-muted);
   font-size: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
 }
 
 .empty-hint {
   font-size: 14px;
-  color: #bbb;
+  color: var(--text-muted);
   margin-top: 10px;
 }
 
@@ -151,16 +156,18 @@
   margin-top: 20px;
   text-align: center;
   padding: 15px;
-  background: white;
-  border-radius: 8px;
-  color: #666;
+  background: var(--card-bg);
+  border-radius: 12px;
+  color: var(--text-secondary);
   font-size: 14px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
 }
 
 .stats strong {
-  color: #667eea;
+  color: var(--primary-color);
   font-size: 16px;
+  font-weight: 700;
 }
 
 /* Alertas */
@@ -169,14 +176,14 @@
   border-radius: 12px;
   margin-bottom: 30px;
   font-size: 14px;
-  background: white;
-  box-shadow: 0 4px 20px rgba(231, 76, 60, 0.15);
+  background: var(--card-bg);
+  box-shadow: var(--shadow-lg);
   overflow: hidden;
 }
 
 .alert-error {
-  background: white;
-  border: 2px solid #e74c3c;
+  background: var(--card-bg);
+  border: 2px solid var(--accent-red);
   border-radius: 12px;
   display: flex;
   gap: 20px;
@@ -184,7 +191,7 @@
 }
 
 .error-icon {
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  background: var(--accent-red);
   color: white;
   font-size: 48px;
   display: flex;
@@ -207,7 +214,7 @@
   margin: 0;
   font-size: 20px;
   font-weight: 700;
-  color: #c0392b;
+  color: var(--accent-red);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -215,14 +222,14 @@
 
 .error-message {
   margin: 0;
-  color: #555;
+  color: var(--text-secondary);
   font-size: 15px;
   line-height: 1.6;
 }
 
 .error-help {
-  background: #f8f9fa;
-  border-left: 4px solid #667eea;
+  background: var(--hover-color);
+  border-left: 4px solid var(--primary-color);
   border-radius: 6px;
   padding: 15px;
   margin-top: 10px;
@@ -231,14 +238,14 @@
 .help-title {
   margin: 0 0 10px 0;
   font-weight: 600;
-  color: #333;
+  color: var(--text-color);
   font-size: 14px;
 }
 
 .help-steps {
   margin: 10px 0 0 0;
   padding-left: 20px;
-  color: #555;
+  color: var(--text-secondary);
   font-size: 14px;
   line-height: 1.8;
 }
@@ -248,13 +255,14 @@
 }
 
 .help-steps code {
-  background: #e9ecef;
+  background: var(--hover-color);
   padding: 2px 6px;
   border-radius: 4px;
   font-family: 'Courier New', monospace;
   font-size: 12px;
-  color: #e74c3c;
+  color: var(--accent-red);
   font-weight: 600;
+  border: 1px solid var(--border-color);
 }
 
 .error-actions {
@@ -266,23 +274,24 @@
 
 .btn-retry {
   padding: 12px 24px;
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  background: var(--accent-red);
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+  transition: all 0.2s;
+  box-shadow: var(--shadow-md);
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
 .btn-retry:hover {
+  opacity: 0.9;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+  box-shadow: var(--shadow-lg);
 }
 
 .btn-retry:active {

@@ -22,28 +22,32 @@
 }
 
 .post-card {
-  background-color: var(--bg-color);
-  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 20px;
-  box-shadow: 0 2px 8px var(--shadow);
-  transition: transform 0.2s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
 }
 
 .post-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--shadow);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .post-author {
   font-weight: 600;
-  color: var(--primary-color);
+  color: #FFFFFF;
   margin-bottom: 10px;
+  opacity: 0.9;
 }
 
 .post-content {
-  color: var(--text-color);
+  color: #FFFFFF;
   line-height: 1.6;
   margin-bottom: 15px;
 }
@@ -58,7 +62,7 @@
 .action-btn {
   background: none;
   border: none;
-  color: var(--text-color);
+  color: #FFFFFF;
   cursor: pointer;
   padding: 5px 10px;
   border-radius: 5px;
@@ -66,5 +70,5 @@
 }
 
 .action-btn:hover {
-  background-color: var(--hover-color);
+  background-color: rgba(255, 255, 255, 0.1);
 }

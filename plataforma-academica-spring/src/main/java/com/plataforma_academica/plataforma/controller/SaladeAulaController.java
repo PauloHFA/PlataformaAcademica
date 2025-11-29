@@ -2,7 +2,10 @@ package com.plataforma_academica.plataforma.controller;
 
 import com.plataforma_academica.plataforma.dto.AtividadeDTO;
 import com.plataforma_academica.plataforma.dto.AtividadeResponseDTO;
+import com.plataforma_academica.plataforma.dto.SalaDeAulaDTO;
+import com.plataforma_academica.plataforma.dto.SalaDeAulaResponseDTO;
 import com.plataforma_academica.plataforma.mapper.AtividadeMapper;
+import com.plataforma_academica.plataforma.mapper.SalaDeAulaMapper;
 import com.plataforma_academica.plataforma.model.Atividade;
 import com.plataforma_academica.plataforma.model.SaladeAula;
 import com.plataforma_academica.plataforma.model.Usuario;
@@ -81,25 +84,30 @@ public class SaladeAulaController {
      * @param criadorId ID do usuário criador
      */
     @PostMapping("/criar/{criadorId}")
-    public ResponseEntity<SaladeAula> criarSala(@RequestBody SaladeAula sala,
+    public ResponseEntity<SalaDeAulaResponseDTO> criarSala(@RequestBody SalaDeAulaDTO salaDTO,
                                                 @PathVariable Long criadorId) {
-        return ResponseEntity.ok(salaService.criarSala(sala, criadorId));
+        SaladeAula sala = new SaladeAula();
+        sala.setNome(salaDTO.getNome());
+        SaladeAula salaCriada = salaService.criarSala(sala, criadorId);
+        return ResponseEntity.ok(SalaDeAulaMapper.toResponse(salaCriada));
     }
 
     /**
      * Lista todas as salas existentes.
      */
     @GetMapping
-    public ResponseEntity<List<SaladeAula>> listarSalas() {
-        return ResponseEntity.ok(salaService.listarTodasSalas());
+    public ResponseEntity<List<SalaDeAulaResponseDTO>> listarSalas() {
+        List<SaladeAula> salas = salaService.listarTodasSalas();
+        return ResponseEntity.ok(salas.stream().map(SalaDeAulaMapper::toResponse).toList());
     }
 
     /**
      * Busca uma sala pelo seu ID.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<SaladeAula> buscarPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(salaService.buscarSalaPorId(id));
+    public ResponseEntity<SalaDeAulaResponseDTO> buscarPorId(@PathVariable Long id) {
+        SaladeAula sala = salaService.buscarSalaPorId(id);
+        return ResponseEntity.ok(SalaDeAulaMapper.toResponse(sala));
     }
 
     /**
@@ -131,12 +139,14 @@ public class SaladeAulaController {
      * @param creatorId ID do criador da sala
      */
     @PostMapping("/{salaId}/add-membro/{membroId}/criador/{creatorId}")
-    public ResponseEntity<Usuario> adicionarMembro(
+    public ResponseEntity<SalaDeAulaResponseDTO> adicionarMembro(
             @PathVariable Long salaId,
             @PathVariable Long membroId,
             @PathVariable Long creatorId
     ) {
-        return ResponseEntity.ok(salaService.adicionarMembro(salaId, membroId, creatorId));
+        salaService.adicionarMembro(salaId, membroId, creatorId);
+        SaladeAula sala = salaService.buscarSalaPorId(salaId);
+        return ResponseEntity.ok(SalaDeAulaMapper.toResponse(sala));
     }
 
     /**

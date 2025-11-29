@@ -18,6 +18,7 @@ public interface AtividadeService {
     Atividade buscarAtividadePorId(Long atividadeId);
     List<Atividade> listarAtividadesPorSala(Long salaId);
     Atividade atualizarAtividade(Long atividadeId, Atividade atividadeAtualizada, Long autorId);
+    Atividade atualizarAtividade(Long atividadeId, AtividadeDTO atividadeDTO, Long autorId);
     void deletarAtividade(Long atividadeId, Long autorId);
     List<Atividade> listarAtividadesPorAutor(Long autorId);
 }

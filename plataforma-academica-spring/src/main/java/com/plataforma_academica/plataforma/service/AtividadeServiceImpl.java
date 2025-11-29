@@ -81,6 +81,22 @@ public class AtividadeServiceImpl implements AtividadeService {
 
     @Override
     @Transactional
+    public Atividade atualizarAtividade(Long atividadeId, AtividadeDTO atividadeDTO, Long autorId) {
+        Atividade existente = buscarAtividadePorId(atividadeId);
+
+        if (!existente.getAutor().getId().equals(autorId)) {
+            throw new RuntimeException("Você não tem permissão para atualizar esta atividade");
+        }
+
+        existente.setTitulo(atividadeDTO.getTitulo());
+        existente.setDescricao(atividadeDTO.getDescricao());
+        existente.setDataEntrega(atividadeDTO.getDataEntrega());
+
+        return atividadeRepository.save(existente);
+    }
+
+    @Override
+    @Transactional
     public void deletarAtividade(Long atividadeId, Long autorId) {
         Atividade existente = buscarAtividadePorId(atividadeId);
 

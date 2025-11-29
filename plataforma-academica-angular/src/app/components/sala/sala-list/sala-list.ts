@@ -17,10 +17,14 @@ export class SalaListComponent implements OnInit {
   erro = '';
   criando = false;
   mensagemCriar = '';
+  currentUserId = 0;
 
   constructor(private salaService: SalaService) {}
 
   ngOnInit(): void {
+    // obter usuário atual (se houver) e carregar salas
+    this.currentUserId = this.getCurrentUserId();
+
     this.carregarSalas();
   }
 
@@ -46,8 +50,7 @@ export class SalaListComponent implements OnInit {
     this.mensagemCriar = '';
     this.criando = true;
     const exemplo: SalaDeAula = {
-      nome: 'Sala de Teste ' + new Date().toISOString().slice(0,19),
-      descricao: 'Sala criada automaticamente para teste'
+      nome: 'Sala de Teste ' + new Date().toISOString().slice(0,19)
     };
 
     let criadorId = 0;
@@ -68,5 +71,53 @@ export class SalaListComponent implements OnInit {
         this.criando = false;
       }
     });
+  }
+
+  deleteSala(sala: SalaDeAula): void {
+    if (!sala || !sala.id) return;
+    const usuarioIdVerificado = this.getCurrentUserId();
+    if (sala.criadorId && usuarioIdVerificado !== sala.criadorId) {
+      alert('Apenas o criador da sala pode deletá-la.');
+      return;
+    }
+
+    const confirmado = confirm(`Tem certeza que deseja deletar a sala "${sala.nome}"?`);
+    if (!confirmado) return;
+    const usuarioId = usuarioIdVerificado || 0;
+
+    this.salaService.deletarSala(sala.id, usuarioId).subscribe({
+      next: () => {
+        this.salas = this.salas.filter(s => s.id !== sala.id);
+      },
+      error: (err: Error) => {
+        console.error('Erro ao deletar sala', err);
+        this.erro = err.message || 'Erro ao deletar sala';
+      }
+    });
+  }
+
+  private getCurrentUserId(): number {
+    try {
+      // checa várias chaves possíveis no localStorage para compatibilidade
+      const usuarioStr = localStorage.getItem('usuario');
+      if (usuarioStr) {
+        const obj = JSON.parse(usuarioStr);
+        if (obj && (obj.id || obj.id === 0)) return Number(obj.id) || 0;
+      }
+
+      const usuarioIdStr = localStorage.getItem('usuarioId') || localStorage.getItem('userId') || localStorage.getItem('user');
+      if (usuarioIdStr) {
+        // pode ser um número direto ou um JSON
+        const parsed = Number(usuarioIdStr);
+        if (!isNaN(parsed)) return parsed;
+        try {
+          const maybe = JSON.parse(usuarioIdStr);
+          if (maybe && (maybe.id || maybe.id === 0)) return Number(maybe.id) || 0;
+        } catch (e) { /* ignore */ }
+      }
+    } catch (e) {
+      // ignore
+    }
+    return 0;
   }
 }

@@ -4,12 +4,13 @@
   top: 0;
   height: 100vh;
   width: 250px;
-  background: var(--primary-color);
-  color: var(--secondary-color);
+  background: var(--card-bg);
+  border-right: 1px solid var(--border-color);
+  color: var(--card-text);
   transition: width 0.3s ease;
   display: flex;
   flex-direction: column;
-  box-shadow: 2px 0 10px var(--shadow);
+  box-shadow: 2px 0 8px var(--shadow);
   z-index: 1000;
 }
 
@@ -40,18 +41,19 @@
 
 .toggle-btn {
   background: var(--hover-color);
-  border: none;
-  color: var(--secondary-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
   cursor: pointer;
   width: 36px;
   height: 36px;
   border-radius: 6px;
   font-size: 1.2rem;
-  transition: background 0.3s;
+  transition: all 0.2s;
 }
 
 .toggle-btn:hover {
-  background: var(--border-color);
+  background: var(--primary-color);
+  color: var(--secondary-color);
 }
 
 .user-profile {
@@ -65,7 +67,7 @@
 .user-avatar {
   width: 45px;
   height: 45px;
-  background: var(--hover-color);
+  background: var(--primary-color);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -73,6 +75,7 @@
   font-weight: bold;
   font-size: 1.2rem;
   flex-shrink: 0;
+  color: var(--secondary-color);
 }
 
 .user-info {
@@ -118,19 +121,22 @@
   padding: 12px 20px;
   background: none;
   border: none;
-  color: var(--secondary-color);
+  color: var(--card-text);
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 12px;
   font-size: 1rem;
-  transition: background 0.3s, padding-left 0.3s;
+  transition: all 0.2s;
   text-align: left;
+  border-radius: 6px;
+  margin: 2px 8px;
+  width: calc(100% - 16px);
 }
 
 .menu-item:hover {
   background: var(--hover-color);
-  padding-left: 24px;
+  color: var(--primary-color);
 }
 
 .menu-item .icon {

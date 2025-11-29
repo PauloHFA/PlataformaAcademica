@@ -38,16 +38,14 @@
       </div>
       
       <div class="sala-card-body">
-        <p class="sala-descricao">{{ sala.descricao || 'Sem descrição' }}</p>
-        
         <div class="sala-info">
           <div class="info-item">
-            <span class="info-label">Código:</span>
-            <span class="info-value">{{ sala.codigoAcesso || 'N/A' }}</span>
+            <span class="info-label">Criador:</span>
+            <span class="info-value">{{ sala.criadorNome || 'N/A' }}</span>
           </div>
           <div class="info-item">
-            <span class="info-label">Criador ID:</span>
-            <span class="info-value">{{ sala.criadoPorId || 'N/A' }}</span>
+            <span class="info-label">Membros:</span>
+            <span class="info-value">{{ sala.membrosIds?.length || 0 }}</span>
           </div>
         </div>
       </div>
@@ -61,6 +59,10 @@
           <span class="icon">📝</span>
           Atividades
         </a>
+        <button *ngIf="sala.criadorId === currentUserId" (click)="deleteSala(sala)" class="btn btn-danger" title="Deletar sala">
+          <span class="icon">🗑️</span>
+          Deletar
+        </button>
       </div>
     </div>
   </div>

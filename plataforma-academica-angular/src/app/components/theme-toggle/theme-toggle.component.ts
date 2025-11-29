@@ -19,26 +19,30 @@ import { ThemeService } from '../../services/theme.service';
   `,
   styles: [`
     .theme-toggle-btn {
-      background: none;
-      border: 2px solid var(--primary-color);
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
       border-radius: 50%;
-      width: 45px;
-      height: 45px;
+      width: 40px;
+      height: 40px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       position: fixed;
-      top: 20px;
-      right: 20px;
+      top: 16px;
+      right: 16px;
       z-index: 1000;
-      background-color: var(--bg-color);
+      box-shadow: 0 1px 3px var(--shadow);
+      color: var(--text-color);
     }
 
     .theme-toggle-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 4px 12px rgba(24, 24, 35, 0.2);
+      transform: scale(1.05);
+      background: var(--primary-color);
+      border-color: var(--primary-color);
+      color: var(--secondary-color);
+      box-shadow: 0 4px 12px var(--shadow);
     }
 
     .theme-icon {

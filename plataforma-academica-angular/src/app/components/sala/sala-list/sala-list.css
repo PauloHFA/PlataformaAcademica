@@ -129,24 +129,25 @@
 }
 
 .sala-card {
-  background: var(--bg-color);
+  background: var(--card-bg);
   border: 1px solid var(--border-color);
-  border-radius: 16px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 20px var(--shadow);
-  transition: all 0.3s;
+  box-shadow: 0 1px 3px var(--shadow);
+  transition: all 0.2s;
   display: flex;
   flex-direction: column;
 }
 
 .sala-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--shadow);
+  border-color: var(--primary-color);
 }
 
 .sala-card-header {
   background: var(--primary-color);
-  padding: 25px;
+  padding: 20px;
   color: var(--secondary-color);
   display: flex;
   align-items: center;
@@ -166,22 +167,24 @@
 
 .sala-nome {
   margin: 0;
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 600;
   flex: 1;
+  color: var(--secondary-color);
 }
 
 .sala-card-body {
   padding: 25px;
   flex: 1;
+  background: transparent;
 }
 
 .sala-descricao {
-  color: var(--text-color);
-  font-size: 15px;
-  line-height: 1.6;
-  margin: 0 0 20px 0;
-  min-height: 48px;
+  color: var(--card-text);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0 0 16px 0;
+  min-height: 42px;
 }
 
 .sala-info {
@@ -189,7 +192,6 @@
   flex-direction: column;
   gap: 10px;
   padding-top: 15px;
-  border-top: 1px solid #ecf0f1;
 }
 
 .info-item {
@@ -207,18 +209,17 @@
 }
 
 .info-value {
-  font-size: 14px;
-  color: var(--text-color);
-  font-weight: 600;
-  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  color: var(--card-text);
+  font-weight: 500;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
 }
 
 .sala-card-footer {
   padding: 20px 25px;
-  background: var(--hover-color);
+  background: var(--card-bg);
   display: flex;
   gap: 10px;
-  border-top: 1px solid var(--border-color);
 }
 
 .btn {
@@ -241,6 +242,10 @@
 .btn-primary {
   background: var(--primary-color);
   color: var(--secondary-color);
+  font-weight: 500;
+  border-radius: 6px;
+  padding: 12px 20px;
+  transition: all 0.2s;
 }
 
 .btn-primary:hover {
@@ -250,8 +255,11 @@
 
 .btn-secondary {
   background: var(--hover-color);
-  color: var(--text-color);
+  color: var(--card-text);
   border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 12px 20px;
+  transition: all 0.2s;
 }
 
 .btn-secondary:hover {

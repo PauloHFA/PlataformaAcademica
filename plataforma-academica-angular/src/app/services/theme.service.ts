@@ -33,8 +33,10 @@ export class ThemeService {
       localStorage.setItem('darkMode', isDark.toString());
       
       if (isDark) {
+        document.documentElement.classList.add('dark');
         document.body.classList.add('dark-theme');
       } else {
+        document.documentElement.classList.remove('dark');
         document.body.classList.remove('dark-theme');
       }
     }

@@ -1,0 +1,147 @@
+
+Warning: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disable-host-check" if that's the
+case.
+    
+Component HMR has been enabled, see https://angular.dev/hmr for more info.
+❯ Building...
+✔ Building...
+Browser bundles     
+Initial chunk files  | Names            |  Raw size
+main.js              | main             | 327.29 kB | 
+polyfills.js         | polyfills        |  89.77 kB | 
+styles.css           | styles           |   6.49 kB | 
+
+                     | Initial total    | 423.55 kB
+
+
+Server bundles      
+Initial chunk files  | Names            |  Raw size
+polyfills.server.mjs | polyfills.server | 567.22 kB | 
+main.server.mjs      | main.server      | 329.15 kB | 
+server.mjs           | server           |   1.86 kB | 
+
+Application bundle generation complete. [5.069 seconds]
+
+▲ [WARNING] NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. [plugin angular-compiler]
+
+    src/app/components/sala/sala-detalhes/sala-detalhes.html:30:43:
+      30 │               Membros: <strong>{{ membros?.length || 0 }}</strong>
+         ╵                                            ~~~~~~
+
+  Error occurs in the template of component SalaDetalhesComponent.
+
+    src/app/components/sala/sala-detalhes/sala-detalhes.ts:12:15:
+      12 │   templateUrl: './sala-detalhes.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. [plugin angular-compiler]
+
+    src/app/components/sala/sala-detalhes/sala-detalhes.html:66:42:
+      66 │           <span class="badge">{{ membros?.length || 0 }}</span>
+         ╵                                           ~~~~~~
+
+  Error occurs in the template of component SalaDetalhesComponent.
+
+    src/app/components/sala/sala-detalhes/sala-detalhes.ts:12:15:
+      12 │   templateUrl: './sala-detalhes.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. [plugin angular-compiler]
+
+    src/app/components/sala/sala-detalhes/sala-detalhes.html:98:45:
+      98 │           <span class="badge">{{ atividades?.length || 0 }}</span>
+         ╵                                              ~~~~~~
+
+  Error occurs in the template of component SalaDetalhesComponent.
+
+    src/app/components/sala/sala-detalhes/sala-detalhes.ts:12:15:
+      12 │   templateUrl: './sala-detalhes.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~
+
+
+Watch mode enabled. Watching for file changes...
+NOTE: Raw file sizes do not reflect development server per-request transformations.
+15:16:15 [vite] (client) Re-optimizing dependencies because lockfile has changed
+15:16:15 [vite] (ssr) Re-optimizing dependencies because lockfile has changed
+  ➜  Local:   http://localhost:4200/
+  ➜  Network: http://192.168.0.11:4200/
+  ➜  Network: http://172.21.0.1:4200/
+Fazendo requisição para: http://localhost:8080/api/usuarios
+Resposta do backend: [
+  {
+    id: 1,
+    nome: 'Paulo Henrique',
+    email: 'rickphtb@gmail.com',
+    avatarUrl: null,
+    avatarBase64: null
+  },
+  {
+    id: 2,
+    nome: 'rafaelboy',
+    email: 'rafavfa@gmail.com',
+    avatarUrl: null,
+    avatarBase64: null
+  }
+]
+Tipo da resposta: object
+É array? true
+Usuários carregados: 2
+Dados dos usuários: [
+  {
+    id: 1,
+    nome: 'Paulo Henrique',
+    email: 'rickphtb@gmail.com',
+    avatarUrl: null,
+    avatarBase64: null
+  },
+  {
+    id: 2,
+    nome: 'rafaelboy',
+    email: 'rafavfa@gmail.com',
+    avatarUrl: null,
+    avatarBase64: null
+  }
+]
+Fazendo requisição para: http://localhost:8080/api/usuarios
+Resposta do backend: [
+  {
+    id: 1,
+    nome: 'Paulo Henrique',
+    email: 'rickphtb@gmail.com',
+    avatarUrl: null,
+    avatarBase64: null
+  },
+  {
+    id: 2,
+    nome: 'rafaelboy',
+    email: 'rafavfa@gmail.com',
+    avatarUrl: null,
+    avatarBase64: null
+  }
+]
+Tipo da resposta: object
+É array? true
+Usuários carregados: 2
+Dados dos usuários: [
+  {
+    id: 1,
+    nome: 'Paulo Henrique',
+    email: 'rickphtb@gmail.com',
+    avatarUrl: null,
+    avatarBase64: null
+  },
+  {
+    id: 2,
+    nome: 'rafaelboy',
+    email: 'rafavfa@gmail.com',
+    avatarUrl: null,
+    avatarBase64: null
+  }
+]

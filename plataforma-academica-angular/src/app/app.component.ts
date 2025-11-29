@@ -40,7 +40,8 @@ export class AppComponent implements OnInit {
   checkLoginStatus() {
     // Verificar se está no navegador antes de acessar localStorage
     if (isPlatformBrowser(this.platformId)) {
-      const usuarioId = localStorage.getItem('usuarioId');
+      const usuario = localStorage.getItem('usuario'); // string JSON (objeto com id)
+      const usuarioId = localStorage.getItem('usuarioId'); // id em string, se existir
       this.isLoggedIn = !!usuarioId;
     } else {
       this.isLoggedIn = false;

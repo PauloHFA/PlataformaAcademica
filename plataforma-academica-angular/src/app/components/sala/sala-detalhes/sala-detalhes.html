@@ -20,15 +20,14 @@
         <div class="sala-icon-large">📖</div>
         <div class="sala-title-section">
           <h1>{{ sala.nome }}</h1>
-          <p class="sala-subtitle">{{ sala.descricao || 'Sem descrição' }}</p>
           <div class="sala-meta">
             <span class="meta-item">
-              <span class="meta-icon">🔑</span>
-              Código: <strong>{{ sala.codigoAcesso || 'N/A' }}</strong>
+              <span class="meta-icon">👤</span>
+              Criador: <strong>{{ sala.criadorNome || 'N/A' }}</strong>
             </span>
             <span class="meta-item">
-              <span class="meta-icon">👤</span>
-              Criador ID: <strong>{{ sala.criadoPorId || 'N/A' }}</strong>
+              <span class="meta-icon">👥</span>
+              Membros: <strong>{{ membros?.length || 0 }}</strong>
             </span>
           </div>
         </div>
@@ -44,6 +43,10 @@
       <button (click)="navegarCriarAtividade()" class="btn btn-action">
         <span class="icon">📝</span>
         Criar Atividade
+      </button>
+      <button *ngIf="usuarioEhCriador" (click)="deletarSala()" class="btn btn-danger">
+        <span class="icon">🗑️</span>
+        Deletar Sala
       </button>
       <a routerLink="/salas" class="btn btn-secondary">
         <span class="icon">⬅️</span>

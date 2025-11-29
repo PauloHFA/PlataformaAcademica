@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.controller;
 
+import com.plataforma_academica.plataforma.dto.UsuarioResponseDTO;
+import com.plataforma_academica.plataforma.mapper.UsuarioMapper;
 import com.plataforma_academica.plataforma.model.Usuario;
 import com.plataforma_academica.plataforma.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +65,7 @@ public class UsuarioController {
     public ResponseEntity<?> cadastrar(@RequestBody Usuario usuario) {
         try {
             Usuario novoUsuario = usuarioService.cadastrarUsuario(usuario);
-            return ResponseEntity.ok(novoUsuario);
+            return ResponseEntity.ok(UsuarioMapper.toResponse(novoUsuario));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -91,7 +93,7 @@ public class UsuarioController {
         Optional<Usuario> usuarioLogado = usuarioService.login(usuario.getEmail(), usuario.getSenha());
 
         if (usuarioLogado.isPresent()) {
-            return ResponseEntity.ok(usuarioLogado.get());
+            return ResponseEntity.ok(UsuarioMapper.toResponse(usuarioLogado.get()));
         } else {
             return ResponseEntity.status(401).body("Email ou senha incorretos");
         }
@@ -111,14 +113,14 @@ public class UsuarioController {
      * @return Objeto Usuario ou erro 404 caso não encontrado.
      */
     @GetMapping("/buscarporid")
-    public ResponseEntity<Usuario> buscarPorId(@RequestParam Long id) {
+    public ResponseEntity<UsuarioResponseDTO> buscarPorId(@RequestParam Long id) {
         Usuario usuario = usuarioService.buscarPorId(id);
 
         if (usuario == null) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(usuario);
+        return ResponseEntity.ok(UsuarioMapper.toResponse(usuario));
     }
 
     // =========================================================================================
@@ -133,11 +135,11 @@ public class UsuarioController {
      * @return Lista de objetos Usuario.
      */
     @GetMapping(value = "", produces = "application/json")
-    public ResponseEntity<List<Usuario>> listarTodos() {
+    public ResponseEntity<List<UsuarioResponseDTO>> listarTodos() {
         System.out.println("=== ENDPOINT /api/usuarios CHAMADO ===");
         List<Usuario> usuarios = usuarioService.listarTodos();
         System.out.println("Total de usuários encontrados: " + usuarios.size());
         usuarios.forEach(u -> System.out.println("Usuário: ID=" + u.getId() + ", Nome=" + u.getNome() + ", Email=" + u.getEmail()));
-        return ResponseEntity.ok(usuarios);
+        return ResponseEntity.ok(usuarios.stream().map(UsuarioMapper::toResponse).toList());
     }
 }

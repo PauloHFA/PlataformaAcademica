@@ -37,15 +37,18 @@
 
 /* Card de Perfil */
 .perfil-card {
-  background: var(--bg-color);
-  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 20px var(--shadow);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 .perfil-foto-section {
-  background: var(--primary-color);
+  background: rgba(130, 52, 233, 0.1);
+  backdrop-filter: blur(10px);
   padding: 40px 20px;
   display: flex;
   justify-content: center;
@@ -81,6 +84,7 @@
 /* Informações */
 .perfil-info {
   padding: 40px 30px;
+  background: transparent;
 }
 
 .info-section {
@@ -92,13 +96,14 @@
 
 .info-section h2 {
   font-size: 24px;
-  color: var(--text-color);
+  color: #FFFFFF;
   margin: 0 0 10px 0;
 }
 
 .email {
-  color: var(--primary-color);
+  color: #FFFFFF;
   margin: 0;
+  opacity: 0.9;
 }
 
 .info-item {
@@ -108,15 +113,16 @@
 .info-item label {
   display: block;
   font-weight: 600;
-  color: var(--primary-color);
+  color: #FFFFFF;
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 8px;
+  opacity: 0.8;
 }
 
 .info-item p {
-  color: var(--text-color);
+  color: #FFFFFF;
   margin: 0;
   font-size: 15px;
   line-height: 1.6;
@@ -206,8 +212,9 @@
 }
 
 .btn-primary {
-  background: var(--primary-color);
-  color: var(--secondary-color);
+  background: #FFFFFF;
+  color: var(--custom-purple);
+  font-weight: 600;
 }
 
 .btn-primary:hover {

@@ -45,18 +45,21 @@
 }
 
 .artigo-card {
-  background: var(--bg-color);
-  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 10px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
-  box-shadow: 0 2px 8px var(--shadow);
-  transition: transform 0.2s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
 }
 
 .artigo-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--shadow);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .artigo-header {
@@ -67,7 +70,7 @@
 }
 
 .artigo-title {
-  color: var(--text-color);
+  color: #FFFFFF;
   font-size: 1.3rem;
   font-weight: 600;
   margin: 0;
@@ -75,7 +78,7 @@
 }
 
 .artigo-date {
-  color: var(--text-color);
+  color: #FFFFFF;
   opacity: 0.7;
   font-size: 0.9rem;
   white-space: nowrap;
@@ -83,13 +86,14 @@
 }
 
 .artigo-author {
-  color: var(--primary-color);
+  color: #FFFFFF;
   font-weight: 600;
   margin-bottom: 0.5rem;
+  opacity: 0.9;
 }
 
 .artigo-content {
-  color: var(--text-color);
+  color: #FFFFFF;
   line-height: 1.6;
   margin-bottom: 1rem;
 }
@@ -102,12 +106,12 @@
 }
 
 .tag {
-  background: var(--hover-color);
-  color: var(--text-color);
+  background: rgba(255, 255, 255, 0.1);
+  color: #FFFFFF;
   padding: 0.3rem 0.8rem;
   border-radius: 15px;
   font-size: 0.8rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .artigo-actions {
@@ -128,14 +132,15 @@
 }
 
 .btn-primary {
-  background: var(--primary-color);
-  color: var(--secondary-color);
+  background: #FFFFFF;
+  color: var(--custom-purple);
+  font-weight: 600;
 }
 
 .btn-secondary {
-  background: var(--hover-color);
-  color: var(--text-color);
-  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.1);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .btn:hover {

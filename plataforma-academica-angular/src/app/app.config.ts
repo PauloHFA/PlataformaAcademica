@@ -3,6 +3,8 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpLoggingInterceptor } from './interceptors/http-logging.interceptor';
 
 /**
  * Configuração global da aplicação Angular
@@ -13,6 +15,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
-    provideHttpClient(withFetch()) // Habilita HttpClient com Fetch API
+    provideHttpClient(withFetch()),
+    { provide: HTTP_INTERCEPTORS, useClass: HttpLoggingInterceptor, multi: true }
   ]
 };

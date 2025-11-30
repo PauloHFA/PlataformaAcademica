@@ -1,6 +1,7 @@
 import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AmizadeService } from '../../services/amizade.service';
 import { UsuarioService } from '../../services/usuario.service';
 import { Amizade } from '../../models/amizade.model';
@@ -26,6 +27,7 @@ export class AmigosComponent implements OnInit {
   constructor(
     private amizadeService: AmizadeService,
     private usuarioService: UsuarioService,
+    private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -69,11 +71,24 @@ export class AmigosComponent implements OnInit {
   carregarUsuarios(): void {
     this.usuarioService.listarUsuarios().subscribe({
       next: (usuarios) => {
-        this.usuarios = usuarios.filter(u => u.id !== this.currentUserId);
+        this.usuarios = usuarios.filter(u => {
+          if (u.id === this.currentUserId) return false;
+          return !this.jaTemRelacao(u.id!);
+        });
         this.usuariosFiltrados = this.usuarios;
       },
       error: () => {}
     });
+  }
+
+  jaTemRelacao(usuarioId: number): boolean {
+    const jaAmigo = this.amigos.some(a => 
+      a.solicitanteId === usuarioId || a.destinatarioId === usuarioId
+    );
+    const jaPendente = this.pendentes.some(p => 
+      p.solicitanteId === usuarioId || p.destinatarioId === usuarioId
+    );
+    return jaAmigo || jaPendente;
   }
 
   filtrarUsuarios(): void {
@@ -90,21 +105,31 @@ export class AmigosComponent implements OnInit {
 
   mudarAba(aba: 'amigos' | 'pendentes' | 'adicionar'): void {
     this.abaAtiva = aba;
-    if (aba === 'adicionar' && !this.usuarios.length) {
-      this.carregarUsuarios();
+    if (aba === 'adicionar') {
+      this.carregarDados();
+      setTimeout(() => this.carregarUsuarios(), 500);
     }
+  }
+
+  irParaUsuarios(): void {
+    this.router.navigate(['/usuarios']);
   }
 
   enviarSolicitacao(destinatarioId: number): void {
     if (!this.currentUserId) return;
 
+    console.log('Enviando:', { solicitanteId: this.currentUserId, destinatarioId });
     this.amizadeService.enviarSolicitacao(this.currentUserId, destinatarioId).subscribe({
-      next: () => {
+      next: (res) => {
+        console.log('Sucesso:', res);
         alert('Solicitação enviada!');
         this.carregarDados();
+        setTimeout(() => this.carregarUsuarios(), 500);
       },
-      error: () => {
-        alert('Erro ao enviar solicitação');
+      error: (err) => {
+        console.error('Erro:', err);
+        const mensagem = err.error?.error || err.error?.message || 'Erro ao enviar solicitação';
+        alert(mensagem);
       }
     });
   }
@@ -113,6 +138,9 @@ export class AmigosComponent implements OnInit {
     this.amizadeService.responderSolicitacao(id, acao).subscribe({
       next: () => {
         this.carregarDados();
+        if (this.usuarios.length) {
+          setTimeout(() => this.carregarUsuarios(), 500);
+        }
       },
       error: () => {
         alert('Erro ao responder solicitação');
@@ -126,6 +154,9 @@ export class AmigosComponent implements OnInit {
     this.amizadeService.removerAmizade(id).subscribe({
       next: () => {
         this.carregarDados();
+        if (this.usuarios.length) {
+          setTimeout(() => this.carregarUsuarios(), 500);
+        }
       },
       error: () => {
         alert('Erro ao remover amizade');

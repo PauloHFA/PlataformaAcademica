@@ -63,10 +63,16 @@
       <div class="empty-icon">😔</div>
       <h3>Você ainda não tem amigos</h3>
       <p>Adicione amigos para começar a interagir!</p>
-      <button (click)="mudarAba('adicionar')" class="btn btn-primary">
-        <span class="icon">➕</span>
-        Adicionar Amigos
-      </button>
+      <div class="empty-actions">
+        <button (click)="mudarAba('adicionar')" class="btn btn-primary">
+          <span class="icon">➕</span>
+          Adicionar Amigos
+        </button>
+        <button (click)="irParaUsuarios()" class="btn btn-secondary">
+          <span class="icon">🔍</span>
+          Encontrar Amigos
+        </button>
+      </div>
     </div>
   </div>
 

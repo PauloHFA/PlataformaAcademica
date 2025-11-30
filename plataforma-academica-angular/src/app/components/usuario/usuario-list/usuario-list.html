@@ -56,9 +56,11 @@
             <button 
               *ngIf="usuario.id !== currentUserId"
               (click)="solicitarAmizade(usuario.id!)" 
+              [disabled]="temRelacao(usuario.id!)"
+              [class.btn-disabled]="temRelacao(usuario.id!)"
               class="btn-add-friend"
-              title="Solicitar amizade">
-              🤝 Adicionar
+              [title]="getStatusBotao(usuario.id!)">
+              {{ getStatusBotao(usuario.id!) }}
             </button>
           </td>
         </tr>

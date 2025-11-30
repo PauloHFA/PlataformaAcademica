@@ -19,14 +19,14 @@ export class HttpLoggingInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    console.log(`[HTTP] ${req.method} ${req.url}`);
+    console.log(`[HTTP] ${req.method} ${req.url}`, req.body);
 
     return next.handle(req).pipe(
       tap(event => {
         console.log(`[HTTP] Response: ${req.method} ${req.url}`, event);
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error(`[HTTP] Error: ${req.method} ${req.url}`, error);
+        console.error(`[HTTP] Error: ${req.method} ${req.url}`, error.status, error.error);
         return throwError(() => error);
       })
     );

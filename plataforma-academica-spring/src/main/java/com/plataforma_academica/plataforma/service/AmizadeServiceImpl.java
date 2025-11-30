@@ -84,21 +84,17 @@ public class AmizadeServiceImpl implements AmizadeService {
 
     @Override
     public List<Amizade> listarSolicitacoesPendentes(Long usuarioId) {
-        Usuario usuario = usuarioRepository.findById(usuarioId)
+        usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
-        return amizadeRepository.findBySolicitanteOrDestinatarioAndStatus(
-                usuario, usuario, Amizade.Status.PENDENTE
-        );
+        return amizadeRepository.findSolicitacoesPendentes(usuarioId);
     }
 
     @Override
     public List<Amizade> listarAmigos(Long usuarioId) {
-        Usuario usuario = usuarioRepository.findById(usuarioId)
+        usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
-        return amizadeRepository.findBySolicitanteOrDestinatarioAndStatus(
-                usuario, usuario, Amizade.Status.ACEITO
-        );
+        return amizadeRepository.findAmigosAceitos(usuarioId);
     }
 }

@@ -320,6 +320,13 @@
   box-shadow: 0 4px 12px rgba(91, 33, 182, 0.3);
 }
 
+.btn-add-friend:disabled,
+.btn-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--text-muted);
+}
+
 .actions-column {
   min-width: 120px;
 }

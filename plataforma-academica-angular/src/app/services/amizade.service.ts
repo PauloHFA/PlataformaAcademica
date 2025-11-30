@@ -12,7 +12,9 @@ export class AmizadeService {
   constructor(private http: HttpClient) {}
 
   enviarSolicitacao(solicitanteId: number, destinatarioId: number): Observable<Amizade> {
-    return this.http.post<Amizade>(this.apiUrl, { solicitanteId, destinatarioId });
+    const payload = { solicitanteId, destinatarioId };
+    console.log('AmizadeService - Enviando:', payload);
+    return this.http.post<Amizade>(this.apiUrl, payload);
   }
 
   responderSolicitacao(id: number, acao: 'aceitar' | 'recusar'): Observable<Amizade> {

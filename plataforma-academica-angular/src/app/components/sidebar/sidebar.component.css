@@ -152,6 +152,14 @@
   text-overflow: ellipsis;
 }
 
+.sidebar-notificacoes {
+  padding: 15px 20px;
+  border-top: 2px solid var(--border-color);
+  border-bottom: 2px solid var(--border-color);
+  max-height: 300px;
+  overflow-y: auto;
+}
+
 .sidebar-footer {
   padding: 20px;
   border-top: 2px solid var(--border-color);

@@ -66,8 +66,11 @@ public class PostagemServiceImpl implements PostagemService {
         Usuario autor = usuarioRepository.findById(dto.getAutorId())
                 .orElseThrow(() -> new RuntimeException("Autor não encontrado"));
 
-        Plataforma plataforma = plataformaRepository.findById(dto.getPlataformaId())
-                .orElseThrow(() -> new RuntimeException("Plataforma não encontrada"));
+        Plataforma plataforma = null;
+        if (dto.getPlataformaId() != null) {
+            plataforma = plataformaRepository.findById(dto.getPlataformaId())
+                    .orElseThrow(() -> new RuntimeException("Plataforma não encontrada"));
+        }
 
         Postagem postagem = PostagemMapper.toEntity(dto, autor, plataforma);
         return PostagemMapper.toDTO(postagemRepository.save(postagem));
@@ -111,8 +114,11 @@ public class PostagemServiceImpl implements PostagemService {
         Usuario autor = usuarioRepository.findById(dto.getAutorId())
                 .orElseThrow(() -> new RuntimeException("Autor não encontrado"));
 
-        Plataforma plataforma = plataformaRepository.findById(dto.getPlataformaId())
-                .orElseThrow(() -> new RuntimeException("Plataforma não encontrada"));
+        Plataforma plataforma = null;
+        if (dto.getPlataformaId() != null) {
+            plataforma = plataformaRepository.findById(dto.getPlataformaId())
+                    .orElseThrow(() -> new RuntimeException("Plataforma não encontrada"));
+        }
 
         Postagem postagem = PostagemMapper.toEntity(dto, autor, plataforma);
         return PostagemMapper.toResponse(postagemRepository.save(postagem));
@@ -151,8 +157,11 @@ public class PostagemServiceImpl implements PostagemService {
         Usuario autor = usuarioRepository.findById(dto.getAutorId())
                 .orElseThrow(() -> new RuntimeException("Autor não encontrado"));
 
-        Plataforma plataforma = plataformaRepository.findById(dto.getPlataformaId())
-                .orElseThrow(() -> new RuntimeException("Plataforma não encontrada"));
+        Plataforma plataforma = null;
+        if (dto.getPlataformaId() != null) {
+            plataforma = plataformaRepository.findById(dto.getPlataformaId())
+                    .orElseThrow(() -> new RuntimeException("Plataforma não encontrada"));
+        }
 
         Postagem postagem = PostagemMapper.toEntity(dto, autor, plataforma);
 

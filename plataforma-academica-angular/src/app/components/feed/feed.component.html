@@ -1,11 +1,14 @@
 <div class="feed-container">
   <!-- Header -->
   <div class="feed-header">
-    <h1>
-      <span class="icon">📰</span>
-      Feed de Postagens
-    </h1>
-    <button (click)="toggleForm()" class="btn btn-primary">
+    <div class="header-content">
+      <h1>
+        <span class="icon">📰</span>
+        Feed de Postagens
+      </h1>
+      <p class="header-subtitle">Compartilhe suas ideias e acompanhe o que seus amigos estão fazendo</p>
+    </div>
+    <button (click)="toggleForm()" class="btn btn-primary btn-lg">
       <span class="icon">{{ mostrarForm ? '✖️' : '➕' }}</span>
       {{ mostrarForm ? 'Cancelar' : 'Nova Postagem' }}
     </button>
@@ -64,23 +67,29 @@
       </div>
       
       <!-- Upload de Imagem -->
-      <div class="form-group" style="background: rgba(255,0,0,0.1); padding: 10px; border: 2px solid red;">
-        <label style="color: red; font-weight: bold;">IMAGEM (TESTE - DEVE APARECER)</label>
-        <input 
-          type="file" 
-          accept="image/*" 
-          (change)="onImagemSelecionada($event)"
-          style="display: block; width: 100%; padding: 10px; background: white; border: 2px solid blue;"
-        />
-        <div *ngIf="previewImagem" style="margin-top: 10px;">
-          <img [src]="previewImagem" alt="Preview" style="max-width: 200px; border: 2px solid green;" />
-          <button type="button" (click)="removerImagem()" style="display: block; margin-top: 10px; padding: 10px; background: red; color: white;">
-            ✖ Remover Imagem
-          </button>
+      <div class="form-group">
+        <label>Adicionar Imagem</label>
+        <div class="upload-area">
+          <input 
+            type="file" 
+            accept="image/*" 
+            (change)="onImagemSelecionada($event)"
+            id="file-input"
+            hidden
+          />
+          <label for="file-input" class="upload-label">
+            📸 Escolher Imagem
+          </label>
+          <div *ngIf="previewImagem" class="image-preview">
+            <img [src]="previewImagem" alt="Preview" />
+            <button type="button" (click)="removerImagem()" class="btn-remove-image">
+              ✖ Remover
+            </button>
+          </div>
         </div>
       </div>
 
-      <button type="submit" class="btn btn-primary" [disabled]="enviando">
+      <button type="submit" class="btn btn-primary btn-lg" [disabled]="enviando">
         <span class="icon">{{ enviando ? '⏳' : '📤' }}</span>
         {{ enviando ? 'Publicando...' : 'Publicar' }}
       </button>
@@ -96,12 +105,13 @@
   <!-- Lista de Postagens -->
   <div *ngIf="!carregando" class="postagens-list">
     <div *ngFor="let post of postagens" class="postagem-card">
+      <!-- Header -->
       <div class="postagem-header">
         <div class="autor-info">
           <div class="avatar">{{ (post.autorNome || 'U')[0].toUpperCase() }}</div>
           <div class="autor-details">
             <h3>{{ post.autorNome || 'Usuário' }}</h3>
-            <span class="post-id">Post #{{ post.id }}</span>
+            <span class="post-meta">Post #{{ post.id }}</span>
           </div>
         </div>
         <button
@@ -114,23 +124,23 @@
         </button>
       </div>
 
+      <!-- Body -->
       <div class="postagem-body">
-        <h2>{{ post.titulo }}</h2>
-        <p>{{ post.conteudo }}</p>
+        <h2 class="postagem-titulo">{{ post.titulo }}</h2>
+        <p class="postagem-conteudo">{{ post.conteudo }}</p>
         <div *ngIf="post.imagemUrl" class="postagem-imagem">
           <img [src]="post.imagemUrl" alt="Imagem da postagem" />
         </div>
       </div>
 
-      <div class="postagem-actions">
+      <!-- Footer -->
+      <div class="postagem-footer">
         <button (click)="curtir(post.id)" class="btn-curtir">
           <span class="icon">❤️</span>
-          {{ post.curtidas || 0 }} curtidas
+          <span class="curtidas-count">{{ post.curtidas || 0 }}</span>
+          <span class="curtidas-text">{{ (post.curtidas || 0) === 1 ? 'curtida' : 'curtidas' }}</span>
         </button>
-      </div>
-
-      <div class="postagem-footer" *ngIf="post.plataformaNome">
-        <span class="plataforma-badge">
+        <span *ngIf="post.plataformaNome" class="plataforma-badge">
           🏫 {{ post.plataformaNome }}
         </span>
       </div>

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SalaService } from '../../../services/sala.service';
 import { SalaDeAula } from '../../../models/sala.model';
@@ -19,7 +19,10 @@ export class SalaListComponent implements OnInit {
   mensagemCriar = '';
   currentUserId: number | null = null;
 
-  constructor(private salaService: SalaService) {}
+  constructor(
+    private salaService: SalaService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit(): void {
     this.currentUserId = this.getCurrentUserId();
@@ -44,7 +47,7 @@ export class SalaListComponent implements OnInit {
       error: (err: Error) => {
         console.error('Erro ao listar salas', err);
         this.erro = err.message || 'Erro ao listar salas';
-        this.salas = []; // Limpar lista em caso de erro
+        this.salas = [];
         this.carregando = false;
       }
     });
@@ -61,7 +64,7 @@ export class SalaListComponent implements OnInit {
     try {
       const usuarioStr = localStorage.getItem('usuario');
       if (usuarioStr) criadorId = JSON.parse(usuarioStr).id || 0;
-    } catch (e) { /* ignore */ }
+    } catch (e) { }
 
     this.salaService.criarSala(exemplo, criadorId).subscribe({
       next: (created) => {
@@ -79,9 +82,8 @@ export class SalaListComponent implements OnInit {
 
   deleteSala(sala: SalaDeAula): void {
     if (!sala || !sala.id) return;
-    const usuarioIdVerificado = this.getCurrentUserId();
     
-    if (sala.criadorId && usuarioIdVerificado !== sala.criadorId) {
+    if (sala.criadorId !== this.currentUserId) {
       alert('Apenas o criador da sala pode deletá-la.');
       return;
     }
@@ -89,8 +91,8 @@ export class SalaListComponent implements OnInit {
     const confirmado = confirm(`Tem certeza que deseja deletar a sala "${sala.nome}"?`);
     if (!confirmado) return;
     
-    let usuarioId = usuarioIdVerificado || sala.criadorId || 1;
-    console.log(`Tentando deletar sala ${sala.id} com usuário ${usuarioId}`);
+    const usuarioId = this.currentUserId || sala.criadorId || 1;
+    console.log(`Deletando sala ${sala.id} com usuário ${usuarioId}`);
 
     this.salaService.deletarSala(sala.id!, usuarioId).subscribe({
       next: () => {
@@ -99,50 +101,23 @@ export class SalaListComponent implements OnInit {
       },
       error: (err: Error) => {
         console.error('Erro ao deletar sala:', err);
-        if (sala.criadorId && sala.criadorId !== usuarioId) {
-          console.log(`Tentando novamente com criadorId ${sala.criadorId}`);
-          this.salaService.deletarSala(sala.id!, sala.criadorId!).subscribe({
-            next: () => {
-              this.salas = this.salas.filter(s => s.id !== sala.id);
-              alert('Sala deletada com sucesso!');
-            },
-            error: (err2: Error) => {
-              this.erro = err2.message || 'Erro ao deletar sala';
-              alert('Erro ao deletar: ' + this.erro);
-            }
-          });
-        } else {
-          this.erro = err.message || 'Erro ao deletar sala';
-          alert('Erro ao deletar: ' + this.erro);
-        }
+        alert('Erro ao deletar: ' + (err.message || 'Erro desconhecido'));
       }
     });
   }
 
-
-
-  private getCurrentUserId(): number {
+  private getCurrentUserId(): number | null {
+    if (!isPlatformBrowser(this.platformId)) return null;
+    
     try {
-      // checa várias chaves possíveis no localStorage para compatibilidade
-      const usuarioStr = localStorage.getItem('usuario');
-      if (usuarioStr) {
-        const obj = JSON.parse(usuarioStr);
-        if (obj && (obj.id || obj.id === 0)) return Number(obj.id) || 0;
-      }
-
-      const usuarioIdStr = localStorage.getItem('usuarioId') || localStorage.getItem('userId') || localStorage.getItem('user');
-      if (usuarioIdStr) {
-        // pode ser um número direto ou um JSON
-        const parsed = Number(usuarioIdStr);
-        if (!isNaN(parsed)) return parsed;
-        try {
-          const maybe = JSON.parse(usuarioIdStr);
-          if (maybe && (maybe.id || maybe.id === 0)) return Number(maybe.id) || 0;
-        } catch (e) { /* ignore */ }
+      const usuarioId = localStorage.getItem('usuarioId');
+      if (usuarioId) {
+        const parsed = parseInt(usuarioId);
+        return !isNaN(parsed) ? parsed : null;
       }
     } catch (e) {
-      // ignore
+      console.error('Erro ao obter usuarioId:', e);
     }
-    return 1;
+    return null;
   }
 }

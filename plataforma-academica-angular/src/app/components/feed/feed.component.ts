@@ -56,10 +56,12 @@ export class FeedComponent implements OnInit {
     
     observable.subscribe({
       next: (postagens) => {
+        console.log('Postagens carregadas:', postagens);
         this.postagens = this.filtro === 'curtidas' ? postagens : postagens.sort((a, b) => (b.id || 0) - (a.id || 0));
         this.carregando = false;
       },
-      error: () => {
+      error: (err) => {
+        console.error('Erro ao carregar postagens:', err);
         this.carregando = false;
       }
     });
@@ -89,6 +91,7 @@ export class FeedComponent implements OnInit {
     if (!this.mostrarForm) {
       this.novaPostagem = { titulo: '', conteudo: '' };
       this.previewImagem = null;
+      this.selectedFile = null;
     }
   }
 
@@ -99,7 +102,6 @@ export class FeedComponent implements OnInit {
       const leitor = new FileReader();
       leitor.onload = (e: any) => {
         this.previewImagem = e.target.result as string;
-        // mantemos o preview como dataURL para visualização
       };
       leitor.readAsDataURL(arquivo);
     } else {
@@ -127,45 +129,49 @@ export class FeedComponent implements OnInit {
 
     this.enviando = true;
     this.novaPostagem.autorId = this.currentUserId;
-    // plataformaId é opcional
 
-    // Se houver arquivo selecionado, enviar como FormData
     if (this.selectedFile) {
       const form = new FormData();
       form.append('imagem', this.selectedFile, this.selectedFile.name);
       form.append('titulo', this.novaPostagem.titulo);
       form.append('conteudo', this.novaPostagem.conteudo);
-      if (this.novaPostagem.autorId) form.append('autorId', String(this.novaPostagem.autorId));
-      if (this.novaPostagem.plataformaId) form.append('plataformaId', String(this.novaPostagem.plataformaId));
+      form.append('autorId', String(this.novaPostagem.autorId));
 
+      console.log('Publicando com imagem...');
       this.postagemService.publicarComImagem(form).subscribe({
-        next: () => {
+        next: (res) => {
+          console.log('Postagem criada:', res);
+          alert('Postagem publicada com sucesso!');
           this.novaPostagem = { titulo: '', conteudo: '' };
           this.previewImagem = null;
           this.selectedFile = null;
           this.mostrarForm = false;
-          this.carregarPostagens();
           this.enviando = false;
+          setTimeout(() => this.carregarPostagens(), 500);
         },
-        error: () => {
-          alert('Erro ao publicar');
+        error: (err) => {
+          console.error('Erro ao publicar:', err);
+          alert('Erro ao publicar postagem');
           this.enviando = false;
         }
       });
       return;
     }
 
-    // Sem arquivo: enviar JSON
+    console.log('Publicando sem imagem...');
     this.postagemService.publicar(this.novaPostagem).subscribe({
-      next: () => {
+      next: (res) => {
+        console.log('Postagem criada:', res);
+        alert('Postagem publicada com sucesso!');
         this.novaPostagem = { titulo: '', conteudo: '' };
         this.previewImagem = null;
         this.mostrarForm = false;
-        this.carregarPostagens();
         this.enviando = false;
+        setTimeout(() => this.carregarPostagens(), 500);
       },
-      error: () => {
-        alert('Erro ao publicar');
+      error: (err) => {
+        console.error('Erro ao publicar:', err);
+        alert('Erro ao publicar postagem');
         this.enviando = false;
       }
     });

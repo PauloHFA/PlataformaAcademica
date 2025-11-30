@@ -2,11 +2,12 @@ import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { UsuarioService } from '../../services/usuario.service';
+import { NotificacoesComponent } from '../notificacoes/notificacoes.component';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, NotificacoesComponent],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
@@ -56,4 +57,3 @@ export class SidebarComponent implements OnInit {
     this.router.navigate([rota]);
   }
 }
-

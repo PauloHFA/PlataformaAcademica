@@ -63,6 +63,11 @@
     </ul>
   </nav>
 
+  <!-- Notificações -->
+  <div class="sidebar-notificacoes" *ngIf="isOpen">
+    <app-notificacoes></app-notificacoes>
+  </div>
+
   <!-- Logout -->
   <div class="sidebar-footer">
     <button (click)="logout()" class="logout-btn">

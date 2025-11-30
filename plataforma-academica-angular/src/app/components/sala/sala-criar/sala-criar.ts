@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, PLATFORM_ID, Inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators, FormGroup } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { SalaService } from '../../../services/sala.service';
@@ -14,11 +14,15 @@ import { SalaDeAula } from '../../../models/sala.model';
 })
 export class SalaCriarComponent {
   form!: FormGroup;
-
   carregando = false;
   mensagem = '';
 
-  constructor(private fb: FormBuilder, private salaService: SalaService, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private salaService: SalaService,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
     this.form = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(3)]]
     });
@@ -31,20 +35,24 @@ export class SalaCriarComponent {
       nome: this.form.value.nome
     };
 
-    // Para teste inicial, usamos id do usuário logado se existir
     let criadorId = 0;
-    try {
-      const usuarioStr = localStorage.getItem('usuario');
-      if (usuarioStr) criadorId = JSON.parse(usuarioStr).id || 0;
-    } catch (e) { /* ignore */ }
+    if (isPlatformBrowser(this.platformId)) {
+      const usuarioId = localStorage.getItem('usuarioId');
+      if (usuarioId) {
+        criadorId = parseInt(usuarioId);
+      }
+    }
 
+    console.log('Criando sala com criadorId:', criadorId);
     this.salaService.criarSala(sala, criadorId).subscribe({
       next: (created) => {
-        this.mensagem = 'Sala criada com sucesso.';
+        console.log('Sala criada:', created);
+        alert('Sala criada com sucesso!');
         this.carregando = false;
         this.router.navigate(['/salas']);
       },
       error: (err: Error) => {
+        console.error('Erro ao criar sala:', err);
         this.mensagem = err.message || 'Erro ao criar sala';
         this.carregando = false;
       }

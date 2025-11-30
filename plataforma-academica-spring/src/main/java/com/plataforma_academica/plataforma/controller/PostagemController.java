@@ -155,7 +155,7 @@ public class PostagemController {
             @RequestParam String titulo,
             @RequestParam String conteudo,
             @RequestParam Long autorId,
-            @RequestParam Long plataformaId,
+            @RequestParam(required = false) Long plataformaId,
             @RequestPart(required = false) MultipartFile imagem
         ) {
         PostagemDTO dto = new PostagemDTO();

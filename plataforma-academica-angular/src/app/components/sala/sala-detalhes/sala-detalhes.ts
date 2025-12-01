@@ -33,13 +33,15 @@ export class SalaDetalhesComponent implements OnInit {
       this.usuarioId = this.getCurrentUserId();
     }
 
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (!id) {
-      this.erro = 'ID da sala inválido';
-      this.carregando = false;
-      return;
-    }
-    this.carregarDados(id);
+    this.route.paramMap.subscribe(params => {
+      const id = Number(params.get('id'));
+      if (!id) {
+        this.erro = 'ID da sala inválido';
+        this.carregando = false;
+        return;
+      }
+      this.carregarDados(id);
+    });
   }
 
   carregarDados(id: number): void {

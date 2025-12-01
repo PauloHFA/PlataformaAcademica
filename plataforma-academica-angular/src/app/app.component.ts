@@ -1,16 +1,17 @@
 import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { RouterOutlet, RouterModule, Router, NavigationEnd } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { SidebarComponent } from "./components/sidebar/sidebar.component";
+import { NavbarComponent } from "./components/navbar/navbar.component";
+import { SalaSidebarComponent } from "./components/sala-sidebar/sala-sidebar.component";
+import { SalaNavbarComponent } from "./components/sala-navbar/sala-navbar.component";
 import { ThemeToggleComponent } from "./components/theme-toggle/theme-toggle.component";
-import { NotificacoesComponent } from "./components/notificacoes/notificacoes.component";
 import { ThemeService } from "./services/theme.service";
 import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterOutlet, SidebarComponent, ThemeToggleComponent, NotificacoesComponent],
+  imports: [CommonModule, RouterModule, RouterOutlet, NavbarComponent, SalaSidebarComponent, SalaNavbarComponent, ThemeToggleComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -18,6 +19,7 @@ export class AppComponent implements OnInit {
   title = 'ProjetoFinal';
   isLoggedIn = false;
   isHomePage = true;
+  isSalaPage = false;
 
   constructor(
     private router: Router,
@@ -26,14 +28,13 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Verificar login inicial (apenas no navegador)
     this.checkLoginStatus();
     
-    // Verificar login a cada navegação
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
         this.checkLoginStatus();
+        this.isSalaPage = this.router.url.includes('/salas');
         this.isHomePage = this.router.url === '/' || this.router.url === '/home';
       });
   }
@@ -51,4 +52,3 @@ export class AppComponent implements OnInit {
     }
   }
 }
-

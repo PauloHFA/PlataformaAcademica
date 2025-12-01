@@ -1,11 +1,18 @@
-<!-- Botão de toggle do tema -->
-<app-theme-toggle></app-theme-toggle>
+<!-- Navbar no topo (não aparece em salas) -->
+<app-navbar *ngIf="isLoggedIn && !isSalaPage"></app-navbar>
 
-<!-- Exibir Sidebar apenas se logado -->
-<app-sidebar *ngIf="isLoggedIn"></app-sidebar>
+<!-- Layout para salas com sidebar -->
+<div *ngIf="isSalaPage && isLoggedIn" class="sala-layout">
+  <app-sala-navbar></app-sala-navbar>
+  <div class="sala-layout-main">
+    <app-sala-sidebar></app-sala-sidebar>
+    <div class="sala-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
 
-<!-- Container principal com margem se sidebar estiver visível -->
-<div [class.with-sidebar]="isLoggedIn">
-  <!-- Onde os componentes vão ser renderizados -->
+<!-- Layout normal para outras páginas -->
+<div *ngIf="!isSalaPage" [class.with-navbar]="isLoggedIn">
   <router-outlet></router-outlet>
 </div>

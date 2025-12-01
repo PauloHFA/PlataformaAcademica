@@ -1,21 +1,21 @@
-/* Container principal */
-.with-sidebar {
-  margin-left: 250px;
-  transition: margin-left 0.3s ease;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  min-height: 100vh;
+.with-navbar {
+  margin-top: 70px;
 }
 
-/* Ajuste para telas menores */
-@media (max-width: 768px) {
-  .with-sidebar {
-    margin-left: 0;
-  }
+.sala-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--bg-color);
 }
 
-/* Garantir que o router-outlet use o tema */
-router-outlet + * {
-  background-color: var(--bg-color);
-  color: var(--text-color);
+.sala-layout-main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sala-content {
+  flex: 1;
+  overflow-y: auto;
 }

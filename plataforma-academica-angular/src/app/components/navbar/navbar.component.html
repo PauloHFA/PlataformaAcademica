@@ -1,0 +1,77 @@
+<nav class="navbar">
+  <div class="navbar-container">
+    <!-- Menu Sanduíche -->
+    <div class="menu-dropdown">
+      <button class="menu-btn" (click)="toggleMenuDropdown()">
+        <span class="icon">☰</span>
+      </button>
+      <div *ngIf="menuDropdownAberto" class="menu-items" (mouseleave)="fecharMenuDropdown()">
+        <a routerLink="/salas" class="menu-item" (click)="fecharMenuDropdown()">
+          <span class="icon">📚</span>
+          Salas
+        </a>
+        <a routerLink="/feed" class="menu-item" (click)="fecharMenuDropdown()">
+          <span class="icon">📰</span>
+          Feed
+        </a>
+        <a routerLink="/amigos" class="menu-item" (click)="fecharMenuDropdown()">
+          <span class="icon">👥</span>
+          Amigos
+        </a>
+        <a routerLink="/usuarios" class="menu-item" (click)="fecharMenuDropdown()">
+          <span class="icon">👤</span>
+          Usuários
+        </a>
+      </div>
+    </div>
+
+    <!-- Logo -->
+    <div class="navbar-logo">
+      <a routerLink="/home" class="logo-link">
+        <span class="logo-icon">🎓</span>
+        <span class="logo-text">Plataforma Acadêmica</span>
+      </a>
+    </div>
+
+    <!-- Direita: Notificações, Tema e Perfil -->
+    <div class="navbar-right">
+      <app-notificacoes></app-notificacoes>
+      <app-theme-toggle></app-theme-toggle>
+
+      <!-- Dropdown do Perfil -->
+      <div class="profile-dropdown">
+        <button class="profile-btn" (click)="toggleDropdown()">
+          <span class="avatar">{{ (usuarioNome || 'U')[0].toUpperCase() }}</span>
+          <span class="dropdown-arrow">▼</span>
+        </button>
+
+        <div *ngIf="dropdownAberto" class="dropdown-menu" (mouseleave)="fecharDropdown()">
+          <div class="dropdown-header">
+            <div class="user-info">
+              <p class="user-name">{{ usuarioNome }}</p>
+              <p class="user-email">{{ usuarioEmail }}</p>
+            </div>
+          </div>
+
+          <div class="dropdown-divider"></div>
+
+          <a routerLink="/perfil" class="dropdown-item" (click)="fecharDropdown()">
+            <span class="icon">👤</span>
+            Meu Perfil
+          </a>
+          <a routerLink="/perfil-editar" class="dropdown-item" (click)="fecharDropdown()">
+            <span class="icon">✏️</span>
+            Editar Perfil
+          </a>
+
+          <div class="dropdown-divider"></div>
+
+          <button (click)="logout()" class="dropdown-item logout-btn">
+            <span class="icon">🚪</span>
+            Sair
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

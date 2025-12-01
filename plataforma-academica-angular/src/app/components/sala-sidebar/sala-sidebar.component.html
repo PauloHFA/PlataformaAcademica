@@ -1,0 +1,40 @@
+<div class="sala-sidebar">
+  <!-- Header -->
+  <div class="sidebar-header">
+    <h2>🎓 Salas</h2>
+  </div>
+
+  <!-- Botões de Ação -->
+  <div class="botoes-acao">
+    <button (click)="criarSala()" class="btn-acao btn-criar">
+      <span class="icon">➕</span>
+      Criar Sala
+    </button>
+    <button (click)="entrarEmSala()" class="btn-acao btn-entrar">
+      <span class="icon">🚪</span>
+      Entrar em Sala
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="carregando" class="loading">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Lista de Salas -->
+  <div *ngIf="!carregando" class="salas-list">
+    <button 
+      *ngFor="let sala of salas" 
+      (click)="selecionarSala(sala.id!)"
+      class="sala-item"
+    >
+      <span class="sala-icon">📚</span>
+      <span class="sala-nome">{{ sala.nome }}</span>
+    </button>
+  </div>
+
+  <!-- Vazio -->
+  <div *ngIf="!carregando && !salas.length" class="empty">
+    <p>Nenhuma sala</p>
+  </div>
+</div>

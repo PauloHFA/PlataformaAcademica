@@ -38,6 +38,12 @@
       <div *ngIf="atividade.tipoDocumentoSubmissao" class="info-row">
         <strong>Tipo de documento:</strong> {{ atividade.tipoDocumentoSubmissao }}
       </div>
+      <div *ngIf="atividade.documentoUrl" class="info-row documento-anexo">
+        <strong>📎 Documento Anexado:</strong>
+        <a [href]="'http://localhost:8080' + atividade.documentoUrl" target="_blank" class="btn-download">
+          📄 Baixar Documento
+        </a>
+      </div>
     </div>
 
     <!-- Minha Submissão -->

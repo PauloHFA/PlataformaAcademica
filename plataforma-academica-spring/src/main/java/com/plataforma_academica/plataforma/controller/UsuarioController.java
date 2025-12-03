@@ -63,10 +63,13 @@ public class UsuarioController {
      */
     @PostMapping("/cadastro")
     public ResponseEntity<?> cadastrar(@RequestBody Usuario usuario) {
+        System.out.println("[POST /api/usuarios/cadastro] Recebido: email=" + usuario.getEmail());
         try {
             Usuario novoUsuario = usuarioService.cadastrarUsuario(usuario);
+            System.out.println("[POST /api/usuarios/cadastro] Sucesso: ID=" + novoUsuario.getId());
             return ResponseEntity.ok(UsuarioMapper.toResponse(novoUsuario));
         } catch (IllegalArgumentException e) {
+            System.out.println("[POST /api/usuarios/cadastro] Erro: " + e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -90,11 +93,14 @@ public class UsuarioController {
      */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Usuario usuario) {
+        System.out.println("[POST /api/usuarios/login] Tentativa: email=" + usuario.getEmail());
         Optional<Usuario> usuarioLogado = usuarioService.login(usuario.getEmail(), usuario.getSenha());
 
         if (usuarioLogado.isPresent()) {
+            System.out.println("[POST /api/usuarios/login] Sucesso: ID=" + usuarioLogado.get().getId());
             return ResponseEntity.ok(UsuarioMapper.toResponse(usuarioLogado.get()));
         } else {
+            System.out.println("[POST /api/usuarios/login] Falha: credenciais inválidas");
             return ResponseEntity.status(401).body("Email ou senha incorretos");
         }
     }
@@ -114,12 +120,15 @@ public class UsuarioController {
      */
     @GetMapping("/buscarporid")
     public ResponseEntity<UsuarioResponseDTO> buscarPorId(@RequestParam Long id) {
+        System.out.println("[GET /api/usuarios/buscarporid] ID=" + id);
         Usuario usuario = usuarioService.buscarPorId(id);
 
         if (usuario == null) {
+            System.out.println("[GET /api/usuarios/buscarporid] Não encontrado");
             return ResponseEntity.notFound().build();
         }
 
+        System.out.println("[GET /api/usuarios/buscarporid] Retornando: " + usuario.getNome());
         return ResponseEntity.ok(UsuarioMapper.toResponse(usuario));
     }
 
@@ -136,10 +145,9 @@ public class UsuarioController {
      */
     @GetMapping(value = "", produces = "application/json")
     public ResponseEntity<List<UsuarioResponseDTO>> listarTodos() {
-        System.out.println("=== ENDPOINT /api/usuarios CHAMADO ===");
+        System.out.println("[GET /api/usuarios] Listando todos");
         List<Usuario> usuarios = usuarioService.listarTodos();
-        System.out.println("Total de usuários encontrados: " + usuarios.size());
-        usuarios.forEach(u -> System.out.println("Usuário: ID=" + u.getId() + ", Nome=" + u.getNome() + ", Email=" + u.getEmail()));
+        System.out.println("[GET /api/usuarios] Total: " + usuarios.size());
         return ResponseEntity.ok(usuarios.stream().map(UsuarioMapper::toResponse).toList());
     }
 }

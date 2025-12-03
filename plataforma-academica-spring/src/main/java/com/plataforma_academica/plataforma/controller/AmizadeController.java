@@ -61,9 +61,10 @@ public class AmizadeController {
     public ResponseEntity<AmizadeResponseDTO> enviarSolicitacao(
             @Valid @RequestBody AmizadeDTO dto
     ) {
+        System.out.println("[POST /api/amizades] Solicitante=" + dto.getSolicitanteId() + ", Destinatário=" + dto.getDestinatarioId());
         Amizade amizade = amizadeService.enviarSolicitacao(dto);
         AmizadeResponseDTO response = AmizadeMapper.toResponse(amizade);
-
+        System.out.println("[POST /api/amizades] Sucesso: ID=" + amizade.getId() + ", Status=" + amizade.getStatus());
         return ResponseEntity
                 .created(URI.create("/api/amizades/" + amizade.getId()))
                 .body(response);
@@ -89,7 +90,9 @@ public class AmizadeController {
             @PathVariable Long id,
             @RequestParam String acao
     ) {
+        System.out.println("[PATCH /api/amizades/" + id + "/resposta] Ação=" + acao);
         Amizade amizade = amizadeService.responderSolicitacao(id, acao);
+        System.out.println("[PATCH /api/amizades/" + id + "/resposta] Novo status=" + amizade.getStatus());
         return ResponseEntity.ok(AmizadeMapper.toResponse(amizade));
     }
 
@@ -121,7 +124,9 @@ public class AmizadeController {
     public ResponseEntity<List<AmizadeResponseDTO>> listarPendentes(
             @PathVariable Long usuarioId
     ) {
+        System.out.println("[GET /api/amizades/pendentes/" + usuarioId + "] Buscando pendentes");
         List<Amizade> lista = amizadeService.listarSolicitacoesPendentes(usuarioId);
+        System.out.println("[GET /api/amizades/pendentes/" + usuarioId + "] Total: " + lista.size());
         return ResponseEntity.ok(
                 lista.stream().map(AmizadeMapper::toResponse).toList()
         );
@@ -140,7 +145,9 @@ public class AmizadeController {
     public ResponseEntity<List<AmizadeResponseDTO>> listarAmigos(
             @PathVariable Long usuarioId
     ) {
+        System.out.println("[GET /api/amizades/amigos/" + usuarioId + "] Listando amigos");
         List<Amizade> lista = amizadeService.listarAmigos(usuarioId);
+        System.out.println("[GET /api/amizades/amigos/" + usuarioId + "] Total: " + lista.size());
         return ResponseEntity.ok(
                 lista.stream().map(AmizadeMapper::toResponse).toList()
         );

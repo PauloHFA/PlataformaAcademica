@@ -14,5 +14,6 @@ export interface Atividade {
   autorId?: number;
   autorNome?: string;
   salaNome?: string;
+  documentoUrl?: string;
 }
 

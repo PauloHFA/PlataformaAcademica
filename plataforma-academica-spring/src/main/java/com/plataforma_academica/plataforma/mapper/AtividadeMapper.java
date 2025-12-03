@@ -20,7 +20,9 @@ public class AtividadeMapper {
         atividade.setTitulo(dto.getTitulo());
         atividade.setDescricao(dto.getDescricao());
         atividade.setTipoDocumentoSubmissao(dto.getTipoDocumentoSubmissao());
-        atividade.setDataEntrega(dto.getDataEntrega());
+        if (dto.getDataEntrega() != null) {
+            atividade.setDataEntrega(java.time.LocalDate.parse(dto.getDataEntrega()));
+        }
         atividade.setPontos(dto.getPontos());
 
         atividade.setAutor(autor);      // entidade carregada no service
@@ -41,8 +43,11 @@ public class AtividadeMapper {
         response.setTitulo(entidade.getTitulo());
         response.setDescricao(entidade.getDescricao());
         response.setTipoDocumentoSubmissao(entidade.getTipoDocumentoSubmissao());
-        response.setDataEntrega(entidade.getDataEntrega());
+        if (entidade.getDataEntrega() != null) {
+            response.setDataEntrega(entidade.getDataEntrega().toString());
+        }
         response.setPontos(entidade.getPontos());
+        response.setDocumentoUrl(entidade.getDocumentoUrl());
 
         if (entidade.getAutor() != null) {
             response.setAutorId(entidade.getAutor().getId());
@@ -64,7 +69,9 @@ public class AtividadeMapper {
         entidade.setTitulo(dto.getTitulo());
         entidade.setDescricao(dto.getDescricao());
         entidade.setTipoDocumentoSubmissao(dto.getTipoDocumentoSubmissao());
-        entidade.setDataEntrega(dto.getDataEntrega());
+        if (dto.getDataEntrega() != null) {
+            entidade.setDataEntrega(java.time.LocalDate.parse(dto.getDataEntrega()));
+        }
         entidade.setPontos(dto.getPontos());
     }
 }

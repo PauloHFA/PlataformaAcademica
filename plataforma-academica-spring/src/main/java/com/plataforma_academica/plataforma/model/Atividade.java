@@ -35,6 +35,9 @@ public class Atividade {
 
     private Double pontos;
 
+    // URL do documento anexado pelo professor
+    private String documentoUrl;
+
     @OneToMany(mappedBy = "atividade", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("comentarios-atividade")
     private List<Comentario> comentarios;

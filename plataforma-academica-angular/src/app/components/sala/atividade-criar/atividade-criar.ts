@@ -17,6 +17,8 @@ export class AtividadeCriarComponent {
   carregando = false;
   mensagem = '';
   private salaId: number | null = null;
+  selectedFile: File | null = null;
+  previewDocumento: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -55,6 +57,31 @@ export class AtividadeCriarComponent {
       return;
     }
 
+    if (this.selectedFile) {
+      const formData = new FormData();
+      formData.append('documento', this.selectedFile);
+      formData.append('titulo', this.form.value.titulo);
+      formData.append('descricao', this.form.value.descricao);
+      formData.append('tipoDocumentoSubmissao', this.form.value.tipoDocumentoSubmissao || 'PDF');
+      formData.append('dataEntrega', this.form.value.dataEntrega);
+      formData.append('pontos', this.form.value.pontos || '0');
+      formData.append('salaId', this.salaId.toString());
+      formData.append('autorId', criadorId.toString());
+
+      this.salaService.criarAtividadeComDocumento(this.salaId, criadorId, formData).subscribe({
+        next: () => {
+          this.mensagem = 'Atividade criada com sucesso!';
+          this.carregando = false;
+          setTimeout(() => this.router.navigate([`/salas/${this.salaId}`]), 1500);
+        },
+        error: (err: any) => {
+          this.mensagem = err.error?.message || 'Erro ao criar atividade';
+          this.carregando = false;
+        }
+      });
+      return;
+    }
+
     const atividade: Atividade = {
       titulo: this.form.value.titulo,
       descricao: this.form.value.descricao,
@@ -76,5 +103,18 @@ export class AtividadeCriarComponent {
         this.carregando = false;
       }
     });
+  }
+
+  onDocumentoSelecionado(event: any): void {
+    const arquivo: File = event.target.files && event.target.files[0];
+    if (arquivo) {
+      this.selectedFile = arquivo;
+      this.previewDocumento = arquivo.name;
+    }
+  }
+
+  removerDocumento(): void {
+    this.selectedFile = null;
+    this.previewDocumento = null;
   }
 }

@@ -42,6 +42,27 @@
       />
     </div>
 
+    <div class="form-group">
+      <label>📎 Anexar Documento (Opcional)</label>
+      <div class="upload-area">
+        <input 
+          type="file" 
+          (change)="onDocumentoSelecionado($event)"
+          id="doc-input"
+          hidden
+        />
+        <label for="doc-input" class="upload-label">
+          📄 Escolher Arquivo
+        </label>
+        <div *ngIf="previewDocumento" class="doc-preview">
+          <span>{{ previewDocumento }}</span>
+          <button type="button" (click)="removerDocumento()" class="btn-remove">
+            ✖ Remover
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div class="actions">
       <button type="submit" [disabled]="carregando || form.invalid" class="btn-primary">
         {{ carregando ? 'Criando...' : '✅ Criar Atividade' }}

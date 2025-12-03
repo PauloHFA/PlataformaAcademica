@@ -11,7 +11,9 @@ import com.plataforma_academica.plataforma.model.SaladeAula;
 import com.plataforma_academica.plataforma.model.Usuario;
 import com.plataforma_academica.plataforma.service.SaladeAulaService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -86,9 +88,11 @@ public class SaladeAulaController {
     @PostMapping("/criar/{criadorId}")
     public ResponseEntity<SalaDeAulaResponseDTO> criarSala(@RequestBody SalaDeAulaDTO salaDTO,
                                                 @PathVariable Long criadorId) {
+        System.out.println("[POST /api/saladeaula/criar] Criador=" + criadorId + ", Nome=" + salaDTO.getNome());
         SaladeAula sala = new SaladeAula();
         sala.setNome(salaDTO.getNome());
         SaladeAula salaCriada = salaService.criarSala(sala, criadorId);
+        System.out.println("[POST /api/saladeaula/criar] Sucesso: ID=" + salaCriada.getId() + ", Código=" + salaCriada.getCodigoSala());
         return ResponseEntity.ok(SalaDeAulaMapper.toResponse(salaCriada));
     }
 
@@ -97,7 +101,9 @@ public class SaladeAulaController {
      */
     @GetMapping
     public ResponseEntity<List<SalaDeAulaResponseDTO>> listarSalas() {
+        System.out.println("[GET /api/saladeaula] Listando todas as salas");
         List<SaladeAula> salas = salaService.listarTodasSalas();
+        System.out.println("[GET /api/saladeaula] Total: " + salas.size());
         return ResponseEntity.ok(salas.stream().map(SalaDeAulaMapper::toResponse).toList());
     }
 
@@ -106,7 +112,9 @@ public class SaladeAulaController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<SalaDeAulaResponseDTO> buscarPorId(@PathVariable Long id) {
+        System.out.println("[GET /api/saladeaula/" + id + "] Buscando sala");
         SaladeAula sala = salaService.buscarSalaPorId(id);
+        System.out.println("[GET /api/saladeaula/" + id + "] Retornando: " + sala.getNome());
         return ResponseEntity.ok(SalaDeAulaMapper.toResponse(sala));
     }
 
@@ -187,13 +195,39 @@ public class SaladeAulaController {
      * @param creatorId ID do criador
      * @param atividadeDTO objeto com título, descrição, etc.
      */
-    @PostMapping("/{salaId}/atividade/criar/{creatorId}")
+    @PostMapping(value = "/{salaId}/atividade/criar/{creatorId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AtividadeResponseDTO> criarAtividade(
             @PathVariable Long salaId,
             @PathVariable Long creatorId,
             @RequestBody AtividadeDTO atividadeDTO
     ) {
+        System.out.println("[POST /api/saladeaula/" + salaId + "/atividade/criar] Título=" + atividadeDTO.getTitulo());
         Atividade atividade = salaService.cadastrarAtividade(salaId, atividadeDTO, creatorId);
+        System.out.println("[POST /api/saladeaula/" + salaId + "/atividade/criar] Sucesso: ID=" + atividade.getId());
+        return ResponseEntity.ok(AtividadeMapper.toResponse(atividade));
+    }
+
+    @PostMapping(value = "/{salaId}/atividade/criar/{creatorId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<AtividadeResponseDTO> criarAtividadeComDocumento(
+            @PathVariable Long salaId,
+            @PathVariable Long creatorId,
+            @RequestParam String titulo,
+            @RequestParam String descricao,
+            @RequestParam(required = false) String tipoDocumentoSubmissao,
+            @RequestParam String dataEntrega,
+            @RequestParam(required = false) Double pontos,
+            @RequestPart(required = false) MultipartFile documento
+    ) {
+        System.out.println("[POST /api/saladeaula/" + salaId + "/atividade/criar] Com documento: " + (documento != null ? documento.getOriginalFilename() : "sem arquivo"));
+        AtividadeDTO dto = new AtividadeDTO();
+        dto.setTitulo(titulo);
+        dto.setDescricao(descricao);
+        dto.setTipoDocumentoSubmissao(tipoDocumentoSubmissao);
+        dto.setDataEntrega(dataEntrega);
+        dto.setPontos(pontos);
+        
+        Atividade atividade = salaService.cadastrarAtividadeComDocumento(salaId, dto, creatorId, documento);
+        System.out.println("[POST /api/saladeaula/" + salaId + "/atividade/criar] Sucesso: ID=" + atividade.getId() + ", Doc=" + atividade.getDocumentoUrl());
         return ResponseEntity.ok(AtividadeMapper.toResponse(atividade));
     }
 

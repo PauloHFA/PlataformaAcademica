@@ -10,14 +10,15 @@ public class AtividadeResponseDTO {
     private String titulo;
     private String descricao;
     private String tipoDocumentoSubmissao;
-    private LocalDate dataEntrega;
+    private String dataEntrega;
     private Double pontos;
+    private String documentoUrl;
 
     // Informações da sala
     private Long salaId;
-    private String salaNome;     // opcional, mas recomendado
+    private String salaNome;
 
     // Informações do autor
     private Long autorId;
-    private String autorNome;    // opcional e útil para o front
+    private String autorNome;
 }

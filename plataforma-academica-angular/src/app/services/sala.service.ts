@@ -46,6 +46,10 @@ export class SalaService {
     return this.http.post<Atividade>(`${this.baseUrl}/${salaId}/atividade/criar/${criadorId}`, atividade).pipe(catchError(this.handleError));
   }
 
+  criarAtividadeComDocumento(salaId: number, criadorId: number, formData: FormData): Observable<Atividade> {
+    return this.http.post<Atividade>(`${this.baseUrl}/${salaId}/atividade/criar/${criadorId}`, formData).pipe(catchError(this.handleError));
+  }
+
   listarAtividades(salaId: number): Observable<Atividade[]> {
     return this.http.get<Atividade[]>(`${this.baseUrl}/${salaId}/atividades`).pipe(catchError(this.handleError));
   }

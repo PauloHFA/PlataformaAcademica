@@ -31,6 +31,9 @@ public interface SaladeAulaService {
 
     // Cadastra uma nova atividade (apenas o criador da sala pode fazer isso)
     Atividade cadastrarAtividade(Long saladeAulaId, AtividadeDTO atividadeDTO, Long creatorId);
+    
+    // Cadastra atividade com documento anexado
+    Atividade cadastrarAtividadeComDocumento(Long saladeAulaId, AtividadeDTO atividadeDTO, Long creatorId, org.springframework.web.multipart.MultipartFile documento);
 
     // Busca uma atividade pelo ID
     Atividade buscarAtividadePorId(Long atividadeId);

@@ -68,7 +68,10 @@ public class PostagemController {
      */
     @GetMapping
     public ResponseEntity<List<PostagemResponseDTO>> listar() {
-        return ResponseEntity.ok(postagemService.listarTodasResponse());
+        System.out.println("[GET /api/postagens] Listando todas");
+        List<PostagemResponseDTO> postagens = postagemService.listarTodasResponse();
+        System.out.println("[GET /api/postagens] Total: " + postagens.size());
+        return ResponseEntity.ok(postagens);
     }
 
     // =========================================================================
@@ -142,8 +145,9 @@ public class PostagemController {
      */
     @PostMapping
     public ResponseEntity<PostagemResponseDTO> publicar(@Valid @RequestBody PostagemDTO request) {
+        System.out.println("[POST /api/postagens] Título=" + request.getTitulo() + ", Autor=" + request.getAutorId());
         PostagemResponseDTO salvo = postagemService.publicarResponse(request);
-
+        System.out.println("[POST /api/postagens] Sucesso: ID=" + salvo.getId());
         return ResponseEntity
                 .created(URI.create("/api/postagens/" + salvo.getId()))
                 .body(salvo);
@@ -223,7 +227,9 @@ public class PostagemController {
             @PathVariable Long id,
             @RequestParam Long usuarioId
     ) {
+        System.out.println("[POST /api/postagens/" + id + "/curtir] Usuario=" + usuarioId);
         PostagemResponseDTO postagem = postagemService.curtir(id, usuarioId);
+        System.out.println("[POST /api/postagens/" + id + "/curtir] Curtidas=" + postagem.getCurtidas());
         return ResponseEntity.ok(postagem);
     }
 

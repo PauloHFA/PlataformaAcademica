@@ -11,7 +11,7 @@ public class AtividadeDTO {
     private String titulo;
     private String descricao;
     private String tipoDocumentoSubmissao;
-    private LocalDate dataEntrega;
+    private String dataEntrega;
     private Double pontos;
 
     private Long salaId;

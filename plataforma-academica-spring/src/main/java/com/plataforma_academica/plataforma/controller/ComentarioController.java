@@ -48,8 +48,7 @@ public class ComentarioController {
 
     @PostMapping
     public ResponseEntity<Comentario> salvar(@RequestBody Comentario comentario) {
-        System.out.println("Recebido comentário: " + comentario.getConteudo());
-        System.out.println("Tipo destino: " + comentario.getTipoDestino());
+        System.out.println("[POST /comentario] Tipo=" + comentario.getTipoDestino() + ", Autor=" + (comentario.getAutor() != null ? comentario.getAutor().getId() : "null"));
         
         if (comentario.getSaladeAula() != null && comentario.getSaladeAula().getId() != null) {
             SaladeAula sala = salaRepository.findById(comentario.getSaladeAula().getId()).orElseThrow(() -> new RuntimeException("Sala não encontrada"));
@@ -67,6 +66,7 @@ public class ComentarioController {
         }
         
         Comentario salvo = comentarioService.salvar(comentario);
+        System.out.println("[POST /comentario] Sucesso: ID=" + salvo.getId());
         URI location = URI.create("/comentario/" + salvo.getId());
         return ResponseEntity.created(location).body(salvo);
     }
@@ -123,7 +123,9 @@ public class ComentarioController {
 
     @GetMapping("/postagem/{postagemId}")
     public ResponseEntity<List<Comentario>> listarComentariosPostagem(@PathVariable Long postagemId) {
+        System.out.println("[GET /comentario/postagem/" + postagemId + "] Buscando comentários");
         List<Comentario> comentarios = comentarioService.listarComentariosPorPostagem(postagemId);
+        System.out.println("[GET /comentario/postagem/" + postagemId + "] Total: " + comentarios.size());
         return ResponseEntity.ok(comentarios);
     }
 }

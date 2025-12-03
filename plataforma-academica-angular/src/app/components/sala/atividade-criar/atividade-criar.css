@@ -160,6 +160,62 @@ textarea.form-control {
   content: '✅ ';
 }
 
+.upload-area {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.upload-label {
+  display: inline-block;
+  padding: 12px 20px;
+  background: var(--primary-color);
+  color: white;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  width: fit-content;
+}
+
+.upload-label:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.doc-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  background: var(--hover-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+.doc-preview span {
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.btn-remove {
+  padding: 6px 12px;
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--accent-red);
+  border: 1px solid var(--accent-red);
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-remove:hover {
+  background: var(--accent-red);
+  color: white;
+}
+
 @media (max-width: 768px) {
   .atividade-criar-container {
     padding: 20px 15px;

@@ -203,4 +203,48 @@ public class SaladeAulaServiceImpl implements SaladeAulaService{
 
         atividadeRepository.delete(atividade);
     }
+    
+    @Override
+    @Transactional
+    public Atividade cadastrarAtividadeComDocumento(Long saladeAulaId, AtividadeDTO atividadeDTO, Long creatorId, org.springframework.web.multipart.MultipartFile documento) {
+        SaladeAula sala = verificarCriador(saladeAulaId, creatorId);
+        Usuario autor = usuarioRepository.findById(creatorId).orElseThrow(() -> new EntityNotFoundException("Autor não encontrado."));
+        
+        Atividade atividade = AtividadeMapper.toEntity(atividadeDTO, autor, sala);
+        
+        if (documento != null && !documento.isEmpty()) {
+            String url = storeFile(documento);
+            atividade.setDocumentoUrl(url);
+        }
+        
+        return atividadeRepository.save(atividade);
+    }
+    
+    private final java.nio.file.Path uploadDir = java.nio.file.Paths.get("uploads").toAbsolutePath();
+    
+    private void ensureUploadDir() {
+        try {
+            java.nio.file.Files.createDirectories(uploadDir);
+        } catch (Exception e) {
+            throw new RuntimeException("Não foi possível criar pasta de uploads", e);
+        }
+    }
+    
+    private String storeFile(org.springframework.web.multipart.MultipartFile file) {
+        if (file == null || file.isEmpty()) return null;
+        ensureUploadDir();
+        String original = file.getOriginalFilename();
+        String ext = "";
+        if (original != null && original.contains(".")) {
+            ext = original.substring(original.lastIndexOf('.'));
+        }
+        String filename = java.util.UUID.randomUUID().toString() + ext;
+        java.nio.file.Path target = uploadDir.resolve(filename);
+        try (java.io.InputStream is = file.getInputStream()) {
+            java.nio.file.Files.copy(is, target, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            throw new RuntimeException("Falha ao salvar arquivo", e);
+        }
+        return "/uploads/" + filename;
+    }
 }

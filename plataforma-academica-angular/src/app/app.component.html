@@ -1,9 +1,8 @@
-<!-- Navbar no topo (não aparece em salas) -->
-<app-navbar *ngIf="isLoggedIn && !isSalaPage"></app-navbar>
+<!-- Navbar no topo (aparece sempre quando logado) -->
+<app-navbar *ngIf="isLoggedIn"></app-navbar>
 
 <!-- Layout para salas com sidebar -->
 <div *ngIf="isSalaPage && isLoggedIn" class="sala-layout">
-  <app-sala-navbar></app-sala-navbar>
   <div class="sala-layout-main">
     <app-sala-sidebar></app-sala-sidebar>
     <div class="sala-content">
@@ -16,3 +15,6 @@
 <div *ngIf="!isSalaPage" [class.with-navbar]="isLoggedIn">
   <router-outlet></router-outlet>
 </div>
+
+<!-- Chat Flutuante -->
+<app-chat-flutuante *ngIf="isLoggedIn"></app-chat-flutuante>

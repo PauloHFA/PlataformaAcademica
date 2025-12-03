@@ -1,4 +1,4 @@
-<div class="sala-detalhes-container">
+<div class="sala-detalhes-container" [class.animando]="animando">
   <!-- Loading -->
   <div *ngIf="carregando" class="loading-state">
     <div class="spinner"></div>
@@ -27,7 +27,7 @@
             </span>
             <span class="meta-item">
               <span class="meta-icon">👥</span>
-              Membros: <strong>{{ membros?.length || 0 }}</strong>
+              Membros: <strong>{{ membros.length || 0 }}</strong>
             </span>
           </div>
         </div>
@@ -63,7 +63,7 @@
             <span class="section-icon">👥</span>
             Membros da Sala
           </h2>
-          <span class="badge">{{ membros?.length || 0 }}</span>
+          <span class="badge">{{ membros.length || 0 }}</span>
         </div>
         <div class="card-body">
           <div *ngIf="membros?.length; else semMembros" class="membros-list">
@@ -95,7 +95,7 @@
             <span class="section-icon">📋</span>
             Atividades
           </h2>
-          <span class="badge">{{ atividades?.length || 0 }}</span>
+          <span class="badge">{{ atividades.length || 0 }}</span>
         </div>
         <div class="card-body">
           <div *ngIf="atividades?.length; else semAtividades" class="atividades-list">

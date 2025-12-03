@@ -1,36 +1,38 @@
 <nav class="navbar">
   <div class="navbar-container">
-    <!-- Menu Sanduíche -->
-    <div class="menu-dropdown">
-      <button class="menu-btn" (click)="toggleMenuDropdown()">
-        <span class="icon">☰</span>
-      </button>
-      <div *ngIf="menuDropdownAberto" class="menu-items" (mouseleave)="fecharMenuDropdown()">
-        <a routerLink="/salas" class="menu-item" (click)="fecharMenuDropdown()">
-          <span class="icon">📚</span>
-          Salas
-        </a>
-        <a routerLink="/feed" class="menu-item" (click)="fecharMenuDropdown()">
-          <span class="icon">📰</span>
-          Feed
-        </a>
-        <a routerLink="/amigos" class="menu-item" (click)="fecharMenuDropdown()">
-          <span class="icon">👥</span>
-          Amigos
-        </a>
-        <a routerLink="/usuarios" class="menu-item" (click)="fecharMenuDropdown()">
-          <span class="icon">👤</span>
-          Usuários
+    <!-- Menu Sanduíche e Logo -->
+    <div class="menu-logo-group">
+      <div class="menu-dropdown">
+        <button class="menu-btn" (click)="toggleMenuDropdown()">
+          <span class="icon">☰</span>
+        </button>
+        <div *ngIf="menuDropdownAberto" class="menu-items" (mouseleave)="fecharMenuDropdown()">
+          <a routerLink="/salas" class="menu-item" (click)="fecharMenuDropdown()">
+            <span class="icon">📚</span>
+            Salas
+          </a>
+          <a routerLink="/feed" class="menu-item" (click)="fecharMenuDropdown()">
+            <span class="icon">📰</span>
+            Feed
+          </a>
+          <a routerLink="/amigos" class="menu-item" (click)="fecharMenuDropdown()">
+            <span class="icon">👥</span>
+            Amigos
+          </a>
+          <a routerLink="/usuarios" class="menu-item" (click)="fecharMenuDropdown()">
+            <span class="icon">👤</span>
+            Usuários
+          </a>
+        </div>
+      </div>
+
+      <!-- Logo -->
+      <div class="navbar-logo">
+        <a routerLink="/feed" class="logo-link">
+          <span class="logo-icon">🎓</span>
+          <span class="logo-text">Plataforma Acadêmica</span>
         </a>
       </div>
-    </div>
-
-    <!-- Logo -->
-    <div class="navbar-logo">
-      <a routerLink="/home" class="logo-link">
-        <span class="logo-icon">🎓</span>
-        <span class="logo-text">Plataforma Acadêmica</span>
-      </a>
     </div>
 
     <!-- Direita: Notificações, Tema e Perfil -->

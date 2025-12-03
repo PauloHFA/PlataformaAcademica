@@ -4,6 +4,34 @@
   padding: 0;
   min-height: 100vh;
   background: var(--bg-color);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.sala-detalhes-container.animando {
+  opacity: 0.7;
+  animation: fadeOut 0.3s ease-in-out;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Loading */

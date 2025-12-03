@@ -21,6 +21,13 @@
   gap: 1rem;
 }
 
+.menu-logo-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
 .menu-dropdown {
   position: relative;
   flex-shrink: 0;
@@ -101,7 +108,7 @@
 }
 
 .navbar-logo {
-  flex: 1;
+  flex: 0 0 auto;
 }
 
 .logo-link {

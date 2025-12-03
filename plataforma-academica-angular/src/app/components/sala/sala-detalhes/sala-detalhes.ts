@@ -2,6 +2,7 @@ import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { SalaService } from '../../../services/sala.service';
+import { SalaContextService } from '../../../services/sala-context.service';
 import { SalaDeAula } from '../../../models/sala.model';
 import { Atividade } from '../../../models/atividade.model';
 
@@ -20,11 +21,13 @@ export class SalaDetalhesComponent implements OnInit {
   erro = '';
   usuarioId = 0;
   usuarioEhCriador = false;
+  animando = false;
 
   constructor(
     private route: ActivatedRoute,
     private salaService: SalaService,
     private router: Router,
+    private salaContext: SalaContextService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -45,12 +48,15 @@ export class SalaDetalhesComponent implements OnInit {
   }
 
   carregarDados(id: number): void {
+    this.animando = true;
     this.carregando = true;
     this.erro = '';
+    setTimeout(() => this.animando = false, 300);
 
     this.salaService.buscarPorId(id).subscribe({
       next: (s) => {
         this.sala = s;
+        this.salaContext.setNomeSala(s.nome);
         this.usuarioEhCriador = s.criadorId === this.usuarioId;
       },
       error: (err: any) => {

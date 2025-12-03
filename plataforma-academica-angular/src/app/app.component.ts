@@ -4,14 +4,15 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { NavbarComponent } from "./components/navbar/navbar.component";
 import { SalaSidebarComponent } from "./components/sala-sidebar/sala-sidebar.component";
 import { SalaNavbarComponent } from "./components/sala-navbar/sala-navbar.component";
-import { ThemeToggleComponent } from "./components/theme-toggle/theme-toggle.component";
+import { ChatFlutuanteComponent } from "./components/chat-flutuante/chat-flutuante.component";
+
 import { ThemeService } from "./services/theme.service";
 import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterOutlet, NavbarComponent, SalaSidebarComponent, SalaNavbarComponent, ThemeToggleComponent],
+  imports: [CommonModule, RouterModule, RouterOutlet, NavbarComponent, SalaSidebarComponent, SalaNavbarComponent, ChatFlutuanteComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -46,7 +47,13 @@ export class AppComponent implements OnInit {
                          this.router.url === '/home' || 
                          this.router.url === '/login' || 
                          this.router.url === '/cadastro';
+      
       this.isLoggedIn = !!usuarioId && !isAuthPage;
+      
+      // Se não está logado e tenta acessar página protegida, redireciona para login
+      if (!usuarioId && !isAuthPage) {
+        this.router.navigate(['/login']);
+      }
     } else {
       this.isLoggedIn = false;
     }

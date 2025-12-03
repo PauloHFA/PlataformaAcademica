@@ -94,17 +94,17 @@ export class LoginComponent implements OnInit {
   }
 
   /**
-   * Login com Google (Em desenvolvimento)
+   * Login com Google (Desabilitado)
    */
   loginComGoogle(): void {
-    alert('Login com Google em desenvolvimento. Por favor, use o login tradicional.');
+    // Desabilitado - não fazer nada
   }
 
   /**
-   * Login com Facebook (Em desenvolvimento)
+   * Login com Facebook (Desabilitado)
    */
   loginComFacebook(): void {
-    alert('Login com Facebook em desenvolvimento. Por favor, use o login tradicional.');
+    // Desabilitado - não fazer nada
   }
 
   /**

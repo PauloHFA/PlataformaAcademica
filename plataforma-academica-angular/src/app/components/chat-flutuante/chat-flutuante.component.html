@@ -1,0 +1,62 @@
+<div class="chat-flutuante">
+  <!-- Botão Flutuante -->
+  <button class="btn-chat-flutuante" (click)="toggleChat()" [class.aberto]="aberto">
+    <span *ngIf="!aberto">💬</span>
+    <span *ngIf="aberto">✕</span>
+  </button>
+
+  <!-- Janela de Chat -->
+  <div class="janela-chat" *ngIf="aberto">
+    <!-- Header -->
+    <div class="chat-header">
+      <h3>Mensagens</h3>
+      <button class="btn-fechar" (click)="fecharChat()">✕</button>
+    </div>
+
+    <!-- Lista de Conversas ou Chat -->
+    <div *ngIf="!conversaSelecionada" class="conversas-lista">
+      <div *ngIf="conversas.length === 0" class="vazio">
+        <p>Nenhum amigo disponível</p>
+      </div>
+      <button 
+        *ngFor="let conversa of conversas" 
+        class="conversa-item"
+        (click)="selecionarConversa(conversa)"
+      >
+        <span class="avatar">{{ conversa.usuarioNome[0].toUpperCase() }}</span>
+        <span class="nome">{{ conversa.usuarioNome }}</span>
+      </button>
+    </div>
+
+    <!-- Chat Aberto -->
+    <div *ngIf="conversaSelecionada" class="chat-aberto">
+      <!-- Header da Conversa -->
+      <div class="conversa-header">
+        <button class="btn-voltar" (click)="conversaSelecionada = null">⬅</button>
+        <h4>{{ conversaSelecionada.usuarioNome }}</h4>
+      </div>
+
+      <!-- Mensagens -->
+      <div class="mensagens-container">
+        <div 
+          *ngFor="let msg of mensagens" 
+          class="mensagem"
+          [class.enviada]="msg.remetenteId === usuarioId"
+        >
+          <p>{{ msg.conteudo }}</p>
+        </div>
+      </div>
+
+      <!-- Input de Mensagem -->
+      <div class="input-mensagem">
+        <input 
+          type="text" 
+          [(ngModel)]="novaMensagem"
+          (keyup.enter)="enviarMensagem()"
+          placeholder="Digite uma mensagem..."
+        />
+        <button (click)="enviarMensagem()" class="btn-enviar">📤</button>
+      </div>
+    </div>
+  </div>
+</div>

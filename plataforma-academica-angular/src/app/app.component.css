@@ -5,8 +5,9 @@
 .sala-layout {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: calc(100vh - 70px);
   background: var(--bg-color);
+  margin-top: 70px;
 }
 
 .sala-layout-main {

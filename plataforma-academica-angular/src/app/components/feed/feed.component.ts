@@ -57,7 +57,13 @@ export class FeedComponent implements OnInit {
     observable.subscribe({
       next: (postagens) => {
         console.log('Postagens carregadas:', postagens);
-        this.postagens = this.filtro === 'curtidas' ? postagens : postagens.sort((a, b) => (b.id || 0) - (a.id || 0));
+        this.postagens = postagens.map(p => ({
+          ...p,
+          imagemUrl: p.imagemUrl && !p.imagemUrl.startsWith('http') 
+            ? `http://localhost:8080${p.imagemUrl}` 
+            : p.imagemUrl
+        }));
+        this.postagens = this.filtro === 'curtidas' ? this.postagens : this.postagens.sort((a, b) => (b.id || 0) - (a.id || 0));
         this.carregando = false;
       },
       error: (err) => {
@@ -73,9 +79,9 @@ export class FeedComponent implements OnInit {
   }
 
   curtir(id: number | undefined): void {
-    if (!id) return;
+    if (!id || !this.currentUserId) return;
     
-    this.postagemService.curtir(id).subscribe({
+    this.postagemService.curtir(id, this.currentUserId).subscribe({
       next: () => {
         this.carregarPostagens();
       },

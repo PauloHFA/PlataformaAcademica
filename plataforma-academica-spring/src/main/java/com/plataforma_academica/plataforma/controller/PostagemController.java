@@ -219,8 +219,11 @@ public class PostagemController {
     // CURTIR POSTAGEM
     // =========================================================================
     @PostMapping("/{id}/curtir")
-    public ResponseEntity<PostagemResponseDTO> curtir(@PathVariable Long id) {
-        PostagemResponseDTO postagem = postagemService.curtir(id);
+    public ResponseEntity<PostagemResponseDTO> curtir(
+            @PathVariable Long id,
+            @RequestParam Long usuarioId
+    ) {
+        PostagemResponseDTO postagem = postagemService.curtir(id, usuarioId);
         return ResponseEntity.ok(postagem);
     }
 
@@ -238,5 +241,16 @@ public class PostagemController {
     @GetMapping("/mais-curtidas")
     public ResponseEntity<List<PostagemResponseDTO>> listarMaisCurtidas() {
         return ResponseEntity.ok(postagemService.listarMaisCurtidas());
+    }
+    
+    // =========================================================================
+    // VERIFICAR SE USUÁRIO CURTIU
+    // =========================================================================
+    @GetMapping("/{postagemId}/curtiu/{usuarioId}")
+    public ResponseEntity<Boolean> verificarCurtida(
+            @PathVariable Long postagemId,
+            @PathVariable Long usuarioId
+    ) {
+        return ResponseEntity.ok(postagemService.verificarCurtida(postagemId, usuarioId));
     }
 }

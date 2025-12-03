@@ -8,4 +8,5 @@ export interface Postagem {
   plataformaId?: number;
   plataformaNome?: string;
   curtidas?: number;
+  curtiuAtual?: boolean;
 }

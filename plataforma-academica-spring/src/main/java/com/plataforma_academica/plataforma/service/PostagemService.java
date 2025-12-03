@@ -20,9 +20,10 @@ public interface PostagemService {
     List<PostagemResponseDTO> buscarPorTituloResponse(String titulo);
     PostagemResponseDTO atualizarResponse(PostagemDTO postagemDTO);
     
-    PostagemResponseDTO curtir(Long id);
+    PostagemResponseDTO curtir(Long postagemId, Long usuarioId);
     List<PostagemResponseDTO> listarDeAmigos(Long usuarioId);
     List<PostagemResponseDTO> listarMaisCurtidas();
+    boolean verificarCurtida(Long postagemId, Long usuarioId);
     
     // Suporta criação com upload de imagem (multipart)
     PostagemResponseDTO publicarComImagemResponse(PostagemDTO postagemDTO, org.springframework.web.multipart.MultipartFile imagem);

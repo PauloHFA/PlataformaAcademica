@@ -42,8 +42,12 @@ export class PostagemService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  curtir(id: number): Observable<Postagem> {
-    return this.http.post<Postagem>(`${this.apiUrl}/${id}/curtir`, null);
+  curtir(id: number, usuarioId: number): Observable<Postagem> {
+    return this.http.post<Postagem>(`${this.apiUrl}/${id}/curtir?usuarioId=${usuarioId}`, null);
+  }
+  
+  verificarCurtida(postagemId: number, usuarioId: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/${postagemId}/curtiu/${usuarioId}`);
   }
 
   listarDeAmigos(usuarioId: number): Observable<Postagem[]> {

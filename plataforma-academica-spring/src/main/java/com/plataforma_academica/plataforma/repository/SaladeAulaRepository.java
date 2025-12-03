@@ -7,9 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-// O CORRETO: Entidade primeiro, ID em segundo
 public interface SaladeAulaRepository extends JpaRepository<SaladeAula, Long> {
     Optional<SaladeAula> findById(Long saladeAulaId);
-
+    Optional<SaladeAula> findByCodigoSala(String codigoSala);
     void deleteById(Long saladeAulaId);
 }

@@ -1,15 +1,17 @@
 import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { SalaService } from '../../../services/sala.service';
 import { SalaContextService } from '../../../services/sala-context.service';
+import { ComentarioService, Comentario } from '../../../services/comentario.service';
 import { SalaDeAula } from '../../../models/sala.model';
 import { Atividade } from '../../../models/atividade.model';
 
 @Component({
   selector: 'app-sala-detalhes',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './sala-detalhes.html',
   styleUrl: './sala-detalhes.css'
 })
@@ -22,12 +24,15 @@ export class SalaDetalhesComponent implements OnInit {
   usuarioId = 0;
   usuarioEhCriador = false;
   animando = false;
+  comentarios: Comentario[] = [];
+  novoComentario = '';
 
   constructor(
     private route: ActivatedRoute,
     private salaService: SalaService,
     private router: Router,
     private salaContext: SalaContextService,
+    private comentarioService: ComentarioService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -83,7 +88,66 @@ export class SalaDetalhesComponent implements OnInit {
       }
     });
 
+    this.comentarioService.listarPorSala(id).subscribe({
+      next: (c: Comentario[]) => {
+        console.log('Comentários da sala', id, 'carregados:', c);
+        this.comentarios = (c || [])
+          .filter(comentario => !comentario.atividadeId)
+          .map((comentario: Comentario) => ({
+            ...comentario,
+            autorNome: comentario.autor?.nome || 'Usuário',
+            autorId: comentario.autor?.id || comentario.autorId || 0
+          }));
+        console.log('Comentários da sala', id, 'processados:', this.comentarios);
+      },
+      error: (err: any) => {
+        console.warn('Erro ao listar comentários da sala', id, ':', err);
+      }
+    });
+
     this.carregando = false;
+  }
+
+  adicionarComentario(): void {
+    if (!this.novoComentario.trim() || !this.sala?.id) return;
+
+    const comentario: Comentario = {
+      conteudo: this.novoComentario,
+      autorId: this.usuarioId,
+      saladeAulaId: this.sala.id,
+      tipoDestino: 'SALA'
+    };
+    console.log('Adicionando comentário na sala:', comentario);
+
+    this.comentarioService.criar(comentario).subscribe({
+      next: (c: Comentario) => {
+        console.log('Comentário criado:', c);
+        const novoComentario = {
+          ...c,
+          autorNome: c.autor?.nome || 'Você',
+          autorId: c.autor?.id || this.usuarioId
+        };
+        this.comentarios.push(novoComentario);
+        this.novoComentario = '';
+        console.log('Comentários após adicionar:', this.comentarios);
+      },
+      error: (err: any) => {
+        console.error('Erro ao adicionar comentário:', err);
+      }
+    });
+  }
+
+  deletarComentario(id: number): void {
+    if (confirm('Tem certeza que deseja deletar este comentário?')) {
+      this.comentarioService.deletar(id).subscribe({
+        next: () => {
+          this.comentarios = this.comentarios.filter(c => c.id !== id);
+        },
+        error: (err: any) => {
+          console.error('Erro ao deletar comentário:', err);
+        }
+      });
+    }
   }
 
   navegarAdicionarMembro(): void {
@@ -110,6 +174,17 @@ export class SalaDetalhesComponent implements OnInit {
         error: (err: any) => {
           alert('Erro ao deletar sala: ' + (err.message || 'Erro desconhecido'));
         }
+      });
+    }
+  }
+
+  copiarCodigoSala(): void {
+    if (!this.sala?.codigoSala) return;
+    if (isPlatformBrowser(this.platformId)) {
+      navigator.clipboard.writeText(this.sala.codigoSala).then(() => {
+        alert('Código da sala copiado: ' + this.sala!.codigoSala);
+      }).catch(() => {
+        alert('Código da sala: ' + this.sala!.codigoSala);
       });
     }
   }

@@ -3,7 +3,6 @@ import { RouterOutlet, RouterModule, Router, NavigationEnd } from '@angular/rout
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { NavbarComponent } from "./components/navbar/navbar.component";
 import { SalaSidebarComponent } from "./components/sala-sidebar/sala-sidebar.component";
-import { SalaNavbarComponent } from "./components/sala-navbar/sala-navbar.component";
 import { ChatFlutuanteComponent } from "./components/chat-flutuante/chat-flutuante.component";
 
 import { ThemeService } from "./services/theme.service";
@@ -12,7 +11,7 @@ import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterOutlet, NavbarComponent, SalaSidebarComponent, SalaNavbarComponent, ChatFlutuanteComponent],
+  imports: [CommonModule, RouterModule, RouterOutlet, NavbarComponent, SalaSidebarComponent, ChatFlutuanteComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

@@ -29,6 +29,13 @@
               <span class="meta-icon">👥</span>
               Membros: <strong>{{ membros.length || 0 }}</strong>
             </span>
+            <span *ngIf="usuarioEhCriador" class="meta-item sala-id-badge">
+              <span class="meta-icon">🔑</span>
+              Código: <strong>{{ sala.codigoSala }}</strong>
+              <button (click)="copiarCodigoSala()" class="btn-copy" title="Copiar Código">
+                📋
+              </button>
+            </span>
           </div>
         </div>
       </div>
@@ -129,5 +136,46 @@
         </div>
       </section>
     </div>
+
+    <!-- Comentários da Sala -->
+    <section class="comentarios-section">
+      <div class="comentarios-header">
+        <h2>💬 Comentários da Sala</h2>
+      </div>
+      <div class="comentarios-container">
+        <!-- Input de Novo Comentário -->
+        <div class="novo-comentario">
+          <textarea 
+            [(ngModel)]="novoComentario" 
+            placeholder="Deixe um comentário..."
+            class="comentario-input"
+          ></textarea>
+          <button (click)="adicionarComentario()" class="btn btn-primary">
+            Comentar
+          </button>
+        </div>
+
+        <!-- Lista de Comentários -->
+        <div class="comentarios-list">
+          <div *ngIf="comentarios.length === 0" class="vazio">
+            <p>Nenhum comentário ainda. Seja o primeiro!</p>
+          </div>
+          <div *ngFor="let c of comentarios" class="comentario-item">
+            <div class="comentario-header">
+              <strong>{{ c.autorNome }}</strong>
+              <span class="data">{{ c.dataCriacao | date:'short' }}</span>
+            </div>
+            <p class="comentario-texto">{{ c.conteudo }}</p>
+            <button 
+              *ngIf="usuarioId === c.autorId" 
+              (click)="deletarComentario(c.id!)"
+              class="btn-deletar"
+            >
+              🗑️
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </div>

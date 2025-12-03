@@ -21,6 +21,9 @@ public class SaladeAula {
     private Long id;
 
     private String nome; // Nome da sala de aula (e.g., "POO 2024.1")
+    
+    @Column(unique = true, nullable = false, length = 8)
+    private String codigoSala; // Código único para compartilhar (ex: "A7X9K2M5")
 
     // 1. Criador da Sala (Relação Many-to-One)
     // Muitas salas de aula são criadas por um único usuário

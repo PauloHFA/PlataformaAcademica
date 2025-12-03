@@ -1,26 +1,17 @@
 <div class="atividade-list-container">
-  <!-- Header -->
   <div class="atividade-list-header">
     <div class="header-content">
-      <h1>
-        <span class="header-icon">📋</span>
-        Atividades da Sala
-      </h1>
+      <h1><span class="header-icon">📋</span>Atividades da Sala</h1>
       <p class="subtitle">Gerencie e acompanhe todas as atividades</p>
     </div>
-    <a routerLink="/salas" class="btn btn-secondary">
-      <span class="icon">⬅️</span>
-      Voltar
-    </a>
+    <a routerLink="/salas" class="btn btn-secondary"><span class="icon">⬅️</span>Voltar</a>
   </div>
 
-  <!-- Loading -->
   <div *ngIf="carregando" class="loading-state">
     <div class="spinner"></div>
     <p>Carregando atividades...</p>
   </div>
 
-  <!-- Grid de Atividades -->
   <div *ngIf="!carregando && atividades.length" class="atividades-grid">
     <div *ngFor="let a of atividades" class="atividade-card">
       <div class="atividade-card-header">
@@ -28,21 +19,13 @@
         <div class="atividade-title-section">
           <h2>{{ a.titulo }}</h2>
           <div class="atividade-meta-top">
-            <span *ngIf="a.dataEntrega" class="meta-item">
-              <span class="meta-icon">📅</span>
-              Entrega: {{ a.dataEntrega | date:'short' }}
-            </span>
-            <span *ngIf="a.pontos" class="meta-item">
-              <span class="meta-icon">⭐</span>
-              {{ a.pontos }} pontos
-            </span>
+            <span *ngIf="a.dataEntrega" class="meta-item"><span class="meta-icon">📅</span>Entrega: {{ a.dataEntrega | date:'short' }}</span>
+            <span *ngIf="a.pontos" class="meta-item"><span class="meta-icon">⭐</span>{{ a.pontos }} pontos</span>
           </div>
         </div>
       </div>
-
       <div class="atividade-card-body">
         <p class="atividade-descricao">{{ a.descricao || 'Sem descrição disponível' }}</p>
-        
         <div class="atividade-info" *ngIf="a.tipoDocumentoSubmissao">
           <div class="info-row">
             <span class="info-label">Tipo de Documento:</span>
@@ -50,24 +33,41 @@
           </div>
         </div>
       </div>
-
       <div class="atividade-card-footer">
-        <a [routerLink]="['/salas', salaId, 'atividades', a.id]" class="btn btn-primary btn-full">
-          <span class="icon">👁️</span>
-          Ver Detalhes
-        </a>
+        <a [routerLink]="['/salas', salaId, 'atividades', a.id]" class="btn btn-primary btn-full"><span class="icon">👁️</span>Ver Detalhes</a>
       </div>
     </div>
   </div>
 
-  <!-- Estado vazio -->
   <div *ngIf="!carregando && !atividades.length" class="empty-state">
     <div class="empty-icon">📭</div>
     <h3>Nenhuma atividade encontrada</h3>
     <p>Esta sala ainda não possui atividades cadastradas.</p>
-    <a routerLink="/salas" class="btn btn-primary">
-      <span class="icon">⬅️</span>
-      Voltar às Salas
-    </a>
+    <a routerLink="/salas" class="btn btn-primary"><span class="icon">⬅️</span>Voltar às Salas</a>
+  </div>
+
+  <div class="comentarios-section">
+    <h2 class="comentarios-title">💬 Comentários das Atividades</h2>
+    <div class="comentario-input-container">
+      <textarea [(ngModel)]="novoComentario" placeholder="Deixe um comentário sobre as atividades..." class="comentario-input" rows="3"></textarea>
+      <button (click)="adicionarComentario()" [disabled]="!novoComentario.trim()" class="btn btn-primary">Enviar</button>
+    </div>
+    <div *ngIf="carregandoComentarios" class="loading-state">
+      <div class="spinner"></div>
+      <p>Carregando comentários...</p>
+    </div>
+    <div *ngIf="!carregandoComentarios && comentarios.length" class="comentarios-list">
+      <div *ngFor="let c of comentarios" class="comentario-item">
+        <div class="comentario-header">
+          <strong>{{ c.autor?.nome || 'Usuário' }}</strong>
+          <span class="comentario-data">{{ c.dataCriacao | date:'short' }}</span>
+        </div>
+        <p class="comentario-conteudo">{{ c.conteudo }}</p>
+        <button *ngIf="usuarioId === c.autorId" (click)="deletarComentario(c.id!)" class="btn btn-danger btn-small">Deletar</button>
+      </div>
+    </div>
+    <div *ngIf="!carregandoComentarios && !comentarios.length" class="empty-comments">
+      <p>Nenhum comentário ainda. Seja o primeiro a comentar!</p>
+    </div>
   </div>
 </div>

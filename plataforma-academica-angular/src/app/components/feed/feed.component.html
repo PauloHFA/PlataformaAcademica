@@ -140,9 +140,55 @@
           <span class="curtidas-count">{{ post.curtidas || 0 }}</span>
           <span class="curtidas-text">{{ (post.curtidas || 0) === 1 ? 'curtida' : 'curtidas' }}</span>
         </button>
+        <button (click)="toggleComentarios(post.id!)" class="btn-comentar">
+          <span class="icon">💬</span>
+          <span>Comentários</span>
+        </button>
         <span *ngIf="post.plataformaNome" class="plataforma-badge">
           🏫 {{ post.plataformaNome }}
         </span>
+      </div>
+
+      <!-- Seção de Comentários -->
+      <div *ngIf="mostrarComentarios[post.id!]" class="comentarios-section">
+        <div class="comentarios-header">
+          <h4>💬 Comentários</h4>
+        </div>
+        
+        <!-- Form Novo Comentário -->
+        <div class="novo-comentario">
+          <textarea
+            [(ngModel)]="novoComentario[post.id!]"
+            placeholder="Escreva um comentário..."
+            rows="2"
+          ></textarea>
+          <button (click)="adicionarComentario(post.id!)" class="btn btn-sm btn-primary">
+            Comentar
+          </button>
+        </div>
+
+        <!-- Lista de Comentários -->
+        <div class="comentarios-lista">
+          <div *ngFor="let comentario of comentarios[post.id!]" class="comentario-item">
+            <div class="comentario-avatar">{{ (comentario.autorNome || 'U')[0].toUpperCase() }}</div>
+            <div class="comentario-content">
+              <div class="comentario-header">
+                <strong>{{ comentario.autorNome || 'Usuário' }}</strong>
+                <button
+                  *ngIf="comentario.autorId === currentUserId"
+                  (click)="deletarComentario(comentario.id!, post.id!)"
+                  class="btn-delete-comentario"
+                >
+                  🗑️
+                </button>
+              </div>
+              <p>{{ comentario.conteudo }}</p>
+            </div>
+          </div>
+          <div *ngIf="!comentarios[post.id!]?.length" class="empty-comentarios">
+            Seja o primeiro a comentar!
+          </div>
+        </div>
       </div>
     </div>
 

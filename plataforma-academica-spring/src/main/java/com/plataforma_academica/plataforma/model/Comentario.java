@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDateTime;
 
@@ -13,18 +14,20 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "comentarios")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Comentario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "autor_id", nullable = false) // O autor é obrigatório
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "autor_id", nullable = false)
     private Usuario autor;
 
     // Relacionamento com Postagem: Opcional (nullable = true)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postagem_id", nullable = true)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Postagem postagem;
 
     // NOVO: Relacionamento com Atividade: Opcional (nullable = true)
@@ -45,10 +48,11 @@ public class Comentario {
     @Column(nullable = false)
     private TipoDestinoComentario tipoDestino;
 
-    @Lob // Para permitir comentários mais longos
+    @Lob
     private String conteudo;
 
-    private LocalDateTime dataCriacao;
+    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime dataCriacao = LocalDateTime.now();
 
     // IMPORTANTE:
     // Você deve implementar uma lógica de validação antes de persistir

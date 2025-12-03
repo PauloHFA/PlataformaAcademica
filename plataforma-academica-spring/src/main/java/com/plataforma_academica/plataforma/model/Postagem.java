@@ -2,6 +2,7 @@ package com.plataforma_academica.plataforma.model;
 
 import jakarta.persistence.*;
 import com.plataforma_academica.plataforma.model.Usuario;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "postagem")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Postagem {
 
     @Id

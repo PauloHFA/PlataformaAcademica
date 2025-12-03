@@ -116,41 +116,11 @@ export class CadastroComponent implements OnInit {
     return this.formulario.hasError('senhasNaoIguais');
   }
 
-  /**
-   * Cadastro com Google (DEMO - sem OAuth real)
-   */
   cadastroComGoogle(): void {
-    // DEMO: Simula cadastro com Google
-    const demoUser = {
-      id: 999,
-      nome: 'Usuário Google (Demo)',
-      email: 'google.demo@plataforma.com',
-      provider: 'google'
-    };
-    
-    localStorage.setItem('usuario', JSON.stringify(demoUser));
-    localStorage.setItem('usuarioId', demoUser.id.toString());
-    this.router.navigate(['/salas']);
-    
-    // Para implementação real, veja: CONFIGURACAO_LOGIN_SOCIAL.md
+    // Desabilitado
   }
 
-  /**
-   * Cadastro com Facebook (DEMO - sem OAuth real)
-   */
   cadastroComFacebook(): void {
-    // DEMO: Simula cadastro com Facebook
-    const demoUser = {
-      id: 998,
-      nome: 'Usuário Facebook (Demo)',
-      email: 'facebook.demo@plataforma.com',
-      provider: 'facebook'
-    };
-    
-    localStorage.setItem('usuario', JSON.stringify(demoUser));
-    localStorage.setItem('usuarioId', demoUser.id.toString());
-    this.router.navigate(['/salas']);
-    
-    // Para implementação real, veja: CONFIGURACAO_LOGIN_SOCIAL.md
+    // Desabilitado
   }
 }

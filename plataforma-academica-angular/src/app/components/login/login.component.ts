@@ -69,8 +69,8 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('token', resposta.id.toString());
         }
         
-        // Redirecionar para salas de aula após login
-        this.router.navigate(['/salas']);
+        // Redirecionar para feed de postagens após login
+        this.router.navigate(['/feed']);
       },
       error: (erro) => {
         this.mensagemErro = erro.message || 'Email ou senha incorretos';
@@ -108,7 +108,7 @@ export class LoginComponent implements OnInit {
   }
 
   /**
-   * Salva usuário no localStorage e navega para salas
+   * Salva usuário no localStorage e navega para feed
    */
   private salvarUsuarioENavegar(usuario: any): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -116,6 +116,6 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('usuarioId', usuario.id.toString());
       localStorage.setItem('token', usuario.id.toString());
     }
-    this.router.navigate(['/salas']);
+    this.router.navigate(['/feed']);
   }
 }

@@ -51,24 +51,29 @@ public class SaladeAulaServiceImpl implements SaladeAulaService{
 
     @Override
     @Transactional
-    // Parâmetro renomeado de volta para 'sala' por convenção e clareza
     public SaladeAula criarSala(SaladeAula sala, Long criadorId) {
         Usuario criador = usuarioRepository.findById(criadorId)
                 .orElseThrow(() -> new EntityNotFoundException("Criador não encontrado."));
 
         sala.setCriador(criador);
+        sala.setCodigoSala(gerarCodigoUnico());
 
-        // Inicializa a lista se for nula (boa prática)
         if (sala.getUsuarios() == null) {
             sala.setUsuarios(new ArrayList<>());
         }
 
-        // Adiciona o criador automaticamente como primeiro membro
         if (!sala.getUsuarios().contains(criador)) {
             sala.getUsuarios().add(criador);
         }
-        // Salvando a instância da entidade (sala)
         return salaRepository.save(sala);
+    }
+    
+    private String gerarCodigoUnico() {
+        String codigo;
+        do {
+            codigo = java.util.UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        } while (salaRepository.findByCodigoSala(codigo).isPresent());
+        return codigo;
     }
 
     @Override

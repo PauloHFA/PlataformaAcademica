@@ -2,7 +2,9 @@ import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PostagemService } from '../../services/postagem.service';
+import { ComentarioService } from '../../services/comentario.service';
 import { Postagem } from '../../models/postagem.model';
+import { Comentario } from '../../models/comentario.model';
 
 @Component({
   selector: 'app-feed',
@@ -23,9 +25,15 @@ export class FeedComponent implements OnInit {
   enviando = false;
   previewImagem: string | null = null;
   selectedFile: File | null = null;
+  
+  // Comentários
+  mostrarComentarios: { [key: number]: boolean } = {};
+  comentarios: { [key: number]: Comentario[] } = {};
+  novoComentario: { [key: number]: string } = {};
 
   constructor(
     private postagemService: PostagemService,
+    private comentarioService: ComentarioService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -192,6 +200,60 @@ export class FeedComponent implements OnInit {
       },
       error: () => {
         alert('Erro ao deletar');
+      }
+    });
+  }
+
+  toggleComentarios(postagemId: number): void {
+    this.mostrarComentarios[postagemId] = !this.mostrarComentarios[postagemId];
+    if (this.mostrarComentarios[postagemId] && !this.comentarios[postagemId]) {
+      this.carregarComentarios(postagemId);
+    }
+  }
+
+  carregarComentarios(postagemId: number): void {
+    this.comentarioService.listarPorPostagem(postagemId).subscribe({
+      next: (comentarios) => {
+        this.comentarios[postagemId] = comentarios;
+      },
+      error: () => {
+        alert('Erro ao carregar comentários');
+      }
+    });
+  }
+
+  adicionarComentario(postagemId: number): void {
+    const conteudo = this.novoComentario[postagemId]?.trim();
+    if (!conteudo || !this.currentUserId) return;
+
+    const comentario: any = {
+      conteudo,
+      autor: { id: this.currentUserId },
+      postagem: { id: postagemId },
+      tipoDestino: 'POSTAGEM'
+    };
+
+    this.comentarioService.criar(comentario).subscribe({
+      next: () => {
+        this.novoComentario[postagemId] = '';
+        this.carregarComentarios(postagemId);
+      },
+      error: (err) => {
+        console.error('Erro ao adicionar comentário:', err);
+        alert('Erro ao adicionar comentário');
+      }
+    });
+  }
+
+  deletarComentario(comentarioId: number, postagemId: number): void {
+    if (!confirm('Deseja deletar este comentário?')) return;
+
+    this.comentarioService.deletar(comentarioId).subscribe({
+      next: () => {
+        this.carregarComentarios(postagemId);
+      },
+      error: () => {
+        alert('Erro ao deletar comentário');
       }
     });
   }

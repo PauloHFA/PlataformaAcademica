@@ -15,4 +15,10 @@ public interface ComentarioService {
     Comentario atualizar(Long id, Comentario comentarioAtualizado);
 
     void deletar(Long id);
+
+    List<Comentario> listarComentariosPorSala(Long salaId);
+
+    List<Comentario> listarComentariosPorAtividade(Long atividadeId);
+
+    List<Comentario> listarComentariosPorPostagem(Long postagemId);
 }

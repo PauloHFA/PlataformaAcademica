@@ -2,10 +2,14 @@ export interface SubmissaoAtividade {
   id?: number;
   atividadeId: number;
   alunoId: number;
-  urlDocumento: string;
+  alunoNome?: string;
+  urlDocumento?: string;
+  descricao?: string;
   dataSubmissao?: string;
   nota?: number;
   feedback?: string;
+  recebida?: boolean;
+  dataRecebimento?: string;
 }
 
 export interface SubmissaoAtividadeResponse {

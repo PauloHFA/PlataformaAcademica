@@ -41,6 +41,11 @@
       </div>
     </div>
 
+    <!-- DEBUG INFO -->
+    <div style="background: yellow; padding: 10px; margin: 10px 0; color: black;">
+      <strong>DEBUG:</strong> isProfessor = {{ isProfessor }} | usuarioEhCriador = {{ usuarioEhCriador }}
+    </div>
+
     <!-- Ações -->
     <div class="actions-bar">
       <a [routerLink]="['/salas', sala.id, 'atividades']" class="btn btn-action">
@@ -51,7 +56,11 @@
         <span class="icon">➕</span>
         Adicionar Membro
       </button>
-      <button (click)="navegarCriarAtividade()" class="btn btn-action">
+      <a *ngIf="isProfessor && usuarioEhCriador" [routerLink]="['/salas', sala.id, 'solicitacoes']" class="btn btn-action">
+        <span class="icon">📬</span>
+        Solicitações
+      </a>
+      <button *ngIf="isProfessor" (click)="navegarCriarAtividade()" class="btn btn-action">
         <span class="icon">📝</span>
         Criar Atividade
       </button>
@@ -132,7 +141,7 @@
             <div class="empty-section">
               <span class="empty-icon">📝</span>
               <p>Nenhuma atividade encontrada</p>
-              <button (click)="navegarCriarAtividade()" class="btn btn-primary btn-small">
+              <button *ngIf="isProfessor" (click)="navegarCriarAtividade()" class="btn btn-primary btn-small">
                 Criar Primeira Atividade
               </button>
             </div>

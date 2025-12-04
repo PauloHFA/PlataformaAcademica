@@ -14,6 +14,8 @@ import { AtividadeListComponent } from './components/sala/atividade-list/ativida
 import { AtividadeDetalhesComponent } from './components/sala/atividade-detalhes/atividade-detalhes.component';
 import { FeedComponent } from './components/feed/feed.component';
 import { AmigosComponent } from './components/amigos/amigos.component';
+import { SolicitacoesSalaComponent } from './components/solicitacoes-sala/solicitacoes-sala.component';
+import { SubmissoesAtividadeComponent } from './components/submissoes-atividade/submissoes-atividade.component';
 
 /**
  * Rotas principais da aplicação SPA
@@ -28,10 +30,12 @@ export const routes: Routes = [
   { path: 'salas', component: SalaListComponent },
   { path: 'salas/criar', component: SalaCriarComponent },
   { path: 'salas/:id', component: SalaDetalhesComponent },
+  { path: 'salas/:id/solicitacoes', component: SolicitacoesSalaComponent },
   { path: 'salas/:id/adicionar-membro', component: SalaAdicionarMembroComponent },
   { path: 'salas/:id/atividades', component: AtividadeListComponent },
   { path: 'salas/:id/atividades/criar', component: AtividadeCriarComponent },
   { path: 'salas/:id/atividades/:atividadeId', component: AtividadeDetalhesComponent },
+  { path: 'salas/:id/atividades/:atividadeId/submissoes', component: SubmissoesAtividadeComponent },
   { path: 'perfil', component: PerfilComponent },
   { path: 'perfil-criar', component: PerfilEditarComponent },
   { path: 'perfil-editar', component: PerfilEditarComponent },

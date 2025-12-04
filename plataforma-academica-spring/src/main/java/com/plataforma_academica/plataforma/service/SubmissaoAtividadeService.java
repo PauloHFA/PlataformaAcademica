@@ -18,4 +18,6 @@ public interface SubmissaoAtividadeService {
     SubmissaoAtividade buscarSubmissaoDoAluno(Long atividadeId, Long alunoId);
 
     SubmissaoAtividade corrigirSubmissao(Long submissaoId, Double nota, String feedback);
+
+    SubmissaoAtividade marcarComoRecebida(Long submissaoId);
 }

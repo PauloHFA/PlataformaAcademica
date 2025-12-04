@@ -41,8 +41,9 @@ public class ProfessorController {
         Optional<Professor> professorOpt = professorRepository.findByEmail(professor.getEmail());
         
         if (professorOpt.isPresent() && passwordEncoder.matches(professor.getSenha(), professorOpt.get().getSenha())) {
-            System.out.println("[POST /api/professores/login] Sucesso: ID=" + professorOpt.get().getId());
-            return ResponseEntity.ok(professorOpt.get());
+            Professor prof = professorOpt.get();
+            System.out.println("[POST /api/professores/login] Sucesso: ID=" + prof.getId() + ", Matricula=" + prof.getMatricula());
+            return ResponseEntity.ok(prof);
         }
         
         System.out.println("[POST /api/professores/login] Falha: credenciais inválidas");

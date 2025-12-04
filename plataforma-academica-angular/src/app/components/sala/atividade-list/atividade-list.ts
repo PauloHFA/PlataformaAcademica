@@ -23,6 +23,7 @@ export class AtividadeListComponent implements OnInit {
   novoComentarioPorAtividade: { [atividadeId: number]: string } = {};
   usuarioId: number | null = null;
   atividadeExpandida: number | null = null;
+  isProfessor = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,6 +41,9 @@ export class AtividadeListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.isProfessor = localStorage.getItem('isProfessor') === 'true';
+    }
     if (!this.salaId) { this.carregando = false; return; }
     this.salaService.buscarPorId(this.salaId).subscribe({
       next: (s) => this.salaContext.setNomeSala(s.nome),

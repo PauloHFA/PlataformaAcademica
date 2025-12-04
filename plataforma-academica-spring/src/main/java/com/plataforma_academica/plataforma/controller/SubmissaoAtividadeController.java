@@ -159,4 +159,10 @@ public class SubmissaoAtividadeController {
         SubmissaoAtividade corrigida = submissaoService.corrigirSubmissao(submissaoId, nota, feedback);
         return ResponseEntity.ok(SubmissaoAtividadeMapper.toResponse(corrigida));
     }
+
+    @PutMapping("/marcar-recebida/{submissaoId}")
+    public ResponseEntity<SubmissaoAtividadeResponseDTO> marcarComoRecebida(@PathVariable Long submissaoId) {
+        SubmissaoAtividade submissao = submissaoService.marcarComoRecebida(submissaoId);
+        return ResponseEntity.ok(SubmissaoAtividadeMapper.toResponse(submissao));
+    }
 }

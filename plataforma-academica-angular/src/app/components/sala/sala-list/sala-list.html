@@ -6,7 +6,7 @@
   </div>
 
   <!-- Ações -->
-  <div class="sala-actions">
+  <div class="sala-actions" *ngIf="isProfessor">
     <a routerLink="/salas/criar" class="btn-create">
       <span class="icon">➕</span>
       Criar Nova Sala
@@ -55,6 +55,10 @@
           <span class="icon">📝</span>
           Atividades
         </a>
+        <button *ngIf="!isProfessor" (click)="solicitarEntrada(sala)" class="btn btn-info" title="Solicitar entrada">
+          <span class="icon">📬</span>
+          Solicitar
+        </button>
         <button *ngIf="currentUserId !== null && sala.criadorId === currentUserId" (click)="deleteSala(sala)" class="btn btn-danger" title="Deletar sala">
           <span class="icon">🗑️</span>
           Deletar
@@ -67,8 +71,9 @@
   <div *ngIf="!carregando && !salas.length && !erro" class="empty-state">
     <div class="empty-icon">📭</div>
     <h3>Nenhuma sala encontrada</h3>
-    <p>Comece criando sua primeira sala de aula!</p>
-    <a routerLink="/salas/criar" class="btn btn-primary">
+    <p *ngIf="isProfessor">Comece criando sua primeira sala de aula!</p>
+    <p *ngIf="!isProfessor">Aguarde um professor criar uma sala ou adicionar você a uma sala existente.</p>
+    <a *ngIf="isProfessor" routerLink="/salas/criar" class="btn btn-primary">
       <span class="icon">➕</span>
       Criar Primeira Sala
     </a>

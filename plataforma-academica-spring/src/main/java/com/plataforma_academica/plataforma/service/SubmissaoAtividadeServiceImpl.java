@@ -142,4 +142,15 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
 
         return submissaoRepository.save(submissao);
     }
+
+    @Override
+    public SubmissaoAtividade marcarComoRecebida(Long submissaoId) {
+        SubmissaoAtividade submissao = submissaoRepository.findById(submissaoId)
+                .orElseThrow(() -> new EntityNotFoundException("Submissão não encontrada."));
+
+        submissao.setRecebida(true);
+        submissao.setDataRecebimento(LocalDateTime.now());
+
+        return submissaoRepository.save(submissao);
+    }
 }

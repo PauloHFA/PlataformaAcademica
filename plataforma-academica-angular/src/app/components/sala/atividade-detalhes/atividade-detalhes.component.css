@@ -315,6 +315,23 @@
   background: var(--hover-color);
 }
 
+.btn-info {
+  background: #3498db;
+  color: white;
+}
+
+.btn-info:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
 .btn-full {
   width: 100%;
   justify-content: center;

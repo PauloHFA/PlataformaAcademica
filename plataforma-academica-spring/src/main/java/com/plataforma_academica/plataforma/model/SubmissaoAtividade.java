@@ -33,7 +33,7 @@ public class SubmissaoAtividade {
     private String urlDocumento;
 
     // Descrição da submissão
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String descricao;
 
     // Indica a data e hora exata da submissão
@@ -43,9 +43,13 @@ public class SubmissaoAtividade {
     private Double nota;
 
     // Campo opcional para feedback do professor
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String feedback;
 
     private LocalDateTime dataCorrecao;
+
+    private Boolean recebida = false;
+
+    private LocalDateTime dataRecebimento;
 
 }

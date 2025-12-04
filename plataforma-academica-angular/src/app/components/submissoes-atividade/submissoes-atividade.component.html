@@ -1,0 +1,99 @@
+<div class="submissoes-container">
+  <div class="header">
+    <h1>📝 Submissões da Atividade</h1>
+    <a [routerLink]="['/salas', salaId, 'atividades', atividadeId]" class="btn btn-secondary">← Voltar</a>
+  </div>
+
+  <div *ngIf="carregando" class="loading">
+    <div class="spinner"></div>
+    <p>Carregando submissões...</p>
+  </div>
+
+  <div *ngIf="!carregando && submissoes.length === 0" class="empty">
+    <div class="empty-icon">📭</div>
+    <h3>Nenhuma submissão ainda</h3>
+    <p>Os alunos ainda não enviaram suas atividades.</p>
+  </div>
+
+  <div *ngIf="!carregando && submissoes.length > 0" class="submissoes-grid">
+    <div *ngFor="let s of submissoes" class="submissao-card">
+      <div class="submissao-header">
+        <div class="aluno-info">
+          <div class="avatar">{{ s.alunoNome?.charAt(0) || '?' }}</div>
+          <div class="info">
+            <h3>{{ s.alunoNome }}</h3>
+            <span class="data">{{ s.dataSubmissao | date:'short' }}</span>
+          </div>
+        </div>
+        <div class="status" [class.avaliada]="s.nota !== null && s.nota !== undefined">
+          {{ s.nota !== null && s.nota !== undefined ? 'Avaliada' : 'Pendente' }}
+        </div>
+      </div>
+      
+      <div class="submissao-body" *ngIf="s.descricao">
+        <p><strong>Descrição:</strong></p>
+        <p class="descricao">{{ s.descricao }}</p>
+      </div>
+
+      <div class="submissao-footer">
+        <button (click)="selecionarSubmissao(s)" class="btn btn-primary">
+          👁️ Visualizar e Avaliar
+        </button>
+        <button *ngIf="!s.recebida" (click)="marcarComoRecebida(s.id!)" class="btn btn-success">
+          ✓ Marcar Recebida
+        </button>
+        <span *ngIf="s.recebida" class="recebida-badge">
+          ✓ Recebida
+        </span>
+        <span *ngIf="s.nota !== null && s.nota !== undefined" class="nota-badge">
+          Nota: {{ s.nota }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Avaliação -->
+<div *ngIf="submissaoSelecionada" class="modal-overlay" (click)="fecharModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Avaliar Submissão</h2>
+      <button class="btn-close" (click)="fecharModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="aluno-section">
+        <strong>Aluno:</strong> {{ submissaoSelecionada.alunoNome }}
+      </div>
+
+      <div class="info-section" *ngIf="submissaoSelecionada.descricao">
+        <strong>Descrição:</strong>
+        <p>{{ submissaoSelecionada.descricao }}</p>
+      </div>
+
+      <div class="info-section" *ngIf="submissaoSelecionada.urlDocumento">
+        <strong>Documento:</strong>
+        <a [href]="getDocumentoUrl(submissaoSelecionada.urlDocumento)" target="_blank" class="btn btn-link">
+          📄 Abrir Documento
+        </a>
+      </div>
+
+      <div class="form-group">
+        <label for="nota">Nota (0-10):</label>
+        <input type="number" id="nota" [(ngModel)]="nota" min="0" max="10" step="0.1" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label for="feedback">Feedback:</label>
+        <textarea id="feedback" [(ngModel)]="feedback" rows="4" class="form-control" placeholder="Deixe um comentário para o aluno..."></textarea>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button (click)="fecharModal()" class="btn btn-secondary">Cancelar</button>
+      <button (click)="salvarAvaliacao()" [disabled]="nota === null" class="btn btn-success">
+        ✓ Salvar Avaliação
+      </button>
+    </div>
+  </div>
+</div>

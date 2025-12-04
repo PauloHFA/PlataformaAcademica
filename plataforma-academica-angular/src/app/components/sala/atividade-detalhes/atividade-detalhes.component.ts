@@ -34,6 +34,8 @@ export class AtividadeDetalhesComponent implements OnInit {
   comentarios: Comentario[] = [];
   novoComentario = '';
   usuarioId = 0;
+  isProfessor = false;
+  usuarioEhCriadorDaSala = false;
 
   getDocumentoTipo(url: string): 'pdf' | 'image' | 'video' | 'other' {
     const ext = url.split('.').pop()?.toLowerCase();
@@ -68,6 +70,7 @@ export class AtividadeDetalhesComponent implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       const usuarioIdStr = localStorage.getItem('usuarioId');
       this.usuarioId = usuarioIdStr ? parseInt(usuarioIdStr, 10) : 0;
+      this.isProfessor = localStorage.getItem('isProfessor') === 'true';
     }
     
     this.currentUserId = this.getCurrentUserId();
@@ -93,7 +96,10 @@ export class AtividadeDetalhesComponent implements OnInit {
     if (!this.salaId || !this.atividadeId) return;
     
     this.salaService.buscarPorId(this.salaId).subscribe({
-      next: (s) => this.salaContext.setNomeSala(s.nome),
+      next: (s) => {
+        this.salaContext.setNomeSala(s.nome);
+        this.usuarioEhCriadorDaSala = s.criadorId === this.currentUserId;
+      },
       error: () => {}
     });
     

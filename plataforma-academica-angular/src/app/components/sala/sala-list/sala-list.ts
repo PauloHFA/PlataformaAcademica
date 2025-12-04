@@ -2,6 +2,7 @@ import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SalaService } from '../../../services/sala.service';
+import { SolicitacaoEntradaService } from '../../../services/solicitacao-entrada.service';
 import { SalaDeAula } from '../../../models/sala.model';
 
 @Component({
@@ -18,15 +19,18 @@ export class SalaListComponent implements OnInit {
   criando = false;
   mensagemCriar = '';
   currentUserId: number | null = null;
+  isProfessor = false;
 
   constructor(
     private salaService: SalaService,
+    private solicitacaoService: SolicitacaoEntradaService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit(): void {
     this.currentUserId = this.getCurrentUserId();
-    console.log('Usuario ID carregado:', this.currentUserId);
+    this.isProfessor = this.checkIsProfessor();
+    console.log('Usuario ID carregado:', this.currentUserId, 'isProfessor:', this.isProfessor);
     this.carregarSalas();
   }
 
@@ -119,5 +123,22 @@ export class SalaListComponent implements OnInit {
       console.error('Erro ao obter usuarioId:', e);
     }
     return null;
+  }
+
+  private checkIsProfessor(): boolean {
+    if (!isPlatformBrowser(this.platformId)) return false;
+    return localStorage.getItem('isProfessor') === 'true';
+  }
+
+  solicitarEntrada(sala: SalaDeAula): void {
+    if (!sala.id || !this.currentUserId) return;
+    this.solicitacaoService.solicitarEntrada(sala.id, this.currentUserId).subscribe({
+      next: () => {
+        alert('Solicitação enviada com sucesso! Aguarde aprovação do professor.');
+      },
+      error: (err: Error) => {
+        alert(err.message || 'Erro ao enviar solicitação');
+      }
+    });
   }
 }

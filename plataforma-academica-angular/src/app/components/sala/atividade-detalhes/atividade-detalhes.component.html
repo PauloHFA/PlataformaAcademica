@@ -29,10 +29,16 @@
           </span>
         </div>
       </div>
-      <button (click)="voltar()" class="btn btn-secondary">
-        <span class="icon">⬅️</span>
-        Voltar
-      </button>
+      <div class="header-actions">
+        <a *ngIf="isProfessor" [routerLink]="['/salas', salaId, 'atividades', atividadeId, 'submissoes']" class="btn btn-info">
+          <span class="icon">📊</span>
+          Ver Submissões
+        </a>
+        <button (click)="voltar()" class="btn btn-secondary">
+          <span class="icon">⬅️</span>
+          Voltar
+        </button>
+      </div>
     </div>
 
     <div class="main-grid">
@@ -130,7 +136,7 @@
       <!-- Coluna Lateral -->
       <div class="side-column">
         <!-- Minha Submissão -->
-        <div class="card" *ngIf="!minhaSubmissao">
+        <div class="card" *ngIf="!minhaSubmissao && !usuarioEhCriadorDaSala">
           <h2>📤 Enviar Submissão</h2>
           <form (ngSubmit)="enviarSubmissao()">
             <div class="form-group">
@@ -168,7 +174,7 @@
         </div>
 
         <!-- Submissão Enviada -->
-        <div class="card card-success" *ngIf="minhaSubmissao">
+        <div class="card card-success" *ngIf="minhaSubmissao && !usuarioEhCriadorDaSala">
           <h2>✅ Submissão Enviada</h2>
           <div class="submissao-info">
             <div class="info-row">

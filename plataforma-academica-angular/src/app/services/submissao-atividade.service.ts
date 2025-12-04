@@ -22,6 +22,10 @@ export class SubmissaoAtividadeService {
     return this.http.get<SubmissaoAtividadeResponse[]>(`${this.apiUrl}/atividade/${atividadeId}`);
   }
 
+  listarPorAtividade(atividadeId: number): Observable<SubmissaoAtividade[]> {
+    return this.http.get<SubmissaoAtividade[]>(`${this.apiUrl}/atividade/${atividadeId}`);
+  }
+
   buscarSubmissaoDoAluno(atividadeId: number, alunoId: number): Observable<SubmissaoAtividadeResponse> {
     return this.http.get<SubmissaoAtividadeResponse>(
       `${this.apiUrl}/atividade/${atividadeId}/aluno/${alunoId}`
@@ -42,6 +46,13 @@ export class SubmissaoAtividadeService {
       `${this.apiUrl}/corrigir/${submissaoId}`,
       null,
       { params }
+    );
+  }
+
+  marcarComoRecebida(submissaoId: number): Observable<SubmissaoAtividade> {
+    return this.http.put<SubmissaoAtividade>(
+      `${this.apiUrl}/marcar-recebida/${submissaoId}`,
+      null
     );
   }
 }

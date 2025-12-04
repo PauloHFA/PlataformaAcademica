@@ -26,6 +26,7 @@ export class SalaDetalhesComponent implements OnInit {
   animando = false;
   comentarios: Comentario[] = [];
   novoComentario = '';
+  isProfessor = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -39,6 +40,19 @@ export class SalaDetalhesComponent implements OnInit {
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.usuarioId = this.getCurrentUserId();
+      const isProfessorValue = localStorage.getItem('isProfessor');
+      this.isProfessor = isProfessorValue === 'true';
+      
+      console.log('=== DEBUG SALA DETALHES ===');
+      console.log('localStorage.isProfessor:', isProfessorValue);
+      console.log('this.isProfessor:', this.isProfessor);
+      console.log('usuarioId:', this.usuarioId);
+      console.log('Todos os itens do localStorage:');
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        console.log(`  ${key}: ${localStorage.getItem(key!)}`);
+      }
+      console.log('=========================');
     }
 
     this.route.paramMap.subscribe(params => {

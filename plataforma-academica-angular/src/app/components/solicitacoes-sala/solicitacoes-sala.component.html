@@ -1,0 +1,40 @@
+<div class="solicitacoes-container">
+  <div class="header">
+    <h1>📬 Solicitações de Entrada</h1>
+    <a [routerLink]="['/salas', salaId]" class="btn btn-secondary">← Voltar</a>
+  </div>
+
+  <div *ngIf="carregando" class="loading">
+    <div class="spinner"></div>
+    <p>Carregando solicitações...</p>
+  </div>
+
+  <div *ngIf="!carregando && solicitacoes.length === 0" class="empty">
+    <div class="empty-icon">📭</div>
+    <h3>Nenhuma solicitação pendente</h3>
+    <p>Não há solicitações aguardando aprovação no momento.</p>
+  </div>
+
+  <div *ngIf="!carregando && solicitacoes.length > 0" class="solicitacoes-list">
+    <div *ngFor="let s of solicitacoes" class="solicitacao-card">
+      <div class="solicitacao-header">
+        <div class="usuario-info">
+          <div class="avatar">{{ s.usuario?.nome?.charAt(0) || '?' }}</div>
+          <div class="info">
+            <h3>{{ s.usuario?.nome }}</h3>
+            <p>{{ s.usuario?.email }}</p>
+          </div>
+        </div>
+        <span class="data">{{ s.dataSolicitacao | date:'short' }}</span>
+      </div>
+      <div class="solicitacao-actions">
+        <button (click)="aprovar(s.id!)" class="btn btn-success">
+          ✓ Aprovar
+        </button>
+        <button (click)="rejeitar(s.id!)" class="btn btn-danger">
+          ✗ Rejeitar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

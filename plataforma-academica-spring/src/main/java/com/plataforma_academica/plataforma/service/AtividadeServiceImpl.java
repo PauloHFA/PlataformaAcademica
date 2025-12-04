@@ -3,6 +3,7 @@ package com.plataforma_academica.plataforma.service;
 import com.plataforma_academica.plataforma.dto.AtividadeDTO;
 import com.plataforma_academica.plataforma.model.Atividade;
 import com.plataforma_academica.plataforma.model.Usuario;
+import com.plataforma_academica.plataforma.model.Professor;
 import com.plataforma_academica.plataforma.repository.AtividadeRepository;
 import com.plataforma_academica.plataforma.repository.UsuarioRepository;
 import com.plataforma_academica.plataforma.repository.SaladeAulaRepository;
@@ -35,6 +36,10 @@ public class AtividadeServiceImpl implements AtividadeService {
         // Verifica se o autor existe
         Usuario autor = usuarioRepository.findById(autorId)
                 .orElseThrow(() -> new RuntimeException("Autor não encontrado"));
+
+        if (!(autor instanceof Professor)) {
+            throw new SecurityException("Apenas professores podem criar atividades.");
+        }
 
         atividade.setAutor(autor);
         atividade.setId(salaId);

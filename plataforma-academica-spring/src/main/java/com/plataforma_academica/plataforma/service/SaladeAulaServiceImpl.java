@@ -2,10 +2,12 @@ package com.plataforma_academica.plataforma.service;
 
 import com.plataforma_academica.plataforma.model.Atividade;
 import com.plataforma_academica.plataforma.model.Usuario;
+import com.plataforma_academica.plataforma.model.Professor;
 import com.plataforma_academica.plataforma.model.SaladeAula;
 import com.plataforma_academica.plataforma.repository.AtividadeRepository;
 import com.plataforma_academica.plataforma.repository.SaladeAulaRepository;
 import com.plataforma_academica.plataforma.repository.UsuarioRepository;
+import com.plataforma_academica.plataforma.repository.ProfessorRepository;
 import org.springframework.stereotype.Service;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,14 +23,17 @@ public class SaladeAulaServiceImpl implements SaladeAulaService{
     private final SaladeAulaRepository salaRepository;
     private final UsuarioRepository usuarioRepository;
     private final AtividadeRepository atividadeRepository;
+    private final ProfessorRepository professorRepository;
 
     public SaladeAulaServiceImpl(
             SaladeAulaRepository salaRepository,
             UsuarioRepository usuarioRepository,
-            AtividadeRepository atividadeRepository) {
+            AtividadeRepository atividadeRepository,
+            ProfessorRepository professorRepository) {
         this.salaRepository = salaRepository;
         this.usuarioRepository = usuarioRepository;
         this.atividadeRepository = atividadeRepository;
+        this.professorRepository = professorRepository;
     }
 
     /**
@@ -54,6 +59,10 @@ public class SaladeAulaServiceImpl implements SaladeAulaService{
     public SaladeAula criarSala(SaladeAula sala, Long criadorId) {
         Usuario criador = usuarioRepository.findById(criadorId)
                 .orElseThrow(() -> new EntityNotFoundException("Criador não encontrado."));
+
+        if (!(criador instanceof Professor)) {
+            throw new SecurityException("Apenas professores podem criar salas de aula.");
+        }
 
         sala.setCriador(criador);
         sala.setCodigoSala(gerarCodigoUnico());
@@ -149,8 +158,16 @@ public class SaladeAulaServiceImpl implements SaladeAulaService{
         // 1. Verifica se o usuário logado é o criador
         SaladeAula sala = verificarCriador(saladeAulaId, creatorId);
 
-        // 2. Busca o autor
-        Usuario autor = usuarioRepository.findById(creatorId).orElseThrow(() -> new EntityNotFoundException("Autor não encontrado."));
+        // 2. Busca o autor (professor primeiro)
+        Usuario autor = professorRepository.findById(creatorId)
+                .map(p -> (Usuario) p)
+                .orElseGet(() -> usuarioRepository.findById(creatorId)
+                        .orElseThrow(() -> new EntityNotFoundException("Autor não encontrado.")));
+        
+        if (!(autor instanceof Professor)) {
+            throw new SecurityException("Apenas professores podem criar atividades.");
+        }
+        
         // 3. Converte DTO para entidade e define relacionamentos
         Atividade atividade = AtividadeMapper.toEntity(atividadeDTO, autor, sala);
 
@@ -208,7 +225,19 @@ public class SaladeAulaServiceImpl implements SaladeAulaService{
     @Transactional
     public Atividade cadastrarAtividadeComDocumento(Long saladeAulaId, AtividadeDTO atividadeDTO, Long creatorId, org.springframework.web.multipart.MultipartFile documento) {
         SaladeAula sala = verificarCriador(saladeAulaId, creatorId);
-        Usuario autor = usuarioRepository.findById(creatorId).orElseThrow(() -> new EntityNotFoundException("Autor não encontrado."));
+        
+        // Busca primeiro no ProfessorRepository
+        Usuario autor = professorRepository.findById(creatorId)
+                .map(p -> (Usuario) p)
+                .orElseGet(() -> usuarioRepository.findById(creatorId)
+                        .orElseThrow(() -> new EntityNotFoundException("Autor não encontrado.")));
+        
+        System.out.println("[DEBUG] Tipo do autor: " + autor.getClass().getName());
+        System.out.println("[DEBUG] É Professor? " + (autor instanceof Professor));
+        
+        if (!(autor instanceof Professor)) {
+            throw new SecurityException("Apenas professores podem criar atividades.");
+        }
         
         Atividade atividade = AtividadeMapper.toEntity(atividadeDTO, autor, sala);
         

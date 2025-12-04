@@ -57,15 +57,17 @@ export class LoginComponent implements OnInit {
 
     const { email, senha } = this.formulario.value;
 
-    // Tenta login como usuário normal primeiro
-    this.usuarioService.login(email, senha).subscribe({
+    // Tenta login como professor primeiro
+    this.usuarioService.loginProfessor(email, senha).subscribe({
       next: (resposta: LoginResponse) => {
+        console.log('Login como PROFESSOR bem-sucedido');
         this.salvarUsuarioENavegar(resposta);
       },
       error: () => {
-        // Se falhar, tenta login como professor
-        this.usuarioService.loginProfessor(email, senha).subscribe({
+        // Se falhar, tenta login como usuário normal
+        this.usuarioService.login(email, senha).subscribe({
           next: (resposta: LoginResponse) => {
+            console.log('Login como USUARIO bem-sucedido');
             this.salvarUsuarioENavegar(resposta);
           },
           error: (erro) => {
@@ -108,14 +110,18 @@ export class LoginComponent implements OnInit {
   /**
    * Salva usuário no localStorage e navega para feed
    */
-  private salvarUsuarioENavegar(resposta: LoginResponse): void {
+  private salvarUsuarioENavegar(resposta: any): void {
     this.usuarioLogado = resposta;
     console.log('Login realizado com sucesso!', resposta);
+    console.log('Matricula presente?', resposta.matricula);
+    console.log('isProfessor será:', resposta.matricula ? 'true' : 'false');
     
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem('usuario', JSON.stringify(resposta));
       localStorage.setItem('usuarioId', resposta.id.toString());
       localStorage.setItem('token', resposta.id.toString());
+      localStorage.setItem('isProfessor', resposta.matricula ? 'true' : 'false');
+      console.log('localStorage isProfessor:', localStorage.getItem('isProfessor'));
     }
     
     this.router.navigate(['/feed']);

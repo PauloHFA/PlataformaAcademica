@@ -57,24 +57,22 @@ export class LoginComponent implements OnInit {
 
     const { email, senha } = this.formulario.value;
 
+    // Tenta login como usuário normal primeiro
     this.usuarioService.login(email, senha).subscribe({
       next: (resposta: LoginResponse) => {
-        this.usuarioLogado = resposta;
-        console.log('Login realizado com sucesso!', resposta);
-        
-        // Armazenar dados do usuário no localStorage (apenas no navegador)
-        if (isPlatformBrowser(this.platformId)) {
-          localStorage.setItem('usuario', JSON.stringify(resposta));
-          localStorage.setItem('usuarioId', resposta.id.toString());
-          localStorage.setItem('token', resposta.id.toString());
-        }
-        
-        // Redirecionar para feed de postagens após login
-        this.router.navigate(['/feed']);
+        this.salvarUsuarioENavegar(resposta);
       },
-      error: (erro) => {
-        this.mensagemErro = erro.message || 'Email ou senha incorretos';
-        this.carregando = false;
+      error: () => {
+        // Se falhar, tenta login como professor
+        this.usuarioService.loginProfessor(email, senha).subscribe({
+          next: (resposta: LoginResponse) => {
+            this.salvarUsuarioENavegar(resposta);
+          },
+          error: (erro) => {
+            this.mensagemErro = erro.message || 'Email ou senha incorretos';
+            this.carregando = false;
+          }
+        });
       }
     });
   }
@@ -110,12 +108,16 @@ export class LoginComponent implements OnInit {
   /**
    * Salva usuário no localStorage e navega para feed
    */
-  private salvarUsuarioENavegar(usuario: any): void {
+  private salvarUsuarioENavegar(resposta: LoginResponse): void {
+    this.usuarioLogado = resposta;
+    console.log('Login realizado com sucesso!', resposta);
+    
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('usuario', JSON.stringify(usuario));
-      localStorage.setItem('usuarioId', usuario.id.toString());
-      localStorage.setItem('token', usuario.id.toString());
+      localStorage.setItem('usuario', JSON.stringify(resposta));
+      localStorage.setItem('usuarioId', resposta.id.toString());
+      localStorage.setItem('token', resposta.id.toString());
     }
+    
     this.router.navigate(['/feed']);
   }
 }

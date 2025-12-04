@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "usuario")
+@Inheritance(strategy = InheritanceType.JOINED)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "atividadesCriadas", "postagens", "comentarios", "submissões"})
 public class Usuario {
 
@@ -17,15 +18,37 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String nome;
+    
+    private String sobrenome;
+    
+    @Column(unique = true, nullable = false)
     private String email;
     
-    // Manter a senha fora das respostas, mas permitir desserialização no login/cadastro
     @com.fasterxml.jackson.annotation.JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY)
+    @Column(nullable = false)
     private String senha;
+    
+    private java.time.LocalDate dataNascimento;
+    
+    private String telefone;
+    
+    @Column(columnDefinition = "TEXT")
+    private String descricao;
+    
+    private String instituicaoEnsino;
+    
+    private String cep;
+    
+    private String pais;
+    
+    private String cidade;
+    
+    private String site;
 
     @Lob
-    @JsonIgnore // Ignorar avatar na serialização (pode ser muito grande)
+    @JsonIgnore
     private byte[] avatar;
 
     // Postagens criadas pelo usuário

@@ -6,6 +6,16 @@ import lombok.Data;
 public class UsuarioDTO {
     private Long id;
     private String nome;
+    private String sobrenome;
     private String email;
-    private String avatarBase64; // opcional
+    private String senha;
+    private String dataNascimento;
+    private String telefone;
+    private String descricao;
+    private String instituicaoEnsino;
+    private String cep;
+    private String pais;
+    private String cidade;
+    private String site;
+    private String avatarBase64;
 }

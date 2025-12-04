@@ -11,9 +11,15 @@ import com.plataforma_academica.plataforma.repository.SubmissaoAtividadeResposit
 import com.plataforma_academica.plataforma.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService {
@@ -32,9 +38,6 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
         this.usuarioRepository = usuarioRepository;
     }
 
-    // ---------------------------------------------------------------
-    //  ENVIAR SUBMISSÃO
-    // ---------------------------------------------------------------
     @Override
     public SubmissaoAtividade enviarSubmissao(Long atividadeId, Long alunoId, SubmissaoAtividade submissao) {
 
@@ -46,7 +49,6 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
 
         SaladeAula sala = atividade.getSalaDeAula();
 
-        // Verifica se o aluno pertence à sala
         boolean membro = sala.getUsuarios().stream()
                 .anyMatch(u -> u.getId().equals(alunoId));
 
@@ -54,7 +56,6 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
             throw new SecurityException("Este usuário não pertence à sala dessa atividade.");
         }
 
-        // Verifica se já existe submissão do aluno
         SubmissaoAtividade existente = submissaoRepository
                 .findByAtividadeIdAndAlunoId(atividadeId, alunoId);
 
@@ -81,24 +82,45 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
         return enviarSubmissao(atividadeId, alunoId, submissao);
     }
 
-    // ---------------------------------------------------------------
-    //  LISTAR SUBMISSÕES POR ATIVIDADE
-    // ---------------------------------------------------------------
+    @Override
+    public SubmissaoAtividade enviarSubmissaoComArquivo(Long atividadeId, Long alunoId, String descricao, MultipartFile arquivo) {
+        Atividade atividade = atividadeRepository.findById(atividadeId)
+                .orElseThrow(() -> new EntityNotFoundException("Atividade não encontrada."));
+
+        Usuario aluno = usuarioRepository.findById(alunoId)
+                .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado."));
+
+        SubmissaoAtividade submissao = new SubmissaoAtividade();
+        submissao.setDescricao(descricao);
+
+        if (arquivo != null && !arquivo.isEmpty()) {
+            try {
+                String nomeArquivo = UUID.randomUUID() + "-" + arquivo.getOriginalFilename();
+                Path uploadPath = Paths.get("uploads");
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+                Path filePath = uploadPath.resolve(nomeArquivo);
+                Files.write(filePath, arquivo.getBytes());
+                submissao.setUrlDocumento("/uploads/" + nomeArquivo);
+            } catch (Exception e) {
+                throw new RuntimeException("Erro ao salvar arquivo: " + e.getMessage());
+            }
+        }
+
+        return enviarSubmissao(atividadeId, alunoId, submissao);
+    }
+
     @Override
     public List<SubmissaoAtividade> listarSubmissoesPorAtividade(Long atividadeId) {
-
         atividadeRepository.findById(atividadeId)
                 .orElseThrow(() -> new EntityNotFoundException("Atividade não encontrada."));
 
         return submissaoRepository.findByAtividadeId(atividadeId);
     }
 
-    // ---------------------------------------------------------------
-    //  BUSCAR SUBMISSÃO DO ALUNO
-    // ---------------------------------------------------------------
     @Override
     public SubmissaoAtividade buscarSubmissaoDoAluno(Long atividadeId, Long alunoId) {
-
         SubmissaoAtividade submissao =
                 submissaoRepository.findByAtividadeIdAndAlunoId(atividadeId, alunoId);
 
@@ -109,12 +131,8 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
         return submissao;
     }
 
-    // ---------------------------------------------------------------
-    //  CORRIGIR SUBMISSÃO (professor atribui nota e feedback)
-    // ---------------------------------------------------------------
     @Override
     public SubmissaoAtividade corrigirSubmissao(Long submissaoId, Double nota, String feedback) {
-
         SubmissaoAtividade submissao = submissaoRepository.findById(submissaoId)
                 .orElseThrow(() -> new EntityNotFoundException("Submissão não encontrada."));
 

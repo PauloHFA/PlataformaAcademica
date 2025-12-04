@@ -28,6 +28,13 @@ export class SubmissaoAtividadeService {
     );
   }
 
+  enviarSubmissaoComArquivo(atividadeId: number, alunoId: number, formData: FormData): Observable<SubmissaoAtividadeResponse> {
+    return this.http.post<SubmissaoAtividadeResponse>(
+      `${this.apiUrl}/atividade/${atividadeId}/aluno/${alunoId}`,
+      formData
+    );
+  }
+
   corrigirSubmissao(submissaoId: number, nota: number, feedback?: string): Observable<SubmissaoAtividadeResponse> {
     const params: any = { nota };
     if (feedback) params.feedback = feedback;

@@ -14,26 +14,63 @@
   box-shadow: 0 10px 25px var(--shadow);
   padding: 40px;
   width: 100%;
-  max-width: 450px;
+  max-width: 500px;
 }
 
 .cadastro-box h2 {
   text-align: center;
   color: var(--text-color);
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   font-size: 24px;
+}
+
+.progress-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  gap: 10px;
+}
+
+.progress-step {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--border-color);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  transition: all 0.3s;
+}
+
+.progress-step.active {
+  background: var(--primary-color);
+  color: white;
+}
+
+.progress-line {
+  width: 60px;
+  height: 3px;
+  background: var(--border-color);
+  transition: all 0.3s;
+}
+
+.progress-line.active {
+  background: var(--primary-color);
 }
 
 .cadastro-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .form-group label {
@@ -42,19 +79,28 @@
   font-size: 14px;
 }
 
-.form-group input {
-  padding: 12px;
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: 10px;
   border: 2px solid var(--border-color);
   border-radius: 5px;
   font-size: 14px;
   background-color: var(--bg-color);
   color: var(--text-color);
   transition: border-color 0.3s;
+  font-family: inherit;
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
   outline: none;
   border-color: var(--primary-color);
+}
+
+.form-group select {
+  cursor: pointer;
 }
 
 .form-group input.input-error {
@@ -64,7 +110,12 @@
 .error-message {
   color: #e74c3c;
   font-size: 12px;
-  margin-top: 4px;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 .btn {
@@ -74,13 +125,18 @@
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
+  flex: 1;
 }
 
 .btn-primary {
   background-color: var(--primary-color);
-  color: var(--secondary-color);
-  margin-top: 10px;
+  color: white;
+}
+
+.btn-secondary {
+  background-color: var(--border-color);
+  color: var(--text-color);
 }
 
 .btn-primary:hover:not(:disabled) {
@@ -125,20 +181,15 @@
   font-weight: 600;
 }
 
-:root[data-theme="dark"] .cadastro-footer a {
-  color: white;
-}
-
 .cadastro-footer a:hover {
   text-decoration: underline;
 }
 
-/* Divisor */
 .divider {
   display: flex;
   align-items: center;
   text-align: center;
-  margin: 25px 0;
+  margin: 20px 0;
   color: var(--text-muted);
   font-size: 14px;
 }
@@ -154,7 +205,6 @@
   padding: 0 15px;
 }
 
-/* Login Social */
 .social-login {
   display: flex;
   flex-direction: column;
@@ -180,16 +230,6 @@
 .btn-social:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.btn-google:hover {
-  border-color: #4285F4;
-  background: rgba(66, 133, 244, 0.05);
-}
-
-.btn-facebook:hover {
-  border-color: #1877F2;
-  background: rgba(24, 119, 242, 0.05);
 }
 
 .social-icon {

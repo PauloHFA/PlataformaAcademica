@@ -20,10 +20,12 @@ export class UsuarioService {
   /**
    * Cadastra um novo usuário na plataforma
    * @param usuario Dados do usuário a cadastrar (nome, email, senha, etc)
+   * @param endpoint Tipo de usuário ('usuarios' ou 'professores')
    * @returns Observable com o usuário criado ou erro
    */
-  cadastrarUsuario(usuario: Usuario): Observable<Usuario> {
-    return this.http.post<Usuario>(`${this.baseUrl}/cadastro`, usuario)
+  cadastrarUsuario(usuario: Usuario, endpoint: string = 'usuarios'): Observable<Usuario> {
+    const url = `http://localhost:8080/api/${endpoint}/cadastro`;
+    return this.http.post<Usuario>(url, usuario)
       .pipe(catchError(this.tratarErro));
   }
 
@@ -36,6 +38,18 @@ export class UsuarioService {
   login(email: string, senha: string): Observable<LoginResponse> {
     const credenciais: LoginRequest = { email, senha };
     return this.http.post<LoginResponse>(`${this.baseUrl}/login`, credenciais)
+      .pipe(catchError(this.tratarErro));
+  }
+
+  /**
+   * Realiza o login de um professor com email e senha
+   * @param email Email do professor
+   * @param senha Senha do professor
+   * @returns Observable com dados do professor autenticado ou erro
+   */
+  loginProfessor(email: string, senha: string): Observable<LoginResponse> {
+    const credenciais: LoginRequest = { email, senha };
+    return this.http.post<LoginResponse>('http://localhost:8080/api/professores/login', credenciais)
       .pipe(catchError(this.tratarErro));
   }
 

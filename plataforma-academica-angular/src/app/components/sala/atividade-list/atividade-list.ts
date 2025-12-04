@@ -19,10 +19,10 @@ export class AtividadeListComponent implements OnInit {
   atividades: Atividade[] = [];
   carregando = true;
   salaId: number | null = null;
-  comentarios: Comentario[] = [];
-  novoComentario = '';
+  comentariosPorAtividade: { [atividadeId: number]: Comentario[] } = {};
+  novoComentarioPorAtividade: { [atividadeId: number]: string } = {};
   usuarioId: number | null = null;
-  carregandoComentarios = false;
+  atividadeExpandida: number | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,55 +46,58 @@ export class AtividadeListComponent implements OnInit {
       error: () => {}
     });
     this.salaService.listarAtividades(this.salaId).subscribe({
-      next: (a) => { this.atividades = a || []; this.carregando = false; },
+      next: (a) => { 
+        this.atividades = a || [];
+        this.atividades.forEach(ativ => this.carregarComentarios(ativ.id!));
+        this.carregando = false;
+      },
       error: (err: Error) => { console.warn('Erro ao listar atividades', err); this.carregando = false; }
     });
-    this.carregarComentarios();
   }
 
-  carregarComentarios(): void {
-    if (!this.salaId) return;
-    console.log('Carregando comentários de atividades gerais da sala:', this.salaId);
-    this.carregandoComentarios = true;
-    this.comentarioService.listarAtividadesGerais(this.salaId).subscribe({
+  carregarComentarios(atividadeId: number): void {
+    this.comentarioService.listarPorAtividade(atividadeId).subscribe({
       next: (c: Comentario[]) => { 
-        console.log('Comentários recebidos:', c);
-        this.comentarios = c || [];
-        this.carregandoComentarios = false; 
+        this.comentariosPorAtividade[atividadeId] = c || [];
       },
       error: (err: any) => { 
-        console.error('Erro ao carregar comentários:', err); 
-        this.carregandoComentarios = false; 
+        console.error('Erro ao carregar comentários da atividade', atividadeId, err);
       }
     });
   }
 
-  adicionarComentario(): void {
-    if (!this.novoComentario.trim() || !this.salaId || !this.usuarioId) return;
+  adicionarComentario(atividadeId: number): void {
+    const texto = this.novoComentarioPorAtividade[atividadeId];
+    if (!texto || !texto.trim() || !this.usuarioId) return;
     const comentario: any = {
-      conteudo: this.novoComentario,
+      conteudo: texto,
       autor: { id: this.usuarioId },
-      saladeAula: { id: this.salaId },
-      tipoDestino: 'ATIVIDADES_GERAIS'
+      atividade: { id: atividadeId },
+      tipoDestino: 'ATIVIDADE'
     };
-    console.log('Enviando comentário:', comentario);
     this.comentarioService.criar(comentario).subscribe({
-      next: (c) => { 
-        console.log('Comentário criado:', c);
-        this.novoComentario = ''; 
-        this.carregarComentarios(); 
+      next: () => { 
+        this.novoComentarioPorAtividade[atividadeId] = '';
+        this.carregarComentarios(atividadeId);
       },
       error: (err: any) => {
         console.error('Erro ao adicionar comentário:', err);
-        alert('Erro ao adicionar comentário: ' + (err.error?.message || err.message));
       }
     });
   }
 
-  deletarComentario(id: number): void {
+  deletarComentario(id: number, atividadeId: number): void {
     this.comentarioService.deletar(id).subscribe({
-      next: () => this.carregarComentarios(),
+      next: () => this.carregarComentarios(atividadeId),
       error: (err: Error) => console.warn('Erro ao deletar comentário', err)
     });
+  }
+
+  toggleComentarios(atividadeId: number): void {
+    this.atividadeExpandida = this.atividadeExpandida === atividadeId ? null : atividadeId;
+  }
+
+  getComentarios(atividadeId: number): Comentario[] {
+    return this.comentariosPorAtividade[atividadeId] || [];
   }
 }

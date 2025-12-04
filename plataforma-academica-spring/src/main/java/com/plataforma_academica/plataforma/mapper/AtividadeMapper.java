@@ -21,7 +21,12 @@ public class AtividadeMapper {
         atividade.setDescricao(dto.getDescricao());
         atividade.setTipoDocumentoSubmissao(dto.getTipoDocumentoSubmissao());
         if (dto.getDataEntrega() != null) {
-            atividade.setDataEntrega(java.time.LocalDate.parse(dto.getDataEntrega()));
+            String dataStr = dto.getDataEntrega();
+            if (dataStr.contains("T")) {
+                atividade.setDataEntrega(java.time.LocalDate.parse(dataStr.substring(0, 10)));
+            } else {
+                atividade.setDataEntrega(java.time.LocalDate.parse(dataStr));
+            }
         }
         atividade.setPontos(dto.getPontos());
 
@@ -70,7 +75,12 @@ public class AtividadeMapper {
         entidade.setDescricao(dto.getDescricao());
         entidade.setTipoDocumentoSubmissao(dto.getTipoDocumentoSubmissao());
         if (dto.getDataEntrega() != null) {
-            entidade.setDataEntrega(java.time.LocalDate.parse(dto.getDataEntrega()));
+            String dataStr = dto.getDataEntrega();
+            if (dataStr.contains("T")) {
+                entidade.setDataEntrega(java.time.LocalDate.parse(dataStr.substring(0, 10)));
+            } else {
+                entidade.setDataEntrega(java.time.LocalDate.parse(dataStr));
+            }
         }
         entidade.setPontos(dto.getPontos());
     }

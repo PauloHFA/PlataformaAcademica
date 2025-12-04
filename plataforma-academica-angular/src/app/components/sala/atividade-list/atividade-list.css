@@ -197,6 +197,9 @@
   padding: 20px 25px;
   background: var(--hover-color);
   border-top: 1px solid var(--border-color);
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .btn {
@@ -432,4 +435,46 @@ a.btn {
     width: 100%;
     justify-content: center;
   }
+}
+
+/* Comentários dentro do card */
+.comentarios-atividade {
+  padding: 20px 25px;
+  background: var(--hover-color);
+  border-top: 1px solid var(--border-color);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 1000px;
+  }
+}
+
+.comentarios-atividade .comentario-input-container {
+  margin-bottom: 20px;
+}
+
+.comentarios-atividade .comentario-input {
+  width: 100%;
+  min-height: 60px;
+}
+
+.comentarios-atividade .comentarios-list {
+  gap: 15px;
+}
+
+.comentarios-atividade .comentario-item {
+  background: var(--card-bg);
+  padding: 15px;
+}
+
+.comentarios-atividade .empty-comments {
+  padding: 20px;
+  font-size: 14px;
 }

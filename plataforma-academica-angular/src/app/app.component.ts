@@ -4,6 +4,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { NavbarComponent } from "./components/navbar/navbar.component";
 import { SalaSidebarComponent } from "./components/sala-sidebar/sala-sidebar.component";
 import { ChatFlutuanteComponent } from "./components/chat-flutuante/chat-flutuante.component";
+import { routeAnimations } from './animations/route-animations';
 
 import { ThemeService } from "./services/theme.service";
 import { filter } from 'rxjs/operators';
@@ -13,7 +14,8 @@ import { filter } from 'rxjs/operators';
   standalone: true,
   imports: [CommonModule, RouterModule, RouterOutlet, NavbarComponent, SalaSidebarComponent, ChatFlutuanteComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
+  animations: [routeAnimations]
 })
 export class AppComponent implements OnInit {
   title = 'ProjetoFinal';

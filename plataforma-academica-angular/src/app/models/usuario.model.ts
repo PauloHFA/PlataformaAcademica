@@ -5,11 +5,21 @@
 export interface Usuario {
   id?: number;
   nome: string;
+  sobrenome?: string;
   email: string;
   senha?: string;
-  avatarUrl?: string;      // URL do avatar para exibição
-  avatarBase64?: string;   // Base64 do avatar para upload
+  dataNascimento?: string;
+  telefone?: string;
+  descricao?: string;
+  instituicaoEnsino?: string;
+  cep?: string;
+  pais?: string;
+  cidade?: string;
+  site?: string;
+  avatarUrl?: string;
+  avatarBase64?: string;
   plataformaId?: number;
+  matricula?: string; // Campo para professores
 }
 
 /**

@@ -11,6 +11,8 @@ public interface SubmissaoAtividadeService {
     
     SubmissaoAtividade enviarSubmissao(Long atividadeId, Long alunoId, SubmissaoAtividadeDTO submissao);
 
+    SubmissaoAtividade enviarSubmissaoComArquivo(Long atividadeId, Long alunoId, String descricao, org.springframework.web.multipart.MultipartFile arquivo);
+
     List<SubmissaoAtividade> listarSubmissoesPorAtividade(Long atividadeId);
 
     SubmissaoAtividade buscarSubmissaoDoAluno(Long atividadeId, Long alunoId);

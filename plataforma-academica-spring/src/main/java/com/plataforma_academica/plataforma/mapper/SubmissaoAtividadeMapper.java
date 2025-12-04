@@ -57,6 +57,7 @@ public class SubmissaoAtividadeMapper {
         }
 
         response.setUrlDocumento(submissao.getUrlDocumento());
+        response.setDescricao(submissao.getDescricao());
         response.setDataSubmissao(submissao.getDataSubmissao());
         response.setNota(submissao.getNota());
         response.setFeedback(submissao.getFeedback());

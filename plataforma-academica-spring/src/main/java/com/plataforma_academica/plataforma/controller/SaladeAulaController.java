@@ -82,7 +82,7 @@ public class SaladeAulaController {
      * O usuário criador deve ser enviado via path variable.
      * Apenas usuários válidos podem criar salas.
      *
-     * @param sala objeto com nome, descrição, etc.
+     * @param salaDTO objeto com nome, descrição, etc.
      * @param criadorId ID do usuário criador
      */
     @PostMapping("/criar/{criadorId}")

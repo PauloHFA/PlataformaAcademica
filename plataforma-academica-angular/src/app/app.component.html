@@ -5,14 +5,14 @@
 <div *ngIf="isSalaPage && isLoggedIn" class="sala-layout">
   <div class="sala-layout-main">
     <app-sala-sidebar></app-sala-sidebar>
-    <div class="sala-content">
+    <div class="sala-content" [@routeAnimations]>
       <router-outlet></router-outlet>
     </div>
   </div>
 </div>
 
 <!-- Layout normal para outras páginas -->
-<div *ngIf="!isSalaPage" [class.with-navbar]="isLoggedIn">
+<div *ngIf="!isSalaPage" [class.with-navbar]="isLoggedIn" [@routeAnimations]>
   <router-outlet></router-outlet>
 </div>
 

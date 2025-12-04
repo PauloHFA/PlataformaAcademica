@@ -15,6 +15,7 @@ public class SubmissaoAtividadeResponseDTO {
     private String alunoNome;           // opcional, evita requisição adicional
 
     private String urlDocumento;
+    private String descricao;
 
     private LocalDateTime dataSubmissao;
 

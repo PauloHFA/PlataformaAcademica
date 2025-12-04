@@ -2,6 +2,7 @@ import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { SalaService } from '../../../services/sala.service';
 import { SubmissaoAtividadeService } from '../../../services/submissao-atividade.service';
 import { ComentarioService, Comentario } from '../../../services/comentario.service';
@@ -26,11 +27,31 @@ export class AtividadeDetalhesComponent implements OnInit {
   currentUserId: number | null = null;
   
   urlDocumento = '';
+  descricaoSubmissao = '';
+  arquivoSubmissao: File | null = null;
   enviandoSubmissao = false;
   
   comentarios: Comentario[] = [];
   novoComentario = '';
   usuarioId = 0;
+
+  getDocumentoTipo(url: string): 'pdf' | 'image' | 'video' | 'other' {
+    const ext = url.split('.').pop()?.toLowerCase();
+    if (ext === 'pdf') return 'pdf';
+    if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext || '')) return 'image';
+    if (['mp4', 'webm', 'ogg'].includes(ext || '')) return 'video';
+    return 'other';
+  }
+
+  getDocumentoPreviewUrl(url: string): string {
+    const fullUrl = url.startsWith('http://localhost:8080') ? url : 'http://localhost:8080' + url;
+    console.log('Preview URL:', fullUrl);
+    return fullUrl;
+  }
+
+  getSafeUrl(url: string): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(this.getDocumentoPreviewUrl(url));
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -39,6 +60,7 @@ export class AtividadeDetalhesComponent implements OnInit {
     private submissaoService: SubmissaoAtividadeService,
     private comentarioService: ComentarioService,
     private salaContext: SalaContextService,
+    private sanitizer: DomSanitizer,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -103,7 +125,7 @@ export class AtividadeDetalhesComponent implements OnInit {
     this.submissaoService.buscarSubmissaoDoAluno(this.atividadeId, this.currentUserId).subscribe({
       next: (submissao) => {
         this.minhaSubmissao = submissao;
-        this.urlDocumento = submissao.urlDocumento;
+        this.urlDocumento = submissao.urlDocumento || '';
       },
       error: () => {}
     });
@@ -128,12 +150,12 @@ export class AtividadeDetalhesComponent implements OnInit {
   }
 
   adicionarComentario(): void {
-    if (!this.novoComentario.trim() || !this.atividadeId) return;
+    if (!this.novoComentario.trim() || !this.atividadeId || !this.usuarioId) return;
 
-    const comentario: Comentario = {
+    const comentario: any = {
       conteudo: this.novoComentario,
-      autorId: this.usuarioId,
-      atividadeId: this.atividadeId,
+      autor: { id: this.usuarioId },
+      atividade: { id: this.atividadeId },
       tipoDestino: 'ATIVIDADE'
     };
     console.log('Adicionando comentário na atividade:', comentario);
@@ -165,24 +187,40 @@ export class AtividadeDetalhesComponent implements OnInit {
     }
   }
 
+  onArquivoSelecionado(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.arquivoSubmissao = file;
+    }
+  }
+
   enviarSubmissao(): void {
-    if (!this.atividadeId || !this.currentUserId || !this.urlDocumento.trim()) {
-      alert('Preencha a URL do documento');
+    if (!this.atividadeId || !this.currentUserId) {
+      alert('Dados inválidos');
+      return;
+    }
+
+    if (!this.arquivoSubmissao && !this.descricaoSubmissao.trim()) {
+      alert('Adicione uma descrição ou anexe um arquivo');
       return;
     }
 
     this.enviandoSubmissao = true;
     
-    const submissao = {
-      atividadeId: this.atividadeId,
-      alunoId: this.currentUserId,
-      urlDocumento: this.urlDocumento.trim()
-    };
+    const formData = new FormData();
+    if (this.descricaoSubmissao.trim()) {
+      formData.append('descricao', this.descricaoSubmissao.trim());
+    }
+    if (this.arquivoSubmissao) {
+      formData.append('arquivo', this.arquivoSubmissao);
+    }
 
-    this.submissaoService.enviarSubmissao(this.atividadeId, this.currentUserId, submissao).subscribe({
+    this.submissaoService.enviarSubmissaoComArquivo(this.atividadeId, this.currentUserId, formData).subscribe({
       next: (response) => {
         alert('Submissão enviada com sucesso!');
         this.minhaSubmissao = response;
+        this.descricaoSubmissao = '';
+        this.arquivoSubmissao = null;
         this.carregarSubmissoes();
         this.enviandoSubmissao = false;
       },

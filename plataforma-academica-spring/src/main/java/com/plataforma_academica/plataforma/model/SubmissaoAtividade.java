@@ -32,6 +32,10 @@ public class SubmissaoAtividade {
     // O caminho ou URL do arquivo/documento submetido
     private String urlDocumento;
 
+    // Descrição da submissão
+    @Lob
+    private String descricao;
+
     // Indica a data e hora exata da submissão
     private LocalDateTime dataSubmissao;
 

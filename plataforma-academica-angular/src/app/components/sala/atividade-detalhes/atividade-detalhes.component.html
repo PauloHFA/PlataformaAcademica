@@ -23,6 +23,10 @@
             <span class="icon">⭐</span>
             {{ atividade.pontos }} pontos
           </span>
+          <span *ngIf="atividade.tipoDocumentoSubmissao" class="meta-item">
+            <span class="icon">📄</span>
+            Tipo: {{ atividade.tipoDocumentoSubmissao }}
+          </span>
         </div>
       </div>
       <button (click)="voltar()" class="btn btn-secondary">
@@ -31,123 +35,187 @@
       </button>
     </div>
 
-    <!-- Descrição -->
-    <div class="card">
-      <h2>📋 Descrição</h2>
-      <p>{{ atividade.descricao || 'Sem descrição disponível' }}</p>
-      <div *ngIf="atividade.tipoDocumentoSubmissao" class="info-row">
-        <strong>Tipo de documento:</strong> {{ atividade.tipoDocumentoSubmissao }}
-      </div>
-      <div *ngIf="atividade.documentoUrl" class="info-row documento-anexo">
-        <strong>📎 Documento Anexado:</strong>
-        <a [href]="'http://localhost:8080' + atividade.documentoUrl" target="_blank" class="btn-download">
-          📄 Baixar Documento
-        </a>
-      </div>
-    </div>
+    <div class="main-grid">
 
-    <!-- Minha Submissão -->
-    <div class="card" *ngIf="!minhaSubmissao">
-      <h2>📤 Enviar Submissão</h2>
-      <form (ngSubmit)="enviarSubmissao()">
-        <div class="form-group">
-          <label for="urlDocumento">
-            <span class="icon">🔗</span>
-            URL do Documento
-          </label>
-          <input
-            type="url"
-            id="urlDocumento"
-            [(ngModel)]="urlDocumento"
-            name="urlDocumento"
-            placeholder="https://drive.google.com/..."
-            required
-          />
-        </div>
-        <button type="submit" class="btn btn-primary" [disabled]="enviandoSubmissao">
-          <span class="icon">{{ enviandoSubmissao ? '⏳' : '📤' }}</span>
-          {{ enviandoSubmissao ? 'Enviando...' : 'Enviar Submissão' }}
-        </button>
-      </form>
-    </div>
-
-    <!-- Submissão Enviada -->
-    <div class="card card-success" *ngIf="minhaSubmissao">
-      <h2>✅ Submissão Enviada</h2>
-      <div class="submissao-info">
-        <div class="info-row">
-          <strong>Data de envio:</strong>
-          {{ minhaSubmissao.dataSubmissao | date:'dd/MM/yyyy HH:mm' }}
-        </div>
-        <div class="info-row">
-          <strong>Documento:</strong>
-          <a [href]="minhaSubmissao.urlDocumento" target="_blank">
-            {{ minhaSubmissao.urlDocumento }}
-          </a>
-        </div>
-        <div class="info-row" *ngIf="minhaSubmissao.nota !== null && minhaSubmissao.nota !== undefined">
-          <strong>Nota:</strong>
-          <span class="nota">{{ minhaSubmissao.nota }}</span>
-        </div>
-        <div class="info-row" *ngIf="minhaSubmissao.feedback">
-          <strong>Feedback:</strong>
-          <p class="feedback">{{ minhaSubmissao.feedback }}</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Lista de Submissões (para professores) -->
-    <div class="card" *ngIf="submissoes.length > 0">
-      <h2>📊 Submissões ({{ submissoes.length }})</h2>
-      <div class="submissoes-list">
-        <div *ngFor="let sub of submissoes" class="submissao-item">
-          <div class="submissao-header">
-            <span class="aluno-nome">{{ sub.alunoNome || 'Aluno #' + sub.alunoId }}</span>
-            <span class="data">{{ sub.dataSubmissao | date:'dd/MM/yyyy HH:mm' }}</span>
-          </div>
-          <div class="submissao-body">
-            <a [href]="sub.urlDocumento" target="_blank" class="doc-link">
-              🔗 Ver documento
-            </a>
-            <span *ngIf="sub.nota !== null && sub.nota !== undefined" class="nota-badge">
-              Nota: {{ sub.nota }}
-            </span>
+      <!-- Coluna Principal -->
+      <div class="main-column">
+        <!-- Descrição -->
+        <div class="card">
+          <h2>📋 Descrição da Atividade</h2>
+          <p>{{ atividade.descricao || 'Sem descrição disponível' }}</p>
+          
+          <!-- Preview do Documento -->
+          <div *ngIf="atividade.documentoUrl" class="documento-section">
+            <div class="documento-header">
+              <strong>📎 Material Anexado</strong>
+              <a [href]="getDocumentoPreviewUrl(atividade.documentoUrl)" target="_blank" class="btn-download">
+                📄 Baixar Documento
+              </a>
+            </div>
+            
+            <div class="documento-preview">
+              <!-- Preview de Imagem -->
+              <img 
+                *ngIf="getDocumentoTipo(atividade.documentoUrl) === 'image'"
+                [src]="getDocumentoPreviewUrl(atividade.documentoUrl)"
+                alt="Preview do documento"
+                class="preview-image"
+              />
+              
+              <!-- Preview de PDF -->
+              <div *ngIf="getDocumentoTipo(atividade.documentoUrl) === 'pdf'" class="preview-other">
+                <span class="icon-large">📄</span>
+                <p>Documento PDF anexado</p>
+                <a [href]="getDocumentoPreviewUrl(atividade.documentoUrl)" target="_blank" class="btn btn-primary">
+                  👁️ Visualizar PDF
+                </a>
+              </div>
+              
+              <!-- Preview de Vídeo -->
+              <video 
+                *ngIf="getDocumentoTipo(atividade.documentoUrl) === 'video'"
+                [src]="getDocumentoPreviewUrl(atividade.documentoUrl)"
+                controls
+                class="preview-video"
+              ></video>
+              
+              <!-- Outros tipos -->
+              <div *ngIf="getDocumentoTipo(atividade.documentoUrl) === 'other'" class="preview-other">
+                <span class="icon-large">📄</span>
+                <p>Preview não disponível para este tipo de arquivo</p>
+                <a [href]="getDocumentoPreviewUrl(atividade.documentoUrl)" target="_blank" class="btn btn-primary">
+                  Abrir Documento
+                </a>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Comentários -->
-    <div class="card">
-      <h2>💬 Comentários</h2>
-      <div class="novo-comentario">
-        <textarea 
-          [(ngModel)]="novoComentario" 
-          placeholder="Deixe um comentário sobre a atividade..."
-          class="comentario-input"
-        ></textarea>
-        <button (click)="adicionarComentario()" class="btn btn-primary">
-          Comentar
-        </button>
-      </div>
-
-      <div class="comentarios-list">
-        <div *ngIf="comentarios.length === 0" class="vazio">
-          <p>Nenhum comentário ainda. Seja o primeiro!</p>
-        </div>
-        <div *ngFor="let c of comentarios" class="comentario-item">
-          <div class="comentario-header">
-            <strong>{{ c.autorNome }}</strong>
-            <span class="data">{{ c.dataCriacao | date:'short' }}</span>
+        <!-- Comentários -->
+        <div class="card">
+          <h2>💬 Comentários</h2>
+          <div class="novo-comentario">
+            <textarea 
+              [(ngModel)]="novoComentario" 
+              placeholder="Deixe um comentário sobre a atividade..."
+              class="comentario-input"
+            ></textarea>
+            <button (click)="adicionarComentario()" class="btn btn-primary">
+              Comentar
+            </button>
           </div>
-          <p class="comentario-texto">{{ c.conteudo }}</p>
-          <button 
-            *ngIf="usuarioId === c.autorId" 
-            (click)="deletarComentario(c.id!)"
-            class="btn-deletar"
-          >
-            🗑️
-          </button>
+
+          <div class="comentarios-list">
+            <div *ngIf="comentarios.length === 0" class="vazio">
+              <p>Nenhum comentário ainda. Seja o primeiro!</p>
+            </div>
+            <div *ngFor="let c of comentarios" class="comentario-item">
+              <div class="comentario-header">
+                <strong>{{ c.autorNome }}</strong>
+                <span class="data">{{ c.dataCriacao | date:'short' }}</span>
+              </div>
+              <p class="comentario-texto">{{ c.conteudo }}</p>
+              <button 
+                *ngIf="usuarioId === c.autorId" 
+                (click)="deletarComentario(c.id!)"
+                class="btn-deletar"
+              >
+                🗑️
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coluna Lateral -->
+      <div class="side-column">
+        <!-- Minha Submissão -->
+        <div class="card" *ngIf="!minhaSubmissao">
+          <h2>📤 Enviar Submissão</h2>
+          <form (ngSubmit)="enviarSubmissao()">
+            <div class="form-group">
+              <label for="descricaoSubmissao">
+                <span class="icon">📝</span>
+                Descrição
+              </label>
+              <textarea
+                id="descricaoSubmissao"
+                [(ngModel)]="descricaoSubmissao"
+                name="descricaoSubmissao"
+                placeholder="Descreva sua submissão..."
+                rows="3"
+                class="comentario-input"
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label for="arquivoSubmissao">
+                <span class="icon">📎</span>
+                Anexar Arquivo
+              </label>
+              <input
+                type="file"
+                id="arquivoSubmissao"
+                (change)="onArquivoSelecionado($event)"
+                accept=".pdf,.doc,.docx,.zip,.png,.jpg,.jpeg"
+              />
+              <small *ngIf="arquivoSubmissao" class="file-name">📄 {{ arquivoSubmissao.name }}</small>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full" [disabled]="enviandoSubmissao">
+              <span class="icon">{{ enviandoSubmissao ? '⏳' : '📤' }}</span>
+              {{ enviandoSubmissao ? 'Enviando...' : 'Enviar Submissão' }}
+            </button>
+          </form>
+        </div>
+
+        <!-- Submissão Enviada -->
+        <div class="card card-success" *ngIf="minhaSubmissao">
+          <h2>✅ Submissão Enviada</h2>
+          <div class="submissao-info">
+            <div class="info-row">
+              <strong>Data de envio:</strong>
+              {{ minhaSubmissao.dataSubmissao | date:'dd/MM/yyyy HH:mm' }}
+            </div>
+            <div class="info-row" *ngIf="minhaSubmissao.descricao">
+              <strong>Descrição:</strong>
+              <p class="feedback">{{ minhaSubmissao.descricao }}</p>
+            </div>
+            <div class="info-row" *ngIf="minhaSubmissao.urlDocumento">
+              <strong>Documento:</strong>
+              <a [href]="'http://localhost:8080' + minhaSubmissao.urlDocumento" target="_blank">
+                🔗 Ver documento
+              </a>
+            </div>
+            <div class="info-row" *ngIf="minhaSubmissao.nota !== null && minhaSubmissao.nota !== undefined">
+              <strong>Nota:</strong>
+              <span class="nota">{{ minhaSubmissao.nota }}</span>
+            </div>
+            <div class="info-row" *ngIf="minhaSubmissao.feedback">
+              <strong>Feedback:</strong>
+              <p class="feedback">{{ minhaSubmissao.feedback }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lista de Submissões (para professores) -->
+        <div class="card" *ngIf="submissoes.length > 0">
+          <h2>📊 Submissões ({{ submissoes.length }})</h2>
+          <div class="submissoes-list">
+            <div *ngFor="let sub of submissoes" class="submissao-item">
+              <div class="submissao-header">
+                <span class="aluno-nome">{{ sub.alunoNome || 'Aluno #' + sub.alunoId }}</span>
+                <span class="data">{{ sub.dataSubmissao | date:'dd/MM/yyyy HH:mm' }}</span>
+              </div>
+              <div class="submissao-body">
+                <p *ngIf="sub.descricao" class="submissao-descricao">{{ sub.descricao }}</p>
+                <a *ngIf="sub.urlDocumento" [href]="'http://localhost:8080' + sub.urlDocumento" target="_blank" class="doc-link">
+                  🔗 Ver documento
+                </a>
+                <span *ngIf="sub.nota !== null && sub.nota !== undefined" class="nota-badge">
+                  Nota: {{ sub.nota }}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

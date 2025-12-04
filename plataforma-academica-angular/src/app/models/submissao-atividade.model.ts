@@ -14,7 +14,8 @@ export interface SubmissaoAtividadeResponse {
   atividadeTitulo?: string;
   alunoId: number;
   alunoNome?: string;
-  urlDocumento: string;
+  urlDocumento?: string;
+  descricao?: string;
   dataSubmissao: string;
   nota?: number;
   feedback?: string;

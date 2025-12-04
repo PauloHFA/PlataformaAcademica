@@ -49,7 +49,12 @@ public class AtividadeServiceImpl implements AtividadeService {
         atividade.setTitulo(atividadeDTO.getTitulo());
         atividade.setDescricao(atividadeDTO.getDescricao());
         if (atividadeDTO.getDataEntrega() != null) {
-            atividade.setDataEntrega(java.time.LocalDate.parse(atividadeDTO.getDataEntrega()));
+            String dataStr = atividadeDTO.getDataEntrega();
+            if (dataStr.contains("T")) {
+                atividade.setDataEntrega(java.time.LocalDate.parse(dataStr.substring(0, 10)));
+            } else {
+                atividade.setDataEntrega(java.time.LocalDate.parse(dataStr));
+            }
         }
         return criarAtividade(salaId, atividade, autorId);
     }
@@ -93,7 +98,12 @@ public class AtividadeServiceImpl implements AtividadeService {
         existente.setTitulo(atividadeDTO.getTitulo());
         existente.setDescricao(atividadeDTO.getDescricao());
         if (atividadeDTO.getDataEntrega() != null) {
-            existente.setDataEntrega(java.time.LocalDate.parse(atividadeDTO.getDataEntrega()));
+            String dataStr = atividadeDTO.getDataEntrega();
+            if (dataStr.contains("T")) {
+                existente.setDataEntrega(java.time.LocalDate.parse(dataStr.substring(0, 10)));
+            } else {
+                existente.setDataEntrega(java.time.LocalDate.parse(dataStr));
+            }
         }
 
         return atividadeRepository.save(existente);

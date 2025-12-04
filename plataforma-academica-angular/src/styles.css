@@ -1,109 +1,4 @@
-/* ========================================
-   PALETA ACADÊMICA PROFISSIONAL
-   Inspirada em LinkedIn, Google Classroom e GitHub
-   ======================================== */
-
-/* Tema Claro - Roxo Escuro + Branco */
-:root {
-  /* Primárias - Roxo Profissional */
-  --primary-color: #5B21B6; /* Roxo escuro vibrante */
-  --primary-hover: #6D28D9; /* Roxo hover */
-  --primary-light: #7C3AED; /* Roxo claro */
-  --primary-dark: #4C1D95; /* Roxo mais escuro */
-  
-  /* Secundárias - Tons de Cinza */
-  --secondary-color: #FFFFFF;
-  --bg-color: #F9FAFB; /* Cinza muito claro */
-  --bg-secondary: #FFFFFF;
-  --text-color: #111827; /* Quase preto */
-  --text-secondary: #6B7280; /* Cinza médio */
-  --text-muted: #9CA3AF; /* Cinza claro */
-  
-  /* Bordas e Divisores */
-  --border-color: #E5E7EB;
-  --border-light: #F3F4F6;
-  --divider-color: #E5E7EB;
-  
-  /* Estados Interativos */
-  --hover-color: #F3F4F6;
-  --hover-purple: #EDE9FE; /* Hover roxo suave */
-  --active-color: #DDD6FE;
-  --focus-ring: rgba(91, 33, 182, 0.3);
-  
-  /* Cards e Superfícies */
-  --card-bg: #FFFFFF;
-  --card-hover: #FAFAFA;
-  --surface-elevated: #FFFFFF;
-  
-  /* Sombras */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-  
-  /* Acentos Coloridos */
-  --accent-blue: #3B82F6; /* Azul LinkedIn */
-  --accent-green: #10B981; /* Verde sucesso */
-  --accent-red: #EF4444; /* Vermelho erro */
-  --accent-yellow: #F59E0B; /* Amarelo aviso */
-  --accent-orange: #F97316; /* Laranja */
-  
-  /* Glass Effect */
-  --glass-bg: rgba(255, 255, 255, 0.85);
-  --glass-border: rgba(229, 231, 235, 0.8);
-}
-
-/* Tema Escuro - Roxo Praticamente Preto */
-body.dark-theme {
-  /* Primárias - Roxo Quase Preto */
-  --primary-color: #0A0412; /* Roxo praticamente preto */
-  --primary-hover: #150820; /* Roxo muito escuro hover */
-  --primary-light: #1A0B2E; /* Roxo escuro */
-  --primary-dark: #050208; /* Roxo quase 100% preto */
-  
-  /* Secundárias - Tons Escuros */
-  --secondary-color: #FFFFFF;
-  --bg-color: #111827; /* Fundo escuro principal */
-  --bg-secondary: #1F2937; /* Fundo secundário */
-  --text-color: #FFFFFF; /* Texto branco */
-  --text-secondary: #FFFFFF; /* Texto secundário branco */
-  --text-muted: #E5E7EB; /* Texto esmaecido claro */
-  
-  /* Bordas e Divisores */
-  --border-color: #374151;
-  --border-light: #2D3748;
-  --divider-color: #374151;
-  
-  /* Estados Interativos */
-  --hover-color: #1F2937;
-  --hover-purple: #2D1B69; /* Hover roxo escuro */
-  --active-color: #3730A3;
-  --focus-ring: rgba(167, 139, 250, 0.4);
-  
-  /* Cards e Superfícies */
-  --card-bg: #1F2937;
-  --card-hover: #2D3748;
-  --surface-elevated: #2D3748;
-  
-  /* Sombras */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
-  
-  /* Acentos Coloridos */
-  --accent-blue: #60A5FA;
-  --accent-green: #34D399;
-  --accent-red: #F87171;
-  --accent-yellow: #FBBF24;
-  --accent-orange: #FB923C;
-  
-  /* Glass Effect */
-  --glass-bg: rgba(31, 41, 55, 0.85);
-  --glass-border: rgba(55, 65, 81, 0.8);
-}
-
-/* Estilos globais */
+/* Animações Globais */
 * {
   margin: 0;
   padding: 0;
@@ -126,60 +21,129 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Garantir que todos os componentes herdem o tema */
-app-root {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  min-height: 100vh;
-  display: block;
+/* Animações suaves em todos os elementos interativos */
+button, a, input, textarea, select, .card, .btn {
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Estilos para inputs e botões */
-input, textarea, select {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  border: 1px solid var(--border-color);
-  transition: all 0.3s ease;
-}
-
-input:focus, textarea:focus, select:focus {
-  outline: none;
-  border-color: var(--primary-color);
-}
-
-button {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-button:hover {
-  background-color: var(--primary-hover);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
-}
-
-button:active {
-  transform: translateY(0);
-}
-
-/* Links */
-a {
-  color: var(--primary-color);
-  transition: color 0.3s ease;
+button:hover, .btn:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
 a:hover {
-  opacity: 0.8;
+  transform: translateX(3px);
 }
 
-/* Scrollbar Personalizada */
+.card:hover {
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+button:active, a:active, .card:active {
+  transform: scale(0.98);
+  transition: all 0.1s;
+}
+
+/* Animações de entrada */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.slide-in {
+  animation: slideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.scale-in {
+  animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.pulse {
+  animation: pulse 0.6s ease-in-out;
+}
+
+/* Tema Claro */
+:root {
+  --primary-color: #5B21B6;
+  --primary-hover: #6D28D9;
+  --secondary-color: #FFFFFF;
+  --bg-color: #F9FAFB;
+  --text-color: #111827;
+  --text-secondary: #6B7280;
+  --text-muted: #9CA3AF;
+  --border-color: #E5E7EB;
+  --hover-color: #F3F4F6;
+  --card-bg: #FFFFFF;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Tema Escuro */
+body.dark-theme {
+  --primary-color: #0A0412;
+  --primary-hover: #150820;
+  --secondary-color: #FFFFFF;
+  --bg-color: #111827;
+  --text-color: #FFFFFF;
+  --text-secondary: #FFFFFF;
+  --text-muted: #E5E7EB;
+  --border-color: #374151;
+  --hover-color: #1F2937;
+  --card-bg: #1F2937;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
-  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -189,194 +153,8 @@ a:hover {
 ::-webkit-scrollbar-thumb {
   background: var(--border-color);
   border-radius: 5px;
-  border: 2px solid var(--bg-color);
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary-color);
-}
-
-/* Firefox */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-color) var(--bg-color);
-}
-
-/* Glassmorphism Classes */
-.glass {
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-lg);
-}
-
-.glass-card {
-  background: var(--card-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-xl);
-}
-
-.glass-hover:hover {
-  background: var(--hover-color);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-xl);
-}
-
-/* ========================================
-   CLASSES UTILITÁRIAS GLOBAIS
-   ======================================== */
-
-/* Botões */
-.btn-primary {
-  background: var(--primary-color);
-  color: white;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-primary:hover {
-  background: var(--primary-hover);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
-}
-
-.btn-secondary {
-  background: var(--hover-color);
-  color: var(--text-color);
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 600;
-  border: 1px solid var(--border-color);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-secondary:hover {
-  background: var(--border-color);
-  transform: translateY(-1px);
-}
-
-/* Cards */
-.card {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: var(--shadow-md);
-  transition: all 0.2s;
-}
-
-.card:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-2px);
-}
-
-/* Badges */
-.badge {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.badge-success {
-  background: rgba(16, 185, 129, 0.1);
-  color: var(--accent-green);
-}
-
-.badge-error {
-  background: rgba(239, 68, 68, 0.1);
-  color: var(--accent-red);
-}
-
-.badge-warning {
-  background: rgba(245, 158, 11, 0.1);
-  color: var(--accent-yellow);
-}
-
-.badge-info {
-  background: rgba(59, 130, 246, 0.1);
-  color: var(--accent-blue);
-}
-
-/* Textos */
-.text-primary {
-  color: var(--primary-color);
-}
-
-.text-secondary {
-  color: var(--text-secondary);
-}
-
-.text-muted {
-  color: var(--text-muted);
-}
-
-/* Backgrounds */
-.bg-primary {
-  background: var(--primary-color);
-  color: white;
-}
-
-.bg-card {
-  background: var(--card-bg);
-}
-
-.bg-hover {
-  background: var(--hover-color);
-}
-
-/* Bordas */
-.border {
-  border: 1px solid var(--border-color);
-}
-
-.border-primary {
-  border: 1px solid var(--primary-color);
-}
-
-/* Sombras */
-.shadow-sm {
-  box-shadow: var(--shadow-sm);
-}
-
-.shadow-md {
-  box-shadow: var(--shadow-md);
-}
-
-.shadow-lg {
-  box-shadow: var(--shadow-lg);
-}
-
-/* Animações */
-.fade-in {
-  animation: fadeIn 0.3s ease-in;
-}
-
-.slide-up {
-  animation: slideUp 0.3s ease-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(10px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
 }

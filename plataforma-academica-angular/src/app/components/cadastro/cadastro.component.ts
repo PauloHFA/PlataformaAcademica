@@ -32,10 +32,13 @@ function senhasIguaisValidator(control: AbstractControl): { [key: string]: boole
 })
 export class CadastroComponent implements OnInit {
   formulario!: FormGroup;
+  formularioEtapa2!: FormGroup;
   carregando = false;
   mensagemErro = '';
   mensagemSucesso = '';
   usuarioCadastrado: Usuario | null = null;
+  etapaAtual = 1;
+  dadosEtapa1: any = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -45,6 +48,7 @@ export class CadastroComponent implements OnInit {
 
   ngOnInit(): void {
     this.inicializarFormulario();
+    this.inicializarFormularioEtapa2();
   }
 
   /**
@@ -55,16 +59,58 @@ export class CadastroComponent implements OnInit {
       nome: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       senha: ['', [Validators.required, Validators.minLength(6)]],
-      confirmarSenha: ['', Validators.required]
+      confirmarSenha: ['', Validators.required],
+      tipoUsuario: ['normal', Validators.required],
+      matricula: ['']
     }, { validators: senhasIguaisValidator });
+
+    // Adiciona validação condicional para matrícula
+    this.formulario.get('tipoUsuario')?.valueChanges.subscribe(tipo => {
+      const matriculaControl = this.formulario.get('matricula');
+      if (tipo === 'professor') {
+        matriculaControl?.setValidators([Validators.required, Validators.minLength(8), Validators.maxLength(8)]);
+      } else {
+        matriculaControl?.clearValidators();
+      }
+      matriculaControl?.updateValueAndValidity();
+    });
+  }
+
+  private inicializarFormularioEtapa2(): void {
+    this.formularioEtapa2 = this.formBuilder.group({
+      sobrenome: ['', Validators.required],
+      dataNascimento: ['', Validators.required],
+      telefone: ['', Validators.required],
+      instituicaoEnsino: ['', Validators.required],
+      cep: ['', Validators.required],
+      pais: ['', Validators.required],
+      cidade: ['', Validators.required],
+      descricao: [''],
+      site: ['']
+    });
   }
 
   /**
    * Processa o envio do formulário de cadastro
    */
-  cadastrar(): void {
+  avancarParaEtapa2(): void {
     if (this.formulario.invalid) {
       this.mensagemErro = 'Por favor, preencha todos os campos corretamente';
+      return;
+    }
+    this.dadosEtapa1 = this.formulario.value;
+    this.etapaAtual = 2;
+    this.mensagemErro = '';
+  }
+
+  voltarParaEtapa1(): void {
+    this.etapaAtual = 1;
+    this.mensagemErro = '';
+  }
+
+  cadastrar(): void {
+    if (this.formularioEtapa2.invalid) {
+      this.mensagemErro = 'Por favor, preencha todos os campos obrigatórios';
       return;
     }
 
@@ -72,16 +118,20 @@ export class CadastroComponent implements OnInit {
     this.mensagemErro = '';
     this.mensagemSucesso = '';
 
-    const { nome, email, senha } = this.formulario.value;
-    const novoUsuario: Usuario = { nome, email, senha };
+    const dadosCompletos: any = {
+      ...this.dadosEtapa1,
+      ...this.formularioEtapa2.value
+    };
+    delete dadosCompletos.confirmarSenha;
+    const tipoUsuario = dadosCompletos.tipoUsuario;
+    delete dadosCompletos.tipoUsuario;
 
-    this.usuarioService.cadastrarUsuario(novoUsuario).subscribe({
+    const endpoint = tipoUsuario === 'professor' ? 'professores' : 'usuarios';
+    
+    this.usuarioService.cadastrarUsuario(dadosCompletos, endpoint).subscribe({
       next: (usuarioCadastrado: Usuario) => {
         this.usuarioCadastrado = usuarioCadastrado;
         this.mensagemSucesso = 'Cadastro realizado com sucesso! Redirecionando para login...';
-        console.log('Usuário cadastrado:', usuarioCadastrado);
-
-        // Redirecionar para login após 2 segundos
         setTimeout(() => {
           this.router.navigate(['/login']);
         }, 2000);
@@ -114,6 +164,14 @@ export class CadastroComponent implements OnInit {
 
   get senhasNaoIguais() {
     return this.formulario.hasError('senhasNaoIguais');
+  }
+
+  get tipoUsuario() {
+    return this.formulario.get('tipoUsuario');
+  }
+
+  get matricula() {
+    return this.formulario.get('matricula');
   }
 
   cadastroComGoogle(): void {

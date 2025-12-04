@@ -128,8 +128,8 @@
       <div class="postagem-body">
         <h2 class="postagem-titulo">{{ post.titulo }}</h2>
         <p class="postagem-conteudo">{{ post.conteudo }}</p>
-        <div *ngIf="post.imagemUrl" class="postagem-imagem">
-          <img [src]="post.imagemUrl" alt="Imagem da postagem" />
+        <div *ngIf="post.imagemUrl && post.imagemUrl.trim()" class="postagem-imagem">
+          <img [src]="post.imagemUrl.startsWith('http') ? post.imagemUrl : 'http://localhost:8080' + post.imagemUrl" alt="Imagem da postagem" (error)="$any($event.target).style.display='none'" />
         </div>
       </div>
 

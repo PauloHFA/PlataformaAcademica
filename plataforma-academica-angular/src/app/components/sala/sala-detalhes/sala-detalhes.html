@@ -43,6 +43,10 @@
 
     <!-- Ações -->
     <div class="actions-bar">
+      <a [routerLink]="['/salas', sala.id, 'atividades']" class="btn btn-action">
+        <span class="icon">📋</span>
+        Ver Atividades
+      </a>
       <button (click)="navegarAdicionarMembro()" class="btn btn-action">
         <span class="icon">➕</span>
         Adicionar Membro
@@ -109,7 +113,7 @@
             <div *ngFor="let a of atividades" class="atividade-item">
               <div class="atividade-header">
                 <h3>{{ a.titulo }}</h3>
-                <a [routerLink]="['/salas', sala.id, 'atividades']" class="btn-link">
+                <a [routerLink]="['/salas', sala.id, 'atividades', a.id]" class="btn-link">
                   Ver detalhes →
                 </a>
               </div>

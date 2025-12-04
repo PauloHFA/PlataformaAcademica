@@ -1,6 +1,11 @@
 <div class="cadastro-container">
   <div class="cadastro-box">
-    <h2>Criar Conta - Plataforma Acadêmica</h2>
+    <h2>Criar Conta - Etapa {{ etapaAtual }} de 2</h2>
+    <div class="progress-bar">
+      <div class="progress-step" [class.active]="etapaAtual >= 1">1</div>
+      <div class="progress-line" [class.active]="etapaAtual >= 2"></div>
+      <div class="progress-step" [class.active]="etapaAtual >= 2">2</div>
+    </div>
 
     <!-- Mensagem de erro -->
     <div *ngIf="mensagemErro" class="alert alert-error">
@@ -12,8 +17,8 @@
       {{ mensagemSucesso }}
     </div>
 
-    <!-- Formulário de Cadastro -->
-    <form [formGroup]="formulario" (ngSubmit)="cadastrar()" class="cadastro-form" *ngIf="!usuarioCadastrado">
+    <!-- ETAPA 1 -->
+    <form [formGroup]="formulario" (ngSubmit)="avancarParaEtapa2()" class="cadastro-form" *ngIf="etapaAtual === 1 && !usuarioCadastrado">
       
       <!-- Campo Nome -->
       <div class="form-group">
@@ -81,24 +86,93 @@
         </span>
       </div>
 
-      <!-- Botão de Envio -->
-      <button
-        type="submit"
-        [disabled]="formulario.invalid || carregando"
-        class="btn btn-primary"
-      >
-        <span *ngIf="!carregando">Criar Conta</span>
-        <span *ngIf="carregando">Carregando...</span>
+      <!-- Campo Tipo de Usuário -->
+      <div class="form-group">
+        <label for="tipoUsuario">Tipo de Usuário:</label>
+        <select id="tipoUsuario" formControlName="tipoUsuario" class="form-select">
+          <option value="normal">Aluno</option>
+          <option value="professor">Professor</option>
+        </select>
+      </div>
+
+      <!-- Campo Matrícula (apenas para professor) -->
+      <div class="form-group" *ngIf="tipoUsuario?.value === 'professor'">
+        <label for="matricula">Matrícula (8 dígitos):</label>
+        <input
+          type="text"
+          id="matricula"
+          formControlName="matricula"
+          placeholder="12345678"
+          maxlength="8"
+          [ngClass]="{ 'input-error': matricula?.invalid && matricula?.touched }"
+        />
+        <span *ngIf="matricula?.invalid && matricula?.touched" class="error-message">
+          <span *ngIf="matricula?.errors?.['required']">Matrícula é obrigatória para professores</span>
+          <span *ngIf="matricula?.errors?.['minlength'] || matricula?.errors?.['maxlength']">Matrícula deve ter exatamente 8 dígitos</span>
+        </span>
+      </div>
+
+      <button type="submit" [disabled]="formulario.invalid" class="btn btn-primary">
+        Próxima Etapa →
       </button>
     </form>
 
+    <!-- ETAPA 2 -->
+    <form [formGroup]="formularioEtapa2" (ngSubmit)="cadastrar()" class="cadastro-form" *ngIf="etapaAtual === 2 && !usuarioCadastrado">
+      <div class="form-group">
+        <label for="sobrenome">Sobrenome*:</label>
+        <input type="text" id="sobrenome" formControlName="sobrenome" placeholder="Silva" />
+      </div>
+      <div class="form-group">
+        <label for="dataNascimento">Data de Nascimento*:</label>
+        <input type="date" id="dataNascimento" formControlName="dataNascimento" />
+      </div>
+      <div class="form-group">
+        <label for="telefone">Telefone*:</label>
+        <input type="tel" id="telefone" formControlName="telefone" placeholder="(81) 99999-9999" />
+      </div>
+      <div class="form-group">
+        <label for="instituicaoEnsino">Instituição de Ensino*:</label>
+        <input type="text" id="instituicaoEnsino" formControlName="instituicaoEnsino" placeholder="UNINASSAU" />
+      </div>
+      <div class="form-group">
+        <label for="cep">CEP*:</label>
+        <input type="text" id="cep" formControlName="cep" placeholder="50000-000" />
+      </div>
+      <div class="form-group">
+        <label for="pais">País*:</label>
+        <input type="text" id="pais" formControlName="pais" placeholder="Brasil" />
+      </div>
+      <div class="form-group">
+        <label for="cidade">Cidade*:</label>
+        <input type="text" id="cidade" formControlName="cidade" placeholder="Recife" />
+      </div>
+      <div class="form-group">
+        <label for="descricao">Descrição:</label>
+        <textarea id="descricao" formControlName="descricao" rows="3" placeholder="Conte um pouco sobre você..."></textarea>
+      </div>
+      <div class="form-group">
+        <label for="site">Site:</label>
+        <input type="url" id="site" formControlName="site" placeholder="https://seusite.com" />
+      </div>
+      <div class="button-group">
+        <button type="button" (click)="voltarParaEtapa1()" class="btn btn-secondary">
+          ← Voltar
+        </button>
+        <button type="submit" [disabled]="formularioEtapa2.invalid || carregando" class="btn btn-primary">
+          <span *ngIf="!carregando">Finalizar Cadastro</span>
+          <span *ngIf="carregando">Carregando...</span>
+        </button>
+      </div>
+    </form>
+
     <!-- Divisor -->
-    <div class="divider" *ngIf="!usuarioCadastrado">
+    <div class="divider" *ngIf="etapaAtual === 1 && !usuarioCadastrado">
       <span>ou cadastre-se com</span>
     </div>
 
     <!-- Botões de Cadastro Social (Desabilitados) -->
-    <div class="social-login" *ngIf="!usuarioCadastrado">
+    <div class="social-login" *ngIf="etapaAtual === 1 && !usuarioCadastrado">
       <button class="btn-social btn-google" disabled title="Login social desabilitado">
         <svg class="social-icon" viewBox="0 0 24 24">
           <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>

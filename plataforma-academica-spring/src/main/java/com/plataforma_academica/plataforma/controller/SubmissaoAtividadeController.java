@@ -87,9 +87,10 @@ public class SubmissaoAtividadeController {
     public ResponseEntity<SubmissaoAtividadeResponseDTO> enviarSubmissao(
             @PathVariable Long atividadeId,
             @PathVariable Long alunoId,
-            @RequestBody SubmissaoAtividadeDTO submissao) {
+            @RequestParam(required = false) String descricao,
+            @RequestParam(required = false) org.springframework.web.multipart.MultipartFile arquivo) {
 
-        SubmissaoAtividade enviada = submissaoService.enviarSubmissao(atividadeId, alunoId, submissao);
+        SubmissaoAtividade enviada = submissaoService.enviarSubmissaoComArquivo(atividadeId, alunoId, descricao, arquivo);
         return ResponseEntity.ok(SubmissaoAtividadeMapper.toResponse(enviada));
     }
 

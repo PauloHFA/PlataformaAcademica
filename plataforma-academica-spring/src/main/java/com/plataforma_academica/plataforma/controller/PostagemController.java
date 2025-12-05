@@ -207,8 +207,7 @@ public class PostagemController {
     /**
      * Remove uma postagem pelo seu ID.
      *
-     * Caso o ID não exista, o service trata silenciosamente ou lança exception
-     * de acordo com a regra de negócio definida.
+     * Caso o ID não exista, o service lança exception.
      *
      * @param id ID da postagem
      * @return 204 No Content

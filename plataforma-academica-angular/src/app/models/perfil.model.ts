@@ -10,22 +10,35 @@
  * Contém apenas os campos necessários para o frontend enviar
  */
 export interface PerfilDTO {
-  usuarioId: number;
-  bio: string;
-  fotoPerfil?: string; // URL ou base64
-  curso: string;
+  id?: number;
+  nome?: string;
+  sobrenome?: string;
+  email?: string;
+  instituicaoEnsino?: string;
+  cep?: string;
+  pais?: string;
+  cidade?: string;
+  site?: string;
+  telefone?: string;
+  dataNascimento?: string;
+  descricao?: string;
+  avatar?: string; // base64
+  bio?: string;
+  curso?: string;
+  fotoPerfil?: string;
+  usuarioId?: number;
 }
+
+import { Usuario } from './usuario.model';
 
 /**
  * Modelo completo de Perfil retornado pelo backend
- * Inclui dados adicionais como ID e datas de auditoria
+ * Herda campos de Usuario e adiciona campos extras
  */
-export interface Perfil {
-  id: number;
-  usuarioId: number;
-  bio: string;
+export interface Perfil extends Usuario {
+  bio?: string;
+  curso?: string;
   fotoPerfil?: string;
-  curso: string;
   dataCriacao?: string;
   dataAtualizacao?: string;
 }

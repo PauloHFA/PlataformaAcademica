@@ -91,6 +91,19 @@ export class PerfilComponent implements OnInit, OnDestroy {
     }
   }
 
+  getAvatarSrc(): string {
+    if (this.perfil?.fotoPerfil) {
+      return 'data:image/png;base64,' + this.perfil.fotoPerfil;
+    }
+    if (this.usuarioLogado?.avatarUrl) {
+      return this.usuarioLogado.avatarUrl;
+    }
+    if (this.usuarioLogado?.avatarBase64) {
+      return 'data:image/png;base64,' + this.usuarioLogado.avatarBase64;
+    }
+    return '';
+  }
+
   /**
    * Limpa recursos ao destruir o componente
    */

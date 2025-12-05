@@ -62,6 +62,22 @@
   font-weight: 700;
 }
 
+.form-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.half {
+  flex: 1;
+  min-width: 200px;
+}
+
+.third {
+  flex: 1;
+  min-width: 150px;
+}
+
 /* Foto Upload */
 .foto-upload {
   display: flex;

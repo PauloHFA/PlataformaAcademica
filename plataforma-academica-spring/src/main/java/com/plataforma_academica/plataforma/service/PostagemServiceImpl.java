@@ -10,6 +10,7 @@ import com.plataforma_academica.plataforma.repository.PlataformaRepository;
 import com.plataforma_academica.plataforma.repository.PostagemRepository;
 import com.plataforma_academica.plataforma.repository.UsuarioRepository;
 import com.plataforma_academica.plataforma.repository.CurtidaRepository;
+import com.plataforma_academica.plataforma.repository.ComentarioRepository;
 import com.plataforma_academica.plataforma.model.Curtida;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,9 @@ public class PostagemServiceImpl implements PostagemService {
     
     @Autowired
     CurtidaRepository curtidaRepository;
+
+    @Autowired
+    ComentarioRepository comentarioRepository;
 
     // pasta onde as imagens serão salvas (relativa ao diretório de trabalho)
     private final java.nio.file.Path uploadDir = java.nio.file.Paths.get("uploads").toAbsolutePath();
@@ -111,7 +115,15 @@ public class PostagemServiceImpl implements PostagemService {
     }
 
     @Override
+    @Transactional
     public void deletar(Long id) {
+        Postagem postagem = postagemRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Postagem não encontrada"));
+        // Deletar comentários relacionados à postagem
+        comentarioRepository.deleteByPostagemId(id);
+        // Deletar curtidas relacionadas à postagem
+        curtidaRepository.deleteByPostagemId(id);
+        // Agora deletar a postagem
         postagemRepository.deleteById(id);
     }
 

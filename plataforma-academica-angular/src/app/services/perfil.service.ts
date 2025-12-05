@@ -47,12 +47,11 @@ export class PerfilService {
 
   /**
    * Atualiza um perfil existente
-   * @param id ID do perfil
    * @param dto Novos dados do perfil
    * @returns Observable com o perfil atualizado
    */
-  atualizar(id: number, dto: PerfilDTO): Observable<Perfil> {
-    return this.http.put<Perfil>(`${this.baseUrl}/${id}`, dto)
+  atualizar(dto: PerfilDTO): Observable<Perfil> {
+    return this.http.put<Perfil>(`${this.baseUrl}/${dto.id}`, dto)
       .pipe(catchError(this.tratarErro));
   }
 

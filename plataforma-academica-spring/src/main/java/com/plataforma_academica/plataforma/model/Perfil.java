@@ -7,20 +7,18 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "perfis")
+@DiscriminatorValue("PERFIL")
 @Data
 @Getter
 @Setter
-public class Perfil {
+public class Perfil extends Usuario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String bio;
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String fotoPerfil;
+    @Column(length = 300)
     private String curso;
-
-    @OneToOne
-    @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
 }

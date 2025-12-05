@@ -10,6 +10,4 @@ import java.util.List;
 public interface PerfilRepository extends JpaRepository<Perfil, Long> {
 
     List<Perfil> findByCurso(String curso);
-    List<Perfil> findByUsuarioId(Long usuarioId);
-    boolean existsByUsuarioId(Long usuarioId);
 }

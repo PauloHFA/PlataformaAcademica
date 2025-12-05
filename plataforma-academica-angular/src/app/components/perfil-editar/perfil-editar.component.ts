@@ -44,13 +44,13 @@ export class PerfilEditarComponent implements OnInit, OnDestroy {
     if (isPlatformBrowser(this.platformId)) {
       const usuarioId = localStorage.getItem('usuarioId');
       const usuarioStr = localStorage.getItem('usuario');
-      
+
       if (usuarioId) {
         try {
           this.usuarioLogado = usuarioStr ? JSON.parse(usuarioStr) : {};
           this.usuarioLogado.id = parseInt(usuarioId);
           this.inicializarFormulario();
-          this.verificarModo();
+          this.verificarPerfilExistente();
         } catch (e) {
           this.mensagemErro = 'Erro ao carregar dados do usuário';
           this.carregando = false;
@@ -63,10 +63,40 @@ export class PerfilEditarComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Verifica se o usuário já possui um perfil existente
+   */
+  private verificarPerfilExistente(): void {
+    this.perfilService.buscarPorUsuarioId(this.usuarioLogado.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (perfil: Perfil) => {
+          // Perfil existe, redirecionar para editar
+          this.router.navigate(['/perfil/editar'], { queryParams: { id: perfil.id } });
+        },
+        error: (err: Error) => {
+          // Perfil não existe, verificar modo (criar)
+          this.verificarModo();
+        }
+      });
+  }
+
+  /**
    * Inicializa o formulário reativo
    */
   private inicializarFormulario(): void {
     this.formulario = this.formBuilder.group({
+      nome: ['', Validators.required],
+      sobrenome: [''],
+      email: ['', [Validators.required, Validators.email]],
+      instituicaoEnsino: [''],
+      cep: [''],
+      pais: [''],
+      cidade: [''],
+      site: [''],
+      telefone: [''],
+      dataNascimento: [''],
+      descricao: [''],
+      avatar: [''],
       bio: ['', [Validators.required, Validators.minLength(10)]],
       curso: ['', Validators.required],
       fotoPerfil: ['']
@@ -86,9 +116,34 @@ export class PerfilEditarComponent implements OnInit, OnDestroy {
           this.carregarPerfil();
         } else {
           this.modo = 'criar';
+          this.preencherDadosUsuario();
           this.carregando = false;
         }
       });
+  }
+
+  /**
+   * Preenche o formulário com dados do usuário logado
+   */
+  private preencherDadosUsuario(): void {
+    if (this.usuarioLogado) {
+      this.formulario.patchValue({
+        nome: this.usuarioLogado.nome || '',
+        sobrenome: this.usuarioLogado.sobrenome || '',
+        email: this.usuarioLogado.email || '',
+        instituicaoEnsino: this.usuarioLogado.instituicaoEnsino || '',
+        cep: this.usuarioLogado.cep || '',
+        pais: this.usuarioLogado.pais || '',
+        cidade: this.usuarioLogado.cidade || '',
+        site: this.usuarioLogado.site || '',
+        telefone: this.usuarioLogado.telefone || '',
+        dataNascimento: this.usuarioLogado.dataNascimento || '',
+        descricao: this.usuarioLogado.descricao || '',
+        avatar: this.usuarioLogado.avatarBase64 || this.usuarioLogado.avatarUrl || ''
+      });
+      // Desabilitar email para edição
+      this.formulario.get('email')?.disable();
+    }
   }
 
   /**
@@ -102,13 +157,27 @@ export class PerfilEditarComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (perfil: Perfil) => {
           this.formulario.patchValue({
-            bio: perfil.bio,
-            curso: perfil.curso,
+            nome: perfil.nome || '',
+            sobrenome: perfil.sobrenome || '',
+            email: perfil.email || '',
+            instituicaoEnsino: perfil.instituicaoEnsino || '',
+            cep: perfil.cep || '',
+            pais: perfil.pais || '',
+            cidade: perfil.cidade || '',
+            site: perfil.site || '',
+            telefone: perfil.telefone || '',
+            dataNascimento: perfil.dataNascimento || '',
+            descricao: perfil.descricao || '',
+            avatar: perfil.avatarUrl || perfil.avatarBase64 || '',
+            bio: perfil.bio || '',
+            curso: perfil.curso || '',
             fotoPerfil: perfil.fotoPerfil || ''
           });
           if (perfil.fotoPerfil) {
             this.previewFoto = perfil.fotoPerfil;
           }
+          // Desabilitar email para edição
+          this.formulario.get('email')?.disable();
           this.carregando = false;
         },
         error: (err: Error) => {
@@ -132,7 +201,20 @@ export class PerfilEditarComponent implements OnInit, OnDestroy {
     this.mensagemSucesso = '';
 
     const dto: PerfilDTO = {
+      ...(this.modo === 'editar' && { id: this.perfilId }),
       usuarioId: this.usuarioLogado.id,
+      nome: this.formulario.get('nome')?.value || undefined,
+      sobrenome: this.formulario.get('sobrenome')?.value || undefined,
+      email: this.formulario.get('email')?.value || undefined,
+      instituicaoEnsino: this.formulario.get('instituicaoEnsino')?.value || undefined,
+      cep: this.formulario.get('cep')?.value || undefined,
+      pais: this.formulario.get('pais')?.value || undefined,
+      cidade: this.formulario.get('cidade')?.value || undefined,
+      site: this.formulario.get('site')?.value || undefined,
+      telefone: this.formulario.get('telefone')?.value || undefined,
+      dataNascimento: this.formulario.get('dataNascimento')?.value || undefined,
+      descricao: this.formulario.get('descricao')?.value || undefined,
+      avatar: this.formulario.get('avatar')?.value || undefined,
       bio: this.formulario.get('bio')?.value,
       curso: this.formulario.get('curso')?.value,
       fotoPerfil: this.formulario.get('fotoPerfil')?.value || undefined
@@ -140,7 +222,7 @@ export class PerfilEditarComponent implements OnInit, OnDestroy {
 
     const operacao$ = this.modo === 'criar'
       ? this.perfilService.criar(dto)
-      : this.perfilService.atualizar(this.perfilId!, dto);
+      : this.perfilService.atualizar(dto);
 
     operacao$
       .pipe(takeUntil(this.destroy$))
@@ -179,6 +261,14 @@ export class PerfilEditarComponent implements OnInit, OnDestroy {
   /**
    * Getters para validação
    */
+  get nome() {
+    return this.formulario.get('nome');
+  }
+
+  get email() {
+    return this.formulario.get('email');
+  }
+
   get bio() {
     return this.formulario.get('bio');
   }

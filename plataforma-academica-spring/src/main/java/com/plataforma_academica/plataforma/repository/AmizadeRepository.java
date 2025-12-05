@@ -2,7 +2,6 @@ package com.plataforma_academica.plataforma.repository;
 
 import com.plataforma_academica.plataforma.model.Amizade;
 import com.plataforma_academica.plataforma.model.Usuario;
-import org.antlr.v4.runtime.atn.SemanticContext;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -12,7 +12,7 @@ public interface PostagemService {
     List<PostagemDTO> buscarPorTitulo(String titulo);
     PostagemDTO atualizar(PostagemDTO postagemDTO);
     void deletar(Long id);
-    
+
     // Response methods
     PostagemResponseDTO publicarResponse(PostagemDTO postagemDTO);
     List<PostagemResponseDTO> listarTodasResponse();

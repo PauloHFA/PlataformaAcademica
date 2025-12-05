@@ -11,4 +11,5 @@ public interface CurtidaRepository extends JpaRepository<Curtida, Long> {
     Optional<Curtida> findByUsuarioIdAndPostagemId(Long usuarioId, Long postagemId);
     boolean existsByUsuarioIdAndPostagemId(Long usuarioId, Long postagemId);
     void deleteByUsuarioIdAndPostagemId(Long usuarioId, Long postagemId);
+    void deleteByPostagemId(Long postagemId);
 }

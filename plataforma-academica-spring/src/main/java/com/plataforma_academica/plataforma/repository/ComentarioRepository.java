@@ -10,5 +10,6 @@ public interface ComentarioRepository extends JpaRepository<Comentario, Long> {
     List<Comentario> findBySaladeAulaId(Long salaId);
     List<Comentario> findByAtividadeId(Long atividadeId);
     List<Comentario> findByPostagemId(Long postagemId);
+    void deleteByPostagemId(Long postagemId);
 }
 

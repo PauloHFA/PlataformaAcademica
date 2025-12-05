@@ -9,6 +9,7 @@ import com.plataforma_academica.plataforma.model.Usuario;
 import com.plataforma_academica.plataforma.repository.AtividadeRepository;
 import com.plataforma_academica.plataforma.repository.SubmissaoAtividadeRespository;
 import com.plataforma_academica.plataforma.repository.UsuarioRepository;
+import com.plataforma_academica.plataforma.service.NotificacaoService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,15 +28,18 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
     private final SubmissaoAtividadeRespository submissaoRepository;
     private final AtividadeRepository atividadeRepository;
     private final UsuarioRepository usuarioRepository;
+    private final NotificacaoService notificacaoService;
 
     public SubmissaoAtividadeServiceImpl(
             SubmissaoAtividadeRespository submissaoRepository,
             AtividadeRepository atividadeRepository,
-            UsuarioRepository usuarioRepository
+            UsuarioRepository usuarioRepository,
+            NotificacaoService notificacaoService
     ) {
         this.submissaoRepository = submissaoRepository;
         this.atividadeRepository = atividadeRepository;
         this.usuarioRepository = usuarioRepository;
+        this.notificacaoService = notificacaoService;
     }
 
     @Override
@@ -67,7 +71,13 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
         submissao.setAtividade(atividade);
         submissao.setDataSubmissao(LocalDateTime.now());
 
-        return submissaoRepository.save(submissao);
+        SubmissaoAtividade savedSubmissao = submissaoRepository.save(submissao);
+
+        // Notificar professor sobre nova submissão
+        String mensagem = "Nova submissão recebida de " + aluno.getNome() + " na atividade '" + atividade.getTitulo() + "'";
+        notificacaoService.criarNotificacao(atividade.getAutor().getId(), mensagem, "SUBMISSAO", savedSubmissao.getId());
+
+        return savedSubmissao;
     }
 
     @Override
@@ -140,7 +150,19 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
         submissao.setFeedback(feedback);
         submissao.setDataCorrecao(LocalDateTime.now());
 
-        return submissaoRepository.save(submissao);
+        SubmissaoAtividade saved = submissaoRepository.save(submissao);
+
+        // Notificar aluno sobre correção
+        String mensagem = "Sua atividade '" + submissao.getAtividade().getTitulo() + "' foi corrigida.";
+        if (nota != null) {
+            mensagem += " Nota: " + nota;
+        }
+        if (feedback != null && !feedback.isEmpty()) {
+            mensagem += " Feedback: " + feedback;
+        }
+        notificacaoService.criarNotificacao(submissao.getAluno().getId(), mensagem, "CORRECAO", saved.getId());
+
+        return saved;
     }
 
     @Override

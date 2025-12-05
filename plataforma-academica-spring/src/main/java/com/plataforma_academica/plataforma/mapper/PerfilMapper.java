@@ -20,10 +20,9 @@ public class PerfilMapper {
         resp.setFotoPerfil(perfil.getFotoPerfil());
         resp.setCurso(perfil.getCurso());
 
-        if (perfil.getUsuario() != null) {
-            resp.setUsuarioId(perfil.getUsuario().getId());
-            resp.setUsuarioNome(perfil.getUsuario().getNome());
-        }
+        // Como Perfil herda de Usuario, os campos estão diretamente no perfil
+        resp.setUsuarioId(perfil.getId());
+        resp.setUsuarioNome(perfil.getNome());
 
         return resp;
     }
@@ -37,10 +36,21 @@ public class PerfilMapper {
         PerfilDTO dto = new PerfilDTO();
 
         dto.setId(perfil.getId());
+        dto.setNome(perfil.getNome());
+        dto.setSobrenome(perfil.getSobrenome());
+        dto.setEmail(perfil.getEmail());
+        dto.setInstituicaoEnsino(perfil.getInstituicaoEnsino());
+        dto.setCep(perfil.getCep());
+        dto.setPais(perfil.getPais());
+        dto.setCidade(perfil.getCidade());
+        dto.setSite(perfil.getSite());
+        dto.setTelefone(perfil.getTelefone());
+        dto.setDataNascimento(perfil.getDataNascimento() != null ? perfil.getDataNascimento().toString() : null);
+        dto.setDescricao(perfil.getDescricao());
         dto.setBio(perfil.getBio());
         dto.setFotoPerfil(perfil.getFotoPerfil());
         dto.setCurso(perfil.getCurso());
-        dto.setUsuarioId(perfil.getUsuario() != null ? perfil.getUsuario().getId() : null);
+        dto.setUsuarioId(perfil.getId()); // mesmo id
 
         return dto;
     }
@@ -48,16 +58,27 @@ public class PerfilMapper {
     // ----------------------------------------------------
     // DTO → ENTITY (usado na criação/edição)
     // ----------------------------------------------------
-    public static Perfil toEntity(PerfilDTO dto, Usuario usuario) {
+    public static Perfil toEntity(PerfilDTO dto) {
         if (dto == null) return null;
 
         Perfil perfil = new Perfil();
 
-        perfil.setId(dto.getId());
+        perfil.setNome(dto.getNome());
+        perfil.setSobrenome(dto.getSobrenome());
+        perfil.setEmail(dto.getEmail());
+        perfil.setInstituicaoEnsino(dto.getInstituicaoEnsino());
+        perfil.setCep(dto.getCep());
+        perfil.setPais(dto.getPais());
+        perfil.setCidade(dto.getCidade());
+        perfil.setSite(dto.getSite());
+        perfil.setTelefone(dto.getTelefone());
+        if (dto.getDataNascimento() != null) {
+            perfil.setDataNascimento(java.time.LocalDate.parse(dto.getDataNascimento()));
+        }
+        perfil.setDescricao(dto.getDescricao());
         perfil.setBio(dto.getBio());
         perfil.setFotoPerfil(dto.getFotoPerfil());
         perfil.setCurso(dto.getCurso());
-        perfil.setUsuario(usuario); // entidade carregada antes no service
 
         return perfil;
     }

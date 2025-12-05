@@ -15,7 +15,6 @@ public interface PerfilService {
 
     Perfil buscarPorId(Long id);
 
-    // Métodos extras
     List<Perfil> buscarPorCurso(String curso);
 
     Perfil buscarPorUsuarioId(Long usuarioId);

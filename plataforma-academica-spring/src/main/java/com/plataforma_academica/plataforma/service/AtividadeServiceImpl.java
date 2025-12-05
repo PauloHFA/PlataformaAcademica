@@ -2,11 +2,13 @@ package com.plataforma_academica.plataforma.service;
 
 import com.plataforma_academica.plataforma.dto.AtividadeDTO;
 import com.plataforma_academica.plataforma.model.Atividade;
+import com.plataforma_academica.plataforma.model.SaladeAula;
 import com.plataforma_academica.plataforma.model.Usuario;
 import com.plataforma_academica.plataforma.model.Professor;
 import com.plataforma_academica.plataforma.repository.AtividadeRepository;
 import com.plataforma_academica.plataforma.repository.UsuarioRepository;
 import com.plataforma_academica.plataforma.repository.SaladeAulaRepository;
+import com.plataforma_academica.plataforma.service.NotificacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,11 +28,14 @@ public class AtividadeServiceImpl implements AtividadeService {
     @Autowired
     private SaladeAulaRepository salaDeAulaRepository;
 
+    @Autowired
+    private NotificacaoService notificacaoService;
+
     @Override
     @Transactional
     public Atividade criarAtividade(Long salaId, Atividade atividade, Long autorId) {
         // Verifica se a sala existe
-        salaDeAulaRepository.findById(salaId)
+        SaladeAula sala = salaDeAulaRepository.findById(salaId)
                 .orElseThrow(() -> new RuntimeException("Sala não encontrada"));
 
         // Verifica se o autor existe
@@ -42,9 +47,18 @@ public class AtividadeServiceImpl implements AtividadeService {
         }
 
         atividade.setAutor(autor);
-        atividade.setId(salaId);
+        atividade.setSalaDeAula(sala);
 
-        return atividadeRepository.save(atividade);
+        Atividade saved = atividadeRepository.save(atividade);
+
+        // Notificar alunos sobre nova atividade
+        sala.getUsuarios().forEach(usuario -> {
+            if (!usuario.getId().equals(autorId)) {
+                notificacaoService.criarNotificacao(usuario.getId(), "Nova atividade cadastrada: " + saved.getTitulo(), "ATIVIDADE", saved.getId());
+            }
+        });
+
+        return saved;
     }
 
     @Override

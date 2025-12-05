@@ -11,6 +11,8 @@ import java.util.List;
 @Entity
 @Table(name = "usuario")
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "tipo_usuario", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue("PADRAO")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "atividadesCriadas", "postagens", "comentarios", "submissões"})
 public class Usuario {
 
@@ -71,4 +73,7 @@ public class Usuario {
     // Submissões feitas pelo usuário
     @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SubmissaoAtividade> submissões;
+
+    @Version
+    private Long version;
 }

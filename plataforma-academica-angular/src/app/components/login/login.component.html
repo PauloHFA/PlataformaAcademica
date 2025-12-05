@@ -50,7 +50,7 @@
       <!-- Botão de Envio -->
       <button
         type="submit"
-        [disabled]="formulario.invalid || carregando"
+        [disabled]="carregando"
         class="btn btn-primary"
       >
         <span *ngIf="!carregando">Fazer Login</span>

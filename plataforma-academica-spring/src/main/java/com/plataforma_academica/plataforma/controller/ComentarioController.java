@@ -4,9 +4,11 @@ import com.plataforma_academica.plataforma.model.Comentario;
 import com.plataforma_academica.plataforma.model.SaladeAula;
 import com.plataforma_academica.plataforma.model.Atividade;
 import com.plataforma_academica.plataforma.model.TipoDestinoComentario;
+import com.plataforma_academica.plataforma.model.Usuario;
 import com.plataforma_academica.plataforma.service.ComentarioService;
 import com.plataforma_academica.plataforma.repository.SaladeAulaRepository;
 import com.plataforma_academica.plataforma.repository.AtividadeRepository;
+import com.plataforma_academica.plataforma.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +24,16 @@ public class ComentarioController {
 
     @Autowired
     private ComentarioService comentarioService;
-    
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
     @Autowired
     private SaladeAulaRepository salaRepository;
-    
+
     @Autowired
     private AtividadeRepository atividadeRepository;
-    
+
     @Autowired
     private com.plataforma_academica.plataforma.repository.PostagemRepository postagemRepository;
 
@@ -49,22 +54,27 @@ public class ComentarioController {
     @PostMapping
     public ResponseEntity<Comentario> salvar(@RequestBody Comentario comentario) {
         System.out.println("[POST /comentario] Tipo=" + comentario.getTipoDestino() + ", Autor=" + (comentario.getAutor() != null ? comentario.getAutor().getId() : "null"));
-        
+
+        if (comentario.getAutor() != null && comentario.getAutor().getId() != null) {
+            Usuario autor = usuarioRepository.findById(comentario.getAutor().getId()).orElseThrow(() -> new RuntimeException("Autor não encontrado"));
+            comentario.setAutor(autor);
+        }
+
         if (comentario.getSaladeAula() != null && comentario.getSaladeAula().getId() != null) {
             SaladeAula sala = salaRepository.findById(comentario.getSaladeAula().getId()).orElseThrow(() -> new RuntimeException("Sala não encontrada"));
             comentario.setSaladeAula(sala);
         }
-        
+
         if (comentario.getAtividade() != null && comentario.getAtividade().getId() != null) {
             Atividade atividade = atividadeRepository.findById(comentario.getAtividade().getId()).orElseThrow(() -> new RuntimeException("Atividade não encontrada"));
             comentario.setAtividade(atividade);
         }
-        
+
         if (comentario.getPostagem() != null && comentario.getPostagem().getId() != null) {
             com.plataforma_academica.plataforma.model.Postagem postagem = postagemRepository.findById(comentario.getPostagem().getId()).orElseThrow(() -> new RuntimeException("Postagem não encontrada"));
             comentario.setPostagem(postagem);
         }
-        
+
         Comentario salvo = comentarioService.salvar(comentario);
         System.out.println("[POST /comentario] Sucesso: ID=" + salvo.getId());
         URI location = URI.create("/comentario/" + salvo.getId());

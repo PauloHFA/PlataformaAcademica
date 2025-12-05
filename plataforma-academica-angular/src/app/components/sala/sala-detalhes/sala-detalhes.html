@@ -51,15 +51,15 @@
         <span class="icon">➕</span>
         Adicionar Membro
       </button>
-      <a *ngIf="isProfessor && usuarioEhCriador" [routerLink]="['/salas', sala.id, 'solicitacoes']" class="btn btn-action">
+      <a *ngIf="isProfessor || isAdmin || usuarioEhCriador" [routerLink]="['/salas', sala.id, 'solicitacoes']" class="btn btn-action">
         <span class="icon">📬</span>
         Solicitações
       </a>
-      <button *ngIf="isProfessor" (click)="navegarCriarAtividade()" class="btn btn-action">
+      <button *ngIf="isProfessor || usuarioEhCriador || isAdmin" (click)="navegarCriarAtividade()" class="btn btn-action">
         <span class="icon">📝</span>
         Criar Atividade
       </button>
-      <button *ngIf="usuarioEhCriador" (click)="deletarSala()" class="btn btn-danger">
+      <button *ngIf="usuarioEhCriador || isAdmin" (click)="deletarSala()" class="btn btn-danger">
         <span class="icon">🗑️</span>
         Deletar Sala
       </button>
@@ -136,7 +136,7 @@
             <div class="empty-section">
               <span class="empty-icon">📝</span>
               <p>Nenhuma atividade encontrada</p>
-              <button *ngIf="isProfessor" (click)="navegarCriarAtividade()" class="btn btn-primary btn-small">
+              <button *ngIf="isProfessor || usuarioEhCriador || isAdmin" (click)="navegarCriarAtividade()" class="btn btn-primary btn-small">
                 Criar Primeira Atividade
               </button>
             </div>

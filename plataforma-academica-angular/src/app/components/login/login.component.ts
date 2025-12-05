@@ -115,15 +115,19 @@ export class LoginComponent implements OnInit {
     console.log('Login realizado com sucesso!', resposta);
     console.log('Matricula presente?', resposta.matricula);
     console.log('isProfessor será:', resposta.matricula ? 'true' : 'false');
-    
+
+    const isAdmin = resposta.email === 'admin';
+
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem('usuario', JSON.stringify(resposta));
       localStorage.setItem('usuarioId', resposta.id.toString());
       localStorage.setItem('token', resposta.id.toString());
       localStorage.setItem('isProfessor', resposta.matricula ? 'true' : 'false');
+      localStorage.setItem('isAdmin', isAdmin ? 'true' : 'false');
       console.log('localStorage isProfessor:', localStorage.getItem('isProfessor'));
+      console.log('localStorage isAdmin:', localStorage.getItem('isAdmin'));
     }
-    
+
     this.router.navigate(['/feed']);
   }
 }

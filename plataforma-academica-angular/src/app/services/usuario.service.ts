@@ -97,8 +97,13 @@ export class UsuarioService {
         mensagem = 'Endpoint não encontrado. Verifique se o backend está configurado corretamente.';
       } else if (erro.status === 500) {
         mensagem = 'Erro no servidor. Tente novamente mais tarde.';
+      } else if (erro.status === 401 && typeof erro.error === 'string') {
+        // Para 401, o backend retorna string plain
+        mensagem = erro.error;
       } else if (erro.error?.message) {
         mensagem = erro.error.message;
+      } else if (typeof erro.error === 'string') {
+        mensagem = erro.error;
       } else {
         mensagem = `Erro ao processar requisição (${erro.status}). Tente novamente.`;
       }

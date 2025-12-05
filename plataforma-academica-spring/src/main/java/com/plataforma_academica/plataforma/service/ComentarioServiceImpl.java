@@ -1,7 +1,9 @@
 package com.plataforma_academica.plataforma.service;
 
-import com.plataforma_academica.plataforma.model.Comentario;
-import com.plataforma_academica.plataforma.repository.ComentarioRepository;
+import com.plataforma_academica.plataforma.dto.ComentarioDTO;
+import com.plataforma_academica.plataforma.mapper.ComentarioMapper;
+import com.plataforma_academica.plataforma.model.*;
+import com.plataforma_academica.plataforma.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,18 @@ public class ComentarioServiceImpl implements ComentarioService {
 
     @Autowired
     private ComentarioRepository comentarioRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private PostagemRepository postagemRepository;
+
+    @Autowired
+    private AtividadeRepository atividadeRepository;
+
+    @Autowired
+    private SaladeAulaRepository saladeAulaRepository;
 
     @Override
     public Comentario salvar(Comentario comentario) {
@@ -70,7 +84,55 @@ public class ComentarioServiceImpl implements ComentarioService {
     public List<Comentario> listarComentariosPorPostagem(Long postagemId) {
         return comentarioRepository.findByPostagemId(postagemId);
     }
-    
+
+    @Override
+    public Comentario salvarComentario(ComentarioDTO dto) {
+        // Carregar autor
+        Usuario autor = usuarioRepository.findById(dto.getAutorId())
+                .orElseThrow(() -> new RuntimeException("Autor não encontrado"));
+
+        // Parse tipo destino
+        TipoDestinoComentario tipoDestino = TipoDestinoComentario.valueOf(dto.getTipoDestino().toUpperCase());
+
+        // Carregar entidades baseadas no tipo destino
+        Postagem postagem = null;
+        Atividade atividade = null;
+        SaladeAula sala = null;
+
+        switch (tipoDestino) {
+            case POSTAGEM:
+                if (dto.getPostagemId() == null) {
+                    throw new IllegalArgumentException("Postagem é obrigatória para comentários em postagens");
+                }
+                postagem = postagemRepository.findById(dto.getPostagemId())
+                        .orElseThrow(() -> new RuntimeException("Postagem não encontrada"));
+                break;
+            case ATIVIDADE:
+                if (dto.getAtividadeId() == null) {
+                    throw new IllegalArgumentException("Atividade é obrigatória para comentários em atividades");
+                }
+                atividade = atividadeRepository.findById(dto.getAtividadeId())
+                        .orElseThrow(() -> new RuntimeException("Atividade não encontrada"));
+                break;
+            case SALADEAULA:
+                if (dto.getSalaId() == null) {
+                    throw new IllegalArgumentException("Sala é obrigatória para comentários em salas");
+                }
+                sala = saladeAulaRepository.findById(dto.getSalaId())
+                        .orElseThrow(() -> new RuntimeException("Sala não encontrada"));
+                break;
+            case ATIVIDADES_GERAIS:
+                // Não precisa de entidade específica
+                break;
+        }
+
+        // Criar entidade Comentario
+        Comentario comentario = ComentarioMapper.toEntity(dto, autor, postagem, atividade, sala, tipoDestino);
+
+        // Salvar
+        return this.salvar(comentario);
+    }
+
     public Comentario salvarComentarioSala(Comentario comentario) {
         if (comentario.getSaladeAula() == null || comentario.getSaladeAula().getId() == null) {
             throw new IllegalArgumentException("Sala de aula é obrigatória");

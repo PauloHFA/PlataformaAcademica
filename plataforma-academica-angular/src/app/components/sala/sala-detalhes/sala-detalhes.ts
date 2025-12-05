@@ -27,6 +27,7 @@ export class SalaDetalhesComponent implements OnInit {
   comentarios: Comentario[] = [];
   novoComentario = '';
   isProfessor = false;
+  isAdmin = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -42,6 +43,8 @@ export class SalaDetalhesComponent implements OnInit {
       this.usuarioId = this.getCurrentUserId();
       const isProfessorValue = localStorage.getItem('isProfessor');
       this.isProfessor = isProfessorValue === 'true';
+      const isAdminValue = localStorage.getItem('isAdmin');
+      this.isAdmin = isAdminValue === 'true';
     }
 
     this.route.paramMap.subscribe(params => {
@@ -166,7 +169,7 @@ export class SalaDetalhesComponent implements OnInit {
   }
 
   deletarSala(): void {
-    if (!this.sala?.id || !this.usuarioEhCriador) return;
+    if (!this.sala?.id || (!this.usuarioEhCriador && !this.isAdmin)) return;
     
     if (confirm(`Tem certeza que deseja deletar a sala "${this.sala.nome}"? Esta ação não pode ser desfeita.`)) {
       this.salaService.deletarSala(this.sala.id, this.usuarioId).subscribe({

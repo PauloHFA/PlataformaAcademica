@@ -1,10 +1,13 @@
 package com.plataforma_academica.plataforma.service;
 
+import com.plataforma_academica.plataforma.model.Admin;
 import com.plataforma_academica.plataforma.model.Usuario;
+import com.plataforma_academica.plataforma.repository.AdminRepository;
 import com.plataforma_academica.plataforma.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import jakarta.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +16,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private AdminRepository adminRepository;
 
     // Instância do encoder (pode ser injetado também)
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -44,6 +50,24 @@ public class UsuarioServiceImpl implements UsuarioService {
         String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
         usuario.setSenha(senhaCriptografada);
 
+        // Se for admin, cria como Admin
+        if ("admin".equals(usuario.getEmail())) {
+            Admin admin = new Admin();
+            admin.setNome(usuario.getNome());
+            admin.setEmail(usuario.getEmail());
+            admin.setSenha(senhaCriptografada);
+            admin.setSobrenome(usuario.getSobrenome());
+            admin.setDataNascimento(usuario.getDataNascimento());
+            admin.setTelefone(usuario.getTelefone());
+            admin.setDescricao(usuario.getDescricao());
+            admin.setInstituicaoEnsino(usuario.getInstituicaoEnsino());
+            admin.setCep(usuario.getCep());
+            admin.setPais(usuario.getPais());
+            admin.setCidade(usuario.getCidade());
+            admin.setSite(usuario.getSite());
+            return adminRepository.save(admin);
+        }
+
         return usuarioRepository.save(usuario);
     }
 
@@ -56,4 +80,5 @@ public class UsuarioServiceImpl implements UsuarioService {
     public List<Usuario> listarTodos() {
         return usuarioRepository.findAll();
     }
+
 }

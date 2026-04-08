@@ -32,6 +32,10 @@ export class SubmissaoAtividadeService {
     );
   }
 
+  listarSubmissoesPorAlunoESala(alunoId: number, salaId: number): Observable<SubmissaoAtividadeResponse[]> {
+    return this.http.get<SubmissaoAtividadeResponse[]>(`${this.apiUrl}/aluno/${alunoId}/sala/${salaId}`);
+  }
+
   enviarSubmissaoComArquivo(atividadeId: number, alunoId: number, formData: FormData): Observable<SubmissaoAtividadeResponse> {
     return this.http.post<SubmissaoAtividadeResponse>(
       `${this.apiUrl}/atividade/${atividadeId}/aluno/${alunoId}`,

@@ -6,6 +6,9 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpLoggingInterceptor } from './interceptors/http-logging.interceptor';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+
+const config: SocketIoConfig = { url: 'http://localhost:8080', options: {} };
 
 /**
  * Configuração global da aplicação Angular
@@ -18,6 +21,7 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideAnimations(),
     provideHttpClient(withFetch()),
-    { provide: HTTP_INTERCEPTORS, useClass: HttpLoggingInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: HttpLoggingInterceptor, multi: true },
+    SocketIoModule.forRoot(config)
   ]
 };

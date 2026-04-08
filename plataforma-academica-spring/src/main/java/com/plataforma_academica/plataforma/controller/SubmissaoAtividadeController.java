@@ -134,6 +134,19 @@ public class SubmissaoAtividadeController {
         return ResponseEntity.ok(SubmissaoAtividadeMapper.toResponse(sub));
     }
 
+    @GetMapping("/aluno/{alunoId}/sala/{salaId}")
+    public ResponseEntity<List<SubmissaoAtividadeResponseDTO>> listarSubmissoesPorAlunoESala(
+            @PathVariable Long alunoId,
+            @PathVariable Long salaId) {
+
+        List<SubmissaoAtividadeResponseDTO> response = submissaoService.listarSubmissoesPorAlunoESala(alunoId, salaId)
+                .stream()
+                .map(SubmissaoAtividadeMapper::toResponse)
+                .collect(java.util.stream.Collectors.toList());
+
+        return ResponseEntity.ok(response);
+    }
+
     // =========================================================================================
     //  4. CORRIGIR SUBMISSÃO
     // =========================================================================================

@@ -1,53 +1,192 @@
-# ✅ Guia Rápido - Solucionar erro "Failed to fetch"
+# ✅ Guia de Resolução - Erro "Failed to fetch"
 
-## **Passo 1: Verificar se o Backend está rodando**
+## 📋 Problema
 
-Abra um terminal e execute:
+O erro "Failed to fetch" indica falha de conectividade entre o frontend Angular e o backend Spring Boot, geralmente causado por configuração incorreta de portas ou serviços não iniciados.
+
+## 🔍 Diagnóstico Rápido
+
+### 1. Verificar Status do Backend
+
+Execute no terminal:
+```bash
+# Verificar processos na porta 8080
+lsof -i :8080
+
+# Ou para Windows
+netstat -ano | findstr :8080
+```
+
+**Resultado esperado:** Deve aparecer um processo Java relacionado ao Spring Boot.
+
+### 2. Testar Conectividade Básica
 
 ```bash
-# Verifique se algo está rodando na porta 8080
-lsof -i :8080
+# Testar endpoint de saúde
+curl http://localhost:8080/actuator/health
+
+# Resultado esperado: {"status":"UP"}
 ```
 
-Se retornar vazio, o backend NÃO está rodando.
+## 🛠️ Solução Passo a Passo
 
-## **Passo 2: Verificar em qual porta seu backend está**
+### Passo 1: Iniciar o Backend
 
-Se você tiver um projeto Spring Boot, procure pelo arquivo:
-- `application.properties` ou `application.yml`
+```bash
+# Navegar para o projeto Spring Boot
+cd plataforma-academica-spring
 
-Procure por:
+# Limpar e compilar
+./mvnw clean compile
+
+# Iniciar aplicação
+./mvnw spring-boot:run
 ```
+
+**Verificação:** Deve aparecer no console:
+```
+Tomcat started on port(s): 8080 (http) with context path ''
+Started PlataformaAcademicaApplication
+```
+
+### Passo 2: Verificar Porta do Backend
+
+**Arquivo:** `plataforma-academica-spring/src/main/resources/application.properties`
+
+```properties
+# Verificar configuração
 server.port=8080
 ```
 
-Anote a porta.
+**Se precisar alterar a porta:**
+```properties
+server.port=8081  # ou outra porta disponível
+```
 
-## **Passo 3: Atualizar a configuração do Angular**
+### Passo 3: Atualizar Configuração do Frontend
 
-### **3.1 Edite o arquivo de ambiente:**
-`src/environments/environment.ts`
+**Arquivo:** `plataforma-academica-angular/src/environments/environment.ts`
 
 ```typescript
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:SEU_PORTA_AQUI/api'  // ← Mude a porta aqui
+  apiUrl: 'http://localhost:8080/api'  // Atualizar porta se necessário
 };
 ```
 
-### **3.2 Atualize os serviços para usar a configuração:**
+### Passo 4: Atualizar Serviços Angular
 
-**Para `src/app/services/usuario.service.ts`:**
+Para cada serviço que faz chamadas HTTP, atualizar a configuração:
 
-No início do arquivo, adicione o import:
+**Exemplo - `src/app/services/usuario.service.ts`:**
+
 ```typescript
-import { environment } from '../../environments/environment';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment'; // ← Adicionar import
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UsuarioService {
+
+  private baseUrl = environment.apiUrl + '/usuarios'; // ← Usar configuração
+
+  constructor(private http: HttpClient) { }
+
+  getUsuarios(): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(this.baseUrl);
+  }
+
+  // ... outros métodos
+}
 ```
 
-Depois, mude a linha:
-```typescript
-// DE:
-private baseUrl = 'http://localhost:8080/api/usuarios';
+**Serviços a atualizar:**
+- `src/app/services/usuario.service.ts`
+- `src/app/services/perfil.service.ts`
+- `src/app/services/postagem.service.ts`
+- `src/app/services/sala.service.ts`
+- `src/app/services/amizade.service.ts`
+- Todos os outros serviços que fazem chamadas API
+
+### Passo 5: Configurar CORS (se necessário)
+
+**Arquivo:** `plataforma-academica-spring/src/main/resources/application.properties`
+
+```properties
+# Configuração CORS
+spring.web.cors.allowed-origins=http://localhost:4200
+spring.web.cors.allowed-methods=GET,POST,PUT,DELETE,OPTIONS
+spring.web.cors.allowed-headers=*
+spring.web.cors.allow-credentials=true
+```
+
+### Passo 6: Reiniciar Aplicações
+
+```bash
+# Terminal 1 - Backend
+cd plataforma-academica-spring
+./mvnw spring-boot:run
+
+# Terminal 2 - Frontend
+cd plataforma-academica-angular
+ng serve
+```
+
+### Passo 7: Verificar Funcionamento
+
+1. **Abrir navegador:** http://localhost:4200
+2. **Abrir DevTools:** F12 → Console
+3. **Verificar logs:** Não deve haver erros "Failed to fetch"
+4. **Testar funcionalidade:** Tentar login/cadastro
+
+## 🔧 Verificações Adicionais
+
+### Firewall/Antivírus
+- Desabilitar temporariamente
+- Verificar se porta 8080 está liberada
+
+### Conflito de Portas
+```bash
+# Matar processo conflitante
+lsof -ti:8080 | xargs kill -9
+```
+
+### Logs Detalhados
+**Backend - application.properties:**
+```properties
+logging.level.org.springframework.web=DEBUG
+logging.level.com.plataforma_academica=DEBUG
+```
+
+**Frontend - Console do navegador**
+
+## 📊 Checklist de Verificação
+
+- [ ] Backend iniciado na porta correta
+- [ ] Frontend configurado com URL correta
+- [ ] Serviços atualizados para usar environment
+- [ ] CORS configurado
+- [ ] Firewall não bloqueando
+- [ ] Sem conflito de portas
+- [ ] Aplicações reiniciadas
+
+## 📞 Quando Pedir Ajuda
+
+Se o problema persistir, fornecer:
+- Logs completos do backend
+- Configuração atual dos arquivos
+- Resultado dos comandos de diagnóstico
+- Versão do Java/Node.js
+
+**Documentos relacionados:**
+- `ERRO_BACKEND.md` - Diagnóstico detalhado
+- `SOLUCAO_ERROS.md` - Outros problemas comuns
+- `README.md` - Setup completo
+
+Última atualização: Março 2026
 
 // PARA:
 private baseUrl = `${environment.apiUrl}/usuarios`;

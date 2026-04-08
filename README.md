@@ -130,8 +130,9 @@ cd plataforma-academica
 ---
 
 ## 👨‍💻 Equipe de Desenvolvimento
-- **Rafael Victor** — Mat.: 03351641  
-- **Rhian Pablo** — Mat.: 03347356  
+- **Rafael Victor** — Matrícula: 03351641  
+- **Rhian Pablo** — Matrícula: 03347356  
+- **Paulo Henrique Ferreira de Albuquerque** — Desenvolvedor e Documentador  
 
 ---
 

@@ -130,6 +130,23 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
     }
 
     @Override
+    public List<SubmissaoAtividade> listarSubmissoesPorAluno(Long alunoId) {
+        usuarioRepository.findById(alunoId)
+                .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado."));
+
+        return submissaoRepository.findByAlunoId(alunoId);
+    }
+
+    @Override
+    public List<SubmissaoAtividade> listarSubmissoesPorAlunoESala(Long alunoId, Long salaId) {
+        usuarioRepository.findById(alunoId)
+                .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado."));
+
+        // Não há necessidade de buscar sala explicitamente; o filtro por sala funciona na query do repository
+        return submissaoRepository.findByAlunoIdAndAtividade_SalaDeAula_Id(alunoId, salaId);
+    }
+
+    @Override
     public SubmissaoAtividade buscarSubmissaoDoAluno(Long atividadeId, Long alunoId) {
         SubmissaoAtividade submissao =
                 submissaoRepository.findByAtividadeIdAndAlunoId(atividadeId, alunoId);

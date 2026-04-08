@@ -15,6 +15,10 @@ public interface SubmissaoAtividadeService {
 
     List<SubmissaoAtividade> listarSubmissoesPorAtividade(Long atividadeId);
 
+    List<SubmissaoAtividade> listarSubmissoesPorAluno(Long alunoId);
+
+    List<SubmissaoAtividade> listarSubmissoesPorAlunoESala(Long alunoId, Long salaId);
+
     SubmissaoAtividade buscarSubmissaoDoAluno(Long atividadeId, Long alunoId);
 
     SubmissaoAtividade corrigirSubmissao(Long submissaoId, Double nota, String feedback);

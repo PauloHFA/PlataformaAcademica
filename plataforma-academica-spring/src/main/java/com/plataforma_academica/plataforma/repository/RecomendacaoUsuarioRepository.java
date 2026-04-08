@@ -1,0 +1,27 @@
+package com.plataforma_academica.plataforma.repository;
+
+import com.plataforma_academica.plataforma.model.RecomendacaoUsuario;
+import com.plataforma_academica.plataforma.model.Usuario;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface RecomendacaoUsuarioRepository extends JpaRepository<RecomendacaoUsuario, Long> {
+
+    List<RecomendacaoUsuario> findByUsuarioAndAtivoOrderByScoreSimilaridadeDesc(Usuario usuario, Boolean ativo);
+
+    List<RecomendacaoUsuario> findByUsuarioRecomendadoAndAtivo(Usuario usuarioRecomendado, Boolean ativo);
+
+    @Query("SELECT r FROM RecomendacaoUsuario r WHERE r.usuario = :usuario AND r.tipoRecomendacao = :tipo AND r.ativo = true ORDER BY r.scoreSimilaridade DESC")
+    List<RecomendacaoUsuario> findByUsuarioAndTipoRecomendacao(
+        @Param("usuario") Usuario usuario,
+        @Param("tipo") RecomendacaoUsuario.TipoRecomendacao tipo
+    );
+
+    @Query("SELECT COUNT(r) FROM RecomendacaoUsuario r WHERE r.usuario = :usuario AND r.usuarioRecomendado = :usuarioRecomendado AND r.ativo = true")
+    Long countExistingRecomendacao(@Param("usuario") Usuario usuario, @Param("usuarioRecomendado") Usuario usuarioRecomendado);
+}

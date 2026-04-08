@@ -1,52 +1,133 @@
-# ProjetoFinal
+# 🖥️ Plataforma Acadêmica - Frontend Angular
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.17.
+## 📋 Descrição
 
-## Development server
+Este é o módulo frontend da Plataforma Acadêmica Integrada, desenvolvido com **Angular 19**. A aplicação fornece uma interface de usuário moderna e responsiva para professores e alunos interagirem em um ambiente acadêmico digital.
 
-To start a local development server, run:
+## 🚀 Tecnologias Utilizadas
 
+- **Angular** 19.2.17
+- **TypeScript** 5.6
+- **Node.js** 22.x
+- **NPM** 10.x
+- **RxJS** para programação reativa
+- **Angular Material** e **TailwindCSS** para estilização
+- **Axios/HttpClient** para comunicação com API
+
+## 🏗️ Arquitetura
+
+A aplicação segue a arquitetura de componentes do Angular, com:
+
+- **Components:** Elementos reutilizáveis da UI
+- **Services:** Lógica de integração com API backend
+- **Models:** Interfaces TypeScript para tipagem
+- **Guards:** Controle de rotas e autenticação
+- **Interceptors:** Tratamento global de requisições HTTP
+
+## 📦 Instalação e Execução
+
+### Pré-requisitos
+- Node.js 22.x ou superior
+- NPM 10.x ou superior
+
+### Instalação
 ```bash
+# Clonar o repositório
+git clone <repository-url>
+cd plataforma-academica-angular
+
+# Instalar dependências
+npm install
+```
+
+### Execução em Desenvolvimento
+```bash
+# Iniciar servidor de desenvolvimento
 ng serve
+
+# A aplicação estará disponível em http://localhost:4200
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+### Build para Produção
 ```bash
-ng generate component component-name
+# Gerar build otimizado
+ng build --configuration production
+
+# Os artefatos estarão em dist/plataforma-academica-angular/
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 🧪 Testes
 
+### Testes Unitários
 ```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
+# Executar testes com Karma
 ng test
 ```
 
-## Running end-to-end tests
+### Testes End-to-End
+```bash
+# Executar testes E2E com Cypress
+ng e2e
+```
 
-For end-to-end (e2e) testing, run:
+## 📁 Estrutura do Projeto
+
+```
+src/
+├── app/
+│   ├── components/          # Componentes reutilizáveis
+│   │   ├── navbar/         # Barra de navegação
+│   │   ├── sidebar/        # Menu lateral
+│   │   ├── feed/           # Feed de postagens
+│   │   └── ...
+│   ├── services/           # Serviços de API
+│   ├── models/             # Interfaces TypeScript
+│   ├── guards/             # Guards de rota
+│   ├── interceptors/       # Interceptors HTTP
+│   └── app.routes.ts       # Configuração de rotas
+├── assets/                 # Recursos estáticos
+├── environments/           # Configurações de ambiente
+└── styles.css              # Estilos globais
+```
+
+## 🔧 Scripts Disponíveis
+
+- `ng serve` - Inicia servidor de desenvolvimento
+- `ng build` - Compila a aplicação
+- `ng test` - Executa testes unitários
+- `ng lint` - Verifica qualidade do código
+- `ng e2e` - Executa testes end-to-end
+
+## 🌐 Integração com Backend
+
+A aplicação se comunica com o backend Spring Boot através de APIs REST:
+
+- **Base URL:** http://localhost:8080/api
+- **Autenticação:** JWT tokens
+- **Formato:** JSON
+
+## 📱 Responsividade
+
+A interface é totalmente responsiva, adaptando-se a:
+- 📱 Dispositivos móveis
+- 💻 Tablets
+- 🖥️ Desktops
+
+## 🎨 Tema e UI
+
+- **Tema adaptativo:** Claro/escuro automático
+- **Paleta profissional:** Tons roxos institucionais
+- **Animações suaves:** Transições fluidas
+- **Acessibilidade:** Conformidade com WCAG
+
+## 👨‍💻 Equipe de Desenvolvimento
+
+- **Rhian Pablo** - Desenvolvedor Frontend Principal
+- **Paulo Henrique Ferreira de Albuquerque** - Desenvolvedor Frontend e UI/UX
+
+## 📄 Licença
+
+Este projeto é desenvolvido para fins acadêmicos como parte do curso de Arquitetura de Software da UNINASSAU.
 
 ```bash
 ng e2e

@@ -59,6 +59,10 @@
         <span class="icon">📝</span>
         Criar Atividade
       </button>
+      <a *ngIf="isProfessor || usuarioEhCriador || isAdmin" [routerLink]="['/salas', sala.id, 'dashboard']" class="btn btn-action">
+        <span class="icon">📊</span>
+        Dashboard
+      </a>
       <button *ngIf="usuarioEhCriador || isAdmin" (click)="deletarSala()" class="btn btn-danger">
         <span class="icon">🗑️</span>
         Deletar Sala

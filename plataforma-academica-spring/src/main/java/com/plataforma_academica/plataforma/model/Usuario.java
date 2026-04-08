@@ -53,6 +53,14 @@ public class Usuario {
     @JsonIgnore
     private byte[] avatar;
 
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String fotoPerfil;
+
+    private Double pontos = 0.0;
+    private Double moedas = 0.0;
+    private String nivel = "Bronze";
+
     // Postagens criadas pelo usuário
     @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Postagem> postagens;

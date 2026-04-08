@@ -1,53 +1,117 @@
-# 🚀 Instruções Rápidas - Ativar Login Social
+# 🚀 Guia Rápido - Configuração de Autenticação Social
 
-## ✅ O que já está implementado
+## ✅ Status da Implementação
 
-- ✅ Dependências OAuth2 adicionadas no backend
-- ✅ Arquivo de configuração criado
-- ✅ Botões funcionais no frontend (modo demo)
-- ✅ Estrutura completa pronta
+A infraestrutura completa para autenticação social já está implementada:
 
-## 🔑 O que VOCÊ precisa fazer (5 minutos)
+- ✅ Dependências OAuth2 configuradas no backend
+- ✅ Arquivo de propriedades preparado
+- ✅ Componentes frontend funcionais (modo demonstração)
+- ✅ Estrutura de segurança estabelecida
 
-### Passo 1: Obter Google Client ID
+## 🔑 Configuração Necessária (5 minutos)
 
-1. Acesse: https://console.cloud.google.com/
-2. Crie um projeto novo
-3. Vá em "APIs e Serviços" > "Credenciais"
-4. Clique em "Criar Credenciais" > "ID do cliente OAuth"
-5. Tipo: "Aplicativo da Web"
-6. **Origens autorizadas:** `http://localhost:4200` e `http://localhost:8080`
-7. **URIs de redirecionamento:** `http://localhost:8080/login/oauth2/code/google`
-8. Copie o **Client ID** e **Client Secret**
+### 1. Credenciais Google OAuth2
 
-### Passo 2: Obter Facebook App ID
+#### Obtenção das Credenciais
+1. **Acesso:** [Google Cloud Console](https://console.cloud.google.com/)
+2. **Projeto:** Criar novo projeto ou selecionar existente
+3. **Navegação:** APIs e Serviços → Credenciais
+4. **Criação:** Criar Credenciais → ID do cliente OAuth
+5. **Configuração:**
+   - Tipo: Aplicativo da Web
+   - Origens autorizadas: `http://localhost:4200`, `http://localhost:8080`
+   - URIs de redirecionamento: `http://localhost:8080/login/oauth2/code/google`
+6. **Credenciais:** Copiar Client ID e Client Secret
 
-1. Acesse: https://developers.facebook.com/
-2. Crie um app novo (tipo: Consumidor)
-3. Adicione produto "Facebook Login"
-4. Em "Configurações" > "Básico", copie:
-   - **ID do App**
-   - **Chave Secreta do App**
-5. Em "Facebook Login" > "Configurações":
-   - **URIs de redirecionamento:** `http://localhost:8080/login/oauth2/code/facebook`
+#### Ativação da API
+- APIs e Serviços → Biblioteca → Google+ API → Ativar
 
-### Passo 3: Configurar Backend
+### 2. Credenciais Facebook Login
 
-Abra o arquivo:
-```
-plataforma-academica-spring/src/main/resources/application.properties
-```
+#### Criação da Aplicação
+1. **Acesso:** [Facebook Developers](https://developers.facebook.com/)
+2. **Aplicação:** Criar App (tipo: Consumidor)
+3. **Produto:** Adicionar Facebook Login
+4. **Configuração:** Básico → Copiar App ID e App Secret
 
-Adicione no final:
+#### Configuração do Login
+- Facebook Login → Configurações
+- URIs de redirecionamento: `http://localhost:8080/login/oauth2/code/facebook`
+
+### 3. Configuração do Backend
+
+**Arquivo:** `plataforma-academica-spring/src/main/resources/application.properties`
+
+Adicionar ao final do arquivo:
 
 ```properties
-# Google OAuth2
-spring.security.oauth2.client.registration.google.client-id=SEU_GOOGLE_CLIENT_ID
-spring.security.oauth2.client.registration.google.client-secret=SEU_GOOGLE_CLIENT_SECRET
+# Google OAuth2 Configuration
+spring.security.oauth2.client.registration.google.client-id=SEU_GOOGLE_CLIENT_ID_AQUI
+spring.security.oauth2.client.registration.google.client-secret=SEU_GOOGLE_CLIENT_SECRET_AQUI
 spring.security.oauth2.client.registration.google.scope=profile,email
 spring.security.oauth2.client.registration.google.redirect-uri={baseUrl}/login/oauth2/code/google
 
-# Facebook OAuth2
+# Facebook OAuth2 Configuration
+spring.security.oauth2.client.registration.facebook.client-id=SEU_FACEBOOK_APP_ID_AQUI
+spring.security.oauth2.client.registration.facebook.client-secret=SEU_FACEBOOK_APP_SECRET_AQUI
+spring.security.oauth2.client.registration.facebook.scope=email,public_profile
+spring.security.oauth2.client.registration.facebook.redirect-uri={baseUrl}/login/oauth2/code/facebook
+
+# CORS Configuration
+spring.web.cors.allowed-origins=http://localhost:4200
+spring.web.cors.allowed-methods=GET,POST,PUT,DELETE,OPTIONS
+spring.web.cors.allowed-headers=*
+spring.web.cors.allow-credentials=true
+```
+
+### 4. Configuração do Frontend
+
+**Arquivo:** `plataforma-academica-angular/src/environments/environment.ts`
+
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:8080/api',
+  googleClientId: 'SEU_GOOGLE_CLIENT_ID_AQUI',
+  facebookAppId: 'SEU_FACEBOOK_APP_ID_AQUI'
+};
+```
+
+### 5. Teste da Configuração
+
+1. **Reiniciar Backend:** `./mvnw spring-boot:run`
+2. **Reiniciar Frontend:** `ng serve`
+3. **Testar Login:**
+   - Acesse: http://localhost:4200
+   - Clique em "Login com Google" ou "Login com Facebook"
+   - Verificar redirecionamento e autenticação
+
+## 🔍 Verificação de Funcionamento
+
+### Logs do Backend
+Verificar no console se aparecem mensagens como:
+```
+OAuth2 Login successful for user: [user_id]
+```
+
+### Rede (DevTools)
+- Requests para `/oauth2/authorization/google` ou `/facebook`
+- Redirecionamento para provedor
+- Callback com código de autorização
+
+## ⚠️ Notas Importantes
+
+- **Segurança:** Nunca commite credenciais reais no repositório
+- **Produção:** Configure domínios reais nos provedores OAuth
+- **HTTPS:** Em produção, use HTTPS para redirecionamentos OAuth
+- **Variáveis de Ambiente:** Considere usar variáveis de ambiente para credenciais
+
+## 📞 Suporte
+
+Para problemas específicos, consulte:
+- `CONFIGURACAO_LOGIN_SOCIAL.md` - Guia detalhado
+- `SOLUCAO_ERROS.md` - Resolução de problemas comuns
 spring.security.oauth2.client.registration.facebook.client-id=SEU_FACEBOOK_APP_ID
 spring.security.oauth2.client.registration.facebook.client-secret=SEU_FACEBOOK_APP_SECRET
 spring.security.oauth2.client.registration.facebook.scope=email,public_profile

@@ -1,53 +1,111 @@
-# Configuração de Login Social (Google e Facebook)
+# 🔐 Configuração de Autenticação Social - Google e Facebook
 
-## 📋 Índice
-1. [Configuração Google OAuth 2.0](#google-oauth-20)
-2. [Configuração Facebook Login](#facebook-login)
-3. [Implementação no Backend](#backend)
-4. [Implementação no Frontend](#frontend)
-5. [Testes](#testes)
+## 📋 Visão Geral
+
+Este documento fornece instruções detalhadas para configurar a autenticação social via Google OAuth 2.0 e Facebook Login na Plataforma Acadêmica. A implementação permite login simplificado para usuários, melhorando a experiência de acesso à plataforma.
+
+## 🎯 Objetivos
+
+- Configurar provedores de identidade externos
+- Implementar fluxo OAuth2 seguro
+- Integrar autenticação social no backend e frontend
+- Testar funcionalidade completa
 
 ---
 
 ## 🔵 Google OAuth 2.0
 
-### Passo 1: Criar Projeto no Google Cloud Console
+### 1. Criação do Projeto no Google Cloud Console
 
-1. Acesse: https://console.cloud.google.com/
-2. Clique em "Criar Projeto"
-3. Nome do projeto: `Plataforma Academica`
-4. Clique em "Criar"
+1. **Acesse o Console:** Navegue para [Google Cloud Console](https://console.cloud.google.com/)
+2. **Novo Projeto:** Clique em "Criar Projeto"
+3. **Detalhes:**
+   - Nome: `Plataforma Academica`
+   - Organização: (se aplicável)
+4. **Confirmação:** Clique em "Criar" e aguarde a criação
 
-### Passo 2: Ativar Google+ API
+### 2. Ativação da Google+ API
 
-1. No menu lateral, vá em "APIs e Serviços" > "Biblioteca"
-2. Busque por "Google+ API"
-3. Clique em "Ativar"
+1. **Menu Lateral:** APIs e Serviços → Biblioteca
+2. **Busca:** Procure por "Google+ API"
+3. **Ativação:** Clique em "Ativar" para habilitar a API
 
-### Passo 3: Criar Credenciais OAuth 2.0
+### 3. Criação de Credenciais OAuth 2.0
 
-1. Vá em "APIs e Serviços" > "Credenciais"
-2. Clique em "Criar Credenciais" > "ID do cliente OAuth"
-3. Tipo de aplicativo: "Aplicativo da Web"
-4. Nome: `Plataforma Academica Web`
-5. **Origens JavaScript autorizadas:**
+1. **Navegação:** APIs e Serviços → Credenciais
+2. **Nova Credencial:** Criar Credenciais → ID do cliente OAuth
+3. **Configuração:**
+   - Tipo: Aplicativo da Web
+   - Nome: `Plataforma Academica Web`
+4. **Origens Autorizadas:**
    ```
    http://localhost:4200
    http://localhost:8080
    ```
-6. **URIs de redirecionamento autorizados:**
+5. **URIs de Redirecionamento:**
    ```
    http://localhost:4200/auth/google/callback
    http://localhost:8080/api/auth/google/callback
    ```
-7. Clique em "Criar"
-8. **COPIE e SALVE:**
-   - Client ID: `SEU_GOOGLE_CLIENT_ID`
-   - Client Secret: `SEU_GOOGLE_CLIENT_SECRET`
+6. **Finalização:** Clique em "Criar"
+7. **Credenciais:** Salve com segurança:
+   - **Client ID:** `SEU_GOOGLE_CLIENT_ID`
+   - **Client Secret:** `SEU_GOOGLE_CLIENT_SECRET`
 
-### Passo 4: Configurar Tela de Consentimento
+### 4. Configuração da Tela de Consentimento OAuth
 
-1. Vá em "Tela de consentimento OAuth"
+1. **Acesso:** Tela de consentimento OAuth
+2. **Tipo de Usuário:** Externo
+3. **Informações da Aplicação:**
+   - Nome do app: `Plataforma Academica`
+   - E-mail de suporte: [seu-email@dominio.com]
+   - Domínio da página inicial: `http://localhost:4200`
+4. **Escopos:** Adicionar `email` e `profile`
+5. **Salvar:** Confirme as alterações
+
+---
+
+## 🔵 Facebook Login
+
+### 1. Criação da Aplicação no Facebook Developers
+
+1. **Acesso:** [Facebook Developers](https://developers.facebook.com/)
+2. **Novo App:** Meus Apps → Criar App
+3. **Configuração:**
+   - Tipo: Consumidor
+   - Nome: `Plataforma Academica`
+   - E-mail: [seu-email@dominio.com]
+4. **Criação:** Clique em "Criar App"
+
+### 2. Adição do Produto Facebook Login
+
+1. **Painel do App:** Adicionar Produto
+2. **Seleção:** Facebook Login → Configurar
+3. **Plataforma:** Web
+4. **URL do Site:** `http://localhost:4200`
+
+### 3. Configuração do Facebook Login
+
+1. **Navegação:** Facebook Login → Configurações
+2. **URIs de Redirecionamento:**
+   ```
+   http://localhost:4200/auth/facebook/callback
+   http://localhost:8080/api/auth/facebook/callback
+   ```
+3. **Salvar:** Aplicar as alterações
+
+### 4. Obtenção das Credenciais
+
+1. **Configurações:** Básico
+2. **Credenciais:** Salve com segurança:
+   - **App ID:** `SEU_FACEBOOK_APP_ID`
+   - **App Secret:** `SEU_FACEBOOK_APP_SECRET`
+
+### 5. Modo de Desenvolvimento
+
+1. **Status:** Alterar de "Desenvolvimento" para "Ativo"
+2. **Informações:** Preencher dados obrigatórios
+3. **Termos:** Aceitar termos e condições
 2. Tipo de usuário: "Externo"
 3. Preencha:
    - Nome do app: `Plataforma Academica`

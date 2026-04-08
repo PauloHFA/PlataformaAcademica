@@ -1,0 +1,95 @@
+<div class="dashboard-container" *ngIf="!carregando">
+  <div *ngIf="erro" class="alert-danger">{{ erro }}</div>
+
+  <!-- Notificações -->
+  <div *ngFor="let notif of notificacoes" class="notification">{{ notif }}</div>
+
+  <div *ngIf="dashboard">
+    <div class="dashboard-header">
+      <h2><mat-icon>dashboard</mat-icon> Dashboard - {{ dashboard.salaNome }}</h2>
+      <p>Aluno: {{ dashboard.alunoNome }}</p>
+      <button mat-raised-button color="primary" (click)="carregarDashboard()"><mat-icon>refresh</mat-icon> Atualizar</button>
+    </div>
+
+    <!-- Filtros por período -->
+    <div class="filters">
+      <label>Período:</label>
+      <input type="date" [(ngModel)]="dataInicio" (change)="carregarDashboard()">
+      <span>até</span>
+      <input type="date" [(ngModel)]="dataFim" (change)="carregarDashboard()">
+      <button (click)="limparFiltros()" class="btn btn-secondary">Limpar</button>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="card">
+        <mat-icon>assignment</mat-icon>
+        <h3>Atividades</h3>
+        <p>Total: {{ dashboard.totalAtividades }}</p>
+      </div>
+      <div class="card">
+        <mat-icon>send</mat-icon>
+        <h3>Submissões</h3>
+        <p>Total: {{ dashboard.totalSubmissoes }}</p>
+        <p>Corrigidas: {{ dashboard.totalSubmissoesComNota }}</p>
+        <p>Média: {{ dashboard.mediaNota | number:'1.1-2' }}</p>
+      </div>
+      <div class="card">
+        <mat-icon>event_available</mat-icon>
+        <h3>Frequência</h3>
+        <p>Presenças: {{ dashboard.totalPresencas }}</p>
+        <p>Faltas: {{ dashboard.totalFaltas }}</p>
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="dashboard.percentualPresenca"></div>
+        </div>
+        <p>{{ dashboard.percentualPresenca | number:'1.1-2' }}%</p>
+      </div>
+    </div>
+
+    <!-- Gráficos (simplificado) -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3>Notas por Atividade</h3>
+        <ul>
+          <li *ngFor="let sub of dashboard.submissoes">{{ sub.atividadeId }}: {{ sub.nota || 'N/A' }}</li>
+        </ul>
+      </div>
+      <div class="chart-card">
+        <h3>Frequência</h3>
+        <p>Presenças: {{ dashboard.totalPresencas }}</p>
+        <p>Faltas: {{ dashboard.totalFaltas }}</p>
+      </div>
+    </div>
+
+    <!-- Timeline de Frequência -->
+    <h3>Timeline de Frequência</h3>
+    <div class="timeline">
+      <div *ngFor="let freq of frequencias" class="timeline-item" [class.presente]="freq.presente" [class.ausente]="!freq.presente">
+        <div class="date">{{ freq.data | date:'shortDate' }}</div>
+        <div class="status">{{ freq.presente ? 'Presente' : 'Ausente' }}</div>
+        <div *ngIf="freq.justificativa" class="justificativa">{{ freq.justificativa }}</div>
+      </div>
+    </div>
+
+    <h3>Submissões</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Atividade</th>
+          <th>Nota</th>
+          <th>Feedback</th>
+          <th>Data Submissão</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sub of dashboard.submissoes">
+          <td>{{ sub.atividadeId }}</td>
+          <td>{{ sub.nota ?? 'N/A' }}</td>
+          <td>{{ sub.feedback ?? '-' }}</td>
+          <td>{{ sub.dataSubmissao | date:'short' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div *ngIf="carregando" class="loading">Carregando dashboard...</div>

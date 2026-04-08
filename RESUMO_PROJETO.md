@@ -1,103 +1,133 @@
-# 📚 Resumo do Projeto - Plataforma Acadêmica
+# 📚 Resumo Executivo do Projeto - Plataforma Acadêmica Integrada
 
 ## 🎯 Visão Geral
 
-Plataforma digital fullstack para interação acadêmica entre professores e alunos da UNINASSAU.
+A Plataforma Acadêmica Integrada é uma solução fullstack desenvolvida para otimizar a interação acadêmica entre professores e alunos da UNINASSAU. A plataforma oferece um ambiente digital colaborativo, acessível e intuitivo, facilitando a comunicação, o acompanhamento de atividades e a troca de conhecimento.
 
-**Stack:**
-- Backend: Spring Boot (Java 21)
-- Frontend: Angular 19
-- Banco de Dados: PostgreSQL
+**Tecnologias Principais:**
+- **Backend:** Spring Boot (Java 21)
+- **Frontend:** Angular 19
+- **Banco de Dados:** PostgreSQL
 
 ---
 
 ## ✅ Funcionalidades Implementadas
 
-### 🔐 Autenticação e Usuários
-- ✅ Sistema de login e cadastro
-- ✅ Login social (Google e Facebook) - modo demo
-- ✅ Gerenciamento de perfil com foto
-- ✅ Sistema de amizades (enviar, aceitar, recusar)
-- ✅ Lista de usuários
+### 🔐 Autenticação e Gerenciamento de Usuários
+- Sistema completo de login e cadastro de usuários
+- Integração com login social (Google e Facebook) em modo demonstração
+- Gerenciamento de perfis com upload de foto
+- Sistema de amizades com solicitações, aceitação e recusa
+- Listagem e busca de usuários
 
-### 📚 Salas de Aula
-- ✅ Criar, editar e deletar salas
-- ✅ Adicionar membros (busca por nome/email)
-- ✅ Visualizar detalhes da sala
-- ✅ Apenas criador pode deletar sala
-- ✅ Sistema de permissões
+### 📚 Gestão de Salas de Aula
+- Criação, edição e exclusão de salas virtuais
+- Adição de membros via busca por nome ou e-mail
+- Visualização detalhada das informações da sala
+- Controle de permissões: apenas o criador pode excluir a sala
+- Sistema de permissões baseado em papéis
 
-### 📝 Atividades
-- ✅ Criar atividades com prazo e pontos
-- ✅ Listar atividades da sala
-- ✅ Ver detalhes da atividade
-- ✅ Submeter atividades (URL do documento)
-- ✅ Ver submissões enviadas
-- ✅ Sistema de correção (nota e feedback)
+### 📝 Sistema de Atividades Acadêmicas
+- Criação de atividades com prazos e pontuação
+- Listagem organizada de atividades por sala
+- Visualização de detalhes das atividades
+- Submissão de atividades com anexos (documentos)
+- Sistema de correção com atribuição de notas e feedback
 
-### 📰 Feed de Postagens
-- ✅ Criar postagens
-- ✅ Curtir postagens
-- ✅ Deletar próprias postagens
-- ✅ Filtros: Todas / Amigos / Mais Curtidas
-- ✅ Exibir autor e contador de curtidas
+### 📰 Feed de Postagens e Interação
+- Criação e publicação de postagens
+- Sistema de curtidas para engajamento
+- Exclusão de postagens próprias
+- Filtros avançados: Todas, Amigos, Mais Curtidas
+- Exibição de informações do autor e contadores
 
-### 👥 Sistema de Amizades
-- ✅ Enviar solicitação de amizade
-- ✅ Aceitar/recusar solicitações
-- ✅ Remover amizades
-- ✅ Ver postagens de amigos no feed
-- ✅ Buscar usuários para adicionar
+### 👥 Rede Social Acadêmica
+- Envio e gerenciamento de solicitações de amizade
+- Aceitação ou recusa de convites
+- Remoção de conexões existentes
+- Feed personalizado com postagens de amigos
+- Busca inteligente de usuários para networking
 
-### 🎨 Interface e Tema
-- ✅ Tema claro/escuro adaptativo
-- ✅ Paleta de cores roxa profissional
-- ✅ Design responsivo (mobile/desktop)
-- ✅ Sidebar com navegação
-- ✅ Avatares com iniciais
-- ✅ Animações e transições suaves
+### 🎨 Interface e Experiência do Usuário
+- Tema adaptativo (claro/escuro) com alternância automática
+- Paleta de cores profissional em tons roxos
+- Design responsivo otimizado para dispositivos móveis e desktop
+- Navegação intuitiva com sidebar lateral
+- Avatares personalizados com iniciais dos usuários
+- Animações fluidas e transições suaves
 
 ---
 
-## 📁 Estrutura do Projeto
+## 📁 Arquitetura do Sistema
 
 ```
 ProjetoFinal-nassau/
-├── plataforma-academica-spring/     # Backend
+├── plataforma-academica-spring/     # Backend - API REST
 │   ├── src/main/java/
 │   │   └── com.plataforma_academica.plataforma/
-│   │       ├── controller/          # REST Controllers
+│   │       ├── controller/          # Controladores REST
 │   │       ├── service/             # Lógica de negócio
-│   │       ├── repository/          # JPA Repositories
-│   │       ├── model/               # Entidades
-│   │       ├── dto/                 # Data Transfer Objects
-│   │       └── mapper/              # Conversores DTO/Entity
+│   │       ├── repository/          # Repositórios JPA
+│   │       ├── model/               # Entidades do domínio
+│   │       ├── dto/                 # Objetos de Transferência de Dados
+│   │       └── mapper/              # Mapeadores DTO/Entity
 │   └── pom.xml
 │
-├── plataforma-academica-angular/    # Frontend
+├── plataforma-academica-angular/    # Frontend - SPA
 │   ├── src/app/
-│   │   ├── components/              # Componentes Angular
-│   │   ├── services/                # Serviços HTTP
+│   │   ├── components/              # Componentes reutilizáveis
+│   │   ├── services/                # Serviços de integração
 │   │   ├── models/                  # Interfaces TypeScript
 │   │   └── styles.css               # Tema global
 │   └── package.json
 │
 └── Documentação/
-    ├── README.md
-    ├── CONFIGURACAO_LOGIN_SOCIAL.md
-    ├── INSTRUCOES_OAUTH_RAPIDO.md
-    └── SOLUCAO_ERROS.md
+    ├── README.md                    # Documentação principal
+    ├── RESUMO_PROJETO.md            # Resumo executivo
+    ├── CONFIGURACAO_LOGIN_SOCIAL.md # Configuração OAuth
+    ├── INSTRUCOES_OAUTH_RAPIDO.md   # Guia rápido OAuth
+    └── SOLUCAO_ERROS.md             # Troubleshooting
 ```
 
 ---
 
-## 🔧 Tecnologias e Bibliotecas
+## 🔧 Tecnologias e Dependências
 
 ### Backend
-- Spring Boot 3.5.6
-- Spring Data JPA
-- Spring Security (OAuth2)
-- PostgreSQL Driver
+- **Spring Boot** 3.5.6 - Framework principal
+- **Spring Data JPA** - Persistência de dados
+- **Spring Security** - Autenticação e autorização OAuth2
+- **PostgreSQL Driver** - Conectividade com banco de dados
+
+### Frontend
+- **Angular** 19 - Framework SPA
+- **TypeScript** - Linguagem de programação
+- **RxJS** - Programação reativa
+- **Angular Material** - Componentes UI
+- **TailwindCSS** - Estilização utilitária
+
+### Infraestrutura
+- **PostgreSQL** - Sistema de gerenciamento de banco de dados
+- **Maven** - Gerenciamento de dependências e build
+- **NPM** - Gerenciamento de pacotes frontend
+
+---
+
+## 👨‍💻 Equipe de Desenvolvimento
+
+- **Rafael Victor** (Matrícula: 03351641) - Desenvolvedor Backend
+- **Rhian Pablo** (Matrícula: 03347356) - Desenvolvedor Frontend
+- **Paulo Henrique Ferreira de Albuquerque** - Desenvolvedor Fullstack e Documentação
+
+---
+
+## 📈 Status do Projeto
+
+**Versão Atual:** 1.0.0  
+**Status:** Concluído  
+**Última Atualização:** Março 2026
+
+Este projeto foi desenvolvido como trabalho acadêmico para a disciplina de **Arquitetura de Software** na UNINASSAU, demonstrando a aplicação prática de conceitos modernos de desenvolvimento fullstack.
 - Lombok
 - Google API Client
 
@@ -167,6 +197,7 @@ Acesse: http://localhost:4200
 
 - **Rafael Victor** — Mat.: 03351641
 - **Rhian Pablo** — Mat.: 03347356
+- **Paulo Henrique Ferreira de Albuquerque** — Desenvolvedor Fullstack e Documentação
 
 ---
 

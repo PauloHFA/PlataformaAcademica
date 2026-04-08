@@ -17,6 +17,9 @@ public class NotificacaoServiceImpl implements NotificacaoService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @Override
     public void criarNotificacao(Long usuarioId, String mensagem, String tipo, Long referenciaId) {
         Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow();
@@ -26,6 +29,9 @@ public class NotificacaoServiceImpl implements NotificacaoService {
         notificacao.setTipo(tipo);
         notificacao.setReferenciaId(referenciaId);
         notificacaoRepository.save(notificacao);
+
+        // Enviar via WebSocket
+        notificationService.notificarUsuario(usuarioId, mensagem);
     }
 
     @Override

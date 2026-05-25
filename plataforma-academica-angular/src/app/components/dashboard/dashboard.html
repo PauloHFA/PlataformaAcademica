@@ -4,22 +4,63 @@
   <!-- Notificações -->
   <div *ngFor="let notif of notificacoes" class="notification">{{ notif }}</div>
 
+  <div class="dashboard-header">
+    <h2><mat-icon>dashboard</mat-icon> Dashboard - {{ isProfessor ? dashboardSala?.salaNome : dashboard?.salaNome }}</h2>
+    <p *ngIf="!isProfessor">Aluno: {{ dashboard?.alunoNome }}</p>
+    <p *ngIf="isProfessor">Visão da sala por padrão; selecione um aluno para dados individuais.</p>
+    <button mat-raised-button color="primary" (click)="carregarDashboard()"><mat-icon>refresh</mat-icon> Atualizar</button>
+  </div>
+
+  <!-- Filtros por período -->
+  <div class="filters">
+    <label>Período:</label>
+    <input type="date" [(ngModel)]="dataInicio" (change)="carregarDashboard()">
+    <span>até</span>
+    <input type="date" [(ngModel)]="dataFim" (change)="carregarDashboard()">
+    <button (click)="limparFiltros()" class="btn btn-secondary">Limpar</button>
+  </div>
+
+  <div *ngIf="isProfessor && dashboardSala">
+    <div class="dashboard-grid">
+      <div class="card">
+        <mat-icon>assignment</mat-icon>
+        <h3>Atividades da sala</h3>
+        <p>Total: {{ dashboardSala.totalAtividades }}</p>
+      </div>
+      <div class="card">
+        <mat-icon>send</mat-icon>
+        <h3>Submissões da sala</h3>
+        <p>Total: {{ dashboardSala.totalSubmissoes }}</p>
+        <p>Corrigidas: {{ dashboardSala.totalSubmissoesComNota }}</p>
+        <p>Média da sala: {{ dashboardSala.mediaNotaSala | number:'1.1-2' }}</p>
+      </div>
+      <div class="card">
+        <mat-icon>event_available</mat-icon>
+        <h3>Frequência da sala</h3>
+        <p>Presenças: {{ dashboardSala.totalPresencas }}</p>
+        <p>Faltas: {{ dashboardSala.totalFaltas }}</p>
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="dashboardSala.percentualPresenca"></div>
+        </div>
+        <p>{{ dashboardSala.percentualPresenca | number:'1.1-2' }}%</p>
+      </div>
+    </div>
+
+    <div class="student-selection">
+      <label>Selecionar aluno:</label>
+      <select [(ngModel)]="alunoSelecionadoId" (change)="carregarDashboard()">
+        <option [ngValue]="null">-- Ver média da sala --</option>
+        <option *ngFor="let aluno of alunosResumo" [ngValue]="aluno.alunoId">{{ aluno.alunoNome }}</option>
+      </select>
+    </div>
+
+    <div *ngIf="!alunoSelecionadoId" class="info-box">
+      <p>Por padrão, a visão exibe a média da sala.</p>
+      <p>Selecione um aluno para visualizar o desempenho individual.</p>
+    </div>
+  </div>
+
   <div *ngIf="dashboard">
-    <div class="dashboard-header">
-      <h2><mat-icon>dashboard</mat-icon> Dashboard - {{ dashboard.salaNome }}</h2>
-      <p>Aluno: {{ dashboard.alunoNome }}</p>
-      <button mat-raised-button color="primary" (click)="carregarDashboard()"><mat-icon>refresh</mat-icon> Atualizar</button>
-    </div>
-
-    <!-- Filtros por período -->
-    <div class="filters">
-      <label>Período:</label>
-      <input type="date" [(ngModel)]="dataInicio" (change)="carregarDashboard()">
-      <span>até</span>
-      <input type="date" [(ngModel)]="dataFim" (change)="carregarDashboard()">
-      <button (click)="limparFiltros()" class="btn btn-secondary">Limpar</button>
-    </div>
-
     <div class="dashboard-grid">
       <div class="card">
         <mat-icon>assignment</mat-icon>
@@ -45,7 +86,6 @@
       </div>
     </div>
 
-    <!-- Gráficos (simplificado) -->
     <div class="charts-grid">
       <div class="chart-card">
         <h3>Notas por Atividade</h3>
@@ -60,7 +100,6 @@
       </div>
     </div>
 
-    <!-- Timeline de Frequência -->
     <h3>Timeline de Frequência</h3>
     <div class="timeline">
       <div *ngFor="let freq of frequencias" class="timeline-item" [class.presente]="freq.presente" [class.ausente]="!freq.presente">

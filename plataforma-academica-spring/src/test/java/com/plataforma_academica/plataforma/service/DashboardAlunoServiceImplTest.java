@@ -1,6 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
 import com.plataforma_academica.plataforma.dto.DashboardAlunoDTO;
+import com.plataforma_academica.plataforma.dto.DashboardSalaDTO;
 import com.plataforma_academica.plataforma.dto.SubmissaoAtividadeResponseDTO;
 import com.plataforma_academica.plataforma.mapper.SubmissaoAtividadeMapper;
 import com.plataforma_academica.plataforma.model.*;
@@ -118,5 +119,39 @@ class DashboardAlunoServiceImplTest {
 
         // Act & Assert
         assertThrows(RuntimeException.class, () -> dashboardAlunoService.obterDashboardAluno(1L, 1L, null, null));
+    }
+
+    @Test
+    void obterDashboardSala_DeveRetornarResumoSalaCorreto() {
+        // Arrange
+        sala.setUsuarios(Arrays.asList(aluno));
+
+        when(saladeAulaRepository.findById(1L)).thenReturn(Optional.of(sala));
+        when(atividadeRepository.findBySalaDeAulaId(1L)).thenReturn(Arrays.asList(atividade));
+        when(submissaoAtividadeService.listarSubmissoesPorAlunoESala(1L, 1L)).thenReturn(Arrays.asList(submissao));
+        when(frequenciaService.buscarFrequencias(1L, 1L)).thenReturn(Arrays.asList(frequencia));
+
+        // Act
+        DashboardSalaDTO result = dashboardAlunoService.obterDashboardSala(1L, null, null);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1L, result.getSalaId());
+        assertEquals("Sala de POO", result.getSalaNome());
+        assertEquals(1, result.getTotalAtividades());
+        assertEquals(1, result.getTotalSubmissoes());
+        assertEquals(1, result.getTotalSubmissoesComNota());
+        assertEquals(8.5, result.getMediaNotaSala());
+        assertEquals(1, result.getTotalPresencas());
+        assertEquals(0, result.getTotalFaltas());
+        assertEquals(100.0, result.getPercentualPresenca());
+        assertNotNull(result.getAlunos());
+        assertEquals(1, result.getAlunos().size());
+        assertEquals(1L, result.getAlunos().get(0).getAlunoId());
+        assertEquals("João Silva", result.getAlunos().get(0).getAlunoNome());
+        assertEquals(1, result.getAlunos().get(0).getTotalSubmissoes());
+        assertEquals(1, result.getAlunos().get(0).getTotalSubmissoesComNota());
+        assertEquals(8.5, result.getAlunos().get(0).getMediaNota());
+        assertEquals(100.0, result.getAlunos().get(0).getPercentualPresenca());
     }
 }

@@ -1,9 +1,12 @@
 package com.plataforma_academica.plataforma.service;
 
+import com.plataforma_academica.plataforma.dto.AlunoDashboardResumoDTO;
 import com.plataforma_academica.plataforma.dto.DashboardAlunoDTO;
+import com.plataforma_academica.plataforma.dto.DashboardSalaDTO;
 import com.plataforma_academica.plataforma.dto.SubmissaoAtividadeResponseDTO;
 import com.plataforma_academica.plataforma.mapper.SubmissaoAtividadeMapper;
 import com.plataforma_academica.plataforma.model.SaladeAula;
+import com.plataforma_academica.plataforma.model.SubmissaoAtividade;
 import com.plataforma_academica.plataforma.model.Usuario;
 import com.plataforma_academica.plataforma.repository.AtividadeRepository;
 import com.plataforma_academica.plataforma.repository.SaladeAulaRepository;
@@ -12,6 +15,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -96,5 +101,87 @@ public class DashboardAlunoServiceImpl implements DashboardAlunoService {
         dto.setSubmissoes(submissoesDTO);
 
         return dto;
+    }
+
+    @Override
+    public DashboardSalaDTO obterDashboardSala(Long salaId, LocalDate inicio, LocalDate fim) {
+        SaladeAula sala = saladeAulaRepository.findById(salaId)
+                .orElseThrow(() -> new EntityNotFoundException("Sala não encontrada."));
+
+        List<com.plataforma_academica.plataforma.model.Atividade> atividades = atividadeRepository.findBySalaDeAulaId(salaId);
+        List<Usuario> alunos = sala.getUsuarios() != null ? sala.getUsuarios() : Collections.emptyList();
+
+        int totalSubmissoesSala = 0;
+        int totalSubmissoesComNotaSala = 0;
+        double somaNotasSala = 0.0;
+        int quantidadeNotasSala = 0;
+        int totalPresencasSala = 0;
+        int totalFaltasSala = 0;
+
+        List<AlunoDashboardResumoDTO> alunosResumo = new ArrayList<>();
+
+        for (Usuario aluno : alunos) {
+            if (aluno == null || aluno.getId() == null) {
+                continue;
+            }
+
+            List<SubmissaoAtividade> submissoesAluno = submissaoAtividadeService.listarSubmissoesPorAlunoESala(aluno.getId(), salaId);
+            List<com.plataforma_academica.plataforma.model.Frequencia> frequenciasAluno;
+            if (inicio != null && fim != null) {
+                frequenciasAluno = frequenciaService.buscarFrequencias(aluno.getId(), salaId, inicio, fim);
+            } else {
+                frequenciasAluno = frequenciaService.buscarFrequencias(aluno.getId(), salaId);
+            }
+
+            long totalSubmissoesAluno = submissoesAluno.size();
+            long totalSubmissoesComNotaAluno = submissoesAluno.stream()
+                    .filter(s -> s.getNota() != null)
+                    .count();
+            double mediaNotaAluno = submissoesAluno.stream()
+                    .filter(s -> s.getNota() != null)
+                    .mapToDouble(SubmissaoAtividade::getNota)
+                    .average()
+                    .orElse(0.0);
+
+            int presencasAluno = (int) frequenciasAluno.stream().filter(com.plataforma_academica.plataforma.model.Frequencia::getPresente).count();
+            int faltasAluno = (int) frequenciasAluno.stream().filter(f -> !f.getPresente()).count();
+            double percentualPresencaAluno = !frequenciasAluno.isEmpty() ? (presencasAluno * 100.0) / frequenciasAluno.size() : 0.0;
+
+            totalSubmissoesSala += totalSubmissoesAluno;
+            totalSubmissoesComNotaSala += totalSubmissoesComNotaAluno;
+            somaNotasSala += submissoesAluno.stream()
+                    .filter(s -> s.getNota() != null)
+                    .mapToDouble(SubmissaoAtividade::getNota)
+                    .sum();
+            quantidadeNotasSala += (int) totalSubmissoesComNotaAluno;
+            totalPresencasSala += presencasAluno;
+            totalFaltasSala += faltasAluno;
+
+            AlunoDashboardResumoDTO alunoResumo = new AlunoDashboardResumoDTO();
+            alunoResumo.setAlunoId(aluno.getId());
+            alunoResumo.setAlunoNome(aluno.getNome());
+            alunoResumo.setTotalSubmissoes((int) totalSubmissoesAluno);
+            alunoResumo.setTotalSubmissoesComNota((int) totalSubmissoesComNotaAluno);
+            alunoResumo.setMediaNota(mediaNotaAluno);
+            alunoResumo.setPercentualPresenca(percentualPresencaAluno);
+            alunosResumo.add(alunoResumo);
+        }
+
+        double mediaNotaSala = quantidadeNotasSala > 0 ? somaNotasSala / quantidadeNotasSala : 0.0;
+        double percentualPresencaSala = (totalPresencasSala + totalFaltasSala) > 0 ? (totalPresencasSala * 100.0) / (totalPresencasSala + totalFaltasSala) : 0.0;
+
+        DashboardSalaDTO salaDTO = new DashboardSalaDTO();
+        salaDTO.setSalaId(sala.getId());
+        salaDTO.setSalaNome(sala.getNome());
+        salaDTO.setTotalAtividades(atividades.size());
+        salaDTO.setTotalSubmissoes(totalSubmissoesSala);
+        salaDTO.setTotalSubmissoesComNota(totalSubmissoesComNotaSala);
+        salaDTO.setMediaNotaSala(mediaNotaSala);
+        salaDTO.setTotalPresencas(totalPresencasSala);
+        salaDTO.setTotalFaltas(totalFaltasSala);
+        salaDTO.setPercentualPresenca(percentualPresencaSala);
+        salaDTO.setAlunos(alunosResumo);
+
+        return salaDTO;
     }
 }

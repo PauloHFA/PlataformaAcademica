@@ -35,4 +35,19 @@ public class DashboardController {
             return ResponseEntity.badRequest().body("Formato de data inválido. Use yyyy-MM-dd.");
         }
     }
+
+    @GetMapping("/sala/{salaId}")
+    public ResponseEntity<?> getDashboardSala(
+            @PathVariable Long salaId,
+            @RequestParam(required = false) String inicio,
+            @RequestParam(required = false) String fim) {
+        try {
+            LocalDate dataInicio = inicio != null ? LocalDate.parse(inicio) : null;
+            LocalDate dataFim = fim != null ? LocalDate.parse(fim) : null;
+
+            return ResponseEntity.ok(dashboardAlunoService.obterDashboardSala(salaId, dataInicio, dataFim));
+        } catch (DateTimeParseException ex) {
+            return ResponseEntity.badRequest().body("Formato de data inválido. Use yyyy-MM-dd.");
+        }
+    }
 }

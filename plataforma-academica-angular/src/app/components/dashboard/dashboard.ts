@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute } from '@angular/router';
 import { DashboardService } from '../../services/dashboard.service';
 import { DashboardAluno } from '../../models/dashboard-aluno.model';
+import { DashboardSala, AlunoDashboardResumo } from '../../models/dashboard-sala.model';
 import { Frequencia } from '../../models/frequencia.model';
 import { SalaContextService } from '../../services/sala-context.service';
 import { NotificationService } from '../../services/notification.service';
@@ -20,10 +21,14 @@ import { Subscription } from 'rxjs';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   dashboard: DashboardAluno | null = null;
+  dashboardSala: DashboardSala | null = null;
+  alunosResumo: AlunoDashboardResumo[] = [];
+  alunoSelecionadoId: number | null = null;
   frequencias: Frequencia[] = [];
   erro: string = '';
   carregando = true;
   salaId = 0;
+  isProfessor = false;
   dataInicio: string = '';
   dataFim: string = '';
 
@@ -51,6 +56,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.isProfessor = localStorage.getItem('isProfessor') === 'true';
+
     this.route.paramMap.subscribe(params => {
       this.salaId = Number(params.get('id'));
       this.carregarDashboard();
@@ -78,6 +85,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
   carregarDashboard(): void {
     this.carregando = true;
     this.erro = '';
+    const inicio = this.dataInicio ? this.dataInicio : undefined;
+    const fim = this.dataFim ? this.dataFim : undefined;
+
+    if (this.isProfessor) {
+      this.dashboard = null;
+      this.frequencias = [];
+      this.carregarDashboardSala(inicio, fim);
+      if (this.alunoSelecionadoId) {
+        this.carregarDashboardAluno(this.alunoSelecionadoId, inicio, fim);
+      } else {
+        this.carregando = false;
+      }
+      return;
+    }
+
     const alunoId = Number(localStorage.getItem('usuarioId') || '0');
     if (!alunoId || !this.salaId) {
       this.erro = 'Aluno ou sala inválidos.';
@@ -85,14 +107,42 @@ export class DashboardComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const inicio = this.dataInicio ? this.dataInicio : undefined;
-    const fim = this.dataFim ? this.dataFim : undefined;
+    this.carregarDashboardAluno(alunoId, inicio, fim);
+  }
 
+  carregarDashboardSala(inicio?: string, fim?: string): void {
+    if (!this.salaId) {
+      this.erro = 'Sala inválida.';
+      this.carregando = false;
+      return;
+    }
+
+    this.dashboardService.getDashboardSala(this.salaId, inicio, fim).subscribe({
+      next: (data) => {
+        this.dashboardSala = data;
+        this.alunosResumo = data.alunos || [];
+        this.carregando = false;
+      },
+      error: (err) => {
+        this.erro = err.error?.message || err.message || 'Erro ao carregar dados da sala';
+        this.carregando = false;
+      }
+    });
+  }
+
+  carregarDashboardAluno(alunoId: number, inicio?: string, fim?: string): void {
+    if (!alunoId || !this.salaId) {
+      this.erro = 'Aluno ou sala inválidos.';
+      this.carregando = false;
+      return;
+    }
+
+    this.carregando = true;
     this.dashboardService.getDashboardAluno(alunoId, this.salaId, inicio, fim).subscribe({
       next: (data) => {
         this.dashboard = data;
         this.carregando = false;
-        this.carregarFrequencias();
+        this.carregarFrequencias(alunoId, inicio, fim);
       },
       error: (err) => {
         this.erro = err.error?.message || err.message || 'Erro ao carregar dashboard';
@@ -101,11 +151,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  carregarFrequencias(): void {
-    const alunoId = Number(localStorage.getItem('usuarioId') || '0');
-    const inicio = this.dataInicio ? this.dataInicio : undefined;
-    const fim = this.dataFim ? this.dataFim : undefined;
-
+  carregarFrequencias(alunoId: number, inicio?: string, fim?: string): void {
     this.dashboardService.getFrequencias(alunoId, this.salaId, inicio, fim).subscribe({
       next: (freqs) => {
         this.frequencias = freqs;

@@ -1,0 +1,99 @@
+{
+  "version": "1.0.0",
+  "producer": "Java AppCAT CLI",
+  "metadata": {
+    "analysisStartTime": "2026-03-26T14:03:24.624Z",
+    "analysisEndTime": "1970-01-01T00:00:00.000Z",
+    "privacyMode": "Protected",
+    "privacyModeHelpUrl": "https://aka.ms/appmod-privacy-mode",
+    "targetIds": [
+      "azure-appservice",
+      "azure-aks",
+      "azure-container-apps"
+    ],
+    "targetDisplayNames": [
+      "Azure App Service",
+      "Azure Kubernetes Service",
+      "Azure Container Apps"
+    ],
+    "capabilities": [
+      "openjdk21"
+    ],
+    "os": [
+      "linux",
+      "windows"
+    ],
+    "id": "1774533804620",
+    "name": "Report_202603261003",
+    "status": "running",
+    "domains": [
+      "java-upgrade",
+      "cloud-readiness",
+      "security"
+    ],
+    "mode": "issue-only"
+  },
+  "summary": {},
+  "projects": [],
+  "rules": {},
+  "security": [
+    {
+      "id": "CWE-259",
+      "title": "Use of Hard-coded Password",
+      "category": "Credentials & Secrets",
+      "severity": "optional",
+      "description": "The product contains a hard-coded password, which it uses for its own inbound authentication or for outbound communication to external components.",
+      "evidence": {
+        "files": [
+          "plataforma-academica-spring/src/main/resources/application.properties"
+        ],
+        "explanation": "Hard-coded database password in configuration file"
+      },
+      "storyPoint": "5"
+    },
+    {
+      "id": "CWE-732",
+      "title": "Incorrect Permission Assignment for Critical Resource",
+      "category": "Credentials & Secrets",
+      "severity": "optional",
+      "description": "The product specifies permissions for a security-critical resource in a way that allows that resource to be read or modified by unintended actors.",
+      "evidence": {
+        "files": [
+          "plataforma-academica-spring/src/main/resources/application.properties"
+        ],
+        "explanation": "Configuration file with hard-coded credentials may have incorrect permissions"
+      },
+      "storyPoint": "5"
+    },
+    {
+      "id": "CWE-798",
+      "title": "Use of Hard-coded Credentials",
+      "category": "Credentials & Secrets",
+      "severity": "optional",
+      "description": "The product contains hard-coded credentials, such as a password or cryptographic key.",
+      "evidence": {
+        "files": [
+          "plataforma-academica-spring/src/main/resources/application.properties"
+        ],
+        "explanation": "Hard-coded database credentials in configuration file"
+      },
+      "storyPoint": "5"
+    },
+    {
+      "id": "CWE-434",
+      "title": "Unrestricted Upload of File with Dangerous Type",
+      "category": "File & Path Security",
+      "severity": "mandatory",
+      "description": "The product allows the upload or transfer of dangerous file types that are automatically processed within its environment.",
+      "evidence": {
+        "files": [
+          "plataforma-academica-spring/src/main/java/com/plataforma_academica/plataforma/service/PostagemServiceImpl.java",
+          "plataforma-academica-spring/src/main/java/com/plataforma_academica/plataforma/service/SaladeAulaServiceImpl.java",
+          "plataforma-academica-spring/src/main/java/com/plataforma_academica/plataforma/service/SubmissaoAtividadeServiceImpl.java"
+        ],
+        "explanation": "File upload without type validation in storeFile method"
+      },
+      "storyPoint": "8"
+    }
+  ]
+}

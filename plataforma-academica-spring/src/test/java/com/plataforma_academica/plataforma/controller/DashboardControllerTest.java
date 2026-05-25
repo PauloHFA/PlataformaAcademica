@@ -1,6 +1,7 @@
 package com.plataforma_academica.plataforma.controller;
 
 import com.plataforma_academica.plataforma.dto.DashboardAlunoDTO;
+import com.plataforma_academica.plataforma.dto.DashboardSalaDTO;
 import com.plataforma_academica.plataforma.service.DashboardAlunoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -64,9 +65,36 @@ class DashboardControllerTest {
     }
 
     @Test
+    void getDashboardSala_DeveRetornarDashboardSala() {
+        // Arrange
+        DashboardSalaDTO salaDTO = new DashboardSalaDTO();
+        salaDTO.setSalaId(1L);
+        salaDTO.setSalaNome("Sala de POO");
+        when(dashboardAlunoService.obterDashboardSala(1L, null, null)).thenReturn(salaDTO);
+
+        // Act
+        ResponseEntity<?> response = dashboardController.getDashboardSala(1L, null, null);
+
+        // Assert
+        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(salaDTO, response.getBody());
+        verify(dashboardAlunoService, times(1)).obterDashboardSala(1L, null, null);
+    }
+
+    @Test
     void getDashboardAluno_FormatoDataInvalido_DeveRetornarBadRequest() {
         // Act
         ResponseEntity<?> response = dashboardController.getDashboardAluno(1L, 1L, "invalid-date", "2023-12-31");
+
+        // Assert
+        assertEquals(400, response.getStatusCodeValue());
+        assertTrue(response.getBody().toString().contains("Formato de data inválido"));
+    }
+
+    @Test
+    void getDashboardSala_FormatoDataInvalido_DeveRetornarBadRequest() {
+        // Act
+        ResponseEntity<?> response = dashboardController.getDashboardSala(1L, "invalid-date", "2023-12-31");
 
         // Assert
         assertEquals(400, response.getStatusCodeValue());

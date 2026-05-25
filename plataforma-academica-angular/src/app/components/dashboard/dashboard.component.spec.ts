@@ -1,3 +1,5 @@
+/// <reference types="jasmine" />
+
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
@@ -13,7 +15,7 @@ describe('DashboardComponent', () => {
   let notificationServiceSpy: jasmine.SpyObj<NotificationService>;
 
   beforeEach(async () => {
-    const dashboardSpy = jasmine.createSpyObj('DashboardService', ['getDashboardAluno', 'getFrequencias']);
+    const dashboardSpy = jasmine.createSpyObj('DashboardService', ['getDashboardAluno', 'getDashboardSala', 'getFrequencias']);
     const notificationSpy = jasmine.createSpyObj('NotificationService', ['getNotificacoesUsuario']);
 
     await TestBed.configureTestingModule({
@@ -66,6 +68,114 @@ describe('DashboardComponent', () => {
     await fixture.whenStable();
 
     expect(component.dashboard).toEqual(mockDashboard);
+  });
+
+  it('should load room dashboard by default for professor', async () => {
+    const mockSalaDashboard = {
+      salaId: 1,
+      salaNome: 'Sala de POO',
+      totalAtividades: 1,
+      totalSubmissoes: 1,
+      totalSubmissoesComNota: 1,
+      mediaNotaSala: 8.5,
+      totalPresencas: 1,
+      totalFaltas: 0,
+      percentualPresenca: 100.0,
+      alunos: [
+        {
+          alunoId: 1,
+          alunoNome: 'João Silva',
+          totalSubmissoes: 1,
+          totalSubmissoesComNota: 1,
+          mediaNota: 8.5,
+          percentualPresenca: 100.0
+        }
+      ]
+    };
+
+    dashboardServiceSpy.getDashboardSala.and.returnValue(of(mockSalaDashboard));
+    dashboardServiceSpy.getFrequencias.and.returnValue(of([]));
+    notificationServiceSpy.getNotificacoesUsuario.and.returnValue(of(''));
+    spyOn(localStorage, 'getItem').and.callFake((key: string) => {
+      if (key === 'isProfessor') {
+        return 'true';
+      }
+      if (key === 'usuarioId') {
+        return '1';
+      }
+      return null;
+    });
+
+    component.ngOnInit();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(dashboardServiceSpy.getDashboardSala).toHaveBeenCalledWith(1, undefined, undefined);
+    expect(component.dashboardSala).toEqual(mockSalaDashboard);
+    expect(component.carregando).toBeFalse();
+  });
+
+  it('should load selected student dashboard for professor when alunoSelecionadoId is set', async () => {
+    const mockSalaDashboard = {
+      salaId: 1,
+      salaNome: 'Sala de POO',
+      totalAtividades: 1,
+      totalSubmissoes: 1,
+      totalSubmissoesComNota: 1,
+      mediaNotaSala: 8.5,
+      totalPresencas: 1,
+      totalFaltas: 0,
+      percentualPresenca: 100.0,
+      alunos: [
+        {
+          alunoId: 1,
+          alunoNome: 'João Silva',
+          totalSubmissoes: 1,
+          totalSubmissoesComNota: 1,
+          mediaNota: 8.5,
+          percentualPresenca: 100.0
+        }
+      ]
+    };
+
+    const mockAlunoDashboard = {
+      alunoId: 1,
+      salaId: 1,
+      alunoNome: 'João Silva',
+      salaNome: 'Sala de POO',
+      totalAtividades: 1,
+      totalSubmissoes: 1,
+      totalSubmissoesComNota: 1,
+      mediaNota: 8.5,
+      totalPresencas: 1,
+      totalFaltas: 0,
+      percentualPresenca: 100,
+      submissoes: []
+    };
+
+    dashboardServiceSpy.getDashboardSala.and.returnValue(of(mockSalaDashboard));
+    dashboardServiceSpy.getDashboardAluno.and.returnValue(of(mockAlunoDashboard));
+    dashboardServiceSpy.getFrequencias.and.returnValue(of([]));
+    notificationServiceSpy.getNotificacoesUsuario.and.returnValue(of(''));
+    spyOn(localStorage, 'getItem').and.callFake((key: string) => {
+      if (key === 'isProfessor') {
+        return 'true';
+      }
+      if (key === 'usuarioId') {
+        return '1';
+      }
+      return null;
+    });
+
+    component.alunoSelecionadoId = 1;
+    component.ngOnInit();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(dashboardServiceSpy.getDashboardSala).toHaveBeenCalledWith(1, undefined, undefined);
+    expect(dashboardServiceSpy.getDashboardAluno).toHaveBeenCalledWith(1, 1, undefined, undefined);
+    expect(component.dashboard).toEqual(mockAlunoDashboard);
+    expect(component.dashboardSala).toEqual(mockSalaDashboard);
   });
 
   it('should subscribe to notifications', () => {

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DashboardAluno } from '../models/dashboard-aluno.model';
+import { DashboardSala } from '../models/dashboard-sala.model';
 import { Frequencia, FrequenciaRequest } from '../models/frequencia.model';
 
 @Injectable({
@@ -17,6 +18,13 @@ export class DashboardService {
     if (inicio) params = params.set('inicio', inicio);
     if (fim) params = params.set('fim', fim);
     return this.http.get<DashboardAluno>(`${this.apiUrl}/dashboard/aluno/${alunoId}`, { params });
+  }
+
+  getDashboardSala(salaId: number, inicio?: string, fim?: string): Observable<DashboardSala> {
+    let params = new HttpParams();
+    if (inicio) params = params.set('inicio', inicio);
+    if (fim) params = params.set('fim', fim);
+    return this.http.get<DashboardSala>(`${this.apiUrl}/dashboard/sala/${salaId}`, { params });
   }
 
   registrarFrequencia(payload: FrequenciaRequest): Observable<Frequencia> {

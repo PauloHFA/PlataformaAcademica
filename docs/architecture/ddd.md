@@ -1,165 +1,166 @@
-# 🏗️ Documentação de Domínio (DDD) - Plataforma Acadêmica
+# 🏗️ Documentação de Arquitetura e Design Estratégico Domain-Driven Design (DDD) - Plataforma Acadêmica
 
-Este documento descreve a visão de **Domain-Driven Design (DDD)** aplicada à plataforma, identificando os domínunios, subdomínios e as regras de negócio que compõem o sistema.
-
-## 🎯 Visão Geral do Domínio
-O domínio principal da aplicação é o **Ecossistema Acadêmico**. O objetivo central é facilitar a interação entre alunos e professores através de ferramentas colaborativas e gestão de conteúdo educacional.
+Este documento estabelece a especificação arquitetural de alto nível baseada em **Domain-Driven Design (DDD)** para a Plataforma Acadêmica Integrada. Ele define a divisão estratégica de domínios, a delimitação de contextos (**Bounded Contexts**), o **Context Map** (Mapa de Contextos), os padrões de integração e a linguagem ubíqua global da aplicação.
 
 ---
 
-## 🗺️ Mapeamento de Subdomínios
+## 🎯 Visão Estratégica do Domínio
 
-Para organizar a complexidade, dividimos o sistema em três subdomínios principais:
+O domínio de negócio da aplicação é o **Ecossistema de Aprendizagem e Engajamento Acadêmico Colaborativo**. O propósito fundamental do sistema é maximizar o desempenho acadêmico, a gestão pedagógica e a retenção do aluno por meio da integração harmônica entre gestão de salas de aula virtuais, avaliação contínua e redes sociais acadêmicas.
 
-### 1. Core Domain (Domínio Principal)
-*Foco no valor central do negócio.*
+---
 
-#### **A. Gestão Acadêmica**
-Este é o coração da plataforma. Ele lida com a estrutura de ensino e as atividades práticas.
-- **Regras de Negócio:**
-    - Criação, edição e exclusão de salas virtuais.
-    - Controle de acesso baseado em papéis (ex: apenas criadores podem excluir salas).
-    - Gestão de atividades acadêmicas com prazos específicos e sistemas de pontuação.
-    - Processamento de submissões de arquivos por parte dos alunos.
-    - Sistema de correção e feedback pelos professores.
+## 🗺️ Taxonomia e Mapeamento de Subdomínios
 
-#### **B. Engajamento Social**
-Focado na interação dinâmica entre os usuários fora do contexto estrito de "entrega de tarefas".
-- **Regras de Negócio:**
-    - Publicação de postagens no feed.
-    - Sistema de curtidas para engajamento.
-    - Filtros de visualização (Amint, Mais Curtidos).
+Para gerenciar a complexidade do software e focar os recursos de engenharia onde existe o maior diferencial competitivo, o domínio é dividido em três categorias estratégicas de subdomínios:
+
+```mermaid
+graph TD
+    Subdominios[Subdomínios do Sistema] --> Core[Core Domains / Domínios Principais]
+    Subdominios --> Supporting[Supporting Subdomains / Subdomínios de Suporte]
+    Subdominios --> Generic[Generic Subdomains / Subdomínios Genéricos]
+
+    Core --> GestaoAcademica[Gestão Acadêmica & Avaliativa]
+    Core --> EngajamentoSocial[Rede Social & Engajamento]
+
+    Supporting --> IdentidadePerfil[Identidade, Autenticação & Perfil]
+
+    Generic --> Notificacoes[Notificações & Mensageria]
+    Generic --> Armazenamento[Armazenamento de Arquivos / Mídia]
+```
+
+### 1. Core Domains (Domínios Principais)
+*Representam a proposta de valor única do produto. Recebem a maior atenção técnica e refinamento de modelagem rica.*
+
+* **A. Gestão Acadêmica e Avaliativa (`Academic Context`)**
+  * **Foco:** Ciclo de vida completo das disciplinas virtuais, gestão de turmas, criação de tarefas com pontuação, controle rigoroso de prazos e fluxo de submissão/avaliação docente com feedback.
+  * **Justificativa Estratégica:** É o motivo primário pelo qual professores e alunos utilizam a plataforma no dia a dia acadêmico.
+
+* **B. Rede Social e Engajamento Colaborativo (`Social Context`)**
+  * **Foco:** Feed dinâmico de conhecimento, compartilhamento de artigos, discussões, sistema de interações (curtidas/reações) e algoritmo de relevância de conteúdo acadêmico.
+  * **Justificativa Estratégica:** Aumenta o engajamento e o tempo de permanência, transformando uma ferramenta administrativa passiva em uma comunidade viva.
 
 ### 2. Supporting Subdomains (Subdomínios de Suporte)
-*Funcionalidades que apoiam o core domain, mas não são o objetivo principal.*
+*Específicos do negócio e essenciais para a operação do Core Domain, mas que não constituem vantagem competitiva por si sós.*
 
-#### **C. Identidade e Perfil**
-Gerencia quem é o usuário e como ele se apresenta no sistema.
-- **Regras de Negócio:**
-    - Autenticação via login padrão ou redes sociais (Google/Facebook).
-    - Gestão de perfis (foto, biografia).
-    - Sistema de amizades (solicitação, aceitação e remoção).
-    - Busca de usuários para networking.
+* **C. Gestão de Identidade, Autenticação e Relações (`Identity Context`)**
+  * **Foco:** Cadastro de usuários, autenticação OAuth2/JWT, perfis, controle de papéis/permissões (`ROLE_ALUNO`, `ROLE_PROFESSOR`, `ROLE_ADMIN`) e o grafo de conexões/amizades entre membros da instituição.
 
 ### 3. Generic Subdomains (Subdomínios Genéricos)
-*Funcionalidades comuns que poderiam ser fornecidas por ferramentas externas.*
+*Funcionalidades sem especificidade de regra de negócio pedagógica. Podem ser resolvidos por bibliotecas de mercado, serviços SaaS ou abstrações reutilizáveis.*
 
-#### **D. Notificações**
-Sistema de alertas sobre interações, novas mensagens ou atualamentos de status.
-
----
-
-## 🏗️ Contextos Delimitados (Bounded Contexts)
-
-Para a implementação técnica no Spring Boot, os módulos serão organizados nos seguintes contextos:
-
-1.  **Contexto de Identidade (`identity`):** Abrange usuários, perfis e amizades.
-2.  **Contexto Acadêmico (`academic`):** Abrange salas, atividades e submissões.
-3.  **Contexto Social (`social`):** Abrange postagens e interações do feed.
+* **D. Notificações e Mensageria (`Notification Subdomain`)**
+  * **Foco:** Entrega de alertas (e-mail, push, in-app) acionada por eventos de domínio.
+* **E. Armazenamento e Distribuição de Arquivos (`Storage Subdomain`)**
+  * **Foco:** Upload e download seguro de artefatos acadêmicos (PDFs, documentos, imagens de perfil).
 
 ---
 
-## 📝 Glossário de Termos (Linguagem Ubíqua)
-*Termos que devem ser usados consistentemente no código para refletir o negócio:*
+## 🏗️ Bounded Contexts (Contextos Delimitados)
 
-- **Sala:** Espaço virtual onde as atividades são agrupadas.
-- **Atividade:** Tarefa específica com prazo e valor em pontos.
-- **Submissão:** O ato do aluno entregar um trabalho (arquivo ou texto) para uma atividade.
-- **Feedback:** Comuntoário e nota atribuídos pelo professor a uma submissão.
-- **Seguidor/Amigo:** Usuários que possuem conexão direta no sistema de rede social.
+Cada Bounded Context possui seu próprio modelo conceitual, sua linguagem ubíqua e suas fronteiras explícitas de persistência e código no Spring Boot.
 
-# 🔐 Contexto de Identidade (Identity Context)
-
-Este documento detalha as regras de negócio, entidades e objetos de valor que compõem o **Contexto de Identidade**, responsável por gerenciar quem são os usuários e como eles se relacionam na plataforma.
-
-## 🎯 Objetivo do Contexto
-Gerenciar a identidade digital dos usuários, seus perfis sociais, autenticação e o estabelecimento de conexões (amizades).
+| Contexto Delimitado | Tipo de Subdomínio | Responsabilidade Primária | Agregados Principais |
+| :--- | :--- | :--- | :--- |
+| **`Identity Context`** | Suporte | Gestão de credenciais, autenticação, perfis públicos e grafo de amizades. | `Usuario`, `ConexaoAmizade` |
+| **`Academic Context`** | Core Domain | Turmas virtuais, ciclo de atividades, entregas dos alunos e notas/feedback. | `SalaDeAula`, `Atividade`, `SubmissaoAtividade` |
+| **`Social Context`** | Core Domain | Publicações no feed, comentários, compartilhamentos e reações de engajamento. | `Postagem`, `InteracaoEngajamento` |
 
 ---
 
-## 🗺️ Entidades e Objetos de Valor
+## 🗺️ Context Map (Mapa de Contextos e Padrões de Integração)
 
-### 1. Usuário
-*O principal objeto de valor no contexto de identidade.*
-- **Atributos:**
-    - `id`: Identificador único.
-    - `nome`: Nome completo.
-    - `email`: Endereço de e-mail.
-    - `senha`: Senha (criptografada).
-    - `dataNascimento`: Data de nascimento.
-    - `perfil`: Perfil do usuário (foto, biografia).
-    - `papéis`: Papéis no sistema (ex: aluno, professor, admin).
-- **Regras de Negócio:**
-    - Um usuário só pode ter um e-mail único.
-    - A senha deve ser forte (mínimo 8 caracteres, com letras maiúsculas, minúsculas e números).
-    - O perfil é opcional, mas recomendado.
-    - Os papéis são definidos pelo sistema e podem ser modificados.
+O Context Map detalha como os Bounded Contexts interagem, identificando a direção de dependência (Upstream/Downstream) e os padrões formais de integração DDD (ACL, OHS/PL, Customer-Supplier):
 
-### 2. Perfil
-*Representa a apresentação do usuário no sistema.*
-- **Atributos:**
-    - `foto`: Foto do usuário.
-    - `biografia`: Biografia do usuário.
-    - `localização`: Localização do usuário.
-    - `links`: Links para redes sociais.
-- **Regras de Negócio:**
-    - A foto deve ser um arquivo válido (JPEG, PNG, GIF).
-    - A biografia pode ser um texto longo.
-    - A localização é opcional.
-    - Os links são para redes sociais.
+```mermaid
+graph LR
+    subgraph Identity Context [Identity Context - Upstream]
+        IdentityService[Usuario / Perfil / Amizades]
+    end
 
-### 3. Amizade
-*Conexão entre dois usuários.*
-- **Atributos:**
-    - `usuario1`: Primeiro usuário.
-    - `usuario2`: Segundo usuário.
-    - `status`: Status da amizade (ex: aceito, pendente).
-- **Regras de Negócio:**
-    - A amizade só pode existir entre dois usuários.
-    - O status é definido pelo sistema.
-    - A solicitação é feita por um usuário e aceita por outro.
+    subgraph Academic Context [Academic Context - Core]
+        AcademicService[Salas / Atividades / Submissões]
+    end
 
----
+    subgraph Social Context [Social Context - Core]
+        SocialService[Postagens / Feed / Curtidas]
+    end
 
-## 📝 Regras de Negócio
+    subgraph Notification Subdomain [Notification Subdomain - Generic]
+        NotificationService[Envio de Alertas]
+    end
 
-### 1. Autenticação
-- Um usuário pode se autenticar com login e senha.
-- Um usuário pode se autenticar com redes sociais.
+    IdentityService -- "OHS / PL (User Identity API)" --> AcademicService
+    IdentityService -- "OHS / PL (Friendship Graph)" --> SocialService
+    
+    AcademicService -- "ACL (Academic Domain Events)" --> SocialService
+    AcademicService -- "Domain Events (Atividade / Nota)" --> NotificationService
+    IdentityService -- "Domain Events (Amizade / Perfil)" --> NotificationService
+    SocialService -- "Domain Events (Interação / Comentário)" --> NotificationService
+```
 
-### 2. Criação de Perfil
-- Um usuário pode criar um perfil.
-- Um perfil pode ser editado.
+### Análise dos Padrões de Integração do Mapa:
 
-### 3. Amizade
-- Um usuário pode solicitar amizade a outro.
-- A amizade só pode existir entre dois usuários.
-- O status da amizade é definido pelo sistema.
+1. **`Identity Context` → `Academic Context` (Customer-Supplier / OHS + PL)**
+   * **Relação:** `Identity` atua como **Upstream (U)** fornecendo a identidade do usuário (`UsuarioId`, papéis e dados básicos) para o `Academic Context` (**Downstream - D**).
+   * **Mecanismo:** O `Identity Context` expõe um **Open Host Service (OHS)** com uma **Published Language (PL)** (Contrato REST/DTO desacoplado ou Value Objects compartilhados em nível de aplicação).
+
+2. **`Identity Context` → `Social Context` (Customer-Supplier / OHS + PL)**
+   * **Relação:** O `Social Context` necessita validar se dois usuários possuem vínculo de amizade ativo para aplicar os filtros de feed (`FILTRO_AMIGOS`).
+   * **Mecanismo:** Consulta via contrato de serviço do `Identity Context` sem expor as entidades internas de amizade para o modelo do social.
+
+3. **`Academic Context` → `Social Context` (Conformist / Anti-Corruption Layer - ACL)**
+   * **Relação:** Quando uma atividade ou nota é publicada, o contexto social pode expor uma discussão ou atualização automática no feed.
+   * **Mecanismo:** O `Social Context` utiliza uma **Anti-Corruption Layer (ACL)** para traduzir eventos acadêmicos (`AtividadePublicadaEvent`) em objetos de seu próprio domínio social (`PostagemAcademica`), garantindo que mudanças no modelo acadêmico não quebrem o modelo do feed social.
+
+4. **Event-Driven Integration (Eventual Consistency via Domain Events)**
+   * O acoplamento síncrono é estritamente evitado entre Core Domains. Alterações de estado disparam **Domain Events** que são consumidos assincronamente por outros contextos ou pelo subdomínio genérico de Notificações.
 
 ---
 
-## 🏗️ Implementação Técnica
+## 🏛️ Padrão Arquitetural Interno dos Contextos (Hexagonal / Ports & Adapters)
 
-O Contexto de Identidade será implementado com os seguintes componentes:
+Cada Bounded Context dentro do projeto [plataforma-academica-spring](plataforma-academica-spring) adota uma arquitetura limpa em camadas (Ports & Adapters), isolando completamente as regras de negócio de frameworks e detalhes de infraestrutura:
 
-1.  **Autenticação:**
-    - Login e senha.
-    - Redes sociais.
-
-2.  **Perfil:**
-    - Foto, biografia, localização, links.
-
-3.  **Amizade:**
-    - Solicitação e aceitação.
-    - Status da amizade.
+```
+br.com.plataformaacademica.<contexto>/
+├── domain/                         # 🧠 CAMADA DE DOMÍNIO (Lógica de Negócio Pura - Zero Dependências Spring/JPA)
+│   ├── model/                      # Entidades Ricas, Agregados e Value Objects
+│   │   ├── aggregates/             # Agregados do Contexto
+│   │   ├── entities/               # Entidades Filhas
+│   │   └── valueobjects/           # Objetos de Valor Imutáveis com Autovalidação
+│   ├── events/                     # Eventos de Domínio Immutable
+│   ├── exceptions/                 # Exceções de Regra de Negócio de Domínio
+│   ├── services/                   # Domain Services (Lógica que envolve múltiplos agregados)
+│   └── ports/                      # Interfaces de Saída (Output Ports)
+│       ├── repositories/           # Contratos de Repositório de Domínio
+│       └── suppliers/              # Contratos para serviços externos (ex: Notificador, Hash)
+├── application/                    # ⚙️ CAMADA DE APLICAÇÃO (Orquestração de Casos de Uso)
+│   ├── usecases/                   # Interfaces e Implementações dos Casos de Uso
+│   ├── dtos/                       # Command & Query DTOs de Entrada e Saída
+│   └── handlers/                   # Event Handlers e Listeners de Eventos de Domínio
+└── infrastructure/                 # 🔌 CAMADA DE INFRAESTRUTURA (Detalhes Técnicos & Adapters)
+    ├── adapters/
+    │   ├── in/web/                 # REST Controllers (Adapters de Entrada)
+    │   └── out/persistence/        # Impl de Repositórios Spring Data JPA + Mappers JPA (Adapters de Saída)
+    └── configuration/              # Beans Spring e Configurações de Segurança
+```
 
 ---
 
-## 📝 Glossário de Termos (Linguagem Ubíqua)
-*Termos que devem ser usados consistentemente no código para refletir o negócio:*
+## 📖 Dicionário e Linguagem Ubíqua Global (Ubiquitous Language)
 
-- **Sala:** Espaço virtual onde as atividades são agrupadas.
-- **Atividade:** Tarefa específica com prazo e valor em pontos.
-- **Submissão:** O ato do aluno entregar um trabalho (arquivo ou texto) para uma atividade.
-- **Feedback:** Comuntoário e nota atribuídos pelo professor a uma submissão.
-- **Seguidor/Amigo:** Usuários que possuem conexão direta no sistema de rede social.
+Estes termos possuem significado rigoroso e único em todos os artefatos de código, conversas de equipe e documentações:
+
+| Termo em Português | Termo no Código (Java) | Contexto Delimitado | Definição Rorosa de Negócio |
+| :--- | :--- | :--- | :--- |
+| **Sala de Aula Virtual** | `SalaDeAula` | `Academic` | Ambiente delimitado criado por um docente para agrupar discentes, gerenciar conteúdos e aplicar atividades. |
+| **Código de Acesso** | `CodigoSala` | `Academic` | Token único alfanumérico imutável de 8 caracteres que concede direito de ingresso em uma Sala de Aula. |
+| **Atividade Acadêmica** | `Atividade` | `Academic` | Unidade de trabalho avaliativa com título, descrição, prazo final impreterível e pontuação máxima. |
+| **Submissão** | `SubmissaoAtividade` | `Academic` | Artefato (documento/link) e registro temporal enviado por um aluno como resposta a uma Atividade. |
+| **Avaliação & Feedback** | `Nota` / `Feedback` | `Academic` | Parecer qualitativo e nota quantitativa (entre `0.0` e `pontuacaoMax`) atribuídos exclusivamente pelo docente autor da sala. |
+| **Usuário** | `Usuario` | `Identity` | Entidade individual com credenciais, e-mail único validado, papéis institucionais e atributos de gamificação. |
+| **Conexão de Amizade** | `ConexaoAmizade` | `Identity` | Relacionamento bidirecional entre dois usuários com estados estritos (`PENDENTE`, `ACEITO`, `RECUSADO`, `BLOQUEADO`). |
+| **Postagem** | `Postagem` | `Social` | Publicação de texto, imagem ou link compartilhada no feed institucional com visibilidade configurável. |
+| **Engajamento / Curtida** | `InteracaoEngajamento` | `Social` | Reação atômica única de um usuário a um item do feed (impossibilitando duplicidade por usuário/alvo). |
+

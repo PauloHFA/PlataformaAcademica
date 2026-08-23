@@ -1,70 +1,148 @@
-# 📱 Contexto Social (Social Context)
+# 📱 Contexto Social (Social Context) — Especificação Tática de Domínio
 
-Este documento detalha as regras de negócio, entidades e objetos de valor que compõem o **Contexto Social**, responsável por promover o engajamento e a interação entre os membros da comunidade acadêmica.
-
-## 🎯 Objetivo do Contexto
-Gerenciar a camada de interatividade da plataforma, permitindo que usuários compartilhem conhecimentos, comentem em tópicos e interajam através de curtidas, criando um ambiente de rede social voltado ao aprendun.
+O **Contexto Social** é um **Subdomínio de Suporte** (Supporting Subdomain) responsável por promover o engajamento e a interação entre os membros da comunidade acadêmica, permitindo o compartilhamento de conhecimento e interações sociais.
 
 ---
 
-## 🏗️ Modelagem de Domínio
+## 🎯 Escopo do Contexto e Linguagem Ubíqua
 
-### 1. Entidades (Entities)
-*Objetos com identidade única que persiste ao longo do tempo.*
-
-#### **Postagem**
-O elemento central de comunicação no feed.
-- **Atributos Principais:** `id`, `conteudo`, `autor`, `dataCriacao`.
-- **Responsabilidades:**
-    - Armazenar o conteúdo textual ou multimídia compartilhado.
-    - Vincular uma publicação a um autor específico.
-    - Permitir a exclusão pelo próprio autor.
-
-#### **Comentario**
-A resposta ou interação direta sobre uma postagem ou atividade.
-- **Atributos Principais:** `id`, `texto`, `autor`, `postagem_ref`, `atividade_ref`.
-- **Responsabilidades:**
-    - Permitstring a discussão em torno de um tópico.
-    - Vincular-se tanto a postagens quanto a atividades (contexto polimórfico).
-
-#### **InteracaoUsuario**
-O registro de ações rápidas de engajamento (como curtidas).
-- **Atributos Principais:** `id`, `tipo` (LIKE, etc.), `usuario`, `entidade_alvo`.
-- **Responsabilidades:**
-    - Registrar o "like" em uma postagem ou comentário.
-    - Contabilizar o engajamento para fins de algoritmos de feed.
+* **Linguagem Ubíqua do Contexto:**
+  * **`Postagem`**: Agregado raiz que representa o conteúdo compartilhado por um usuário no feed.
+  * **`Comentario`**: Agregado que representa uma resposta textual a uma `Postagem` ou `Atividade`.
+  * **`InteracaoUsuario`**: Agregado que registra uma ação de engajamento rápido (ex: `Curtida`).
+  * **`ConteudoPostagem`**: Objeto de valor que encapsula o texto da postagem com validação de integridade e tamanho.
+  * **`EntidadeAlvo`**: Objeto de valor que identifica de forma polimórfica o alvo de uma interação ou comentário (Postagem ou Atividade).
 
 ---
 
-### 2. Objetos de Valor (Value Objects)
+## 🏗️ Design Tático: Agregados, Raízes e Fronteiras Transacionais
 
-#### **TipoInteracao**
-- **Regra:** Define a natureza da interação realizada.
-- **Valores:** `LIKE`, `REPLY`, `SHARE`.
-- **Validação:** Garante que apenas interações suportadas pelo sistema sejam processadas.
+```mermaid
+classDiagram
+    class Postagem {
+        <<Aggregate Root>>
+        -PostagemId id
+        -UsuarioId autorId
+        -ConteudoPostagem conteudo
+        -LocalDateTime dataCriacao
+        -Visibilidade visibilidade
+        +editarConteudo(ConteudoPostagem)
+        +alterarVisibilidade(Visibilidade)
+    }
 
-#### **FiltroFeed**
-- **Regra:** Critério de filtragem para a visualização do feed.
-- **Valores:** `TODAS`, `AMIGOS`, `MAIS_CURTIDAS`.
-- **Responsabilidades:** Determinar quais postagens devem ser carregadas na visão do usuário.
+    class Comentario {
+        <<Aggregate Root>>
+        -ComentarioId id
+        -UsuarioId autorId
+        -EntidadeAlvo alvo
+        -String texto
+        -LocalDateTime dataCriacao
+        +editarTexto(String)
+    }
+
+    class InteracaoUsuario {
+        <<Aggregate Root>>
+        -InteracaoId id
+        -UsuarioId usuarioId
+        -EntidadeAlvo alvo
+        -TipoInteracao tipo
+    }
+
+    class ConteudoPostagem {
+        <<Value Object>>
+        -String texto
+        -List~String~ midiaUrls
+    }
+
+    Postagem "1" ..> "N" Comentario : possui
+    Postagem "1" ..> "N" InteracaoUsuario : recebe
+```
 
 ---
 
-## ⚙️ Regras de Negócio (Business Rules)
+### 1. Agregado: `Postagem`
 
-### Gestão de Engajamento
-1.  **Visibilidade de Postagem:** O conteúdo de uma postagem pode ser restrito ao círculo de amigos ou público para a comunidade.
-2.  **Propriedade e Moderação:** Um usuário tem permissão total para excluir suas próprias postagens e comentários.
-3.  **Integridade da Interação:** Uma curtida (`LIKE`) não pode ser duplicada pelo mesmo usuário na mesma postagem.
+#### **Fronteira do Agregado:**
+* **Raiz do Agregado (`Aggregate Root`):** `Postagem`
+* **Value Objects:** `PostagemId`, `UsuarioId`, `ConteudoPostagem`, `Visibilidade` (Enum: `PUBLICO`, `AMIGOS`)
 
-### Fluxo de Feed
-1.  **Ordenação por Relevância:** O sistema deve ser capaz de reordenar o feed com base no número de interações (ex: "Mais Curtidas").
-2.  **Contextualização:** Comentários devem sempre referenciar um alvo válido (uma `Postagem` ou uma `Atividade`).
+#### **Invariantes e Regras de Negócio Inegociáveis:**
+1. **Conteúdo Obrigatório:** Uma postagem não pode ser instanciada sem um `ConteudoPostagem` válido.
+2. **Autoridade de Edição:** Apenas o `autorId` original possui permissão para invocar `editarConteudo()` ou `alterarVisibilidade()`.
+3. **Imutabilidade da Data:** A `dataCriacao` é definida no momento da persistência inicial e nunca mais alterada.
 
 ---
 
-## 🔗 Relacionamentos Principantes
-- **Usuario 1 ↔ N Postagem:** Um usuário é o autor de múltiplas postagens.
-- **Postagem 1 ↔ N Comentario:** Uma postagem pode receber diversos comentários.
-- **Usuario 1 ↔ N InteracaoUsuario:** Um usuário gera diversas interações no sistema.
-- **Atividade 1 ↔ N Comentario:** Atividades acadêmicas também podem receber discussões via comentários.
+### 2. Agregado: `Comentario`
+
+#### **Fronteira do Agregado:**
+* **Raiz do Agregado (`Aggregate Root`):** `Comentario`
+* **Value Objects:** `ComentarioId`, `UsuarioId`, `EntidadeAlvo` (Polimórfico: `POSTAGEM`, `ATIVIDADE`)
+
+#### **Invariantes e Regras de Negócio Inegociáveis:**
+1. **Integridade do Alvo:** O `Comentario` deve obrigatoriamente referenciar um `EntidadeAlvo` existente e válido.
+2. **Limite de Extensão:** O texto do comentário deve respeitar o limite de 1000 caracteres definido no domínio.
+
+---
+
+### 3. Agregado: `InteracaoUsuario`
+
+#### **Fronteira do Agregado:**
+* **Raiz do Agregado (`Aggregate Root`):** `InteracaoUsuario`
+* **Value Objects:** `InteracaoId`, `UsuarioId`, `EntidadeAlvo`, `TipoInteracao` (Enum: `CURTIDA`, `COMPARTILHAMENTO`)
+
+#### **Invariantes e Regras de Negócio Inegociáveis:**
+1. **Unicidade de Interação:** Um `UsuarioId` não pode registrar mais de uma interação do mesmo `TipoInteracao` para o mesmo `EntidadeAlvo`. (Ex: Apenas um "Like" por postagem).
+
+---
+
+## 💎 Objetos de Valor (Value Objects) Ricos
+
+* **`ConteudoPostagem`**: Valida se o texto contém palavras proibidas (moderação automática básica) e se o tamanho está entre 1 e 5000 caracteres.
+* **`EntidadeAlvo`**: Encapsula o ID da entidade e o tipo (ex: `targetId: 123, type: ATIVIDADE`).
+
+---
+
+## 🔔 Eventos de Domínio (Domain Events)
+
+1. **`PostagemCriadaEvent`**
+   * *Payload:* `PostagemId`, `AutorId`, `Visibilidade`, `OccurredOn`.
+   * *Consumidores:* `Notification Context` (notificar seguidores/amigos).
+2. **`ComentarioAdicionadoEvent`**
+   * *Payload:* `ComentarioId`, `AlvoId`, `AlvoTipo`, `AutorId`, `OccurredOn`.
+   * *Consumidores:* `Notification Context` (notificar autor da postagem ou docente da atividade).
+3. **`InteracaoRegistradaEvent`**
+   * *Payload:* `InteracaoId`, `AlvoId`, `UsuarioId`, `Tipo`, `OccurredOn`.
+   * *Consumidores:* `Identity Context` (atribuir pontos de engajamento social).
+
+---
+
+## 🛠️ Domain Services (Serviços de Domínio)
+
+* **`FeedOrchestratorService`**:
+  * **Responsabilidade**: Orquestrar a montagem do feed personalizado, filtrando postagens por visibilidade e amizade (consultando o `Identity Context` via ACL).
+* **`ModeracaoConteudoService`**:
+  * **Responsabilidade**: Validar se o conteúdo da postagem ou comentário viola diretrizes da comunidade acadêmica.
+
+---
+
+## 🔌 Outbound Ports (Contratos de Infraestrutura)
+
+```java
+public interface PostagemRepository {
+    Postagem save(Postagem postagem);
+    Optional<Postagem> findById(PostagemId id);
+    List<Postagem> findByAutorId(UsuarioId autorId);
+    void delete(PostagemId id);
+}
+
+public interface ComentarioRepository {
+    Comentario save(Comentario comentario);
+    List<Comentario> findAllByAlvo(EntidadeAlvo alvo);
+}
+
+public interface SocialIdentityPort {
+    boolean saoAmigos(UsuarioId u1, UsuarioId u2);
+    List<UsuarioId> buscarAmigos(UsuarioId usuarioId);
+}
+```

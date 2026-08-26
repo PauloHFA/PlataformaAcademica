@@ -33,20 +33,17 @@ Linkar para documentação externa quando o método depende de contratos de serv
 ### ✅ Documentados (Padrão Staff Completo)
 | Pacote | Entidades / Arquivos | Status |
 |---|---|---|
-| `model/` | `Comentario`, `Comunidade`, `Artigo`, `Atividade`, `Usuario`, `Amizade`, `Curtida`, `Postagem`, `Notificacao`, `Mensagem`, `SaladeAula`, `Perfil`, `SubmissaoAtividade`, `MembroComunidade`, `SolicitacaoEntrada`, `RecomendacaoUsuario`, `Professor`, `Admin`, `Plataforma`, `Frequencia`, `InteracaoUsuario`, `ConteudoMercado`, `CompraConteudo`, `ChatTempoRealUsuarios`, `TipoDestinoComentario` | ✅ 25/25 |
+| `model/` | 25 entidades e enums JPA | ✅ 25/25 |
+| `repository/` | Repositórios Spring Data JPA | ✅ 21/21 |
 
-### ⏳ Pendentes (Não Documentados no Padrão Staff)
-| Pacote | Arquivos / Componentes | Observação |
+### ⏳ Em Andamento / Pendentes
+| Pacote | Status | Observação |
 |---|---|---|
-| `service/` | `ComentarioServiceImpl`, `UsuarioServiceImpl`, `AtividadeServiceImpl`, `ComunidadeServiceImpl`, `PerfilServiceImpl` | ✅ 5/32 (iniciado) |
-| `controller/` | `ComentarioController` | ✅ 1/15 (iniciado) |
-| `mapper/` | `ComentarioMapper` | ✅ 1/10 (iniciado) |
-| `dto/` | `ComentarioDTO` | ✅ 1/26 (iniciado) |
-| `mapper/` | `ComentarioMapper.java`, `AtividadeMapper.java`, `ArtigoMapper.java`, `AmizadeMapper.java`, `PerfilMapper.java`, `ComunidadeMapper.java`, `PostagemMapper.java`, `SalaDeAulaMapper.java`, `UsuarioMapper.java`, `SubmissaoAtividadeMapper.java` | Sem documentação de padrão |
-| `repository/` | Todos os repositórios JPA | ✅ 21/21 (modelo+repository) |
-| `config/` | Configurações de segurança, OAuth, etc. | Não verificados |
-| `interceptor/` | Interceptores de requisição | Não verificados |
-| `security/` | Configurações de autenticação/autorização | Não verificados |
+| `service/` | 🟡 5/32 | Serviços principais documentados |
+| `controller/` | 🟡 1/20 | Controllers principais iniciados |
+| `mapper/` | 🟡 1/10 | Mappers principais iniciados |
+| `dto/` | 🟡 1/26 | DTOs principais iniciados |
+| `config/`, `security/`, `interceptor/` | ⚪ 0% | Próximas etapas |
 
 ---
 

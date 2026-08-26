@@ -15,6 +15,15 @@ import java.util.List;
  * Responsabilidades: Criar, listar e gerenciar notificações para usuários,
  * vinculando mensagens a eventos de referência no sistema.
  */
+/**
+ * Implementação do serviço de Notificações.
+ * 
+ * Camada: Application / Business Service (Identity Context)
+ * Padrões aplicados: Service Layer, Repository Pattern.
+ * 
+ * @see NotificacaoService
+ * @see REQ-005 (Sistema de Notificações)
+ */
 @Service
 public class NotificacaoServiceImpl implements NotificacaoService {
 

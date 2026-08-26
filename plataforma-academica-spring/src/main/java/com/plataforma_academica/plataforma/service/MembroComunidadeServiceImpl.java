@@ -8,11 +8,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Implementação do serviço responsável por gerenciar os membros de comunidades.
+ * Implementação do serviço de Membros de Comunidades.
  * 
- * Orquestra operações de associação de usuários a comunidades, controle de
- * papéis
- * e listagem de participações.
+ * Camada: Application / Business Service (Social Context)
+ * Padrões aplicados: Service Layer, Repository Pattern.
+ * 
+ * @see MembroComunidadeService
+ * @see docs/domain/social_context.md
+ * @see REQ-016 (Gestão de Membros em Comunidades)
  */
 @Service
 public class MembroComunidadeServiceImpl implements MembroComunidadeService {

@@ -42,7 +42,7 @@ Linkar para documentação externa quando o método depende de contratos de serv
 ### ⏳ Em Andamento / Pendentes
 | Pacote | Status | Observação |
 |---|---|---|
-| `service/` | 🟡 11/32 | `ComentarioServiceImpl`, `UsuarioServiceImpl`, `AtividadeServiceImpl`, `ComunidadeServiceImpl`, `PerfilServiceImpl`, `AmizadeServiceImpl`, `ArtigoServiceImpl`, `PostagemServiceImpl`, `SaladeAulaServiceImpl`, `SubmissaoAtividadeServiceImpl`, `PlataformaServiceImpl` |
+| `service/` | 🟡 13/32 | `ComentarioServiceImpl`, `UsuarioServiceImpl`, `AtividadeServiceImpl`, `ComunidadeServiceImpl`, `PerfilServiceImpl`, `AmizadeServiceImpl`, `ArtigoServiceImpl`, `PostagemServiceImpl`, `SaladeAulaServiceImpl`, `SubmissaoAtividadeServiceImpl`, `PlataformaServiceImpl`, `DashboardAlunoServiceImpl`, `FrequenciaServiceImpl` |
 | `config/`, `security/`, `interceptor/` | ⚪ 0% | Próximas etapas |
 
 ---

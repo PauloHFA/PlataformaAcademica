@@ -14,6 +14,15 @@ import java.util.List;
  * @see Postagem
  * @see REQ-025 (Publicação no Feed Social)
  */
+/**
+ * Interface do serviço de Postagens.
+ * 
+ * Camada: Application / Business Service (Social Context)
+ * Padrões aplicados: Service Layer, Repository Pattern.
+ * 
+ * @see Postagem
+ * @see REQ-025 (Publicação no Feed Social)
+ */
 public interface PostagemService {
     PostagemDTO publicar(PostagemDTO postagemDTO);
 

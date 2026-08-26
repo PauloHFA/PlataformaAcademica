@@ -4,6 +4,15 @@ import com.plataforma_academica.plataforma.model.Plataforma;
 
 import java.util.List;
 
+/**
+ * Interface do serviço de Plataforma.
+ * 
+ * Camada: Application / Business Service
+ * Padrões aplicados: Service Layer, Repository Pattern.
+ * 
+ * @see Plataforma
+ * @see REQ-001 (Configuração da Plataforma)
+ */
 public interface PlataformaService {
 
     Plataforma salvar(Plataforma plataforma);

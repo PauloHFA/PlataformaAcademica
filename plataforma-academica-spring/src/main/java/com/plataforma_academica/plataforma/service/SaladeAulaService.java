@@ -16,6 +16,15 @@ import java.util.List;
  * @see SaladeAula
  * @see REQ-018 (Criação de Salas de Aula)
  */
+/**
+ * Interface do serviço de Salas de Aula.
+ * 
+ * Camada: Application / Business Service (Academic Context)
+ * Padrões aplicados: Service Layer, Repository Pattern.
+ * 
+ * @see SaladeAula
+ * @see REQ-018 (Criação de Salas de Aula)
+ */
 public interface SaladeAulaService {
 
     // --- Métodos de CRUD para a Sala de Aula ---

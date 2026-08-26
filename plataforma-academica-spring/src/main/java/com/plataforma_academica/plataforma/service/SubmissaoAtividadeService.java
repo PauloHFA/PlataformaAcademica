@@ -5,13 +5,23 @@ import com.plataforma_academica.plataforma.model.SubmissaoAtividade;
 
 import java.util.List;
 
+/**
+ * Interface do serviço de Submissões de Atividades.
+ * 
+ * Camada: Application / Business Service (Academic Context)
+ * Padrões aplicados: Service Layer, Repository Pattern.
+ * 
+ * @see SubmissaoAtividade
+ * @see REQ-026 (Submissão e Avaliação de Atividades)
+ */
 public interface SubmissaoAtividadeService {
 
     SubmissaoAtividade enviarSubmissao(Long atividadeId, Long alunoId, SubmissaoAtividade submissao);
-    
+
     SubmissaoAtividade enviarSubmissao(Long atividadeId, Long alunoId, SubmissaoAtividadeDTO submissao);
 
-    SubmissaoAtividade enviarSubmissaoComArquivo(Long atividadeId, Long alunoId, String descricao, org.springframework.web.multipart.MultipartFile arquivo);
+    SubmissaoAtividade enviarSubmissaoComArquivo(Long atividadeId, Long alunoId, String descricao,
+            org.springframework.web.multipart.MultipartFile arquivo);
 
     List<SubmissaoAtividade> listarSubmissoesPorAtividade(Long atividadeId);
 

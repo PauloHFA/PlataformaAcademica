@@ -17,8 +17,14 @@ import java.util.ArrayList;
 import com.plataforma_academica.plataforma.dto.AtividadeDTO;
 import com.plataforma_academica.plataforma.mapper.AtividadeMapper;
 
+/**
+ * Implementação do serviço de salas de aula.
+ * 
+ * Camada: Application Service
+ * Responsabilidades: Criar, listar e gerenciar salas de aula virtuais.
+ */
 @Service
-public class SaladeAulaServiceImpl implements SaladeAulaService{
+public class SaladeAulaServiceImpl implements SaladeAulaService {
 
     private final SaladeAulaRepository salaRepository;
     private final UsuarioRepository usuarioRepository;
@@ -38,8 +44,9 @@ public class SaladeAulaServiceImpl implements SaladeAulaService{
 
     /**
      * Lógica de verificação de permissão: Checa se o usuário é o criador da sala.
+     * 
      * @param saladeAulaId ID da sala de aula a ser verificada.
-     * @param userId ID do usuário que tenta realizar a ação.
+     * @param userId       ID do usuário que tenta realizar a ação.
      */
     private SaladeAula verificarCriador(Long saladeAulaId, Long userId) {
         // Removido o cast desnecessário (SaladeAula)
@@ -76,7 +83,7 @@ public class SaladeAulaServiceImpl implements SaladeAulaService{
         }
         return salaRepository.save(sala);
     }
-    
+
     private String gerarCodigoUnico() {
         String codigo;
         do {
@@ -163,11 +170,11 @@ public class SaladeAulaServiceImpl implements SaladeAulaService{
                 .map(p -> (Usuario) p)
                 .orElseGet(() -> usuarioRepository.findById(creatorId)
                         .orElseThrow(() -> new EntityNotFoundException("Autor não encontrado.")));
-        
+
         if (!(autor instanceof Professor)) {
             throw new SecurityException("Apenas professores podem criar atividades.");
         }
-        
+
         // 3. Converte DTO para entidade e define relacionamentos
         Atividade atividade = AtividadeMapper.toEntity(atividadeDTO, autor, sala);
 
@@ -183,7 +190,8 @@ public class SaladeAulaServiceImpl implements SaladeAulaService{
 
     @Override
     public List<Atividade> listarAtividadesPorSala(Long saladeAulaId) {
-        // Geralmente implementado usando um método de Repositório: findBySalaDeAulaId(saladeAulaId)
+        // Geralmente implementado usando um método de Repositório:
+        // findBySalaDeAulaId(saladeAulaId)
         return atividadeRepository.findAll().stream() // Simulação sem query real
                 .filter(a -> a.getSalaDeAula() != null && a.getSalaDeAula().getId().equals(saladeAulaId))
                 .toList();
@@ -215,42 +223,44 @@ public class SaladeAulaServiceImpl implements SaladeAulaService{
         Atividade atividade = atividadeRepository.findById(atividadeId)
                 .orElseThrow(() -> new EntityNotFoundException("Atividade não encontrada."));
 
-        // Garante que o usuário que está deletando é o criador da Sala de Aula à qual a Atividade pertence.
+        // Garante que o usuário que está deletando é o criador da Sala de Aula à qual a
+        // Atividade pertence.
         verificarCriador(atividade.getSalaDeAula().getId(), creatorId);
 
         atividadeRepository.delete(atividade);
     }
-    
+
     @Override
     @Transactional
-    public Atividade cadastrarAtividadeComDocumento(Long saladeAulaId, AtividadeDTO atividadeDTO, Long creatorId, org.springframework.web.multipart.MultipartFile documento) {
+    public Atividade cadastrarAtividadeComDocumento(Long saladeAulaId, AtividadeDTO atividadeDTO, Long creatorId,
+            org.springframework.web.multipart.MultipartFile documento) {
         SaladeAula sala = verificarCriador(saladeAulaId, creatorId);
-        
+
         // Busca primeiro no ProfessorRepository
         Usuario autor = professorRepository.findById(creatorId)
                 .map(p -> (Usuario) p)
                 .orElseGet(() -> usuarioRepository.findById(creatorId)
                         .orElseThrow(() -> new EntityNotFoundException("Autor não encontrado.")));
-        
+
         System.out.println("[DEBUG] Tipo do autor: " + autor.getClass().getName());
         System.out.println("[DEBUG] É Professor? " + (autor instanceof Professor));
-        
+
         if (!(autor instanceof Professor)) {
             throw new SecurityException("Apenas professores podem criar atividades.");
         }
-        
+
         Atividade atividade = AtividadeMapper.toEntity(atividadeDTO, autor, sala);
-        
+
         if (documento != null && !documento.isEmpty()) {
             String url = storeFile(documento);
             atividade.setDocumentoUrl(url);
         }
-        
+
         return atividadeRepository.save(atividade);
     }
-    
+
     private final java.nio.file.Path uploadDir = java.nio.file.Paths.get("uploads").toAbsolutePath();
-    
+
     private void ensureUploadDir() {
         try {
             java.nio.file.Files.createDirectories(uploadDir);
@@ -258,9 +268,10 @@ public class SaladeAulaServiceImpl implements SaladeAulaService{
             throw new RuntimeException("Não foi possível criar pasta de uploads", e);
         }
     }
-    
+
     private String storeFile(org.springframework.web.multipart.MultipartFile file) {
-        if (file == null || file.isEmpty()) return null;
+        if (file == null || file.isEmpty())
+            return null;
         ensureUploadDir();
         String original = file.getOriginalFilename();
         String ext = "";

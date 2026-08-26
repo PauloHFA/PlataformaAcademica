@@ -16,6 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implementação do serviço de atividades acadêmicas.
+ * 
+ * Camada: Application Service
+ * Responsabilidades: Criar, listar e gerenciar atividades dentro de salas de
+ * aula,
+ * garantindo que apenas professores possam criar atividades.
+ */
 @Service
 public class AtividadeServiceImpl implements AtividadeService {
 
@@ -31,21 +39,33 @@ public class AtividadeServiceImpl implements AtividadeService {
     @Autowired
     private NotificacaoService notificacaoService;
 
+    /**
+     * Cria uma nova atividade acadêmica dentro de uma sala de aula.
+     * 
+     * @param salaId    ID da sala onde a atividade será criada.
+     * @param atividade Entidade da atividade a ser criada.
+     * @param autorId   ID do autor (deve ser um professor).
+     * @return Atividade criada e persistida.
+     * @throws RuntimeException  se a sala ou autor não forem encontrados.
+     * @throws SecurityException se o autor não for um professor.
+     */
     @Override
     @Transactional
     public Atividade criarAtividade(Long salaId, Atividade atividade, Long autorId) {
-        // Verifica se a sala existe
+        // Passo 1: Verifica se a sala existe
         SaladeAula sala = salaDeAulaRepository.findById(salaId)
                 .orElseThrow(() -> new RuntimeException("Sala não encontrada"));
 
-        // Verifica se o autor existe
+        // Passo 2: Verifica se o autor existe
         Usuario autor = usuarioRepository.findById(autorId)
                 .orElseThrow(() -> new RuntimeException("Autor não encontrado"));
 
+        // Passo 3: Valida se o autor é um professor
         if (!(autor instanceof Professor)) {
             throw new SecurityException("Apenas professores podem criar atividades.");
         }
 
+        // Passo 4: Associa a atividade ao autor e à sala
         atividade.setAutor(autor);
         atividade.setSalaDeAula(sala);
 
@@ -54,7 +74,8 @@ public class AtividadeServiceImpl implements AtividadeService {
         // Notificar alunos sobre nova atividade
         sala.getUsuarios().forEach(usuario -> {
             if (!usuario.getId().equals(autorId)) {
-                notificacaoService.criarNotificacao(usuario.getId(), "Nova atividade cadastrada: " + saved.getTitulo(), "ATIVIDADE", saved.getId());
+                notificacaoService.criarNotificacao(usuario.getId(), "Nova atividade cadastrada: " + saved.getTitulo(),
+                        "ATIVIDADE", saved.getId());
             }
         });
 

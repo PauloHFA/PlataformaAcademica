@@ -8,10 +8,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Implementação do serviço de MembroComunidade.
- *
- * Centraliza as operações de acesso ao banco de dados e garante a
- * comunicação entre o controller e o repository.
+ * Implementação do serviço responsável por gerenciar os membros de comunidades.
+ * 
+ * Orquestra operações de associação de usuários a comunidades, controle de
+ * papéis
+ * e listagem de participações.
  */
 @Service
 public class MembroComunidadeServiceImpl implements MembroComunidadeService {
@@ -19,13 +20,27 @@ public class MembroComunidadeServiceImpl implements MembroComunidadeService {
     @Autowired
     private MembroComunidadeRepository membroComunidadeRepository;
 
+    /**
+     * Salva ou atualiza a associação de um membro a uma comunidade.
+     * 
+     * @param membro Entidade MembroComunidade a ser persistida.
+     * @return Instância salva.
+     */
     @Override
     public MembroComunidade salvar(MembroComunidade membro) {
+        // Passo 1: Persistir associação no repositório
         return membroComunidadeRepository.save(membro);
     }
 
+    /**
+     * Busca uma associação de membro pelo ID.
+     * 
+     * @param id ID do membro da comunidade.
+     * @return Instância encontrada ou null se não existir.
+     */
     @Override
     public MembroComunidade buscarPorId(Long id) {
+        // Passo 1: Consultar banco de dados por ID
         return membroComunidadeRepository.findById(id).orElse(null);
     }
 

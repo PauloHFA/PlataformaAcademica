@@ -12,6 +12,13 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Implementação do serviço de frequência.
+ * 
+ * Camada: Application Service
+ * Responsabilidades: Registrar e consultar frequências de alunos em salas de
+ * aula.
+ */
 @Service
 public class FrequenciaServiceImpl implements FrequenciaService {
 
@@ -20,15 +27,16 @@ public class FrequenciaServiceImpl implements FrequenciaService {
     private final SaladeAulaRepository salaRepository;
 
     public FrequenciaServiceImpl(FrequenciaRepository frequenciaRepository,
-                                 UsuarioRepository usuarioRepository,
-                                 SaladeAulaRepository salaRepository) {
+            UsuarioRepository usuarioRepository,
+            SaladeAulaRepository salaRepository) {
         this.frequenciaRepository = frequenciaRepository;
         this.usuarioRepository = usuarioRepository;
         this.salaRepository = salaRepository;
     }
 
     @Override
-    public Frequencia registrarFrequencia(Long alunoId, Long salaId, LocalDate data, Boolean presente, String justificativa) {
+    public Frequencia registrarFrequencia(Long alunoId, Long salaId, LocalDate data, Boolean presente,
+            String justificativa) {
         Usuario aluno = usuarioRepository.findById(alunoId)
                 .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado."));
 
@@ -62,7 +70,8 @@ public class FrequenciaServiceImpl implements FrequenciaService {
     public double calcularPercentualPresenca(Long alunoId, Long salaId, LocalDate inicio, LocalDate fim) {
         List<Frequencia> lista = buscarFrequencias(alunoId, salaId, inicio, fim);
 
-        if (lista.isEmpty()) return 0.0;
+        if (lista.isEmpty())
+            return 0.0;
 
         long presentes = lista.stream().filter(Frequencia::getPresente).count();
         return 100.0 * presentes / lista.size();

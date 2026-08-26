@@ -22,6 +22,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Implementação do serviço de submissões de atividades.
+ * 
+ * Camada: Application Service
+ * Responsabilidades: Receber, avaliar e gerenciar submissões de alunos em
+ * atividades.
+ */
 @Service
 public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService {
 
@@ -34,8 +41,7 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
             SubmissaoAtividadeRespository submissaoRepository,
             AtividadeRepository atividadeRepository,
             UsuarioRepository usuarioRepository,
-            NotificacaoService notificacaoService
-    ) {
+            NotificacaoService notificacaoService) {
         this.submissaoRepository = submissaoRepository;
         this.atividadeRepository = atividadeRepository;
         this.usuarioRepository = usuarioRepository;
@@ -74,8 +80,10 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
         SubmissaoAtividade savedSubmissao = submissaoRepository.save(submissao);
 
         // Notificar professor sobre nova submissão
-        String mensagem = "Nova submissão recebida de " + aluno.getNome() + " na atividade '" + atividade.getTitulo() + "'";
-        notificacaoService.criarNotificacao(atividade.getAutor().getId(), mensagem, "SUBMISSAO", savedSubmissao.getId());
+        String mensagem = "Nova submissão recebida de " + aluno.getNome() + " na atividade '" + atividade.getTitulo()
+                + "'";
+        notificacaoService.criarNotificacao(atividade.getAutor().getId(), mensagem, "SUBMISSAO",
+                savedSubmissao.getId());
 
         return savedSubmissao;
     }
@@ -93,7 +101,8 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
     }
 
     @Override
-    public SubmissaoAtividade enviarSubmissaoComArquivo(Long atividadeId, Long alunoId, String descricao, MultipartFile arquivo) {
+    public SubmissaoAtividade enviarSubmissaoComArquivo(Long atividadeId, Long alunoId, String descricao,
+            MultipartFile arquivo) {
         Atividade atividade = atividadeRepository.findById(atividadeId)
                 .orElseThrow(() -> new EntityNotFoundException("Atividade não encontrada."));
 
@@ -142,14 +151,14 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
         usuarioRepository.findById(alunoId)
                 .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado."));
 
-        // Não há necessidade de buscar sala explicitamente; o filtro por sala funciona na query do repository
+        // Não há necessidade de buscar sala explicitamente; o filtro por sala funciona
+        // na query do repository
         return submissaoRepository.findByAlunoIdAndAtividade_SalaDeAula_Id(alunoId, salaId);
     }
 
     @Override
     public SubmissaoAtividade buscarSubmissaoDoAluno(Long atividadeId, Long alunoId) {
-        SubmissaoAtividade submissao =
-                submissaoRepository.findByAtividadeIdAndAlunoId(atividadeId, alunoId);
+        SubmissaoAtividade submissao = submissaoRepository.findByAtividadeIdAndAlunoId(atividadeId, alunoId);
 
         if (submissao == null) {
             throw new EntityNotFoundException("Submissão não encontrada para este aluno.");

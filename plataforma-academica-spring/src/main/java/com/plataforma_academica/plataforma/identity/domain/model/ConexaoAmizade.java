@@ -6,7 +6,11 @@ import java.util.Objects;
 /**
  * Agregado que encapsula o estado e o histórico do relacionamento bidirecional
  * entre dois usuários.
+ * 
  * Raiz do Agregado (Aggregate Root).
+ * Gerencia a máquina de estados da conexão (PENDENTE, ACEITO, RECUSADO,
+ * BLOQUEADO)
+ * e garante as invariantes de negócio, como a proibição de auto-conexão.
  */
 public final class ConexaoAmizade {
     private final ConexaoId id;
@@ -16,6 +20,13 @@ public final class ConexaoAmizade {
     private final LocalDateTime dataSolicitacao;
     private LocalDateTime dataResposta;
 
+    /**
+     * Construtor privado para criação de nova conexão.
+     * 
+     * @param id             Identificador único da conexão.
+     * @param solicitanteId  Identificador do usuário que solicitou a amizade.
+     * @param destinatarioId Identificador do usuário que recebeu a solicitação.
+     */
     private ConexaoAmizade(ConexaoId id, UsuarioId solicitanteId, UsuarioId destinatarioId) {
         if (solicitanteId.equals(destinatarioId)) {
             throw new AutoConexaoInvalidaException("Um usuário não pode se conectar a si mesmo");
@@ -28,6 +39,9 @@ public final class ConexaoAmizade {
         this.dataResposta = null;
     }
 
+    /**
+     * Construtor privado para reconstituição de estado (usado pelo Mapper).
+     */
     private ConexaoAmizade(ConexaoId id, UsuarioId solicitanteId, UsuarioId destinatarioId, StatusAmizade status,
             LocalDateTime dataSolicitacao, LocalDateTime dataResposta) {
         this.id = id;
@@ -38,16 +52,32 @@ public final class ConexaoAmizade {
         this.dataResposta = dataResposta;
     }
 
+    /**
+     * Factory Method para solicitar uma nova conexão de amizade.
+     * 
+     * @param solicitanteId  Identificador do solicitante.
+     * @param destinatarioId Identificador do destinatário.
+     * @return Nova instância de ConexaoAmizade.
+     */
     public static ConexaoAmizade solicitar(UsuarioId solicitanteId, UsuarioId destinatarioId) {
         return new ConexaoAmizade(ConexaoId.novo(), solicitanteId, destinatarioId);
     }
 
-    // Construtor para reconstrução a partir do banco de dados
+    /**
+     * Factory Method para reconstituição a partir do banco de dados.
+     */
     public static ConexaoAmizade reconstituir(ConexaoId id, UsuarioId solicitanteId, UsuarioId destinatarioId,
             StatusAmizade status, LocalDateTime dataSolicitacao, LocalDateTime dataResposta) {
         return new ConexaoAmizade(id, solicitanteId, destinatarioId, status, dataSolicitacao, dataResposta);
     }
 
+    /**
+     * Aceita a solicitação de amizade.
+     * 
+     * @param destinatario Identificador do usuário que está aceitando.
+     * @throws IllegalArgumentException se o usuário não for o destinatário.
+     * @throws IllegalStateException    se a solicitação não estiver pendente.
+     */
     public void aceitar(UsuarioId destinatario) {
         if (!this.destinatarioId.equals(destinatario)) {
             throw new IllegalArgumentException("Apenas o destinatário pode aceitar a solicitação");
@@ -59,6 +89,13 @@ public final class ConexaoAmizade {
         this.dataResposta = LocalDateTime.now();
     }
 
+    /**
+     * Recusa a solicitação de amizade.
+     * 
+     * @param destinatario Identificador do usuário que está recusando.
+     * @throws IllegalArgumentException se o usuário não for o destinatário.
+     * @throws IllegalStateException    se a solicitação não estiver pendente.
+     */
     public void recusar(UsuarioId destinatario) {
         if (!this.destinatarioId.equals(destinatario)) {
             throw new IllegalArgumentException("Apenas o destinatário pode recusar a solicitação");
@@ -70,6 +107,12 @@ public final class ConexaoAmizade {
         this.dataResposta = LocalDateTime.now();
     }
 
+    /**
+     * Bloqueia a conexão de amizade.
+     * 
+     * @param solicitanteOuDestinatario Identificador de um dos participantes.
+     * @throws IllegalArgumentException se o usuário não for um dos participantes.
+     */
     public void bloquear(UsuarioId solicitanteOuDestinatario) {
         if (!this.solicitanteId.equals(solicitanteOuDestinatario) &&
                 !this.destinatarioId.equals(solicitanteOuDestinatario)) {
@@ -78,6 +121,8 @@ public final class ConexaoAmizade {
         this.status = StatusAmizade.BLOQUEADO;
         this.dataResposta = LocalDateTime.now();
     }
+
+    // --- Getters ---
 
     public boolean isAceito() {
         return this.status == StatusAmizade.ACEITO;

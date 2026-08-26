@@ -6,6 +6,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implementação do serviço de plataforma.
+ * 
+ * Camada: Application Service
+ * Responsabilidades: Gerenciar configurações e recursos da plataforma
+ * acadêmica.
+ */
 @Service
 public class PlataformaServiceImpl implements PlataformaService {
 

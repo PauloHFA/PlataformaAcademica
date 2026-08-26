@@ -15,6 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Implementação do serviço de comunidades.
+ * 
+ * Camada: Application Service
+ * Responsabilidades: Criar, editar e gerenciar comunidades e seus membros,
+ * garantindo que apenas usuários autenticados participem das comunidades.
+ */
 @Service
 public class ComunidadeServiceImpl implements ComunidadeService {
 
@@ -23,8 +30,8 @@ public class ComunidadeServiceImpl implements ComunidadeService {
     private final UsuarioRepository usuarioRepo;
 
     public ComunidadeServiceImpl(ComunidadeRepository comunidadeRepository,
-                                 MembroComunidadeRepository membroRepo,
-                                 UsuarioRepository usuarioRepo) {
+            MembroComunidadeRepository membroRepo,
+            UsuarioRepository usuarioRepo) {
         this.comunidadeRepository = comunidadeRepository;
         this.membroRepo = membroRepo;
         this.usuarioRepo = usuarioRepo;
@@ -81,7 +88,8 @@ public class ComunidadeServiceImpl implements ComunidadeService {
     public void sairComunidade(Long comunidadeId, Long usuarioId) {
         MembroComunidade m = membroRepo.findByUsuarioIdAndComunidadeId(usuarioId, comunidadeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Associação não encontrada"));
-        // se for dono e único admin, poderia proibir — lógica simplificada: permite sair
+        // se for dono e único admin, poderia proibir — lógica simplificada: permite
+        // sair
         membroRepo.delete(m);
     }
 

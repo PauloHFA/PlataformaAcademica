@@ -20,6 +20,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Implementação do serviço de dashboard do aluno.
+ * 
+ * Camada: Application Service
+ * Responsabilidades: Agregar informações de atividades, frequências, salas e
+ * submissões para composição do dashboard do aluno.
+ */
 @Service
 public class DashboardAlunoServiceImpl implements DashboardAlunoService {
 
@@ -34,8 +41,7 @@ public class DashboardAlunoServiceImpl implements DashboardAlunoService {
             FrequenciaService frequenciaService,
             AtividadeRepository atividadeRepository,
             UsuarioRepository usuarioRepository,
-            SaladeAulaRepository saladeAulaRepository
-    ) {
+            SaladeAulaRepository saladeAulaRepository) {
         this.submissaoAtividadeService = submissaoAtividadeService;
         this.frequenciaService = frequenciaService;
         this.atividadeRepository = atividadeRepository;
@@ -51,9 +57,10 @@ public class DashboardAlunoServiceImpl implements DashboardAlunoService {
         SaladeAula sala = saladeAulaRepository.findById(salaId)
                 .orElseThrow(() -> new EntityNotFoundException("Sala não encontrada."));
 
-        List<com.plataforma_academica.plataforma.model.Atividade> atividades = atividadeRepository.findBySalaDeAulaId(salaId);
-        List<com.plataforma_academica.plataforma.model.SubmissaoAtividade> submissoes =
-                submissaoAtividadeService.listarSubmissoesPorAlunoESala(alunoId, salaId);
+        List<com.plataforma_academica.plataforma.model.Atividade> atividades = atividadeRepository
+                .findBySalaDeAulaId(salaId);
+        List<com.plataforma_academica.plataforma.model.SubmissaoAtividade> submissoes = submissaoAtividadeService
+                .listarSubmissoesPorAlunoESala(alunoId, salaId);
 
         List<SubmissaoAtividadeResponseDTO> submissoesDTO = submissoes.stream()
                 .map(SubmissaoAtividadeMapper::toResponse)
@@ -76,7 +83,8 @@ public class DashboardAlunoServiceImpl implements DashboardAlunoService {
             frequencias = frequenciaService.buscarFrequencias(alunoId, salaId);
         }
 
-        long totalPresencas = frequencias.stream().filter(com.plataforma_academica.plataforma.model.Frequencia::getPresente).count();
+        long totalPresencas = frequencias.stream()
+                .filter(com.plataforma_academica.plataforma.model.Frequencia::getPresente).count();
         long totalFaltas = frequencias.stream().filter(f -> !f.getPresente()).count();
 
         double percentualPresenca;
@@ -108,7 +116,8 @@ public class DashboardAlunoServiceImpl implements DashboardAlunoService {
         SaladeAula sala = saladeAulaRepository.findById(salaId)
                 .orElseThrow(() -> new EntityNotFoundException("Sala não encontrada."));
 
-        List<com.plataforma_academica.plataforma.model.Atividade> atividades = atividadeRepository.findBySalaDeAulaId(salaId);
+        List<com.plataforma_academica.plataforma.model.Atividade> atividades = atividadeRepository
+                .findBySalaDeAulaId(salaId);
         List<Usuario> alunos = sala.getUsuarios() != null ? sala.getUsuarios() : Collections.emptyList();
 
         int totalSubmissoesSala = 0;
@@ -125,7 +134,8 @@ public class DashboardAlunoServiceImpl implements DashboardAlunoService {
                 continue;
             }
 
-            List<SubmissaoAtividade> submissoesAluno = submissaoAtividadeService.listarSubmissoesPorAlunoESala(aluno.getId(), salaId);
+            List<SubmissaoAtividade> submissoesAluno = submissaoAtividadeService
+                    .listarSubmissoesPorAlunoESala(aluno.getId(), salaId);
             List<com.plataforma_academica.plataforma.model.Frequencia> frequenciasAluno;
             if (inicio != null && fim != null) {
                 frequenciasAluno = frequenciaService.buscarFrequencias(aluno.getId(), salaId, inicio, fim);
@@ -143,9 +153,12 @@ public class DashboardAlunoServiceImpl implements DashboardAlunoService {
                     .average()
                     .orElse(0.0);
 
-            int presencasAluno = (int) frequenciasAluno.stream().filter(com.plataforma_academica.plataforma.model.Frequencia::getPresente).count();
+            int presencasAluno = (int) frequenciasAluno.stream()
+                    .filter(com.plataforma_academica.plataforma.model.Frequencia::getPresente).count();
             int faltasAluno = (int) frequenciasAluno.stream().filter(f -> !f.getPresente()).count();
-            double percentualPresencaAluno = !frequenciasAluno.isEmpty() ? (presencasAluno * 100.0) / frequenciasAluno.size() : 0.0;
+            double percentualPresencaAluno = !frequenciasAluno.isEmpty()
+                    ? (presencasAluno * 100.0) / frequenciasAluno.size()
+                    : 0.0;
 
             totalSubmissoesSala += totalSubmissoesAluno;
             totalSubmissoesComNotaSala += totalSubmissoesComNotaAluno;
@@ -168,7 +181,9 @@ public class DashboardAlunoServiceImpl implements DashboardAlunoService {
         }
 
         double mediaNotaSala = quantidadeNotasSala > 0 ? somaNotasSala / quantidadeNotasSala : 0.0;
-        double percentualPresencaSala = (totalPresencasSala + totalFaltasSala) > 0 ? (totalPresencasSala * 100.0) / (totalPresencasSala + totalFaltasSala) : 0.0;
+        double percentualPresencaSala = (totalPresencasSala + totalFaltasSala) > 0
+                ? (totalPresencasSala * 100.0) / (totalPresencasSala + totalFaltasSala)
+                : 0.0;
 
         DashboardSalaDTO salaDTO = new DashboardSalaDTO();
         salaDTO.setSalaId(sala.getId());

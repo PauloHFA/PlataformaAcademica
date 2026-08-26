@@ -11,6 +11,14 @@ import jakarta.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implementação do serviço de usuários.
+ * 
+ * Camada: Application Service
+ * Responsabilidades: Cadastrar, atualizar, listar e gerenciar usuários do
+ * sistema,
+ * incluindo controle de papéis e credenciais.
+ */
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 

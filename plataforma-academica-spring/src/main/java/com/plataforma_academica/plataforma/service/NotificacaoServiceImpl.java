@@ -8,12 +8,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
+/**
+ * Implementação do serviço de notificações.
+ * 
+ * Camada: Application Service
+ * Responsabilidades: Criar, listar e gerenciar notificações para usuários,
+ * vinculando mensagens a eventos de referência no sistema.
+ */
 @Service
 public class NotificacaoServiceImpl implements NotificacaoService {
-    
+
     @Autowired
     private NotificacaoRepository notificacaoRepository;
-    
+
     @Autowired
     private UsuarioRepository usuarioRepository;
 

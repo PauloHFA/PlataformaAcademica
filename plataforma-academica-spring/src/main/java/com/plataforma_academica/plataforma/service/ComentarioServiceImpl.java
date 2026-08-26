@@ -10,6 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Implementação do serviço de comentários.
+ * 
+ * Camada: Application Service
+ * Responsabilidades: Salvar, buscar, listar e atualizar comentários em
+ * postagens,
+ * atividades ou salas de aula.
+ */
 @Service
 @Transactional
 public class ComentarioServiceImpl implements ComentarioService {
@@ -29,14 +37,24 @@ public class ComentarioServiceImpl implements ComentarioService {
     @Autowired
     private SaladeAulaRepository saladeAulaRepository;
 
+    /**
+     * Salva um novo comentário, definindo a data de criação se não informada.
+     * 
+     * @param comentario Entidade do comentário a ser salvo.
+     * @return Comentário persistido.
+     */
     @Override
     public Comentario salvar(Comentario comentario) {
+        // Passo 1: Define a data de criação se não informada
         if (comentario.getDataCriacao() == null) {
             comentario.setDataCriacao(java.time.LocalDateTime.now());
         }
+        // Passo 2: Log para rastreamento de conteúdo e contexto
         System.out.println("Salvando comentário: " + comentario.getConteudo());
-        System.out.println("Sala: " + (comentario.getSaladeAula() != null ? comentario.getSaladeAula().getId() : "null"));
+        System.out
+                .println("Sala: " + (comentario.getSaladeAula() != null ? comentario.getSaladeAula().getId() : "null"));
         System.out.println("Tipo destino: " + comentario.getTipoDestino());
+        // Passo 3: Persiste o comentário
         return comentarioRepository.save(comentario);
     }
 

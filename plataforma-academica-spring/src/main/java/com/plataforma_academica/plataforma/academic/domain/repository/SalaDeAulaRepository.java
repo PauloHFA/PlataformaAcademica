@@ -1,8 +1,10 @@
 package com.plataforma_academica.plataforma.academic.domain.repository;
 
 import com.plataforma_academica.plataforma.academic.domain.model.SalaDeAula;
+import com.plataforma_academica.plataforma.sharedkernel.domain.model.identifier.SalaId;
+import com.plataforma_academica.plataforma.sharedkernel.domain.model.identifier.UsuarioId;
+import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Interface de repositório de domínio.
@@ -11,7 +13,11 @@ import java.util.UUID;
 public interface SalaDeAulaRepository {
     void salvar(SalaDeAula salaDeAula);
 
-    Optional<SalaDeAula> buscarPorId(UUID id);
+    Optional<SalaDeAula> buscarPorId(SalaId id);
 
     Optional<SalaDeAula> buscarPorCodigo(String codigo);
+
+    List<SalaDeAula> buscarPorMembro(UsuarioId usuarioId);
+
+    List<SalaDeAula> buscarPorCriador(UsuarioId criadorId);
 }

@@ -3,6 +3,8 @@ package com.plataforma_academica.plataforma.academic.infrastructure.adapter.out.
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,8 +26,12 @@ public class SaladeAulaEntity {
     @Column(name = "criador_id", nullable = false)
     private UUID criadorId;
 
-    @ElementCollection
-    @CollectionTable(name = "sala_membros", joinColumns = @JoinColumn(name = "sala_id"))
-    @Column(name = "usuario_id")
-    private List<UUID> membrosIds;
+    @Column(name = "data_criacao", nullable = false)
+    private LocalDateTime dataCriacao;
+
+    @Column(name = "data_atualizacao", nullable = false)
+    private LocalDateTime dataAtualizacao;
+
+    @OneToMany(mappedBy = "sala", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<SalaMembroEntity> membros = new ArrayList<>();
 }

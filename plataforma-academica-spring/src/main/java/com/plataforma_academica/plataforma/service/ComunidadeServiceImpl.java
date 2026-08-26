@@ -18,9 +18,15 @@ import java.util.List;
 /**
  * Implementação do serviço de comunidades.
  * 
- * Camada: Application Service
- * Responsabilidades: Criar, editar e gerenciar comunidades e seus membros,
- * garantindo que apenas usuários autenticados participem das comunidades.
+ * Camada: Application / Business Service (Social Context)
+ * Responsabilidades: Orquestração de criação, edição e gestão de comunidades
+ * e membros, com validação de dono e autenticação.
+ * Padrões aplicados: Service Layer, Repository Pattern, Transactional,
+ * Constructor Injection.
+ * 
+ * @see ComunidadeService
+ * @see docs/domain/social_context.md
+ * @see REQ-015 (Criação de Comunidades)
  */
 @Service
 public class ComunidadeServiceImpl implements ComunidadeService {

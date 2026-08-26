@@ -19,10 +19,15 @@ import java.util.Optional;
 /**
  * Implementação do serviço de atividades acadêmicas.
  * 
- * Camada: Application Service
- * Responsabilidades: Criar, listar e gerenciar atividades dentro de salas de
- * aula,
- * garantindo que apenas professores possam criar atividades.
+ * Camada: Application / Business Service (Academic Context)
+ * Responsabilidades: Orquestração de criação, listagem e gerenciamento de
+ * atividades dentro de salas de aula, com validação de papel (Professor).
+ * Padrões aplicados: Service Layer, Repository Pattern, Transactional,
+ * Notificação por evento (NotificacaoService).
+ * 
+ * @see AtividadeService
+ * @see docs/domain/academic_context.md
+ * @see REQ-020 (Criação de Atividades)
  */
 @Service
 public class AtividadeServiceImpl implements AtividadeService {

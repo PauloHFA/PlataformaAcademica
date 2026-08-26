@@ -13,10 +13,15 @@ import java.util.List;
 /**
  * Implementação do serviço de comentários.
  * 
- * Camada: Application Service
- * Responsabilidades: Salvar, buscar, listar e atualizar comentários em
- * postagens,
- * atividades ou salas de aula.
+ * Camada: Application / Business Service (Social Context)
+ * Responsabilidades: Orquestração de casos de uso para comentários (salvar,
+ * buscar, listar, atualizar) vinculados a postagens, atividades ou salas de
+ * aula.
+ * Padrões aplicados: Service Layer, Repository Pattern, Transactional.
+ * 
+ * @see ComentarioService
+ * @see docs/domain/social_context.md
+ * @see REQ-030 (Sistema de Comentários)
  */
 @Service
 @Transactional

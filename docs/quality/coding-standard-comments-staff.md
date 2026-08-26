@@ -38,7 +38,7 @@ Linkar para documentação externa quando o método depende de contratos de serv
 ### ⏳ Pendentes (Não Documentados no Padrão Staff)
 | Pacote | Arquivos / Componentes | Observação |
 |---|---|---|
-| `service/` | `ComentarioServiceImpl.java`, `RecomendacaoService.java`, `PerfilServiceImpl.java`, etc. | Documentação parcial; precisa de `@see REQ-XXX` e trade-offs |
+| `service/` | `ComentarioServiceImpl`, `UsuarioServiceImpl`, `AtividadeServiceImpl`, `ComunidadeServiceImpl`, `PerfilServiceImpl` | ✅ 5/32 (iniciado) |
 | `controller/` | `ComentarioController.java`, `AtividadeController.java`, `ArtigoController.java`, `ComunidadeController.java`, `DashboardController.java`, `FileController.java`, `FrequenciaController.java`, `HealthController.java` | Sem cabeçalhos arquiteturais Staff |
 | `mapper/` | `ComentarioMapper.java`, `AtividadeMapper.java`, `ArtigoMapper.java`, `AmizadeMapper.java`, `PerfilMapper.java`, `ComunidadeMapper.java`, `PostagemMapper.java`, `SalaDeAulaMapper.java`, `UsuarioMapper.java`, `SubmissaoAtividadeMapper.java` | Sem documentação de padrão |
 | `repository/` | Todos os repositórios JPA | ✅ 21/21 (modelo+repository) |

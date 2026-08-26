@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Repositório Spring Data JPA para gerenciamento de solicitações de entrada em salas de aula.
+ * Repositório Spring Data JPA para gerenciamento de solicitações de entrada em
+ * salas de aula.
  * 
  * Camada: Infrastructure / Persistence Repository
  * 
@@ -19,6 +20,9 @@ import java.util.Optional;
 @Repository
 public interface SolicitacaoEntradaRepository extends JpaRepository<SolicitacaoEntrada, Long> {
     List<SolicitacaoEntrada> findBySalaIdAndStatus(Long salaId, StatusSolicitacao status);
-    Optional<SolicitacaoEntrada> findBySalaIdAndUsuarioIdAndStatus(Long salaId, Long usuarioId, StatusSolicitacao status);
+
+    Optional<SolicitacaoEntrada> findBySalaIdAndUsuarioIdAndStatus(Long salaId, Long usuarioId,
+            StatusSolicitacao status);
+
     List<SolicitacaoEntrada> findByUsuarioIdAndStatus(Long usuarioId, StatusSolicitacao status);
 }

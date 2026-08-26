@@ -15,9 +15,15 @@ import java.util.List;
 /**
  * Implementação do serviço de gerenciamento de perfis de usuário.
  * 
+ * Camada: Application / Business Service (Identity Context)
  * Orquestra operações de criação, atualização com controle de concorrência
- * (isolamento SERIALIZABLE),
- * e consultas de perfil por ID, curso ou usuário.
+ * (isolamento SERIALIZABLE) e consultas de perfil por ID, curso ou usuário.
+ * Padrões aplicados: Service Layer, Repository Pattern, Transactional
+ * (SERIALIZABLE).
+ * 
+ * @see PerfilService
+ * @see docs/domain/identity_context.md
+ * @see REQ-002 (Perfil Acadêmico)
  */
 @Service
 public class PerfilServiceImpl implements PerfilService {

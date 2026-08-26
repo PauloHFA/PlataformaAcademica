@@ -35,14 +35,14 @@ Linkar para documentação externa quando o método depende de contratos de serv
 |---|---|---|
 | `model/` | 25 entidades e enums JPA | ✅ 25/25 |
 | `repository/` | Repositórios Spring Data JPA | ✅ 21/21 |
+| `controller/` | 20 REST Controllers | ✅ 20/20 |
+| `mapper/` | 10 Mappers (DTO ↔ Entity) | ✅ 10/10 |
+| `dto/` | 26 Data Transfer Objects | ✅ 26/26 |
 
 ### ⏳ Em Andamento / Pendentes
 | Pacote | Status | Observação |
 |---|---|---|
 | `service/` | 🟡 5/32 | Serviços principais documentados |
-| `controller/` | 🟡 18/20 | Todos os controllers principais documentados (Comentario, Atividade, Artigo, Comunidade, Usuario, Dashboard, Amizade, Perfil, Postagem, SaladeAula, SubmissaoAtividade, SolicitacaoEntrada, Recomendacao, Professor, Mensagem, Frequencia, File, Plataforma, MembroComunidade, Health) |
-| `mapper/` | ✅ 10/10 | `ComentarioMapper`, `ComunidadeMapper`, `AtividadeMapper`, `ArtigoMapper`, `AmizadeMapper`, `SalaDeAulaMapper`, `PostagemMapper`, `PerfilMapper`, `SubmissaoAtividadeMapper`, `UsuarioMapper` |
-| `dto/` | 🟡 9/26 | `ComentarioDTO`, `AtividadeDTO`, `ArtigoDTO`, `ComunidadeDTO`, `AmizadeDTO`, `PostagemDTO`, `UsuarioResponseDTO`, `PerfilDTO`, `SubmissaoAtividadeDTO` |
 | `config/`, `security/`, `interceptor/` | ⚪ 0% | Próximas etapas |
 
 ---

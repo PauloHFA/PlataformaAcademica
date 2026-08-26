@@ -6,6 +6,19 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
+/**
+ * ==========================================================================================================
+ * WEBSOCKET CONFIG — Plataforma Acadêmica
+ * ==========================================================================================================
+ * Configuração de comunicação em tempo real via WebSocket e STOMP.
+ * 
+ * Camada: Infrastructure / Realtime Configuration
+ * Responsabilidades: Habilitar message broker para chat e notificações em tempo
+ * real.
+ * 
+ * @see REQ-030 (Chat e Notificações em Tempo Real)
+ *      ==========================================================================================================
+ */
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {

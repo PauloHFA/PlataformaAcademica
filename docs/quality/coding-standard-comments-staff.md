@@ -43,7 +43,7 @@ Linkar para documentação externa quando o método depende de contratos de serv
 ### ⏳ Em Andamento / Pendentes
 | Pacote | Status | Observação |
 |---|---|---|
-| `config/`, `security/`, `interceptor/` | ⚪ 0% | Próximas etapas |
+| `config/`, `security/`, `interceptor/` | ✅ Concluído | Todas as classes de configuração (`SecurityConfig`, `CorsConfig`, `WebSocketConfig`, `WebConfig`, contextos DDD e infraestrutura) |
 
 ---
 

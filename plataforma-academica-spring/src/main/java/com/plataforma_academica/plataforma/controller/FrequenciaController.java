@@ -10,6 +10,16 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
+/**
+ * Controller REST responsável por Frequência acadêmica.
+ * 
+ * Camada: Presentation / REST Controller
+ * Contexto de Negócio: Academic / Controle de presença em sala de aula.
+ * Padrões aplicados: RestController, CrossOrigin.
+ * 
+ * @see FrequenciaService
+ * @see REQ-025 (Controle de Frequência)
+ */
 @RestController
 @RequestMapping("/api/frequencia")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -27,7 +37,8 @@ public class FrequenciaController {
             return ResponseEntity.badRequest().body("Campos obrigatórios ausentes: alunoId, salaId, data, presente.");
         }
 
-        Frequencia frequencia = frequenciaService.registrarFrequencia(dto.getAlunoId(), dto.getSalaId(), dto.getData(), dto.getPresente(), dto.getJustificativa());
+        Frequencia frequencia = frequenciaService.registrarFrequencia(dto.getAlunoId(), dto.getSalaId(), dto.getData(),
+                dto.getPresente(), dto.getJustificativa());
         return ResponseEntity.ok(frequencia);
     }
 

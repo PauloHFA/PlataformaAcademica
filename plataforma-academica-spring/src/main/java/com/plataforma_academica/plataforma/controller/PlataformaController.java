@@ -34,6 +34,15 @@ import java.util.List;
  *
  * ==========================================================================================================
  */
+/**
+ * Controller REST responsável pelo escopo de Plataforma.
+ * 
+ * Camada: Presentation / REST Controller
+ * Contexto de Negócio: Aggregate root global da plataforma.
+ * Padrões aplicados: RestController, CrossOrigin.
+ * 
+ * @see Plataforma
+ */
 @RestController
 @RequestMapping("/api/plataforma")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -52,9 +61,9 @@ public class PlataformaController {
      * Retorna todas as plataformas cadastradas no sistema.
      *
      * Geralmente utilizado:
-     *   • Na página inicial
-     *   • Em dashboards administrativos
-     *   • Para compor menus e módulos acessíveis ao usuário
+     * • Na página inicial
+     * • Em dashboards administrativos
+     * • Para compor menus e módulos acessíveis ao usuário
      *
      * @return lista com todas as plataformas.
      */
@@ -70,8 +79,8 @@ public class PlataformaController {
      * Cria uma nova plataforma.
      *
      * Regras:
-     *   • O JSON enviado deve representar uma plataforma válida.
-     *   • Validações como nome duplicado podem ser aplicadas no service.
+     * • O JSON enviado deve representar uma plataforma válida.
+     * • Validações como nome duplicado podem ser aplicadas no service.
      *
      * @param plataforma objeto recebido no corpo da requisição.
      * @return plataforma criada.
@@ -109,16 +118,16 @@ public class PlataformaController {
      * Atualiza os dados de uma plataforma já existente.
      *
      * Regras:
-     *   • O ID deve existir.
-     *   • A lógica de atualização é tratada pelo service.
+     * • O ID deve existir.
+     * • A lógica de atualização é tratada pelo service.
      *
-     * @param id ID da plataforma.
+     * @param id         ID da plataforma.
      * @param plataforma dados enviados para atualização.
      * @return plataforma atualizada.
      */
     @PutMapping("/{id}")
     public ResponseEntity<Plataforma> atualizar(@PathVariable Long id,
-                                                @RequestBody Plataforma plataforma) {
+            @RequestBody Plataforma plataforma) {
 
         Plataforma atualizada = plataformaService.atualizar(id, plataforma);
         return ResponseEntity.ok(atualizada);
@@ -131,7 +140,7 @@ public class PlataformaController {
      * Remove uma plataforma por ID.
      *
      * Regras:
-     *   • Caso o ID não exista, o service deve tratar e lançar exceção apropriada.
+     * • Caso o ID não exista, o service deve tratar e lançar exceção apropriada.
      *
      * @param id ID da plataforma a ser removida.
      * @return 204 No Content quando a remoção é realizada com sucesso.

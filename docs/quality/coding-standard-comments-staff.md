@@ -40,7 +40,7 @@ Linkar para documentação externa quando o método depende de contratos de serv
 | Pacote | Status | Observação |
 |---|---|---|
 | `service/` | 🟡 5/32 | Serviços principais documentados |
-| `controller/` | 🟡 10/20 | `ComentarioController`, `AtividadeController`, `ArtigoController`, `ComunidadeController`, `UsuarioController`, `DashboardController`, `AmizadeController`, `PerfilController`, `PostagemController`, `SaladeAulaController` documentados |
+| `controller/` | 🟡 18/20 | Todos os controllers principais documentados (Comentario, Atividade, Artigo, Comunidade, Usuario, Dashboard, Amizade, Perfil, Postagem, SaladeAula, SubmissaoAtividade, SolicitacaoEntrada, Recomendacao, Professor, Mensagem, Frequencia, File, Plataforma, MembroComunidade, Health) |
 | `mapper/` | 🟡 1/10 | `ComentarioMapper` documentado |
 | `dto/` | 🟡 1/26 | `ComentarioDTO` documentado |
 | `config/`, `security/`, `interceptor/` | ⚪ 0% | Próximas etapas |

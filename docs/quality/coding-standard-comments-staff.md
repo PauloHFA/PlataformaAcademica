@@ -38,11 +38,11 @@ Linkar para documentação externa quando o método depende de contratos de serv
 | `controller/` | 20 REST Controllers | ✅ 20/20 |
 | `mapper/` | 10 Mappers (DTO ↔ Entity) | ✅ 10/10 |
 | `dto/` | 26 Data Transfer Objects | ✅ 26/26 |
+| `service/` | 32 Services (Interfaces + Impls) | ✅ 32/32 |
 
 ### ⏳ Em Andamento / Pendentes
 | Pacote | Status | Observação |
 |---|---|---|
-| `service/` | 🟡 13/32 | `ComentarioServiceImpl`, `UsuarioServiceImpl`, `AtividadeServiceImpl`, `ComunidadeServiceImpl`, `PerfilServiceImpl`, `AmizadeServiceImpl`, `ArtigoServiceImpl`, `PostagemServiceImpl`, `SaladeAulaServiceImpl`, `SubmissaoAtividadeServiceImpl`, `PlataformaServiceImpl`, `DashboardAlunoServiceImpl`, `FrequenciaServiceImpl` |
 | `config/`, `security/`, `interceptor/` | ⚪ 0% | Próximas etapas |
 
 ---

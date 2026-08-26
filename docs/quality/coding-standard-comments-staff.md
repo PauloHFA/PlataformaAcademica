@@ -28,5 +28,25 @@ Linkar para documentação externa quando o método depende de contratos de serv
 
 ---
 
+## 📊 Status de Documentação por Pacote (Atualizado 2026-08-26)
+
+### ✅ Documentados (Padrão Staff Completo)
+| Pacote | Entidades / Arquivos | Status |
+|---|---|---|
+| `model/` | `Comentario`, `Comunidade`, `Artigo`, `Atividade`, `Usuario`, `Amizade`, `Curtida`, `Postagem`, `Notificacao`, `Mensagem`, `SaladeAula`, `Perfil`, `SubmissaoAtividade`, `MembroComunidade`, `SolicitacaoEntrada`, `RecomendacaoUsuario`, `Professor`, `Admin`, `Plataforma`, `Frequencia`, `InteracaoUsuario`, `ConteudoMercado`, `CompraConteudo`, `ChatTempoRealUsuarios`, `TipoDestinoComentario` | ✅ 25/25 |
+
+### ⏳ Pendentes (Não Documentados no Padrão Staff)
+| Pacote | Arquivos / Componentes | Observação |
+|---|---|---|
+| `service/` | `ComentarioServiceImpl.java`, `RecomendacaoService.java`, `PerfilServiceImpl.java`, etc. | Documentação parcial; precisa de `@see REQ-XXX` e trade-offs |
+| `controller/` | `ComentarioController.java`, `AtividadeController.java`, `ArtigoController.java`, `ComunidadeController.java`, `DashboardController.java`, `FileController.java`, `FrequenciaController.java`, `HealthController.java` | Sem cabeçalhos arquiteturais Staff |
+| `mapper/` | `ComentarioMapper.java`, `AtividadeMapper.java`, `ArtigoMapper.java`, `AmizadeMapper.java`, `PerfilMapper.java`, `ComunidadeMapper.java`, `PostagemMapper.java`, `SalaDeAulaMapper.java`, `UsuarioMapper.java`, `SubmissaoAtividadeMapper.java` | Sem documentação de padrão |
+| `repository/` | Todos os repositórios JPA | ✅ 21/21 (modelo+repository) |
+| `config/` | Configurações de segurança, OAuth, etc. | Não verificados |
+| `interceptor/` | Interceptores de requisição | Não verificados |
+| `security/` | Configurações de autenticação/autorização | Não verificados |
+
+---
+
 ## ✅ Aplicação
 O padrão atualizado já está refletido nos arquivos documentados (`RecomendacaoService.java`, `PerfilServiceImpl.java`, etc.).

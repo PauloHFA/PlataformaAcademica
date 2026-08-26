@@ -2,6 +2,14 @@ package com.plataforma_academica.plataforma.dto;
 
 import lombok.Data;
 
+/**
+ * DTO de transferência para criação/atualização de Usuários.
+ * 
+ * Camada: Presentation / DTO (Identity Context)
+ * 
+ * @see Usuario
+ * @see UsuarioMapper
+ */
 @Data
 public class UsuarioDTO {
     private Long id;

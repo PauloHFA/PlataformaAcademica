@@ -26,6 +26,16 @@ import java.util.stream.Collectors;
  * Responsabilidades: Criar, listar, atualizar e excluir postagens no
  * ecossistema social.
  */
+/**
+ * Implementação do serviço de Postagens no feed social.
+ * 
+ * Camada: Application / Business Service (Social Context)
+ * Padrões aplicados: Service Layer, Repository Pattern, Transactional.
+ * 
+ * @see PostagemService
+ * @see docs/domain/social_context.md
+ * @see REQ-025 (Publicação no Feed Social)
+ */
 @Service
 public class PostagemServiceImpl implements PostagemService {
 

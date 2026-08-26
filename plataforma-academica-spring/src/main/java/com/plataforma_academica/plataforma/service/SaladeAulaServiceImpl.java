@@ -23,6 +23,16 @@ import com.plataforma_academica.plataforma.mapper.AtividadeMapper;
  * Camada: Application Service
  * Responsabilidades: Criar, listar e gerenciar salas de aula virtuais.
  */
+/**
+ * Implementação do serviço de Salas de Aula.
+ * 
+ * Camada: Application / Business Service (Academic Context)
+ * Padrões aplicados: Service Layer, Repository Pattern, Transactional.
+ * 
+ * @see SaladeAulaService
+ * @see docs/domain/academic_context.md
+ * @see REQ-018 (Criação de Salas de Aula)
+ */
 @Service
 public class SaladeAulaServiceImpl implements SaladeAulaService {
 

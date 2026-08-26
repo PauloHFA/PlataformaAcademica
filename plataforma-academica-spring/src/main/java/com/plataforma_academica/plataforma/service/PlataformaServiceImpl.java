@@ -13,6 +13,15 @@ import java.util.List;
  * Responsabilidades: Gerenciar configurações e recursos da plataforma
  * acadêmica.
  */
+/**
+ * Implementação do serviço de Plataforma.
+ * 
+ * Camada: Application / Business Service
+ * Padrões aplicados: Service Layer, Repository Pattern.
+ * 
+ * @see PlataformaService
+ * @see REQ-001 (Configuração da Plataforma)
+ */
 @Service
 public class PlataformaServiceImpl implements PlataformaService {
 

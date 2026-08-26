@@ -29,6 +29,16 @@ import java.util.UUID;
  * Responsabilidades: Receber, avaliar e gerenciar submissões de alunos em
  * atividades.
  */
+/**
+ * Implementação do serviço de Submissões de Atividades.
+ * 
+ * Camada: Application / Business Service (Academic Context)
+ * Padrões aplicados: Service Layer, Repository Pattern, Transactional.
+ * 
+ * @see SubmissaoAtividadeService
+ * @see docs/domain/academic_context.md
+ * @see REQ-026 (Submissão e Avaliação de Atividades)
+ */
 @Service
 public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService {
 

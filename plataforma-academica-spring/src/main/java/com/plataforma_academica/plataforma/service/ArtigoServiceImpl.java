@@ -16,9 +16,12 @@ import java.util.List;
 /**
  * Implementação do serviço de artigos acadêmicos.
  * 
- * Camada: Application Service
- * Responsabilidades: Criar, editar, listar e excluir artigos, garantindo
- * que apenas o autor possa modificar seu conteúdo.
+ * Camada: Application / Business Service (Academic Context)
+ * Padrões aplicados: Service Layer, Repository Pattern, Transactional.
+ * 
+ * @see ArtigoService
+ * @see docs/domain/academic_context.md
+ * @see REQ-010 (Publicação de Artigos Acadêmicos)
  */
 @Service
 public class ArtigoServiceImpl implements ArtigoService {

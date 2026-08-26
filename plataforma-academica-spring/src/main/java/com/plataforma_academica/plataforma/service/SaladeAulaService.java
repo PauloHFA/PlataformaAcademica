@@ -7,13 +7,25 @@ import com.plataforma_academica.plataforma.model.SaladeAula;
 
 import java.util.List;
 
+/**
+ * Interface do serviço de Salas de Aula.
+ * 
+ * Camada: Application / Business Service (Academic Context)
+ * Padrões aplicados: Service Layer, Repository Pattern.
+ * 
+ * @see SaladeAula
+ * @see REQ-018 (Criação de Salas de Aula)
+ */
 public interface SaladeAulaService {
 
     // --- Métodos de CRUD para a Sala de Aula ---
 
     SaladeAula criarSala(SaladeAula sala, Long criadorId);
+
     SaladeAula buscarSalaPorId(Long saladeAulaId);
+
     List<SaladeAula> listarTodasSalas();
+
     void deletarSala(Long saladeAulaId, Long userId); // Requer permissão do criador
 
     // --- Métodos de Gerenciamento de Membros (Usuário) ---
@@ -31,9 +43,10 @@ public interface SaladeAulaService {
 
     // Cadastra uma nova atividade (apenas o criador da sala pode fazer isso)
     Atividade cadastrarAtividade(Long saladeAulaId, AtividadeDTO atividadeDTO, Long creatorId);
-    
+
     // Cadastra atividade com documento anexado
-    Atividade cadastrarAtividadeComDocumento(Long saladeAulaId, AtividadeDTO atividadeDTO, Long creatorId, org.springframework.web.multipart.MultipartFile documento);
+    Atividade cadastrarAtividadeComDocumento(Long saladeAulaId, AtividadeDTO atividadeDTO, Long creatorId,
+            org.springframework.web.multipart.MultipartFile documento);
 
     // Busca uma atividade pelo ID
     Atividade buscarAtividadePorId(Long atividadeId);

@@ -16,11 +16,12 @@ import java.util.List;
  * Implementação do serviço de amizade responsável por gerenciar o ciclo de vida
  * das conexões entre usuários na plataforma.
  * 
- * Esta classe orquestra as operações de negócio relacionadas a solicitações de
- * amizade,
- * incluindo envio, resposta, remoção e listagem, garantindo a integridade dos
- * dados
- * através de transações.
+ * Camada: Application / Business Service (Social Context)
+ * Padrões aplicados: Service Layer, Repository Pattern, Transactional.
+ * 
+ * @see AmizadeService
+ * @see docs/domain/social_context.md
+ * @see REQ-020 (Gestão de Amizades)
  */
 @Service
 public class AmizadeServiceImpl implements AmizadeService {

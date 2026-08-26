@@ -5,13 +5,23 @@ import com.plataforma_academica.plataforma.dto.AmizadeResponseDTO;
 import com.plataforma_academica.plataforma.model.Amizade;
 import com.plataforma_academica.plataforma.model.Usuario;
 
+/**
+ * Mapper para conversão entre Amizade e DTOs.
+ * 
+ * Camada: Infrastructure / Mapper
+ * Padrões aplicados: Static Mapping Pattern, DTO.
+ * 
+ * @see Amizade
+ * @see AmizadeDTO
+ */
 public class AmizadeMapper {
 
     // ============================================
     // DTO → ENTIDADE (criação e atualização)
     // ============================================
     public static Amizade toEntity(AmizadeDTO dto, Usuario solicitante, Usuario destinatario) {
-        if (dto == null) return null;
+        if (dto == null)
+            return null;
 
         Amizade amizade = new Amizade();
 
@@ -32,7 +42,8 @@ public class AmizadeMapper {
     // ENTIDADE → RESPONSE DTO
     // ============================================
     public static AmizadeResponseDTO toResponse(Amizade amizade) {
-        if (amizade == null) return null;
+        if (amizade == null)
+            return null;
 
         AmizadeResponseDTO response = new AmizadeResponseDTO();
 

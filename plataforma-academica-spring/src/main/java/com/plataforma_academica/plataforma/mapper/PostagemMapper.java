@@ -6,13 +6,23 @@ import com.plataforma_academica.plataforma.model.Plataforma;
 import com.plataforma_academica.plataforma.model.Postagem;
 import com.plataforma_academica.plataforma.model.Usuario;
 
+/**
+ * Mapper para conversão entre Postagem e DTOs.
+ * 
+ * Camada: Infrastructure / Mapper
+ * Padrões aplicados: Static Mapping Pattern, DTO.
+ * 
+ * @see Postagem
+ * @see PostagemDTO
+ */
 public class PostagemMapper {
 
     // ==================================================
     // ENTITY → DTO (para criar/atualizar)
     // ==================================================
     public static PostagemDTO toDTO(Postagem postagem) {
-        if (postagem == null) return null;
+        if (postagem == null)
+            return null;
 
         PostagemDTO dto = new PostagemDTO();
 
@@ -21,12 +31,10 @@ public class PostagemMapper {
         dto.setConteudo(postagem.getConteudo());
 
         dto.setAutorId(
-                postagem.getAutor() != null ? postagem.getAutor().getId() : null
-        );
+                postagem.getAutor() != null ? postagem.getAutor().getId() : null);
 
         dto.setPlataformaId(
-                postagem.getPlataforma() != null ? postagem.getPlataforma().getId() : null
-        );
+                postagem.getPlataforma() != null ? postagem.getPlataforma().getId() : null);
         dto.setImagemUrl(postagem.getImagemUrl());
 
         return dto;
@@ -36,7 +44,8 @@ public class PostagemMapper {
     // ENTITY → RESPONSE DTO (para retornar ao front)
     // ==================================================
     public static PostagemResponseDTO toResponse(Postagem postagem) {
-        if (postagem == null) return null;
+        if (postagem == null)
+            return null;
 
         PostagemResponseDTO response = new PostagemResponseDTO();
 
@@ -53,9 +62,9 @@ public class PostagemMapper {
             response.setPlataformaId(postagem.getPlataforma().getId());
             response.setPlataformaNome(postagem.getPlataforma().getNome());
         }
-        
+
         response.setCurtidas(postagem.getCurtidas() != null ? postagem.getCurtidas() : 0);
-            response.setImagemUrl(postagem.getImagemUrl());
+        response.setImagemUrl(postagem.getImagemUrl());
 
         return response;
     }
@@ -64,7 +73,8 @@ public class PostagemMapper {
     // DTO → ENTITY (para salvar no banco)
     // ==================================================
     public static Postagem toEntity(PostagemDTO dto, Usuario autor, Plataforma plataforma) {
-        if (dto == null) return null;
+        if (dto == null)
+            return null;
 
         Postagem postagem = new Postagem();
 

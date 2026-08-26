@@ -40,9 +40,9 @@ Linkar para documentação externa quando o método depende de contratos de serv
 | Pacote | Status | Observação |
 |---|---|---|
 | `service/` | 🟡 5/32 | Serviços principais documentados |
-| `controller/` | 🟡 1/20 | Controllers principais iniciados |
-| `mapper/` | 🟡 1/10 | Mappers principais iniciados |
-| `dto/` | 🟡 1/26 | DTOs principais iniciados |
+| `controller/` | 🟡 6/20 | `AtividadeController`, `ArtigoController`, `ComunidadeController`, `UsuarioController`, `DashboardController`, `ComentarioController` documentados |
+| `mapper/` | 🟡 1/10 | `ComentarioMapper` documentado |
+| `dto/` | 🟡 1/26 | `ComentarioDTO` documentado |
 | `config/`, `security/`, `interceptor/` | ⚪ 0% | Próximas etapas |
 
 ---

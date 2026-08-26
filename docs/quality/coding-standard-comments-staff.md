@@ -39,7 +39,9 @@ Linkar para documentação externa quando o método depende de contratos de serv
 | Pacote | Arquivos / Componentes | Observação |
 |---|---|---|
 | `service/` | `ComentarioServiceImpl`, `UsuarioServiceImpl`, `AtividadeServiceImpl`, `ComunidadeServiceImpl`, `PerfilServiceImpl` | ✅ 5/32 (iniciado) |
-| `controller/` | `ComentarioController.java`, `AtividadeController.java`, `ArtigoController.java`, `ComunidadeController.java`, `DashboardController.java`, `FileController.java`, `FrequenciaController.java`, `HealthController.java` | Sem cabeçalhos arquiteturais Staff |
+| `controller/` | `ComentarioController` | ✅ 1/15 (iniciado) |
+| `mapper/` | `ComentarioMapper` | ✅ 1/10 (iniciado) |
+| `dto/` | `ComentarioDTO` | ✅ 1/26 (iniciado) |
 | `mapper/` | `ComentarioMapper.java`, `AtividadeMapper.java`, `ArtigoMapper.java`, `AmizadeMapper.java`, `PerfilMapper.java`, `ComunidadeMapper.java`, `PostagemMapper.java`, `SalaDeAulaMapper.java`, `UsuarioMapper.java`, `SubmissaoAtividadeMapper.java` | Sem documentação de padrão |
 | `repository/` | Todos os repositórios JPA | ✅ 21/21 (modelo+repository) |
 | `config/` | Configurações de segurança, OAuth, etc. | Não verificados |

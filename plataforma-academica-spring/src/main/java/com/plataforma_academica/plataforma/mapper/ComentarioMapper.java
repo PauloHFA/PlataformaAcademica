@@ -4,13 +4,25 @@ import com.plataforma_academica.plataforma.dto.ComentarioDTO;
 import com.plataforma_academica.plataforma.dto.ComentarioResponseDTO;
 import com.plataforma_academica.plataforma.model.*;
 
+/**
+ * Mapper responsável por converter entidades de Comentário em DTOs e
+ * vice-versa.
+ * 
+ * Camada: Infrastructure / Mapper
+ * Padrões aplicados: Data Transfer Object (DTO), Static Mapping Pattern.
+ * 
+ * @see Comentario
+ * @see ComentarioDTO
+ * @see ComentarioResponseDTO
+ */
 public class ComentarioMapper {
 
     // ----------------------------------------------------
     // ENTITY → RESPONSE DTO
     // ----------------------------------------------------
     public static ComentarioResponseDTO toResponse(Comentario comentario) {
-        if (comentario == null) return null;
+        if (comentario == null)
+            return null;
 
         ComentarioResponseDTO resp = new ComentarioResponseDTO();
 
@@ -54,7 +66,8 @@ public class ComentarioMapper {
     // ENTITY → DTO (caso ainda seja usado internamente)
     // ----------------------------------------------------
     public static ComentarioDTO toDTO(Comentario comentario) {
-        if (comentario == null) return null;
+        if (comentario == null)
+            return null;
 
         ComentarioDTO dto = new ComentarioDTO();
 
@@ -66,7 +79,7 @@ public class ComentarioMapper {
         dto.setAutorId(comentario.getAutor() != null ? comentario.getAutor().getId() : null);
         dto.setPostagemId(comentario.getPostagem() != null ? comentario.getPostagem().getId() : null);
         dto.setAtividadeId(comentario.getAtividade() != null ? comentario.getAtividade().getId() : null);
-        dto.setSalaId(comentario.getSaladeAula() != null ? comentario.getSaladeAula().getId(): null);
+        dto.setSalaId(comentario.getSaladeAula() != null ? comentario.getSaladeAula().getId() : null);
 
         return dto;
     }
@@ -81,9 +94,9 @@ public class ComentarioMapper {
             Postagem postagem,
             Atividade atividade,
             SaladeAula sala,
-            TipoDestinoComentario tipoDestino
-    ) {
-        if (dto == null) return null;
+            TipoDestinoComentario tipoDestino) {
+        if (dto == null)
+            return null;
 
         Comentario comentario = new Comentario();
 

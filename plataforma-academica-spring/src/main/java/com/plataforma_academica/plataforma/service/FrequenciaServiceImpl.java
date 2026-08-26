@@ -13,11 +13,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * Implementação do serviço de frequência.
+ * Implementação do serviço de Frequência acadêmica.
  * 
- * Camada: Application Service
- * Responsabilidades: Registrar e consultar frequências de alunos em salas de
- * aula.
+ * Camada: Application / Business Service (Academic Context)
+ * Padrões aplicados: Service Layer, Repository Pattern, Transactional.
+ * 
+ * @see FrequenciaService
+ * @see docs/domain/academic_context.md
+ * @see REQ-025 (Controle de Frequência)
  */
 @Service
 public class FrequenciaServiceImpl implements FrequenciaService {

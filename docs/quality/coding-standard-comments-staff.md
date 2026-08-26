@@ -42,7 +42,7 @@ Linkar para documentação externa quando o método depende de contratos de serv
 ### ⏳ Em Andamento / Pendentes
 | Pacote | Status | Observação |
 |---|---|---|
-| `service/` | 🟡 5/32 | Serviços principais documentados |
+| `service/` | 🟡 11/32 | `ComentarioServiceImpl`, `UsuarioServiceImpl`, `AtividadeServiceImpl`, `ComunidadeServiceImpl`, `PerfilServiceImpl`, `AmizadeServiceImpl`, `ArtigoServiceImpl`, `PostagemServiceImpl`, `SaladeAulaServiceImpl`, `SubmissaoAtividadeServiceImpl`, `PlataformaServiceImpl` |
 | `config/`, `security/`, `interceptor/` | ⚪ 0% | Próximas etapas |
 
 ---

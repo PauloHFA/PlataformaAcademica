@@ -9,7 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Entidade JPA que representa um Professor na plataforma.
  * 
  * Camada: Persistence / JPA Entity (Identity Context)
- * Herança: Estende {@link Usuario} através de JOINED (tabela filha `professor`),
+ * Herança: Estende {@link Usuario} através de JOINED (tabela filha
+ * `professor`),
  * adicionando atributos acadêmicos específicos como a matrícula.
  * 
  * @see docs/domain/identity_context.md
@@ -22,11 +23,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Professor extends Usuario {
 
     /** Matrícula institucional única do professor. */
-    @JsonProperty("matricula")
-    @Column(nullable = false, length = 8)
-    private String matricula;
-}
-
     @JsonProperty("matricula")
     @Column(nullable = false, length = 8)
     private String matricula;

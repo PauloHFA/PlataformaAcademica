@@ -145,43 +145,6 @@ public final class SaldoGamificacao {
 
     public String nivel() {
         return nivel;
-    }rgumentException("Saldo insuficiente de pontos");
-        }return new SaldoGamificacao(novoSaldo,this.moedas,this.nivel);
-
-    }
-
-    public SaldoGamificacao creditarMoedas(BigDecimal quantidade) {
-        if (quantidade == null || quantidade.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Quantidade deve ser positiva");
-        }
-        return new SaldoGamificacao(this.pontos, this.moedas.add(quantidade), this.nivel);
-    }
-
-    public SaldoGamificacao debitarMoedas(BigDecimal quantidade) {
-        if (quantidade == null || quantidade.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Quantidade deve ser positiva");
-        }
-        BigDecimal novoSaldo = this.moedas.subtract(quantidade);
-        if (novoSaldo.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("Saldo insuficiente de moedas");
-        }
-        return new SaldoGamificacao(this.pontos, novoSaldo, this.nivel);
-    }
-
-    public SaldoGamificacao comNivel(String nivel) {
-        return new SaldoGamificacao(this.pontos, this.moedas, nivel);
-    }
-
-    public BigDecimal pontos() {
-        return pontos;
-    }
-
-    public BigDecimal moedas() {
-        return moedas;
-    }
-
-    public String nivel() {
-        return nivel;
     }
 
     @Override

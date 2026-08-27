@@ -5,7 +5,7 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { authAndLoggingInterceptor } from './interceptors/auth-and-logging.interceptor';
-import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { provideSocketIo, SocketIoConfig } from 'ngx-socket-io';
 
 const config: SocketIoConfig = { url: 'http://localhost:8080', options: {} };
 
@@ -23,6 +23,6 @@ export const appConfig: ApplicationConfig = {
       withFetch(),
       withInterceptors([authAndLoggingInterceptor])
     ),
-    SocketIoModule.forRoot(config)
+    provideSocketIo(config)
   ]
 };

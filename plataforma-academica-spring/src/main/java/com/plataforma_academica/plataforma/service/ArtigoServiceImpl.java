@@ -60,11 +60,11 @@ public class ArtigoServiceImpl implements ArtigoService {
     /**
      * Edita um artigo existente, validando que apenas o autor pode modificar.
      * 
-     * @param id ID do artigo a ser editado.
+     * @param id  ID do artigo a ser editado.
      * @param dto DTO com novos dados.
      * @return Artigo atualizado.
      * @throws ResourceNotFoundException se o artigo não for encontrado.
-     * @throws BadRequestException se o usuário que edita não for o autor.
+     * @throws BadRequestException       se o usuário que edita não for o autor.
      */
     @Override
     @Transactional
@@ -82,9 +82,6 @@ public class ArtigoServiceImpl implements ArtigoService {
         artigo.setTitulo(dto.getTitulo());
         artigo.setConteudo(dto.getConteudo());
         artigo.setAtualizadoEm(LocalDateTime.now());
-
-        return artigoRepo.save(artigo);
-    }tualizadoEm(LocalDateTime.now());
 
         return artigoRepo.save(artigo);
     }

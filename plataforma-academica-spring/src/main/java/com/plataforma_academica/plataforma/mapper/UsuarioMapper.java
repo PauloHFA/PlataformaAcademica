@@ -6,13 +6,23 @@ import com.plataforma_academica.plataforma.model.Usuario;
 
 import java.util.Base64;
 
+/**
+ * Mapper para conversão entre Usuario e DTOs.
+ * 
+ * Camada: Infrastructure / Mapper
+ * Padrões aplicados: Static Mapping Pattern, DTO.
+ * 
+ * @see Usuario
+ * @see UsuarioResponseDTO
+ */
 public class UsuarioMapper {
 
     // ============================================================
     // ENTITY → DTO (simples, usado em requests de criação/edição)
     // ============================================================
     public static UsuarioDTO toDTO(Usuario usuario) {
-        if (usuario == null) return null;
+        if (usuario == null)
+            return null;
 
         UsuarioDTO dto = new UsuarioDTO();
 
@@ -31,7 +41,8 @@ public class UsuarioMapper {
     // ENTITY → RESPONSE DTO (para exibição no front)
     // ============================================================
     public static UsuarioResponseDTO toResponse(Usuario usuario) {
-        if (usuario == null) return null;
+        if (usuario == null)
+            return null;
 
         UsuarioResponseDTO resp = new UsuarioResponseDTO();
 
@@ -55,7 +66,8 @@ public class UsuarioMapper {
     // DTO → ENTITY (para salvar no banco)
     // ============================================================
     public static Usuario toEntity(UsuarioDTO dto) {
-        if (dto == null) return null;
+        if (dto == null)
+            return null;
 
         Usuario usuario = new Usuario();
 

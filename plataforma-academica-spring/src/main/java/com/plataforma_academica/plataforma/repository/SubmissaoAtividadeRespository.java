@@ -6,6 +6,14 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Repositório Spring Data JPA para a entidade SubmissaoAtividade.
+ * 
+ * Camada: Infrastructure / Persistence Repository
+ * 
+ * @see SubmissaoAtividade
+ * @see REQ-026 (Submissão e Avaliação de Atividades)
+ */
 @Repository
 public interface SubmissaoAtividadeRespository extends JpaRepository<SubmissaoAtividade, Long> {
     SubmissaoAtividade findByAtividadeIdAndAlunoId(Long atividadeId, Long alunoId);

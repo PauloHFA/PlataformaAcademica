@@ -5,13 +5,23 @@ import com.plataforma_academica.plataforma.dto.PerfilResponseDTO;
 import com.plataforma_academica.plataforma.model.Perfil;
 import com.plataforma_academica.plataforma.model.Usuario;
 
+/**
+ * Mapper para conversão entre Perfil e DTOs.
+ * 
+ * Camada: Infrastructure / Mapper
+ * Padrões aplicados: Static Mapping Pattern, DTO.
+ * 
+ * @see Perfil
+ * @see PerfilDTO
+ */
 public class PerfilMapper {
 
     // ----------------------------------------------------
     // ENTITY → RESPONSE (retornado ao frontend)
     // ----------------------------------------------------
     public static PerfilResponseDTO toResponse(Perfil perfil) {
-        if (perfil == null) return null;
+        if (perfil == null)
+            return null;
 
         PerfilResponseDTO resp = new PerfilResponseDTO();
 
@@ -28,10 +38,11 @@ public class PerfilMapper {
     }
 
     // ----------------------------------------------------
-    // ENTITY → DTO  (caso utilize internamente)
+    // ENTITY → DTO (caso utilize internamente)
     // ----------------------------------------------------
     public static PerfilDTO toDTO(Perfil perfil) {
-        if (perfil == null) return null;
+        if (perfil == null)
+            return null;
 
         PerfilDTO dto = new PerfilDTO();
 
@@ -59,7 +70,8 @@ public class PerfilMapper {
     // DTO → ENTITY (usado na criação/edição)
     // ----------------------------------------------------
     public static Perfil toEntity(PerfilDTO dto) {
-        if (dto == null) return null;
+        if (dto == null)
+            return null;
 
         Perfil perfil = new Perfil();
 

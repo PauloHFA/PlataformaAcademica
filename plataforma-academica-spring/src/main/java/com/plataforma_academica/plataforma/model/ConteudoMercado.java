@@ -7,6 +7,17 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * Entidade JPA que representa conteúdo comercializado no mercado acadêmico.
+ * 
+ * Camada: Persistence / Domain Entity (Academic / Commercial Context)
+ * Contexto de Negócio: Material didático, cursos, templates e exercícios
+ * vendidos ou distribuídos dentro da plataforma, com controle de preço,
+ * avaliações e downloads.
+ * 
+ * @see docs/domain/academic_context.md
+ * @see REQ-050 (Mercado de Conteúdo Acadêmico)
+ */
 @Entity
 @Table(name = "conteudo_mercado")
 @Data

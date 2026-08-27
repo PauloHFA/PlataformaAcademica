@@ -68,3 +68,35 @@ public static Usuario reconstruir(...) {
 - Guia de Implementação DDD (Fase 1.2 - Identity Domain Model)
 - Arquitetura Hexagonal: Isolamento do Domínio
 - Effective Java, Item 1: Consider static factory methods instead of constructors
+
+package com.plataforma_academica.plataforma.academic.domain.model;
+
+import com.plataforma_academica.plataforma.sharedkernel.domain.model.identifier.SalaId;
+import com.plataforma_academica.plataforma.sharedkernel.domain.model.identifier.UsuarioId;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
+
+/**
+ * Agregado Raiz que representa uma Sala de Aula Virtual.
+ * 
+ * Este agregado encapsula a lógica de negócio relacionada à gestão de salas de aula,
+ * incluindo a criação, gestão de membros e controle de invariantes de negócio.
+ * 
+ * Segue os princípios de Domain-Driven Design (DDD), mantendo-se puro e sem
+ * dependências de frameworks de persistência ou infraestrutura.
+ */
+public final class SalaDeAula {
+    private final SalaId id;
+    private String nome;
+    private final String codigoSala;
+    private final UsuarioId criadorId;
+    private final List<MembroSala> membros;
+    private final LocalDateTime dataCriacao;
+    private LocalDateTime dataAtualizacao;
+
+    // ... (Construtores, Factory Methods e Comportamentos de Negócio)
+}

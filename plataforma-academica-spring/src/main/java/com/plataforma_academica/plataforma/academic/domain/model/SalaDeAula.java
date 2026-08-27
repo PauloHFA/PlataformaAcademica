@@ -8,13 +8,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * Agregado Raiz que representa uma Sala de Aula Virtual.
- * Modelo Rico: Encapsula comportamento e invariantes.
- * Zero dependências de frameworks.
+ * 
+ * Este agregado encapsula a lógica de negócio relacionada à gestão de salas de
+ * aula,
+ * incluindo a criação, gestão de membros e controle de invariantes de negócio.
+ * 
+ * Segue os princípios de Domain-Driven Design (DDD), mantendo-se puro e sem
+ * dependências de frameworks de persistência ou infraestrutura.
  */
 public final class SalaDeAula {
     private final SalaId id;
@@ -25,17 +29,14 @@ public final class SalaDeAula {
     private final LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 
-    private SalaDeAula(SalaId id, String nome, String codigoSala, UsuarioId criadorId, List<MembroSala> membros,
-            LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
-        this.id = id;
-        this.nome = nome;
-        this.codigoSala = codigoSala;
-        this.criadorId = criadorId;
-        this.membros = new ArrayList<>(membros);
-        this.dataCriacao = dataCriacao;
-        this.dataAtualizacao = dataAtualizacao;
-    }
-
+    /**
+     * Construtor privado para criação de nova instância.
+     * 
+     * @param id         Identificador único da sala.
+     * @param nome       Nome da sala.
+     * @param codigoSala Código único de acesso.
+     * @param criadorId  Identificador do usuário criador.
+     */
     private SalaDeAula(SalaId id, String nome, String codigoSala, UsuarioId criadorId) {
         this.id = id;
         this.nome = nome;
@@ -50,8 +51,26 @@ public final class SalaDeAula {
     }
 
     /**
+     * Construtor privado para reconstituição de estado (usado pelo Mapper).
+     */
+    private SalaDeAula(SalaId id, String nome, String codigoSala, UsuarioId criadorId, List<MembroSala> membros,
+            LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
+        this.id = id;
+        this.nome = nome;
+        this.codigoSala = codigoSala;
+        this.criadorId = criadorId;
+        this.membros = new ArrayList<>(membros);
+        this.dataCriacao = dataCriacao;
+        this.dataAtualizacao = dataAtualizacao;
+    }
+
+    /**
      * Factory Method para criação de nova sala.
      * Gera código único de 8 caracteres alfanuméricos.
+     * 
+     * @param nome      Nome da sala.
+     * @param criadorId Identificador do usuário criador.
+     * @return Nova instância de SalaDeAula.
      */
     public static SalaDeAula criar(String nome, UsuarioId criadorId) {
         if (nome == null || nome.isBlank()) {
@@ -63,6 +82,15 @@ public final class SalaDeAula {
 
     /**
      * Factory Method para reconstituição a partir do banco de dados.
+     * 
+     * @param id              Identificador da sala.
+     * @param nome            Nome da sala.
+     * @param codigoSala      Código de acesso.
+     * @param criadorId       Identificador do criador.
+     * @param membros         Lista de membros.
+     * @param dataCriacao     Data de criação original.
+     * @param dataAtualizacao Data da última atualização.
+     * @return Instância reconstituída de SalaDeAula.
      */
     public static SalaDeAula reconstituir(SalaId id, String nome, String codigoSala,
             UsuarioId criadorId, List<MembroSala> membros,
@@ -70,6 +98,9 @@ public final class SalaDeAula {
         return new SalaDeAula(id, nome, codigoSala, criadorId, membros, dataCriacao, dataAtualizacao);
     }
 
+    /**
+     * Gera um código único de 8 caracteres alfanuméricos para a sala.
+     */
     private static String gerarCodigoUnico() {
         String chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // Remove chars ambíguos
         StringBuilder sb = new StringBuilder(8);
@@ -82,6 +113,11 @@ public final class SalaDeAula {
 
     // --- Comportamentos de Negócio (Métodos de Comando) ---
 
+    /**
+     * Altera o nome da sala, garantindo que não seja vazio.
+     * 
+     * @param novoNome Novo nome da sala.
+     */
     public void alterarNome(String novoNome) {
         if (novoNome == null || novoNome.isBlank()) {
             throw new IllegalArgumentException("Nome da sala não pode ser vazio");
@@ -90,6 +126,12 @@ public final class SalaDeAula {
         this.dataAtualizacao = LocalDateTime.now();
     }
 
+    /**
+     * Adiciona um novo membro à sala, garantindo que não haja duplicidade.
+     * 
+     * @param usuarioId Identificador do usuário.
+     * @param papel     Papel do membro na sala.
+     */
     public void adicionarMembro(UsuarioId usuarioId, PapelMembro papel) {
         if (usuarioId == null)
             throw new IllegalArgumentException("UsuarioId não pode ser nulo");
@@ -105,6 +147,12 @@ public final class SalaDeAula {
         this.dataAtualizacao = LocalDateTime.now();
     }
 
+    /**
+     * Remove um membro da sala, validando permissões e regras de negócio.
+     * 
+     * @param usuarioId     Identificador do usuário a ser removido.
+     * @param solicitanteId Identificador do usuário que solicitou a remoção.
+     */
     public void removerMembro(UsuarioId usuarioId, UsuarioId solicitanteId) {
         // Invariante: Apenas docentes ou o próprio aluno podem remover
         boolean isDocente = membros.stream()
@@ -129,6 +177,13 @@ public final class SalaDeAula {
         this.dataAtualizacao = LocalDateTime.now();
     }
 
+    /**
+     * Altera o papel de um membro existente na sala.
+     * 
+     * @param usuarioId     Identificador do usuário.
+     * @param novoPapel     Novo papel a ser atribuído.
+     * @param solicitanteId Identificador do usuário que solicitou a alteração.
+     */
     public void alterarPapelMembro(UsuarioId usuarioId, PapelMembro novoPapel, UsuarioId solicitanteId) {
         // Apenas docentes podem alterar papéis
         boolean isDocente = membros.stream()
@@ -153,33 +208,7 @@ public final class SalaDeAula {
         this.dataAtualizacao = LocalDateTime.now();
     }
 
-    // --- Consultas (Métodos de Leitura) ---
-
-    public boolean isMembro(UsuarioId usuarioId) {
-        return membros.stream().anyMatch(m -> m.usuarioId().equals(usuarioId));
-    }
-
-    public boolean isDocente(UsuarioId usuarioId) {
-        return membros.stream()
-                .filter(m -> m.usuarioId().equals(usuarioId))
-                .anyMatch(m -> m.papel() == PapelMembro.DOCENTE);
-    }
-
-    public List<UsuarioId> listarAlunos() {
-        return membros.stream()
-                .filter(m -> m.papel() == PapelMembro.ALUNO)
-                .map(MembroSala::usuarioId)
-                .collect(Collectors.toList());
-    }
-
-    public List<UsuarioId> listarDocentes() {
-        return membros.stream()
-                .filter(m -> m.papel() == PapelMembro.DOCENTE)
-                .map(MembroSala::usuarioId)
-                .collect(Collectors.toList());
-    }
-
-    // --- Getters (Apenas leitura, coleções imutáveis) ---
+    // --- Getters ---
 
     public SalaId id() {
         return id;
@@ -253,17 +282,14 @@ public final class SalaDeAula {
         }
 
         // Construtor de reconstituição
-        public static MembroSala reconstituir(UsuarioId usuarioId, PapelMembro papel, LocalDateTime dataEntrada) {
-            MembroSala membro = new MembroSala(usuarioId, papel);
-            // Como dataEntrada é final, precisamos ajustar o construtor ou usar reflexão.
-            // Para manter a pureza, vamos ajustar o construtor privado.
-            return new MembroSala(usuarioId, papel, dataEntrada);
-        }
-
         private MembroSala(UsuarioId usuarioId, PapelMembro papel, LocalDateTime dataEntrada) {
             this.usuarioId = usuarioId;
             this.papel = papel;
             this.dataEntrada = dataEntrada;
+        }
+
+        public static MembroSala reconstituir(UsuarioId usuarioId, PapelMembro papel, LocalDateTime dataEntrada) {
+            return new MembroSala(usuarioId, papel, dataEntrada);
         }
 
         void alterarPapel(PapelMembro novoPapel) {

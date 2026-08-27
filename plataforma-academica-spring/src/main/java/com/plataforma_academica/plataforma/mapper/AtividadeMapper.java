@@ -6,13 +6,23 @@ import com.plataforma_academica.plataforma.model.Atividade;
 import com.plataforma_academica.plataforma.model.SaladeAula;
 import com.plataforma_academica.plataforma.model.Usuario;
 
+/**
+ * Mapper para conversão entre Atividade e DTOs.
+ * 
+ * Camada: Infrastructure / Mapper
+ * Padrões aplicados: Static Mapping Pattern, DTO.
+ * 
+ * @see Atividade
+ * @see AtividadeDTO
+ */
 public class AtividadeMapper {
 
     // ======================================================
-    // DTO → ENTIDADE  (entrada: criação / edição)
+    // DTO → ENTIDADE (entrada: criação / edição)
     // ======================================================
     public static Atividade toEntity(AtividadeDTO dto, Usuario autor, SaladeAula sala) {
-        if (dto == null) return null;
+        if (dto == null)
+            return null;
 
         Atividade atividade = new Atividade();
 
@@ -30,8 +40,8 @@ public class AtividadeMapper {
         }
         atividade.setPontos(dto.getPontos());
 
-        atividade.setAutor(autor);      // entidade carregada no service
-        atividade.setSalaDeAula(sala);  // entidade carregada no service
+        atividade.setAutor(autor); // entidade carregada no service
+        atividade.setSalaDeAula(sala); // entidade carregada no service
 
         return atividade;
     }
@@ -40,7 +50,8 @@ public class AtividadeMapper {
     // ENTIDADE → RESPONSE DTO (saída para o cliente)
     // ======================================================
     public static AtividadeResponseDTO toResponse(Atividade entidade) {
-        if (entidade == null) return null;
+        if (entidade == null)
+            return null;
 
         AtividadeResponseDTO response = new AtividadeResponseDTO();
 

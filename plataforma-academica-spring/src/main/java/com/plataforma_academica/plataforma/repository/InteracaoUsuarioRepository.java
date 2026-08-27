@@ -10,6 +10,16 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Repositório Spring Data JPA para a entidade InteracaoUsuario.
+ * 
+ * Camada: Persistence / Repository
+ * Contexto de Negócio: Social / Recomendação
+ * Padrões aplicados: Spring Data JPA, Consultas customizadas (JPQL).
+ * 
+ * @see InteracaoUsuario
+ * @see docs/architecture/ddd.md
+ */
 @Repository
 public interface InteracaoUsuarioRepository extends JpaRepository<InteracaoUsuario, Long> {
 
@@ -17,13 +27,14 @@ public interface InteracaoUsuarioRepository extends JpaRepository<InteracaoUsuar
 
     @Query("SELECT i FROM InteracaoUsuario i WHERE i.usuario = :usuario AND i.dataInteracao >= :dataInicio ORDER BY i.dataInteracao DESC")
     List<InteracaoUsuario> findByUsuarioAndDataInteracaoAfter(
-        @Param("usuario") Usuario usuario,
-        @Param("dataInicio") LocalDateTime dataInicio
-    );
+            @Param("usuario") Usuario usuario,
+            @Param("dataInicio") LocalDateTime dataInicio);
 
     @Query("SELECT i FROM InteracaoUsuario i WHERE i.entidadeTipo = :entidadeTipo AND i.entidadeId = :entidadeId ORDER BY i.dataInteracao DESC")
-    List<InteracaoUsuario> findByEntidade(@Param("entidadeTipo") String entidadeTipo, @Param("entidadeId") Long entidadeId);
+    List<InteracaoUsuario> findByEntidade(@Param("entidadeTipo") String entidadeTipo,
+            @Param("entidadeId") Long entidadeId);
 
     @Query("SELECT DISTINCT i.usuario FROM InteracaoUsuario i WHERE i.entidadeTipo = :entidadeTipo AND i.entidadeId = :entidadeId")
-    List<Usuario> findUsuariosByEntidade(@Param("entidadeTipo") String entidadeTipo, @Param("entidadeId") Long entidadeId);
+    List<Usuario> findUsuariosByEntidade(@Param("entidadeTipo") String entidadeTipo,
+            @Param("entidadeId") Long entidadeId);
 }

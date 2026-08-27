@@ -4,6 +4,14 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
+/**
+ * DTO de transferência para criação/atualização de Atividades.
+ * 
+ * Camada: Presentation / DTO (Academic Context)
+ * 
+ * @see Atividade
+ * @see AtividadeMapper
+ */
 @Data
 public class AtividadeDTO {
 

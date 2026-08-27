@@ -7,46 +7,69 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
 
+/**
+ * Entidade JPA que representa o Usuário no modelo legado de persistência.
+ * 
+ * Camada: Persistence / JPA Entity
+ * Utiliza herança do tipo JOINED (tabelas filhas como Professor, Admin, etc.).
+ * Contém dados de autenticação, contato e perfil básico.
+ */
 @Data
 @Entity
 @Table(name = "usuario")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "tipo_usuario", discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("PADRAO")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "atividadesCriadas", "postagens", "comentarios", "submissões"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "atividadesCriadas", "postagens", "comentarios",
+        "submissões" })
 public class Usuario {
 
+    /** Identificador único do usuário. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /** Primeiro nome do usuário. */
     @Column(nullable = false)
     private String nome;
-    
+
+    /** Sobrenome do usuário. */
     private String sobrenome;
-    
+
+    /** E-mail de cadastro (único). */
     @Column(unique = true, nullable = false)
     private String email;
-    
+
+    /**
+     * Senha criptografada (acesso exclusivo para escrita por motivos de segurança).
+     */
     @com.fasterxml.jackson.annotation.JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     private String senha;
-    
+
+    /** Data de nascimento. */
     private java.time.LocalDate dataNascimento;
-    
+
+    /** Número de telefone. */
     private String telefone;
-    
+
+    /** Descrição ou biografia resumida. */
     @Column(columnDefinition = "TEXT")
     private String descricao;
-    
+
+    /** Instituição de ensino associada. */
     private String instituicaoEnsino;
-    
+
+    /** CEP de localização. */
     private String cep;
-    
+
+    /** País de residência. */
     private String pais;
-    
+
+    /** Cidade de residência. */
     private String cidade;
-    
+
+    /** Website pessoal ou portfólio. */
     private String site;
 
     @Lob

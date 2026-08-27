@@ -3,6 +3,14 @@ package com.plataforma_academica.plataforma.dto;
 import lombok.Data;
 import java.time.LocalDateTime;
 
+/**
+ * DTO de resposta para Artigos.
+ * 
+ * Camada: Presentation / DTO (Academic Context)
+ * 
+ * @see Artigo
+ * @see ArtigoMapper
+ */
 @Data
 public class ArtigoResponseDTO {
 

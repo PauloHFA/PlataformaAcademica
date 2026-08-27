@@ -8,6 +8,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Interface do serviço de Atividades acadêmicas.
+ * 
+ * Camada: Application / Business Service (Academic Context)
+ * Padrões aplicados: Service Layer, Repository Pattern.
+ * 
+ * @see Atividade
+ * @see REQ-020 (Criação de Atividades)
+ */
 public interface AtividadeService {
 
     @Transactional
@@ -16,9 +25,14 @@ public interface AtividadeService {
     Atividade criarAtividade(Long salaId, AtividadeDTO atividadeDTO, Long autorId);
 
     Atividade buscarAtividadePorId(Long atividadeId);
+
     List<Atividade> listarAtividadesPorSala(Long salaId);
+
     Atividade atualizarAtividade(Long atividadeId, Atividade atividadeAtualizada, Long autorId);
+
     Atividade atualizarAtividade(Long atividadeId, AtividadeDTO atividadeDTO, Long autorId);
+
     void deletarAtividade(Long atividadeId, Long autorId);
+
     List<Atividade> listarAtividadesPorAutor(Long autorId);
 }

@@ -14,6 +14,19 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Controller REST responsável pelo gerenciamento de Solicitações de Entrada em
+ * Salas de Aula.
+ * 
+ * Camada: Presentation / REST Controller (Academic Context)
+ * Contexto de Negócio: Solicitação, aprovação e rejeição de acesso a salas de
+ * aula.
+ * Padrões aplicados: RestController, CrossOrigin.
+ * 
+ * @see SolicitacaoEntradaService
+ * @see docs/domain/academic_context.md
+ * @see REQ-025 (Solicitação e Aprovação de Entrada)
+ */
 @RestController
 @RequestMapping("/api/solicitacoes")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -31,15 +44,16 @@ public class SolicitacaoEntradaController {
     @PostMapping("/solicitar/{salaId}/{usuarioId}")
     public ResponseEntity<?> solicitarEntrada(@PathVariable Long salaId, @PathVariable Long usuarioId) {
         System.out.println("[POST /api/solicitacoes/solicitar] Sala=" + salaId + ", Usuario=" + usuarioId);
-        
+
         SaladeAula sala = salaRepository.findById(salaId)
                 .orElseThrow(() -> new RuntimeException("Sala não encontrada"));
-        
+
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         // Verifica se já existe solicitação pendente
-        if (solicitacaoRepository.findBySalaIdAndUsuarioIdAndStatus(salaId, usuarioId, StatusSolicitacao.PENDENTE).isPresent()) {
+        if (solicitacaoRepository.findBySalaIdAndUsuarioIdAndStatus(salaId, usuarioId, StatusSolicitacao.PENDENTE)
+                .isPresent()) {
             return ResponseEntity.badRequest().body("Já existe uma solicitação pendente");
         }
 
@@ -47,7 +61,7 @@ public class SolicitacaoEntradaController {
         solicitacao.setSala(sala);
         solicitacao.setUsuario(usuario);
         solicitacao.setStatus(StatusSolicitacao.PENDENTE);
-        
+
         SolicitacaoEntrada salva = solicitacaoRepository.save(solicitacao);
         System.out.println("[POST /api/solicitacoes/solicitar] Sucesso: ID=" + salva.getId());
         return ResponseEntity.ok(salva);
@@ -56,7 +70,8 @@ public class SolicitacaoEntradaController {
     @GetMapping("/sala/{salaId}/pendentes")
     public ResponseEntity<List<SolicitacaoEntrada>> listarPendentes(@PathVariable Long salaId) {
         System.out.println("[GET /api/solicitacoes/sala/" + salaId + "/pendentes]");
-        List<SolicitacaoEntrada> pendentes = solicitacaoRepository.findBySalaIdAndStatus(salaId, StatusSolicitacao.PENDENTE);
+        List<SolicitacaoEntrada> pendentes = solicitacaoRepository.findBySalaIdAndStatus(salaId,
+                StatusSolicitacao.PENDENTE);
         System.out.println("[GET /api/solicitacoes/sala/" + salaId + "/pendentes] Total: " + pendentes.size());
         return ResponseEntity.ok(pendentes);
     }
@@ -64,7 +79,7 @@ public class SolicitacaoEntradaController {
     @PutMapping("/{solicitacaoId}/aprovar/{professorId}")
     public ResponseEntity<?> aprovar(@PathVariable Long solicitacaoId, @PathVariable Long professorId) {
         System.out.println("[PUT /api/solicitacoes/" + solicitacaoId + "/aprovar] Professor=" + professorId);
-        
+
         SolicitacaoEntrada solicitacao = solicitacaoRepository.findById(solicitacaoId)
                 .orElseThrow(() -> new RuntimeException("Solicitação não encontrada"));
 
@@ -90,7 +105,7 @@ public class SolicitacaoEntradaController {
     @PutMapping("/{solicitacaoId}/rejeitar/{professorId}")
     public ResponseEntity<?> rejeitar(@PathVariable Long solicitacaoId, @PathVariable Long professorId) {
         System.out.println("[PUT /api/solicitacoes/" + solicitacaoId + "/rejeitar] Professor=" + professorId);
-        
+
         SolicitacaoEntrada solicitacao = solicitacaoRepository.findById(solicitacaoId)
                 .orElseThrow(() -> new RuntimeException("Solicitação não encontrada"));
 
@@ -110,7 +125,8 @@ public class SolicitacaoEntradaController {
     @GetMapping("/usuario/{usuarioId}/minhas")
     public ResponseEntity<List<SolicitacaoEntrada>> minhasSolicitacoes(@PathVariable Long usuarioId) {
         System.out.println("[GET /api/solicitacoes/usuario/" + usuarioId + "/minhas]");
-        List<SolicitacaoEntrada> solicitacoes = solicitacaoRepository.findByUsuarioIdAndStatus(usuarioId, StatusSolicitacao.PENDENTE);
+        List<SolicitacaoEntrada> solicitacoes = solicitacaoRepository.findByUsuarioIdAndStatus(usuarioId,
+                StatusSolicitacao.PENDENTE);
         return ResponseEntity.ok(solicitacoes);
     }
 }

@@ -61,6 +61,18 @@ import java.util.List;
  * e processamento dos dados é delegada ao SaladeAulaService.
  * ============================================================================
  */
+/**
+ * Controller REST responsável pela gestão de Salas de Aula.
+ * 
+ * Camada: Presentation / REST Controller (Academic Context)
+ * Contexto de Negócio: Criação, membros, atividades e conteúdo dentro de
+ * turmas.
+ * Padrões aplicados: RestController, CrossOrigin, DTOs, MultipartFile.
+ * 
+ * @see SaladeAulaService
+ * @see docs/domain/academic_context.md
+ * @see REQ-018 (Criação de Salas de Aula)
+ */
 @RestController
 @RequestMapping("/api/saladeaula")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -73,7 +85,7 @@ public class SaladeAulaController {
     }
 
     // =========================================================================
-    //  CRUD DA SALA DE AULA
+    // CRUD DA SALA DE AULA
     // =========================================================================
 
     /**
@@ -82,17 +94,18 @@ public class SaladeAulaController {
      * O usuário criador deve ser enviado via path variable.
      * Apenas usuários válidos podem criar salas.
      *
-     * @param salaDTO objeto com nome, descrição, etc.
+     * @param salaDTO   objeto com nome, descrição, etc.
      * @param criadorId ID do usuário criador
      */
     @PostMapping("/criar/{criadorId}")
     public ResponseEntity<SalaDeAulaResponseDTO> criarSala(@RequestBody SalaDeAulaDTO salaDTO,
-                                                @PathVariable Long criadorId) {
+            @PathVariable Long criadorId) {
         System.out.println("[POST /api/saladeaula/criar] Criador=" + criadorId + ", Nome=" + salaDTO.getNome());
         SaladeAula sala = new SaladeAula();
         sala.setNome(salaDTO.getNome());
         SaladeAula salaCriada = salaService.criarSala(sala, criadorId);
-        System.out.println("[POST /api/saladeaula/criar] Sucesso: ID=" + salaCriada.getId() + ", Código=" + salaCriada.getCodigoSala());
+        System.out.println("[POST /api/saladeaula/criar] Sucesso: ID=" + salaCriada.getId() + ", Código="
+                + salaCriada.getCodigoSala());
         return ResponseEntity.ok(SalaDeAulaMapper.toResponse(salaCriada));
     }
 
@@ -123,18 +136,18 @@ public class SaladeAulaController {
      *
      * Somente o criador pode realizar essa ação.
      *
-     * @param id ID da sala
+     * @param id     ID da sala
      * @param userId ID do possível criador
      */
     @DeleteMapping("/{id}/usuario/{userId}")
     public ResponseEntity<Void> deletarSala(@PathVariable Long id,
-                                            @PathVariable Long userId) {
+            @PathVariable Long userId) {
         salaService.deletarSala(id, userId);
         return ResponseEntity.noContent().build();
     }
 
     // =========================================================================
-    //  GERENCIAMENTO DE MEMBROS
+    // GERENCIAMENTO DE MEMBROS
     // =========================================================================
 
     /**
@@ -142,16 +155,15 @@ public class SaladeAulaController {
      *
      * Somente o criador da sala pode adicionar novos membros.
      *
-     * @param salaId ID da sala
-     * @param membroId ID do usuário a ser adicionado
+     * @param salaId    ID da sala
+     * @param membroId  ID do usuário a ser adicionado
      * @param creatorId ID do criador da sala
      */
     @PostMapping("/{salaId}/add-membro/{membroId}/criador/{creatorId}")
     public ResponseEntity<SalaDeAulaResponseDTO> adicionarMembro(
             @PathVariable Long salaId,
             @PathVariable Long membroId,
-            @PathVariable Long creatorId
-    ) {
+            @PathVariable Long creatorId) {
         salaService.adicionarMembro(salaId, membroId, creatorId);
         SaladeAula sala = salaService.buscarSalaPorId(salaId);
         return ResponseEntity.ok(SalaDeAulaMapper.toResponse(sala));
@@ -176,14 +188,13 @@ public class SaladeAulaController {
     public ResponseEntity<Void> removerMembro(
             @PathVariable Long salaId,
             @PathVariable Long membroId,
-            @PathVariable Long creatorId
-    ) {
+            @PathVariable Long creatorId) {
         salaService.removerMembro(salaId, membroId, creatorId);
         return ResponseEntity.noContent().build();
     }
 
     // =========================================================================
-    //  GERENCIAMENTO DE ATIVIDADES
+    // GERENCIAMENTO DE ATIVIDADES
     // =========================================================================
 
     /**
@@ -191,16 +202,15 @@ public class SaladeAulaController {
      *
      * Apenas o criador pode adicionar atividades.
      *
-     * @param salaId ID da sala
-     * @param creatorId ID do criador
+     * @param salaId       ID da sala
+     * @param creatorId    ID do criador
      * @param atividadeDTO objeto com título, descrição, etc.
      */
     @PostMapping(value = "/{salaId}/atividade/criar/{creatorId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AtividadeResponseDTO> criarAtividade(
             @PathVariable Long salaId,
             @PathVariable Long creatorId,
-            @RequestBody AtividadeDTO atividadeDTO
-    ) {
+            @RequestBody AtividadeDTO atividadeDTO) {
         System.out.println("[POST /api/saladeaula/" + salaId + "/atividade/criar] Título=" + atividadeDTO.getTitulo());
         Atividade atividade = salaService.cadastrarAtividade(salaId, atividadeDTO, creatorId);
         System.out.println("[POST /api/saladeaula/" + salaId + "/atividade/criar] Sucesso: ID=" + atividade.getId());
@@ -216,18 +226,19 @@ public class SaladeAulaController {
             @RequestParam(required = false) String tipoDocumentoSubmissao,
             @RequestParam String dataEntrega,
             @RequestParam(required = false) Double pontos,
-            @RequestPart(required = false) MultipartFile documento
-    ) {
-        System.out.println("[POST /api/saladeaula/" + salaId + "/atividade/criar] Com documento: " + (documento != null ? documento.getOriginalFilename() : "sem arquivo"));
+            @RequestPart(required = false) MultipartFile documento) {
+        System.out.println("[POST /api/saladeaula/" + salaId + "/atividade/criar] Com documento: "
+                + (documento != null ? documento.getOriginalFilename() : "sem arquivo"));
         AtividadeDTO dto = new AtividadeDTO();
         dto.setTitulo(titulo);
         dto.setDescricao(descricao);
         dto.setTipoDocumentoSubmissao(tipoDocumentoSubmissao);
         dto.setDataEntrega(dataEntrega);
         dto.setPontos(pontos);
-        
+
         Atividade atividade = salaService.cadastrarAtividadeComDocumento(salaId, dto, creatorId, documento);
-        System.out.println("[POST /api/saladeaula/" + salaId + "/atividade/criar] Sucesso: ID=" + atividade.getId() + ", Doc=" + atividade.getDocumentoUrl());
+        System.out.println("[POST /api/saladeaula/" + salaId + "/atividade/criar] Sucesso: ID=" + atividade.getId()
+                + ", Doc=" + atividade.getDocumentoUrl());
         return ResponseEntity.ok(AtividadeMapper.toResponse(atividade));
     }
 
@@ -258,8 +269,7 @@ public class SaladeAulaController {
     public ResponseEntity<AtividadeResponseDTO> atualizarAtividade(
             @PathVariable Long salaId,
             @PathVariable Long creatorId,
-            @RequestBody AtividadeDTO atividadeDTO
-    ) {
+            @RequestBody AtividadeDTO atividadeDTO) {
         Atividade atividade = salaService.atualizarAtividade(salaId, atividadeDTO, creatorId);
         return ResponseEntity.ok(AtividadeMapper.toResponse(atividade));
     }
@@ -272,8 +282,7 @@ public class SaladeAulaController {
     @DeleteMapping("/atividade/{atividadeId}/criador/{creatorId}")
     public ResponseEntity<Void> deletarAtividade(
             @PathVariable Long atividadeId,
-            @PathVariable Long creatorId
-    ) {
+            @PathVariable Long creatorId) {
         salaService.deletarAtividade(atividadeId, creatorId);
         return ResponseEntity.noContent().build();
     }

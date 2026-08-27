@@ -9,13 +9,23 @@ import com.plataforma_academica.plataforma.model.Usuario;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Mapper para conversão entre SaladeAula e DTOs.
+ * 
+ * Camada: Infrastructure / Mapper
+ * Padrões aplicados: Static Mapping Pattern, DTO.
+ * 
+ * @see SaladeAula
+ * @see SalaDeAulaDTO
+ */
 public class SalaDeAulaMapper {
 
     // ============================================================
     // ENTITY → DTO (para criação/edição - dados básicos)
     // ============================================================
     public static SalaDeAulaDTO toDTO(SaladeAula sala) {
-        if (sala == null) return null;
+        if (sala == null)
+            return null;
 
         SalaDeAulaDTO dto = new SalaDeAulaDTO();
 
@@ -24,26 +34,23 @@ public class SalaDeAulaMapper {
 
         // Criador
         dto.setCriadorId(
-                sala.getCriador() != null ? sala.getCriador().getId() : null
-        );
+                sala.getCriador() != null ? sala.getCriador().getId() : null);
 
         // Membros
         dto.setMembrosIds(
                 sala.getUsuarios() != null
                         ? sala.getUsuarios().stream()
-                        .map(Usuario::getId)
-                        .collect(Collectors.toList())
-                        : List.of()
-        );
+                                .map(Usuario::getId)
+                                .collect(Collectors.toList())
+                        : List.of());
 
         // Atividades
         dto.setAtividadesIds(
                 sala.getAtividades() != null
                         ? sala.getAtividades().stream()
-                        .map(Atividade::getId)
-                        .collect(Collectors.toList())
-                        : List.of()
-        );
+                                .map(Atividade::getId)
+                                .collect(Collectors.toList())
+                        : List.of());
 
         return dto;
     }
@@ -52,7 +59,8 @@ public class SalaDeAulaMapper {
     // ENTITY → RESPONSE DTO (para retorno completo ao front)
     // ============================================================
     public static SalaDeAulaResponseDTO toResponse(SaladeAula sala) {
-        if (sala == null) return null;
+        if (sala == null)
+            return null;
 
         SalaDeAulaResponseDTO response = new SalaDeAulaResponseDTO();
 
@@ -70,14 +78,12 @@ public class SalaDeAulaMapper {
             response.setMembrosIds(
                     sala.getUsuarios().stream()
                             .map(Usuario::getId)
-                            .collect(Collectors.toList())
-            );
+                            .collect(Collectors.toList()));
 
             response.setMembrosNomes(
                     sala.getUsuarios().stream()
                             .map(Usuario::getNome)
-                            .collect(Collectors.toList())
-            );
+                            .collect(Collectors.toList()));
         }
 
         // Atividades
@@ -85,8 +91,7 @@ public class SalaDeAulaMapper {
             response.setAtividadesIds(
                     sala.getAtividades().stream()
                             .map(Atividade::getId)
-                            .collect(Collectors.toList())
-            );
+                            .collect(Collectors.toList()));
         }
 
         return response;
@@ -99,9 +104,9 @@ public class SalaDeAulaMapper {
             SalaDeAulaDTO dto,
             Usuario criador,
             List<Usuario> membros,
-            List<Atividade> atividades
-    ) {
-        if (dto == null) return null;
+            List<Atividade> atividades) {
+        if (dto == null)
+            return null;
 
         SaladeAula sala = new SaladeAula();
 

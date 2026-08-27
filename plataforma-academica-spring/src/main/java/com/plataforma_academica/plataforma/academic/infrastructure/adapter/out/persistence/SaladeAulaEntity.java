@@ -18,7 +18,7 @@ public class SaladeAulaEntity {
     @Column(name = "nome", nullable = false)
     private String nome;
 
-    @Column(name = "codigo_sala", unique = true, nullable = false, length = 8)
+    @Column(name = "codigo", unique = true, nullable = false, length = 8)
     private String codigoSala;
 
     @Column(name = "criador_id", nullable = false)

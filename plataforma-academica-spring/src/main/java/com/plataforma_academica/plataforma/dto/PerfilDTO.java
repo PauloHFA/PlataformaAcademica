@@ -2,6 +2,14 @@ package com.plataforma_academica.plataforma.dto;
 
 import lombok.Data;
 
+/**
+ * DTO de transferência para criação/atualização de Perfis.
+ * 
+ * Camada: Presentation / DTO (Identity Context)
+ * 
+ * @see Perfil
+ * @see PerfilMapper
+ */
 @Data
 public class PerfilDTO {
     private Long id;

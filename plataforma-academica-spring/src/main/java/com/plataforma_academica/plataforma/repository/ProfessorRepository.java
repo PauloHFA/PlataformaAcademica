@@ -6,8 +6,18 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Repositório Spring Data JPA para a entidade Professor.
+ * 
+ * Camada: Persistence / Repository
+ * Contexto de Negócio: Docentes e matrícula institucional
+ * Padrões aplicados: Spring Data JPA.
+ * 
+ * @see Professor
+ */
 @Repository
 public interface ProfessorRepository extends JpaRepository<Professor, Long> {
     Optional<Professor> findByEmail(String email);
+
     Optional<Professor> findByMatricula(String matricula);
 }

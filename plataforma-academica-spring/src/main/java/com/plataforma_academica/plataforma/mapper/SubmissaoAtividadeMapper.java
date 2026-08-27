@@ -6,25 +6,33 @@ import com.plataforma_academica.plataforma.model.Atividade;
 import com.plataforma_academica.plataforma.model.SubmissaoAtividade;
 import com.plataforma_academica.plataforma.model.Usuario;
 
+/**
+ * Mapper para conversão entre SubmissaoAtividade e DTOs.
+ * 
+ * Camada: Infrastructure / Mapper
+ * Padrões aplicados: Static Mapping Pattern, DTO.
+ * 
+ * @see SubmissaoAtividade
+ * @see SubmissaoAtividadeDTO
+ */
 public class SubmissaoAtividadeMapper {
 
     // ============================================================
     // ENTITY → DTO (básico, usado para criação/edição)
     // ============================================================
     public static SubmissaoAtividadeDTO toDTO(SubmissaoAtividade submissao) {
-        if (submissao == null) return null;
+        if (submissao == null)
+            return null;
 
         SubmissaoAtividadeDTO dto = new SubmissaoAtividadeDTO();
 
         dto.setId(submissao.getId());
 
         dto.setAtividadeId(
-                submissao.getAtividade() != null ? submissao.getAtividade().getId() : null
-        );
+                submissao.getAtividade() != null ? submissao.getAtividade().getId() : null);
 
         dto.setAlunoId(
-                submissao.getAluno() != null ? submissao.getAluno().getId() : null
-        );
+                submissao.getAluno() != null ? submissao.getAluno().getId() : null);
 
         dto.setUrlDocumento(submissao.getUrlDocumento());
         dto.setDataSubmissao(submissao.getDataSubmissao());
@@ -38,7 +46,8 @@ public class SubmissaoAtividadeMapper {
     // ENTITY → RESPONSE DTO (completo para retorno ao front)
     // ============================================================
     public static SubmissaoAtividadeResponseDTO toResponse(SubmissaoAtividade submissao) {
-        if (submissao == null) return null;
+        if (submissao == null)
+            return null;
 
         SubmissaoAtividadeResponseDTO response = new SubmissaoAtividadeResponseDTO();
 
@@ -71,9 +80,9 @@ public class SubmissaoAtividadeMapper {
     public static SubmissaoAtividade toEntity(
             SubmissaoAtividadeDTO dto,
             Atividade atividade,
-            Usuario aluno
-    ) {
-        if (dto == null) return null;
+            Usuario aluno) {
+        if (dto == null)
+            return null;
 
         SubmissaoAtividade submissao = new SubmissaoAtividade();
 

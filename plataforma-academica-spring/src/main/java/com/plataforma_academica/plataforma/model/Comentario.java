@@ -9,41 +9,50 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDateTime;
 
+/**
+ * Entidade JPA que representa um Comentário realizado por um usuário.
+ * 
+ * Camada: Persistence / JPA Entity
+ * Pode ser vinculado a diferentes tipos de destino (postagem, atividade ou sala
+ * de aula),
+ * gerenciado pelo campo discriminador {@link TipoDestinoComentario}.
+ */
 @Data
 @Getter
 @Setter
 @Entity
 @Table(name = "comentarios")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Comentario {
+    /** Identificador único do comentário. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /** Usuário autor do comentário. */
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "autor_id", nullable = false)
     private Usuario autor;
 
-    // Relacionamento com Postagem: Opcional (nullable = true)
+    /** Postagem comentada (opcional). */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postagem_id", nullable = true)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Postagem postagem;
 
-    // NOVO: Relacionamento com Atividade: Opcional (nullable = true)
-    // Isso permite comentários em uma atividade, que pode ser o "comentário da turma" para aquele tópico.
+    /** Atividade comentada (opcional). */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "atividade_id", nullable = true)
     @JsonBackReference("comentarios-atividade")
     private Atividade atividade;
 
+    /** Sala de aula onde o comentário foi publicado (opcional). */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sala_de_aula_id", nullable = true)
     @JsonBackReference("comentarios-sala")
     private SaladeAula saladeAula;
 
-
-    // NOVO: Campo para indicar o tipo de destino (útil para consultas e validação)
+    /** Tipo de destino do comentário (POSTAGEM, ATIVIDADE, SALA). */
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TipoDestinoComentario tipoDestino;

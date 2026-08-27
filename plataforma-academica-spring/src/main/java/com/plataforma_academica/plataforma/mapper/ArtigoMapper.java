@@ -5,13 +5,23 @@ import com.plataforma_academica.plataforma.dto.ArtigoResponseDTO;
 import com.plataforma_academica.plataforma.model.Artigo;
 import com.plataforma_academica.plataforma.model.Usuario;
 
+/**
+ * Mapper para conversão entre Artigo e DTOs.
+ * 
+ * Camada: Infrastructure / Mapper
+ * Padrões aplicados: Static Mapping Pattern, DTO.
+ * 
+ * @see Artigo
+ * @see ArtigoDTO
+ */
 public class ArtigoMapper {
 
     // ============================================
     // DTO → ENTIDADE (criação e edição)
     // ============================================
     public static Artigo toEntity(ArtigoDTO dto, Usuario autor) {
-        if (dto == null) return null;
+        if (dto == null)
+            return null;
 
         Artigo artigo = new Artigo();
 
@@ -32,7 +42,8 @@ public class ArtigoMapper {
     // ENTIDADE → RESPONSE DTO
     // ============================================
     public static ArtigoResponseDTO toResponse(Artigo artigo) {
-        if (artigo == null) return null;
+        if (artigo == null)
+            return null;
 
         ArtigoResponseDTO response = new ArtigoResponseDTO();
 

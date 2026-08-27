@@ -7,11 +7,21 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.io.File;
 
+/**
+ * ==========================================================================================================
+ * WEB CONFIG — Plataforma Acadêmica
+ * ==========================================================================================================
+ * Configurações globais do Spring MVC (mapeamentos, interceptors e
+ * manipuladores de recursos).
+ * 
+ * Camada: Infrastructure / Web Configuration
+ * ==========================================================================================================
+ */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-    
+
     // ResourceHandler removido - usando FileController
-    
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")

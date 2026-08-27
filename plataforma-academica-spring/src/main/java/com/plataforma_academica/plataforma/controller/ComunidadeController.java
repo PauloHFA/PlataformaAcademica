@@ -12,11 +12,17 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * ==========================================================================================================
- *  COMUNIDADE CONTROLLER — Plataforma Acadêmica
- * ==========================================================================================================
- * Controller responsável por gerenciar todas as operações relacionadas às
- * Comunidades da plataforma. Uma comunidade funciona como um grupo temático
+ * Controller REST responsável pelo gerenciamento de Comunidades.
+ * 
+ * Camada: Presentation / REST Controller (Social Context)
+ * Contexto de Negócio: Grupos temáticos com membros e interações sociais.
+ * Padrões aplicados: RestController, CrossOrigin, Validação.
+ * 
+ * @see ComunidadeService
+ * @see docs/domain/social_context.md
+ * @see REQ-015 (Criação de Comunidades)
+ */
+@RestController Uma comunidade funciona como um grupo temático
  * onde usuários podem interagir, discutir, compartilhar conteúdo e colaborar.
  *
  * Objetivos principais desta controller:
@@ -40,7 +46,9 @@ import java.util.List;
  *   GET     /api/comunidades            → Listar todas as comunidades
  *   GET     /api/comunidades/{id}/membros → Listar membros de uma comunidade
  *
- * ==========================================================================================================
+ * @see ComunidadeService
+ * @see docs/domain/social_context.md
+ * @see REQ-015 (Criação de Comunidades)
  */
 @RestController
 @RequestMapping("/api/comunidades")

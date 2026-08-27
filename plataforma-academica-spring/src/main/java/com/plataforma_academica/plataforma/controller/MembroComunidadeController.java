@@ -42,6 +42,17 @@ import java.util.List;
  *
  * ==========================================================================================================
  */
+/**
+ * Controller REST responsável pelo gerenciamento de Membros de Comunidades.
+ * 
+ * Camada: Presentation / REST Controller
+ * Contexto de Negócio: Social / Associação de usuários a comunidades.
+ * Padrões aplicados: RestController, CrossOrigin.
+ * 
+ * @see MembroComunidadeService
+ * @see docs/domain/social_context.md
+ * @see REQ-016 (Gestão de Membros em Comunidades)
+ */
 @RestController
 @RequestMapping("/api/membrocomunidade")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -57,9 +68,9 @@ public class MembroComunidadeController {
      * Retorna todos os vínculos registrados no sistema.
      *
      * Principal uso:
-     *   • Administração
-     *   • Auditoria
-     *   • Depuração
+     * • Administração
+     * • Auditoria
+     * • Depuração
      *
      * @return lista de todos os membros-comunidades.
      */
@@ -109,8 +120,8 @@ public class MembroComunidadeController {
      * Lista todos os usuários que participam de uma comunidade.
      *
      * Usado em:
-     *   • Tela da comunidade
-     *   • Administração
+     * • Tela da comunidade
+     * • Administração
      *
      * @param comunidadeId ID da comunidade.
      * @return lista de membros.
@@ -126,15 +137,14 @@ public class MembroComunidadeController {
     /**
      * Verifica se um usuário já participa de uma comunidade.
      *
-     * @param usuarioId ID do usuário.
+     * @param usuarioId    ID do usuário.
      * @param comunidadeId ID da comunidade.
      * @return vínculo existente ou 404 Not Found.
      */
     @GetMapping("/existe")
     public ResponseEntity<MembroComunidade> buscarPorUsuarioEComunidade(
             @RequestParam Long usuarioId,
-            @RequestParam Long comunidadeId
-    ) {
+            @RequestParam Long comunidadeId) {
         MembroComunidade membro = membroComunidadeService.buscarPorUsuarioEComunidade(usuarioId, comunidadeId);
 
         if (membro == null) {
@@ -151,12 +161,12 @@ public class MembroComunidadeController {
      * Cria um vínculo entre usuário e comunidade.
      *
      * Validações feitas aqui:
-     *   • Verifica duplicidade antes de salvar (usuário não entra duas vezes).
+     * • Verifica duplicidade antes de salvar (usuário não entra duas vezes).
      *
      * Validações feitas no service:
-     *   • Verificar se a comunidade existe.
-     *   • Verificar se o usuário existe.
-     *   • Regra de limite de membros / papéis.
+     * • Verificar se a comunidade existe.
+     * • Verificar se o usuário existe.
+     * • Regra de limite de membros / papéis.
      *
      * @param membro Objeto contendo usuário e comunidade.
      * @return vínculo criado ou 409 Conflict caso já exista.
@@ -166,8 +176,7 @@ public class MembroComunidadeController {
 
         MembroComunidade existente = membroComunidadeService.buscarPorUsuarioEComunidade(
                 membro.getUsuario().getId(),
-                membro.getComunidade().getId()
-        );
+                membro.getComunidade().getId());
 
         if (existente != null) {
             return ResponseEntity.status(409).body(existente);

@@ -11,6 +11,18 @@ import jakarta.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implementação do serviço de usuários.
+ * 
+ * Camada: Application / Business Service (Identity Context)
+ * Responsabilidades: Orquestração de casos de uso para autenticação,
+ * cadastro, atualização e gerenciamento de papéis (Admin, Professor, Perfil).
+ * Padrões aplicados: Service Layer, Repository Pattern, BCrypt (segurança).
+ * 
+ * @see UsuarioService
+ * @see docs/domain/identity_context.md
+ * @see REQ-001 (Autenticação e Perfil de Usuário)
+ */
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 

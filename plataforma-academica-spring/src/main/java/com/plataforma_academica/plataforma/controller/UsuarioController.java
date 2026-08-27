@@ -12,10 +12,17 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * ================================================================================================
- *  USUARIO CONTROLLER
- * ================================================================================================
- * Responsável por gerenciar todas as operações relacionadas aos usuários da plataforma.
+ * Controller REST responsável pelo gerenciamento de Usuários.
+ * 
+ * Camada: Presentation / REST Controller (Identity Context)
+ * Contexto de Negócio: Cadastro, login, busca e gerenciamento de perfis de usuário.
+ * Padrões aplicados: RestController, CrossOrigin, DTOs.
+ * 
+ * @see UsuarioService
+ * @see docs/domain/identity_context.md
+ * @see REQ-001 (Autenticação e Perfil de Usuário)
+ */
+@RestController
  *
  * Funcionalidades principais:
  *  - Cadastro de novos usuários;
@@ -32,7 +39,9 @@ import java.util.Optional;
  * Esta controller se comunica diretamente com UsuarioService para validações e persistência.
  *
  * CORS habilitado para acesso do front-end Angular (porta 4200).
- * ================================================================================================
+ * @see UsuarioService
+ * @see docs/domain/identity_context.md
+ * @see REQ-001 (Autenticação e Perfil de Usuário)
  */
 @RestController
 @RequestMapping("/api/usuarios")

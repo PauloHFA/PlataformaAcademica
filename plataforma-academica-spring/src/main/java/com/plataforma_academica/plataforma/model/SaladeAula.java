@@ -8,37 +8,48 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-
+/**
+ * Entidade JPA que representa uma sala de aula (turma) dentro da plataforma.
+ *
+ * Camada: Persistence / Domain Entity (Academic Context)
+ * Contexto de Negócio: Espaço de ensino onde professores criam atividades,
+ * alunos participam e comentários são publicados no feed.
+ * Padrões aplicados: Aggregate Root, Repository Pattern, Many-to-Many
+ * (membros).
+ *
+ * @see docs/domain/academic_context.md
+ * @see REQ-018 (Criação de Salas de Aula)
+ */
 @Entity
 @Data
 @Getter
 @Setter
 @Table(name = "sala_de_aula")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class SaladeAula {
+    /** Identificador único da sala. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nome; // Nome da sala de aula (e.g., "POO 2024.1")
-    
-    @Column(unique = true, nullable = false, length = 8)
-    private String codigoSala; // Código único para compartilhar (ex: "A7X9K2M5")
+    /** Nome da sala (ex: "POO 2024.1"). */
+    private String nome;
 
-    // 1. Criador da Sala (Relação Many-to-One)
-    // Muitas salas de aula são criadas por um único usuário
+    /** Código único para compartilhamento (ex: "A7X9K2M5"). */
+    @Column(unique = true, nullable = false, length = 8)
+    private String codigoSala;
+
+    /** Criador (professor) da sala. */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "criador_id", nullable = false)
     private Usuario criador;
 
     // 2. Membros da Sala (Relação Many-to-Many)
-    // Usamos uma tabela de junção para mapear a relação de que um usuário pode estar em várias salas.
+    // Usamos uma tabela de junção para mapear a relação de que um usuário pode
+    // estar em várias salas.
     @ManyToMany
-    @JoinTable(
-            name = "sala_membros", // Nome da tabela de junção
-            joinColumns = @JoinColumn(name = "sala_id"),
-            inverseJoinColumns = @JoinColumn(name = "usuario_id")
-    )
+    @JoinTable(name = "sala_membros", // Nome da tabela de junção
+            joinColumns = @JoinColumn(name = "sala_id"), inverseJoinColumns = @JoinColumn(name = "usuario_id"))
     private List<Usuario> usuarios; // Lista de membros/alunos
 
     // 3. Atividades da Sala (Relação One-to-Many)

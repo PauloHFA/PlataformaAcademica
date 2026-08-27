@@ -7,49 +7,67 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/**
+ * Entidade JPA que representa a submissão de uma atividade acadêmica por um
+ * aluno.
+ * 
+ * Camada: Persistence / Domain Entity (Academic Context)
+ * Contexto de Negócio: Armazena o documento enviado pelo aluno, notas
+ * atribuídas,
+ * feedback do professor e controle de recebimento/correção.
+ * Padrões aplicados: Repository Pattern, Relacionamento ManyToOne com Atividade
+ * e Usuario.
+ * 
+ * @see Atividade
+ * @see Usuario
+ * @see docs/domain/academic_context.md
+ * @see REQ-020 (Submissão e Avaliação de Atividades)
+ */
 @Entity
 @Data
 @Getter
 @Setter
 @Table(name = "submissaoatividade")
 public class SubmissaoAtividade {
+    /** Identificador único da submissão. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Relacionamento com a Atividade que está sendo submetida
-    // @ManyToOne: Muitas submissões para uma única Atividade
+    /** Atividade acadêmica associada à submissão. */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "atividade_id", nullable = false)
     private Atividade atividade;
 
-    // Relacionamento com o Usuário que fez a submissão (o aluno)
-    // @ManyToOne: Muitos alunos podem fazer submissões
+    /** Aluno responsável pela entrega da submissão. */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "aluno_id", nullable = false)
     private Usuario aluno;
 
-    // O caminho ou URL do arquivo/documento submetido
+    /** URL ou caminho físico do documento/arquivo submetido. */
     private String urlDocumento;
 
-    // Descrição da submissão
+    /** Descrição ou observações enviadas pelo aluno. */
     @Column(columnDefinition = "TEXT")
     private String descricao;
 
-    // Indica a data e hora exata da submissão
+    /** Data e hora em que a submissão foi realizada. */
     private LocalDateTime dataSubmissao;
 
-    // Campo opcional para a nota atribuída
+    /** Nota numérica atribuída pelo professor (opcional). */
     private Double nota;
 
-    // Campo opcional para feedback do professor
+    /** Feedback textual fornecido pelo professor (opcional). */
     @Column(columnDefinition = "TEXT")
     private String feedback;
 
+    /** Data e hora da correção/avaliação pelo professor. */
     private LocalDateTime dataCorrecao;
 
+    /** Flag indicando se a submissão foi recebida pelo sistema/professor. */
     private Boolean recebida = false;
 
+    /** Data e hora do recebimento confirmado. */
     private LocalDateTime dataRecebimento;
 
 }

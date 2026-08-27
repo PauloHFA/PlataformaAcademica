@@ -38,6 +38,17 @@ import java.util.List;
  *
  * ==========================================================================================================
  */
+/**
+ * Controller REST responsável pelo gerenciamento de Perfis acadêmicos.
+ * 
+ * Camada: Presentation / REST Controller (Identity Context)
+ * Contexto de Negócio: Bio, foto, curso e dados complementares de usuário.
+ * Padrões aplicados: RestController, CrossOrigin, DTOs.
+ * 
+ * @see PerfilService
+ * @see docs/domain/identity_context.md
+ * @see REQ-002 (Perfil Acadêmico)
+ */
 @RestController
 @RequestMapping("/api/perfis")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -56,8 +67,8 @@ public class PerfilController {
      * Retorna a lista de todos os perfis cadastrados no sistema.
      *
      * Usado em:
-     *   • Painéis administrativos
-     *   • Páginas de listagem geral de usuários
+     * • Painéis administrativos
+     * • Páginas de listagem geral de usuários
      *
      * @return lista completa de perfis.
      */
@@ -73,9 +84,9 @@ public class PerfilController {
      * Cria um novo perfil para um usuário.
      *
      * Regras:
-     *   • O usuário deve existir.
-     *   • O usuário só pode ter um perfil.
-     *   • O DTO contém apenas as informações necessárias (bio, curso, foto).
+     * • O usuário deve existir.
+     * • O usuário só pode ter um perfil.
+     * • O DTO contém apenas as informações necessárias (bio, curso, foto).
      *
      * @param dto Dados do perfil que será criado.
      * @return o perfil criado.
@@ -113,11 +124,11 @@ public class PerfilController {
      * Atualiza os dados de um perfil existente.
      *
      * O DTO permite alterar:
-     *   • bio
-     *   • foto de perfil
-     *   • curso
+     * • bio
+     * • foto de perfil
+     * • curso
      *
-     * @param id ID do perfil.
+     * @param id  ID do perfil.
      * @param dto dados atualizados.
      * @return perfil atualizado.
      */
@@ -134,9 +145,9 @@ public class PerfilController {
      * Lista todos os perfis associados a um curso específico.
      *
      * Útil para:
-     *   • Grupos de curso
-     *   • Integração entre alunos
-     *   • Páginas personalizadas por área de estudo
+     * • Grupos de curso
+     * • Integração entre alunos
+     * • Páginas personalizadas por área de estudo
      *
      * @param curso nome do curso.
      * @return lista de perfis encontrados.
@@ -175,8 +186,8 @@ public class PerfilController {
      * Verifica se um usuário já possui perfil.
      *
      * Usado para:
-     *   • Bloquear criação duplicada de perfil
-     *   • Redirecionar o usuário para criar ou editar perfil
+     * • Bloquear criação duplicada de perfil
+     * • Redirecionar o usuário para criar ou editar perfil
      *
      * @param usuarioId ID do usuário.
      * @return true se existir perfil, false caso contrário.

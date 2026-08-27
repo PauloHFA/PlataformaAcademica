@@ -9,6 +9,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controller responsável pela API de Recomendações de Usuários.
+ * 
+ * Camada: Presentation / REST Controller
+ * Contexto de Negócio: Social / Sistema de Recomendação por similaridade.
+ * Padrões aplicados: RestController, RequiredArgsConstructor.
+ * 
+ * @see RecomendacaoService
+ * @see REQ-042 (Sistema de Recomendação por Similaridade)
+ */
 @RestController
 @RequestMapping("/api/recomendacoes")
 @RequiredArgsConstructor

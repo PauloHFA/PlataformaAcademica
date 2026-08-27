@@ -4,6 +4,14 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+/**
+ * DTO de transferência para criação/atualização de Artigos.
+ * 
+ * Camada: Presentation / DTO (Academic Context)
+ * 
+ * @see Artigo
+ * @see ArtigoMapper
+ */
 @Data
 public class ArtigoDTO {
 

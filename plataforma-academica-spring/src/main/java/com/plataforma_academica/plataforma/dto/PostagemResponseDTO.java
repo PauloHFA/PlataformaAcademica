@@ -2,6 +2,14 @@ package com.plataforma_academica.plataforma.dto;
 
 import lombok.Data;
 
+/**
+ * DTO de resposta para Postagens.
+ * 
+ * Camada: Presentation / DTO (Social Context)
+ * 
+ * @see Postagem
+ * @see PostagemMapper
+ */
 @Data
 public class PostagemResponseDTO {
 
@@ -14,7 +22,7 @@ public class PostagemResponseDTO {
 
     private Long plataformaId;
     private String plataformaNome;
-    
+
     private Integer curtidas;
     private String imagemUrl;
 }

@@ -6,6 +6,14 @@ import java.util.List;
 
 import com.plataforma_academica.plataforma.dto.SubmissaoAtividadeResponseDTO;
 
+/**
+ * DTO de dashboard do aluno.
+ * 
+ * Camada: Presentation / DTO (Academic Context)
+ * 
+ * @see DashboardAlunoService
+ * @see REQ-030 (Dashboard Acadêmico)
+ */
 @Data
 public class DashboardAlunoDTO {
     private Long alunoId;

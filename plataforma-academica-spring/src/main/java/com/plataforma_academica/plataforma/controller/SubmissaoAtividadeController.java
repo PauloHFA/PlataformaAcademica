@@ -12,12 +12,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * ================================================================================
- *  SUBMISSAO ATIVIDADE CONTROLLER - Plataforma Acadêmica
- * ================================================================================
- *
- * Controlador responsável por gerenciar todo o fluxo de submissões de atividades
- * realizadas pelos alunos dentro da plataforma acadêmica.
+ * Controller REST responsável pelo gerenciamento de Submissões de Atividades.
+ * 
+ * Camada: Presentation / REST Controller (Academic Context)
+ * Contexto de Negócio: Entrega de atividades por alunos e correção com nota/feedback.
+ * Padrões aplicados: RestController, CrossOrigin, DTOs.
+ * 
+ * @see SubmissaoAtividadeService
+ * @see docs/domain/academic_context.md
+ * @see REQ-026 (Submissão e Avaliação de Atividades)
+ */
+@RestController
  *
  * Este controller expõe endpoints REST que permitem:
  *

@@ -13,10 +13,17 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * ==========================================================================================================
- *  ARTIGO CONTROLLER — Plataforma Acadêmica
- * ==========================================================================================================
- * Controller responsável pelo gerenciamento completo dos artigos publicados dentro da plataforma.
+ * Controller REST responsável pelo gerenciamento de Artigos acadêmicos.
+ * 
+ * Camada: Presentation / REST Controller (Academic Context)
+ * Contexto de Negócio: Publicação de artigos, pesquisas e ensaios acadêmicos.
+ * Padrões aplicados: RestController, CrossOrigin, DTOs, Validação.
+ * 
+ * @see ArtigoService
+ * @see docs/domain/academic_context.md
+ * @see REQ-010 (Publicação de Artigos Acadêmicos)
+ */
+@RestController
  *
  * Esse componente expõe endpoints REST que permitem:
  *   • Criar novos artigos
@@ -44,8 +51,9 @@ import java.util.List;
  *   GET    /api/artigos                → Listar todos os artigos
  *   GET    /api/artigos/autor/{autorId}→ Listar artigos de um autor
  *
- * Autor: Plataforma Acadêmica Unificada
- * ==========================================================================================================
+ * @see ArtigoService
+ * @see docs/domain/academic_context.md
+ * @see REQ-010 (Publicação de Artigos Acadêmicos)
  */
 @RestController
 @RequestMapping("/api/artigos")

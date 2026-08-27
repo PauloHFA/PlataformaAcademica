@@ -32,6 +32,18 @@ import java.util.List;
  * Toda lógica de validação é delegada ao AmizadeService.
  * Os retornos utilizam DTOs para expor somente informações essenciais ao frontend.
  */
+/**
+ * Controller REST responsável pela gestão de Amizades.
+ * 
+ * Camada: Presentation / REST Controller (Social Context)
+ * Contexto de Negócio: Solicitações, aceitação, recusa e remoção de conexões
+ * entre usuários.
+ * Padrões aplicados: RestController, CrossOrigin, DTOs.
+ * 
+ * @see AmizadeService
+ * @see docs/domain/social_context.md
+ * @see REQ-020 (Gestão de Amizades)
+ */
 @RestController
 @RequestMapping("/api/amizades")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -59,9 +71,9 @@ public class AmizadeController {
      */
     @PostMapping
     public ResponseEntity<AmizadeResponseDTO> enviarSolicitacao(
-            @Valid @RequestBody AmizadeDTO dto
-    ) {
-        System.out.println("[POST /api/amizades] Solicitante=" + dto.getSolicitanteId() + ", Destinatário=" + dto.getDestinatarioId());
+            @Valid @RequestBody AmizadeDTO dto) {
+        System.out.println("[POST /api/amizades] Solicitante=" + dto.getSolicitanteId() + ", Destinatário="
+                + dto.getDestinatarioId());
         Amizade amizade = amizadeService.enviarSolicitacao(dto);
         AmizadeResponseDTO response = AmizadeMapper.toResponse(amizade);
         System.out.println("[POST /api/amizades] Sucesso: ID=" + amizade.getId() + ", Status=" + amizade.getStatus());
@@ -81,15 +93,14 @@ public class AmizadeController {
      * - "aceitar" → status passa a ACEITO.
      * - "recusar" → status passa a RECUSADO.
      *
-     * @param id ID da solicitação
+     * @param id   ID da solicitação
      * @param acao aceita "aceitar" ou "recusar"
      * @return Solicitação atualizada.
      */
     @PatchMapping("/{id}/resposta")
     public ResponseEntity<AmizadeResponseDTO> responderSolicitacao(
             @PathVariable Long id,
-            @RequestParam String acao
-    ) {
+            @RequestParam String acao) {
         System.out.println("[PATCH /api/amizades/" + id + "/resposta] Ação=" + acao);
         Amizade amizade = amizadeService.responderSolicitacao(id, acao);
         System.out.println("[PATCH /api/amizades/" + id + "/resposta] Novo status=" + amizade.getStatus());
@@ -122,14 +133,12 @@ public class AmizadeController {
      */
     @GetMapping("/pendentes/{usuarioId}")
     public ResponseEntity<List<AmizadeResponseDTO>> listarPendentes(
-            @PathVariable Long usuarioId
-    ) {
+            @PathVariable Long usuarioId) {
         System.out.println("[GET /api/amizades/pendentes/" + usuarioId + "] Buscando pendentes");
         List<Amizade> lista = amizadeService.listarSolicitacoesPendentes(usuarioId);
         System.out.println("[GET /api/amizades/pendentes/" + usuarioId + "] Total: " + lista.size());
         return ResponseEntity.ok(
-                lista.stream().map(AmizadeMapper::toResponse).toList()
-        );
+                lista.stream().map(AmizadeMapper::toResponse).toList());
     }
 
     // =====================================================================
@@ -143,13 +152,11 @@ public class AmizadeController {
      */
     @GetMapping("/amigos/{usuarioId}")
     public ResponseEntity<List<AmizadeResponseDTO>> listarAmigos(
-            @PathVariable Long usuarioId
-    ) {
+            @PathVariable Long usuarioId) {
         System.out.println("[GET /api/amizades/amigos/" + usuarioId + "] Listando amigos");
         List<Amizade> lista = amizadeService.listarAmigos(usuarioId);
         System.out.println("[GET /api/amizades/amigos/" + usuarioId + "] Total: " + lista.size());
         return ResponseEntity.ok(
-                lista.stream().map(AmizadeMapper::toResponse).toList()
-        );
+                lista.stream().map(AmizadeMapper::toResponse).toList());
     }
 }

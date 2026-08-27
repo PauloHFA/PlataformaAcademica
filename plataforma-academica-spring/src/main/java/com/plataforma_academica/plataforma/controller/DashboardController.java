@@ -8,6 +8,17 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Controller responsável pelo fornecimento de dados para dashboards acadêmicos.
+ * 
+ * Camada: Presentation / REST Controller
+ * Contexto de Negócio: Métricas de desempenho e resumos de atividades para
+ * alunos e salas de aula.
+ * Padrões aplicados: RestController, CrossOrigin.
+ * 
+ * @see DashboardAlunoService
+ * @see REQ-030 (Dashboard Acadêmico)
+ */
 @RestController
 @RequestMapping("/api/dashboard")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -29,7 +40,8 @@ public class DashboardController {
             LocalDate dataInicio = inicio != null ? LocalDate.parse(inicio) : null;
             LocalDate dataFim = fim != null ? LocalDate.parse(fim) : null;
 
-            DashboardAlunoDTO dashboard = dashboardAlunoService.obterDashboardAluno(alunoId, salaId, dataInicio, dataFim);
+            DashboardAlunoDTO dashboard = dashboardAlunoService.obterDashboardAluno(alunoId, salaId, dataInicio,
+                    dataFim);
             return ResponseEntity.ok(dashboard);
         } catch (DateTimeParseException ex) {
             return ResponseEntity.badRequest().body("Formato de data inválido. Use yyyy-MM-dd.");

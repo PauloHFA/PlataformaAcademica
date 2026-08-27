@@ -9,6 +9,17 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.util.List;
 
+/**
+ * Controller REST responsável pelo gerenciamento de Mensagens Diretas.
+ * 
+ * Camada: Presentation / REST Controller
+ * Contexto de Negócio: Social / Chat entre usuários.
+ * Padrões aplicados: RestController, CrossOrigin, DTOs.
+ * 
+ * @see MensagemService
+ * @see docs/domain/social_context.md
+ * @see REQ-035 (Mensagens Diretas)
+ */
 @RestController
 @RequestMapping("/api/mensagens")
 @CrossOrigin(origins = "http://localhost:4200")

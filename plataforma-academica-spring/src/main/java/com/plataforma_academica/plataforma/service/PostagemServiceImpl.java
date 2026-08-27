@@ -19,6 +19,23 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Implementação do serviço de postagens sociais.
+ * 
+ * Camada: Application Service
+ * Responsabilidades: Criar, listar, atualizar e excluir postagens no
+ * ecossistema social.
+ */
+/**
+ * Implementação do serviço de Postagens no feed social.
+ * 
+ * Camada: Application / Business Service (Social Context)
+ * Padrões aplicados: Service Layer, Repository Pattern, Transactional.
+ * 
+ * @see PostagemService
+ * @see docs/domain/social_context.md
+ * @see REQ-025 (Publicação no Feed Social)
+ */
 @Service
 public class PostagemServiceImpl implements PostagemService {
 
@@ -30,10 +47,10 @@ public class PostagemServiceImpl implements PostagemService {
 
     @Autowired
     PlataformaRepository plataformaRepository;
-    
+
     @Autowired
     AmizadeService amizadeService;
-    
+
     @Autowired
     CurtidaRepository curtidaRepository;
 
@@ -52,7 +69,8 @@ public class PostagemServiceImpl implements PostagemService {
     }
 
     private String storeFile(org.springframework.web.multipart.MultipartFile file) {
-        if (file == null || file.isEmpty()) return null;
+        if (file == null || file.isEmpty())
+            return null;
         ensureUploadDir();
         String original = file.getOriginalFilename();
         String ext = "";
@@ -171,7 +189,8 @@ public class PostagemServiceImpl implements PostagemService {
     }
 
     @Override
-    public PostagemResponseDTO publicarComImagemResponse(PostagemDTO dto, org.springframework.web.multipart.MultipartFile imagem) {
+    public PostagemResponseDTO publicarComImagemResponse(PostagemDTO dto,
+            org.springframework.web.multipart.MultipartFile imagem) {
         Usuario autor = usuarioRepository.findById(dto.getAutorId())
                 .orElseThrow(() -> new RuntimeException("Autor não encontrado"));
 
@@ -199,9 +218,9 @@ public class PostagemServiceImpl implements PostagemService {
                 .orElseThrow(() -> new RuntimeException("Postagem não encontrada"));
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-        
+
         boolean jaCurtiu = curtidaRepository.existsByUsuarioIdAndPostagemId(usuarioId, postagemId);
-        
+
         if (jaCurtiu) {
             curtidaRepository.deleteByUsuarioIdAndPostagemId(usuarioId, postagemId);
             postagem.setCurtidas(Math.max(0, postagem.getCurtidas() - 1));
@@ -212,7 +231,7 @@ public class PostagemServiceImpl implements PostagemService {
             curtidaRepository.save(curtida);
             postagem.setCurtidas(postagem.getCurtidas() + 1);
         }
-        
+
         return PostagemMapper.toResponse(postagemRepository.save(postagem));
     }
 
@@ -220,13 +239,11 @@ public class PostagemServiceImpl implements PostagemService {
     public List<PostagemResponseDTO> listarDeAmigos(Long usuarioId) {
         List<Long> amigosIds = amizadeService.listarAmigos(usuarioId)
                 .stream()
-                .map(amizade -> 
-                    amizade.getSolicitante().getId().equals(usuarioId) 
-                        ? amizade.getDestinatario().getId() 
-                        : amizade.getSolicitante().getId()
-                )
+                .map(amizade -> amizade.getSolicitante().getId().equals(usuarioId)
+                        ? amizade.getDestinatario().getId()
+                        : amizade.getSolicitante().getId())
                 .collect(Collectors.toList());
-        
+
         return postagemRepository.findAll()
                 .stream()
                 .filter(p -> amigosIds.contains(p.getAutor().getId()))
@@ -243,7 +260,7 @@ public class PostagemServiceImpl implements PostagemService {
                 .map(PostagemMapper::toResponse)
                 .collect(Collectors.toList());
     }
-    
+
     @Override
     public boolean verificarCurtida(Long postagemId, Long usuarioId) {
         return curtidaRepository.existsByUsuarioIdAndPostagemId(usuarioId, postagemId);

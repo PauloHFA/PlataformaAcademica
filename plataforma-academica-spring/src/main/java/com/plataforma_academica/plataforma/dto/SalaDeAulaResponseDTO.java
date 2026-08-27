@@ -3,6 +3,14 @@ package com.plataforma_academica.plataforma.dto;
 import lombok.Data;
 import java.util.List;
 
+/**
+ * DTO de resposta para Salas de Aula.
+ * 
+ * Camada: Presentation / DTO (Academic Context)
+ * 
+ * @see SaladeAula
+ * @see SalaDeAulaMapper
+ */
 @Data
 public class SalaDeAulaResponseDTO {
 
@@ -10,10 +18,10 @@ public class SalaDeAulaResponseDTO {
     private String nome;
 
     private Long criadorId;
-    private String criadorNome;       // nome do criador (útil para exibição)
+    private String criadorNome; // nome do criador (útil para exibição)
 
     private List<Long> membrosIds;
-    private List<String> membrosNomes;   // nomes dos membros – opcional mas muito útil
+    private List<String> membrosNomes; // nomes dos membros – opcional mas muito útil
 
     private List<Long> atividadesIds;
 }

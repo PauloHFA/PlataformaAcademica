@@ -17,6 +17,17 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Controller REST responsável pelo gerenciamento de Comentários.
+ * 
+ * Camada: Presentation / REST Controller
+ * Contexto de Negócio: Gerencia operações HTTP (CRUD) para comentários em
+ * postagens, atividades e salas.
+ * Padrões aplicados: RestController, CrossOrigin, Spring Data.
+ * 
+ * @see ComentarioService
+ * @see REQ-005 (Gerenciamento de Comentários)
+ */
 @RestController
 @RequestMapping("/comentario")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -53,25 +64,31 @@ public class ComentarioController {
 
     @PostMapping
     public ResponseEntity<Comentario> salvar(@RequestBody Comentario comentario) {
-        System.out.println("[POST /comentario] Tipo=" + comentario.getTipoDestino() + ", Autor=" + (comentario.getAutor() != null ? comentario.getAutor().getId() : "null"));
+        System.out.println("[POST /comentario] Tipo=" + comentario.getTipoDestino() + ", Autor="
+                + (comentario.getAutor() != null ? comentario.getAutor().getId() : "null"));
 
         if (comentario.getAutor() != null && comentario.getAutor().getId() != null) {
-            Usuario autor = usuarioRepository.findById(comentario.getAutor().getId()).orElseThrow(() -> new RuntimeException("Autor não encontrado"));
+            Usuario autor = usuarioRepository.findById(comentario.getAutor().getId())
+                    .orElseThrow(() -> new RuntimeException("Autor não encontrado"));
             comentario.setAutor(autor);
         }
 
         if (comentario.getSaladeAula() != null && comentario.getSaladeAula().getId() != null) {
-            SaladeAula sala = salaRepository.findById(comentario.getSaladeAula().getId()).orElseThrow(() -> new RuntimeException("Sala não encontrada"));
+            SaladeAula sala = salaRepository.findById(comentario.getSaladeAula().getId())
+                    .orElseThrow(() -> new RuntimeException("Sala não encontrada"));
             comentario.setSaladeAula(sala);
         }
 
         if (comentario.getAtividade() != null && comentario.getAtividade().getId() != null) {
-            Atividade atividade = atividadeRepository.findById(comentario.getAtividade().getId()).orElseThrow(() -> new RuntimeException("Atividade não encontrada"));
+            Atividade atividade = atividadeRepository.findById(comentario.getAtividade().getId())
+                    .orElseThrow(() -> new RuntimeException("Atividade não encontrada"));
             comentario.setAtividade(atividade);
         }
 
         if (comentario.getPostagem() != null && comentario.getPostagem().getId() != null) {
-            com.plataforma_academica.plataforma.model.Postagem postagem = postagemRepository.findById(comentario.getPostagem().getId()).orElseThrow(() -> new RuntimeException("Postagem não encontrada"));
+            com.plataforma_academica.plataforma.model.Postagem postagem = postagemRepository
+                    .findById(comentario.getPostagem().getId())
+                    .orElseThrow(() -> new RuntimeException("Postagem não encontrada"));
             comentario.setPostagem(postagem);
         }
 
@@ -84,8 +101,7 @@ public class ComentarioController {
     @PutMapping("/{id}")
     public ResponseEntity<Comentario> atualizar(
             @PathVariable Long id,
-            @RequestBody Comentario comentarioAtualizado
-    ) {
+            @RequestBody Comentario comentarioAtualizado) {
         Comentario atualizado = comentarioService.atualizar(id, comentarioAtualizado);
         if (atualizado == null) {
             return ResponseEntity.notFound().build();
@@ -108,8 +124,8 @@ public class ComentarioController {
         System.out.println("Buscando comentários da sala: " + salaId);
         List<Comentario> comentarios = comentarioService.listarComentariosPorSala(salaId);
         List<Comentario> filtrados = comentarios.stream()
-            .filter(c -> c.getTipoDestino() == TipoDestinoComentario.SALADEAULA)
-            .collect(Collectors.toList());
+                .filter(c -> c.getTipoDestino() == TipoDestinoComentario.SALADEAULA)
+                .collect(Collectors.toList());
         System.out.println("Encontrados " + filtrados.size() + " comentários da sala");
         return ResponseEntity.ok(filtrados);
     }
@@ -119,8 +135,8 @@ public class ComentarioController {
         System.out.println("Buscando comentários de atividades gerais da sala: " + salaId);
         List<Comentario> comentarios = comentarioService.listarComentariosPorSala(salaId);
         List<Comentario> filtrados = comentarios.stream()
-            .filter(c -> c.getTipoDestino() == TipoDestinoComentario.ATIVIDADES_GERAIS)
-            .collect(Collectors.toList());
+                .filter(c -> c.getTipoDestino() == TipoDestinoComentario.ATIVIDADES_GERAIS)
+                .collect(Collectors.toList());
         System.out.println("Encontrados " + filtrados.size() + " comentários de atividades gerais");
         return ResponseEntity.ok(filtrados);
     }

@@ -5,13 +5,23 @@ import com.plataforma_academica.plataforma.dto.ComunidadeResponseDTO;
 import com.plataforma_academica.plataforma.model.Comunidade;
 import com.plataforma_academica.plataforma.model.Usuario;
 
+/**
+ * Mapper para conversão entre Comunidade e DTOs.
+ * 
+ * Camada: Infrastructure / Mapper
+ * Padrões aplicados: Static Mapping Pattern, DTO.
+ * 
+ * @see Comunidade
+ * @see ComunidadeDTO
+ */
 public class ComunidadeMapper {
 
     // ----------------------------------------------------
     // ENTITY → RESPONSE DTO (retorno ao front)
     // ----------------------------------------------------
     public static ComunidadeResponseDTO toResponse(Comunidade comunidade) {
-        if (comunidade == null) return null;
+        if (comunidade == null)
+            return null;
 
         ComunidadeResponseDTO resp = new ComunidadeResponseDTO();
 
@@ -33,7 +43,8 @@ public class ComunidadeMapper {
     // ENTITY → DTO (interno, caso necessário)
     // ----------------------------------------------------
     public static ComunidadeDTO toDTO(Comunidade comunidade) {
-        if (comunidade == null) return null;
+        if (comunidade == null)
+            return null;
 
         ComunidadeDTO dto = new ComunidadeDTO();
 
@@ -50,7 +61,8 @@ public class ComunidadeMapper {
     // DTO → ENTITY
     // ----------------------------------------------------
     public static Comunidade toEntity(ComunidadeDTO dto, Usuario dono) {
-        if (dto == null) return null;
+        if (dto == null)
+            return null;
 
         Comunidade comunidade = new Comunidade();
 

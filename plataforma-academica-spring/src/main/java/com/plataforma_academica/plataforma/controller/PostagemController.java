@@ -42,6 +42,18 @@ import org.springframework.web.multipart.MultipartFile;
  * de negócio, como validações, regras de atualização e persistência no banco.
  * ============================================================================
  */
+/**
+ * Controller REST responsável pelo gerenciamento de Postagens no feed social.
+ * 
+ * Camada: Presentation / REST Controller (Social Context)
+ * Contexto de Negócio: Publicações, curtidas e conteúdo compartilhado entre
+ * usuários.
+ * Padrões aplicados: RestController, CrossOrigin, DTOs, MultipartFile.
+ * 
+ * @see PostagemService
+ * @see docs/domain/social_context.md
+ * @see REQ-025 (Publicação no Feed Social)
+ */
 @RestController
 @RequestMapping("/api/postagens")
 @CrossOrigin(origins = "http://localhost:4200") // Permitir uso pelo Angular
@@ -153,15 +165,14 @@ public class PostagemController {
                 .body(salvo);
     }
 
-        // Endpoint que aceita multipart/form-data com imagem
-        @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-        public ResponseEntity<PostagemResponseDTO> publicarComImagem(
+    // Endpoint que aceita multipart/form-data com imagem
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<PostagemResponseDTO> publicarComImagem(
             @RequestParam String titulo,
             @RequestParam String conteudo,
             @RequestParam Long autorId,
             @RequestParam(required = false) Long plataformaId,
-            @RequestPart(required = false) MultipartFile imagem
-        ) {
+            @RequestPart(required = false) MultipartFile imagem) {
         PostagemDTO dto = new PostagemDTO();
         dto.setTitulo(titulo);
         dto.setConteudo(conteudo);
@@ -171,9 +182,9 @@ public class PostagemController {
         PostagemResponseDTO salvo = postagemService.publicarComImagemResponse(dto, imagem);
 
         return ResponseEntity
-            .created(URI.create("/api/postagens/" + salvo.getId()))
-            .body(salvo);
-        }
+                .created(URI.create("/api/postagens/" + salvo.getId()))
+                .body(salvo);
+    }
 
     // =========================================================================
     // ATUALIZAR POSTAGEM EXISTENTE
@@ -186,15 +197,14 @@ public class PostagemController {
      * - O request também deve conter o ID para consistência.
      * - A lógica de atualização é gerenciada pelo service.
      *
-     * @param id ID da postagem
+     * @param id      ID da postagem
      * @param request dados atualizados
      * @return postagem atualizada
      */
     @PutMapping("/{id}")
     public ResponseEntity<PostagemResponseDTO> atualizar(
             @PathVariable Long id,
-            @Valid @RequestBody PostagemDTO request
-    ) {
+            @Valid @RequestBody PostagemDTO request) {
         request.setId(id); // garantir consistência
         PostagemResponseDTO atualizado = postagemService.atualizarResponse(request);
 
@@ -224,8 +234,7 @@ public class PostagemController {
     @PostMapping("/{id}/curtir")
     public ResponseEntity<PostagemResponseDTO> curtir(
             @PathVariable Long id,
-            @RequestParam Long usuarioId
-    ) {
+            @RequestParam Long usuarioId) {
         System.out.println("[POST /api/postagens/" + id + "/curtir] Usuario=" + usuarioId);
         PostagemResponseDTO postagem = postagemService.curtir(id, usuarioId);
         System.out.println("[POST /api/postagens/" + id + "/curtir] Curtidas=" + postagem.getCurtidas());
@@ -247,15 +256,14 @@ public class PostagemController {
     public ResponseEntity<List<PostagemResponseDTO>> listarMaisCurtidas() {
         return ResponseEntity.ok(postagemService.listarMaisCurtidas());
     }
-    
+
     // =========================================================================
     // VERIFICAR SE USUÁRIO CURTIU
     // =========================================================================
     @GetMapping("/{postagemId}/curtiu/{usuarioId}")
     public ResponseEntity<Boolean> verificarCurtida(
             @PathVariable Long postagemId,
-            @PathVariable Long usuarioId
-    ) {
+            @PathVariable Long usuarioId) {
         return ResponseEntity.ok(postagemService.verificarCurtida(postagemId, usuarioId));
     }
 }

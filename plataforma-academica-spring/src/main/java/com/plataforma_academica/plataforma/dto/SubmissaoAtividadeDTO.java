@@ -3,6 +3,14 @@ package com.plataforma_academica.plataforma.dto;
 import lombok.Data;
 import java.time.LocalDateTime;
 
+/**
+ * DTO de transferência para Submissões de Atividades.
+ * 
+ * Camada: Presentation / DTO (Academic Context)
+ * 
+ * @see SubmissaoAtividade
+ * @see SubmissaoAtividadeMapper
+ */
 @Data
 public class SubmissaoAtividadeDTO {
 

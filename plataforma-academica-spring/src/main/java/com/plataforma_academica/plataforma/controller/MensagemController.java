@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.controller;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.MensagemDTO;
 import com.plataforma_academica.plataforma.model.Mensagem;
 import com.plataforma_academica.plataforma.repository.MensagemRepository;
@@ -35,7 +37,7 @@ public class MensagemController {
     }
 
     @GetMapping("/{usuarioId}/{amigoId}")
-    public ResponseEntity<List<Mensagem>> obterMensagens(@PathVariable Long usuarioId, @PathVariable Long amigoId) {
+    public ResponseEntity<List<Mensagem>> obterMensagens(@PathVariable UUID usuarioId, @PathVariable UUID amigoId) {
         List<Mensagem> mensagens = mensagemRepository.findMensagensEntre(usuarioId, amigoId);
         return ResponseEntity.ok(mensagens);
     }

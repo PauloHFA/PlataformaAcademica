@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.repository;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.SubmissaoAtividade;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,12 +16,12 @@ import java.util.List;
  * @see REQ-026 (Submissão e Avaliação de Atividades)
  */
 @Repository
-public interface SubmissaoAtividadeRespository extends JpaRepository<SubmissaoAtividade, Long> {
-    SubmissaoAtividade findByAtividadeIdAndAlunoId(Long atividadeId, Long alunoId);
+public interface SubmissaoAtividadeRespository extends JpaRepository<SubmissaoAtividade, UUID> {
+    SubmissaoAtividade findByAtividadeIdAndAlunoId(UUID atividadeId, UUID alunoId);
 
-    List<SubmissaoAtividade> findByAtividadeId(Long atividadeId);
+    List<SubmissaoAtividade> findByAtividadeId(UUID atividadeId);
 
-    List<SubmissaoAtividade> findByAlunoId(Long alunoId);
+    List<SubmissaoAtividade> findByAlunoId(UUID alunoId);
 
-    List<SubmissaoAtividade> findByAlunoIdAndAtividade_SalaDeAula_Id(Long alunoId, Long salaId);
+    List<SubmissaoAtividade> findByAlunoIdAndAtividade_SalaDeAula_Id(UUID alunoId, UUID salaId);
 }

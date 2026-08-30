@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.service;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.*;
 import com.plataforma_academica.plataforma.repository.*;
@@ -38,7 +39,7 @@ class SaladeAulaServiceImplTest {
     @Test
     void buscarSalaPorId_DeveRetornarSala_QuandoEncontrada() {
         // Arrange
-        Long salaId = 1L;
+        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         SaladeAula sala = new SaladeAula();
         sala.setId(salaId);
         sala.setNome("Sala Teste");
@@ -56,7 +57,7 @@ class SaladeAulaServiceImplTest {
     @Test
     void buscarSalaPorId_DeveLancarException_QuandoNaoEncontrada() {
         // Arrange
-        Long salaId = 1L;
+        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         when(salaRepository.findById(salaId)).thenReturn(Optional.empty());
 
         // Act & Assert
@@ -69,11 +70,11 @@ class SaladeAulaServiceImplTest {
     void listarTodasSalas_DeveRetornarLista() {
         // Arrange
         SaladeAula sala1 = new SaladeAula();
-        sala1.setId(1L);
+        sala1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         sala1.setNome("Sala 1");
 
         SaladeAula sala2 = new SaladeAula();
-        sala2.setId(2L);
+        sala2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         sala2.setNome("Sala 2");
 
         List<SaladeAula> salas = List.of(sala1, sala2);
@@ -91,7 +92,7 @@ class SaladeAulaServiceImplTest {
     @Test
     void criarSala_DeveRetornarSalaCriada_QuandoProfessor() {
         // Arrange
-        Long criadorId = 1L;
+        Long criadorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario criador = new Professor(); // Professor extends Usuario
         criador.setId(criadorId);
         criador.setNome("Professor João");
@@ -100,7 +101,7 @@ class SaladeAulaServiceImplTest {
         sala.setNome("Nova Sala");
 
         SaladeAula salaSalva = new SaladeAula();
-        salaSalva.setId(1L);
+        salaSalva.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         salaSalva.setNome("Nova Sala");
         salaSalva.setCriador(criador);
         salaSalva.setCodigoSala("ABC12345");
@@ -122,7 +123,7 @@ class SaladeAulaServiceImplTest {
     @Test
     void criarSala_DeveLancarException_QuandoNaoProfessor() {
         // Arrange
-        Long criadorId = 1L;
+        Long criadorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario criador = new Usuario(); // Não é Professor
         criador.setId(criadorId);
         criador.setNome("Aluno João");
@@ -143,8 +144,8 @@ class SaladeAulaServiceImplTest {
     @Test
     void deletarSala_DeveDeletar_QuandoCriador() {
         // Arrange
-        Long salaId = 1L;
-        Long userId = 1L;
+        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long userId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Usuario criador = new Professor();
         criador.setId(userId);
@@ -166,11 +167,11 @@ class SaladeAulaServiceImplTest {
     @Test
     void deletarSala_DeveLancarException_QuandoNaoCriador() {
         // Arrange
-        Long salaId = 1L;
-        Long userId = 2L;
+        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long userId = UUID.fromString("00000000-0000-0000-0000-000000000002");
 
         Usuario criador = new Professor();
-        criador.setId(1L);
+        criador.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         SaladeAula sala = new SaladeAula();
         sala.setId(salaId);

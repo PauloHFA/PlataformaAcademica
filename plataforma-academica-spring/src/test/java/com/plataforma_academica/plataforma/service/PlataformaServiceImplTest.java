@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.service;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.Plataforma;
 import com.plataforma_academica.plataforma.repository.PlataformaRepository;
@@ -32,7 +33,7 @@ class PlataformaServiceImplTest {
         plataforma.setNome("Plataforma Teste");
 
         Plataforma plataformaSalva = new Plataforma();
-        plataformaSalva.setId(1L);
+        plataformaSalva.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         plataformaSalva.setNome("Plataforma Teste");
 
         when(plataformaRepository.save(any(Plataforma.class))).thenReturn(plataformaSalva);
@@ -43,14 +44,14 @@ class PlataformaServiceImplTest {
         // Assert
         assertNotNull(result);
         assertEquals("Plataforma Teste", result.getNome());
-        assertEquals(1L, result.getId());
+        assertEquals(UUID.fromString("00000000-0000-0000-0000-000000000001"), result.getId());
         verify(plataformaRepository).save(any(Plataforma.class));
     }
 
     @Test
     void atualizar_DeveRetornarPlataformaAtualizada_QuandoEncontrada() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Plataforma existente = new Plataforma();
         existente.setId(id);
@@ -80,7 +81,7 @@ class PlataformaServiceImplTest {
     @Test
     void atualizar_DeveLancarException_QuandoNaoEncontrada() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Plataforma atualizadaRequest = new Plataforma();
         atualizadaRequest.setNome("Nome Novo");
@@ -99,7 +100,7 @@ class PlataformaServiceImplTest {
     @Test
     void buscarPorId_DeveRetornarPlataforma_QuandoEncontrada() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Plataforma plataforma = new Plataforma();
         plataforma.setId(id);
@@ -118,7 +119,7 @@ class PlataformaServiceImplTest {
     @Test
     void buscarPorId_DeveRetornarNull_QuandoNaoEncontrada() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(plataformaRepository.findById(id)).thenReturn(Optional.empty());
 
@@ -134,11 +135,11 @@ class PlataformaServiceImplTest {
     void listarTudo_DeveRetornarLista() {
         // Arrange
         Plataforma plataforma1 = new Plataforma();
-        plataforma1.setId(1L);
+        plataforma1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         plataforma1.setNome("Plataforma 1");
 
         Plataforma plataforma2 = new Plataforma();
-        plataforma2.setId(2L);
+        plataforma2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         plataforma2.setNome("Plataforma 2");
 
         List<Plataforma> plataformas = List.of(plataforma1, plataforma2);
@@ -156,7 +157,7 @@ class PlataformaServiceImplTest {
     @Test
     void deletar_DeveDeletarPorId() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         // Act
         plataformaService.deletar(id);

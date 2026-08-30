@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -26,8 +28,8 @@ import java.time.LocalDateTime;
 public class Comentario {
     /** Identificador único do comentário. */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     /** Usuário autor do comentário. */
     @ManyToOne(fetch = FetchType.EAGER)
@@ -66,4 +68,12 @@ public class Comentario {
     // IMPORTANTE:
     // Você deve implementar uma lógica de validação antes de persistir
     // para garantir que APENAS UM dos campos (postagem ou atividade) não seja nulo.
+
+
+    @PrePersist
+    public void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
 }

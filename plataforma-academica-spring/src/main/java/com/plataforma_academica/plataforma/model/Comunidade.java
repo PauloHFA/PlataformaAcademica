@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -33,8 +35,8 @@ import java.util.Set;
 public class Comunidade {
     /** Identificador único da comunidade (chave primária auto-incrementada). */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     /** Nome da comunidade (exposto publicamente, deve ser único). */
     private String nome;
@@ -58,4 +60,12 @@ public class Comunidade {
     // para evitar explosão de coleções em comunidades grandes.
     // Trade-off: consulta de membros requer join adicional, mas mantém
     // a entidade raiz leve para operações de feed e busca.
+
+
+    @PrePersist
+    public void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
 }

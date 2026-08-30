@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.AtividadeDTO;
 import com.plataforma_academica.plataforma.model.Atividade;
 import com.plataforma_academica.plataforma.model.SaladeAula;
@@ -56,7 +58,7 @@ public class AtividadeServiceImpl implements AtividadeService {
      */
     @Override
     @Transactional
-    public Atividade criarAtividade(Long salaId, Atividade atividade, Long autorId) {
+    public Atividade criarAtividade(UUID salaId, Atividade atividade, UUID autorId) {
         // Passo 1: Verifica se a sala existe
         SaladeAula sala = salaDeAulaRepository.findById(salaId)
                 .orElseThrow(() -> new RuntimeException("Sala não encontrada"));
@@ -89,7 +91,7 @@ public class AtividadeServiceImpl implements AtividadeService {
 
     @Override
     @Transactional
-    public Atividade criarAtividade(Long salaId, AtividadeDTO atividadeDTO, Long autorId) {
+    public Atividade criarAtividade(UUID salaId, AtividadeDTO atividadeDTO, UUID autorId) {
         Atividade atividade = new Atividade();
         atividade.setTitulo(atividadeDTO.getTitulo());
         atividade.setDescricao(atividadeDTO.getDescricao());
@@ -105,19 +107,19 @@ public class AtividadeServiceImpl implements AtividadeService {
     }
 
     @Override
-    public Atividade buscarAtividadePorId(Long atividadeId) {
+    public Atividade buscarAtividadePorId(UUID atividadeId) {
         return atividadeRepository.findById(atividadeId)
                 .orElseThrow(() -> new RuntimeException("Atividade não encontrada"));
     }
 
     @Override
-    public List<Atividade> listarAtividadesPorSala(Long salaId) {
+    public List<Atividade> listarAtividadesPorSala(UUID salaId) {
         return atividadeRepository.findBySalaDeAulaId(salaId);
     }
 
     @Override
     @Transactional
-    public Atividade atualizarAtividade(Long atividadeId, Atividade atividadeAtualizada, Long autorId) {
+    public Atividade atualizarAtividade(UUID atividadeId, Atividade atividadeAtualizada, UUID autorId) {
         Atividade existente = buscarAtividadePorId(atividadeId);
 
         if (!existente.getAutor().getId().equals(autorId)) {
@@ -133,7 +135,7 @@ public class AtividadeServiceImpl implements AtividadeService {
 
     @Override
     @Transactional
-    public Atividade atualizarAtividade(Long atividadeId, AtividadeDTO atividadeDTO, Long autorId) {
+    public Atividade atualizarAtividade(UUID atividadeId, AtividadeDTO atividadeDTO, UUID autorId) {
         Atividade existente = buscarAtividadePorId(atividadeId);
 
         if (!existente.getAutor().getId().equals(autorId)) {
@@ -156,7 +158,7 @@ public class AtividadeServiceImpl implements AtividadeService {
 
     @Override
     @Transactional
-    public void deletarAtividade(Long atividadeId, Long autorId) {
+    public void deletarAtividade(UUID atividadeId, UUID autorId) {
         Atividade existente = buscarAtividadePorId(atividadeId);
 
         if (!existente.getAutor().getId().equals(autorId)) {
@@ -167,7 +169,7 @@ public class AtividadeServiceImpl implements AtividadeService {
     }
 
     @Override
-    public List<Atividade> listarAtividadesPorAutor(Long autorId) {
+    public List<Atividade> listarAtividadesPorAutor(UUID autorId) {
         return atividadeRepository.findByAutorId(autorId);
     }
 }

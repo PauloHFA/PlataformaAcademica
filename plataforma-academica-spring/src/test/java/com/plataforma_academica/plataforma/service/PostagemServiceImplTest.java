@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.service;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.dto.PostagemDTO;
 import com.plataforma_academica.plataforma.model.Plataforma;
@@ -50,22 +51,22 @@ class PostagemServiceImplTest {
     void publicar_DeveRetornarPostagemDTO_QuandoValido() {
         // Arrange
         PostagemDTO dto = new PostagemDTO();
-        dto.setAutorId(1L);
-        dto.setPlataformaId(1L);
+        dto.setAutorId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        dto.setPlataformaId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         dto.setTitulo("Título");
 
         Usuario autor = new Usuario();
-        autor.setId(1L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         Plataforma plataforma = new Plataforma();
-        plataforma.setId(1L);
+        plataforma.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         Postagem postagem = new Postagem();
-        postagem.setId(2L);
+        postagem.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         postagem.setTitulo("Título");
 
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(autor));
-        when(plataformaRepository.findById(1L)).thenReturn(Optional.of(plataforma));
+        when(usuarioRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.of(autor));
+        when(plataformaRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.of(plataforma));
         when(postagemRepository.save(any(Postagem.class))).thenReturn(postagem);
 
         // Act
@@ -81,9 +82,9 @@ class PostagemServiceImplTest {
     void publicar_DeveLancarRuntimeException_QuandoAutorNaoEncontrado() {
         // Arrange
         PostagemDTO dto = new PostagemDTO();
-        dto.setAutorId(1L);
+        dto.setAutorId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
+        when(usuarioRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.empty());
 
         // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> postagemService.publicar(dto));
@@ -94,14 +95,14 @@ class PostagemServiceImplTest {
     void publicar_DeveLancarRuntimeException_QuandoPlataformaNaoEncontrada() {
         // Arrange
         PostagemDTO dto = new PostagemDTO();
-        dto.setAutorId(1L);
-        dto.setPlataformaId(1L);
+        dto.setAutorId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        dto.setPlataformaId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         Usuario autor = new Usuario();
-        autor.setId(1L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(autor));
-        when(plataformaRepository.findById(1L)).thenReturn(Optional.empty());
+        when(usuarioRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.of(autor));
+        when(plataformaRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.empty());
 
         // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> postagemService.publicar(dto));
@@ -111,7 +112,7 @@ class PostagemServiceImplTest {
     @Test
     void deletar_DeveDeletar_QuandoEncontrada() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Postagem postagem = new Postagem();
         postagem.setId(id);
@@ -130,7 +131,7 @@ class PostagemServiceImplTest {
     @Test
     void deletar_DeveLancarRuntimeException_QuandoNaoEncontrada() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(postagemRepository.findById(id)).thenReturn(Optional.empty());
 
@@ -142,7 +143,7 @@ class PostagemServiceImplTest {
     @Test
     void buscarPorId_DeveRetornarPostagemDTO_QuandoEncontrada() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Postagem postagem = new Postagem();
         postagem.setId(id);
@@ -159,7 +160,7 @@ class PostagemServiceImplTest {
     @Test
     void buscarPorId_DeveRetornarNull_QuandoNaoEncontrada() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(postagemRepository.findById(id)).thenReturn(Optional.empty());
 

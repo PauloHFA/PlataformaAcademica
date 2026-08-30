@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.AmizadeDTO;
 import com.plataforma_academica.plataforma.exception.BadRequestException;
 import com.plataforma_academica.plataforma.exception.ResourceNotFoundException;
@@ -46,57 +48,58 @@ public class AmizadeServiceImpl implements AmizadeService {
     @Override
     @Transactional
     public Amizade enviarSolicitacao(AmizadeDTO dto) {
-        // ...existing code...
+        Usuario solicitante = usuarioRepository.findById(dto.getSolicitanteId())
+                .orElseThrow(() -> new ResourceNotFoundException("Solicitante não encontrado"));
+        Usuario destinatario = usuarioRepository.findById(dto.getDestinatarioId())
+                .orElseThrow(() -> new ResourceNotFoundException("Destinatário não encontrado"));
+        if (solicitante.getId().equals(destinatario.getId())) {
+            throw new BadRequestException("Não pode enviar solicitação para si mesmo");
+        }
+        Amizade amizade = new Amizade();
+        amizade.setSolicitante(solicitante);
+        amizade.setDestinatario(destinatario);
+        amizade.setStatus(Amizade.Status.PENDENTE);
+        return amizadeRepository.save(amizade);
     }
 
-    /**
-     * Responde a uma solicitação de amizade existente (aceitar ou recusar).
-     * 
-     * @param amizadeId ID da solicitação de amizade.
-     * @param acao      Ação a ser tomada ('aceitar' ou 'recusar').
-     * @return A instância de Amizade atualizada.
-     * @throws ResourceNotFoundException se a solicitação não for encontrada.
-     * @throws BadRequestException       se a solicitação já foi respondida ou a
-     *                                   ação for inválida.
-     */
     @Override
     @Transactional
-    public Amizade responderSolicitacao(Long amizadeId, String acao) {
-        // ...existing code...
+    public Amizade responderSolicitacao(UUID amizadeId, String acao) {
+        Amizade amizade = amizadeRepository.findById(amizadeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Solicitação não encontrada"));
+        if (amizade.getStatus() != Amizade.Status.PENDENTE) {
+            throw new BadRequestException("Solicitação já respondida");
+        }
+        if ("aceitar".equalsIgnoreCase(acao)) {
+            amizade.setStatus(Amizade.Status.ACEITO);
+        } else if ("recusar".equalsIgnoreCase(acao)) {
+            amizade.setStatus(Amizade.Status.RECUSADO);
+        } else {
+            throw new BadRequestException("Ação inválida");
+        }
+        return amizadeRepository.save(amizade);
     }
 
-    /**
-     * Remove uma conexão de amizade existente.
-     * 
-     * @param amizadeId ID da amizade a ser removida.
-     * @throws ResourceNotFoundException se a amizade não for encontrada.
-     */
     @Override
-    public void removerAmizade(Long amizadeId) {
-        // ...existing code...
+    public void removerAmizade(UUID amizadeId) {
+        Amizade amizade = amizadeRepository.findById(amizadeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Amizade não encontrada"));
+        amizadeRepository.delete(amizade);
     }
 
-    /**
-     * Lista todas as solicitações de amizade pendentes para um usuário.
-     * 
-     * @param usuarioId ID do usuário.
-     * @return Lista de solicitações pendentes.
-     * @throws ResourceNotFoundException se o usuário não for encontrado.
-     */
     @Override
-    public List<Amizade> listarSolicitacoesPendentes(Long usuarioId) {
-        // ...existing code...
+    public List<Amizade> listarSolicitacoesPendentes(UUID usuarioId) {
+        return amizadeRepository.findAmizades(
+                usuarioRepository.findById(usuarioId)
+                        .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado")),
+                Amizade.Status.PENDENTE);
     }
 
-    /**
-     * Lista todos os amigos aceitos de um usuário.
-     * 
-     * @param usuarioId ID do usuário.
-     * @return Lista de amigos.
-     * @throws ResourceNotFoundException se o usuário não for encontrado.
-     */
     @Override
-    public List<Amizade> listarAmigos(Long usuarioId) {
-        // ...existing code...
+    public List<Amizade> listarAmigos(UUID usuarioId) {
+        return amizadeRepository.findAmizades(
+                usuarioRepository.findById(usuarioId)
+                        .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado")),
+                Amizade.Status.ACEITO);
     }
 }

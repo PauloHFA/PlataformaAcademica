@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.repository;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,5 +15,5 @@ import org.springframework.stereotype.Repository;
  * @see REQ-099 (Administração da Plataforma)
  */
 @Repository
-public interface AdminRepository extends JpaRepository<Admin, Long> {
+public interface AdminRepository extends JpaRepository<Admin, UUID> {
 }

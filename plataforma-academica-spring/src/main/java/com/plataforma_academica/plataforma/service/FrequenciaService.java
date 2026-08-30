@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.model.Frequencia;
 
 import java.time.LocalDate;
@@ -15,11 +17,11 @@ import java.util.List;
  * @see REQ-025 (Controle de Frequência)
  */
 public interface FrequenciaService {
-    Frequencia registrarFrequencia(Long alunoId, Long salaId, LocalDate data, Boolean presente, String justificativa);
+    Frequencia registrarFrequencia(UUID alunoId, UUID salaId, LocalDate data, Boolean presente, String justificativa);
 
-    List<Frequencia> buscarFrequencias(Long alunoId, Long salaId, LocalDate inicio, LocalDate fim);
+    List<Frequencia> buscarFrequencias(UUID alunoId, UUID salaId, LocalDate inicio, LocalDate fim);
 
-    List<Frequencia> buscarFrequencias(Long alunoId, Long salaId);
+    List<Frequencia> buscarFrequencias(UUID alunoId, UUID salaId);
 
-    double calcularPercentualPresenca(Long alunoId, Long salaId, LocalDate inicio, LocalDate fim);
+    double calcularPercentualPresenca(UUID alunoId, UUID salaId, LocalDate inicio, LocalDate fim);
 }

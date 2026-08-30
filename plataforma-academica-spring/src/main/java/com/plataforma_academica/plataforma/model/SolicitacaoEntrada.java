@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -25,8 +27,8 @@ public class SolicitacaoEntrada {
 
     /** Identificador único da solicitação. */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     /** Sala de aula alvo da solicitação. */
     @ManyToOne
@@ -55,5 +57,13 @@ public class SolicitacaoEntrada {
      */
     public enum StatusSolicitacao {
         PENDENTE, APROVADA, REJEITADA
+    }
+
+
+    @PrePersist
+    public void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
     }
 }

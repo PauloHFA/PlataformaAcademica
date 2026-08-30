@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.controller;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.FrequenciaRequestDTO;
 import com.plataforma_academica.plataforma.model.Frequencia;
 import com.plataforma_academica.plataforma.service.FrequenciaService;
@@ -44,8 +46,8 @@ public class FrequenciaController {
 
     @GetMapping
     public ResponseEntity<?> buscarFrequencias(
-            @RequestParam Long alunoId,
-            @RequestParam Long salaId,
+            @RequestParam UUID alunoId,
+            @RequestParam UUID salaId,
             @RequestParam(required = false) String inicio,
             @RequestParam(required = false) String fim) {
         try {
@@ -65,8 +67,8 @@ public class FrequenciaController {
 
     @GetMapping("/percentual")
     public ResponseEntity<?> percentualPresenca(
-            @RequestParam Long alunoId,
-            @RequestParam Long salaId,
+            @RequestParam UUID alunoId,
+            @RequestParam UUID salaId,
             @RequestParam String inicio,
             @RequestParam String fim) {
         try {

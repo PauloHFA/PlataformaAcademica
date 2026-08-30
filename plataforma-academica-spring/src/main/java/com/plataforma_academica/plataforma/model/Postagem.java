@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.*;
 import com.plataforma_academica.plataforma.model.Usuario;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -28,8 +30,8 @@ public class Postagem {
 
     /** Identificador único da postagem. */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     /** Título da postagem (exposto no feed). */
     private String titulo;
@@ -52,4 +54,12 @@ public class Postagem {
     /** URL da imagem anexada (opcional). */
     private String imagemUrl;
 
+
+
+    @PrePersist
+    public void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
 }

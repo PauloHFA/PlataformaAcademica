@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.service;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.Comentario;
 import com.plataforma_academica.plataforma.model.SaladeAula;
@@ -34,7 +35,7 @@ class ComentarioServiceImplTest {
         comentario.setConteudo("Conteúdo");
 
         Comentario saved = new Comentario();
-        saved.setId(1L);
+        saved.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         saved.setConteudo("Conteúdo");
 
         when(comentarioRepository.save(comentario)).thenReturn(saved);
@@ -51,7 +52,7 @@ class ComentarioServiceImplTest {
     @Test
     void buscarPorId_DeveRetornarComentario_QuandoEncontrado() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Comentario comentario = new Comentario();
         comentario.setId(id);
@@ -68,7 +69,7 @@ class ComentarioServiceImplTest {
     @Test
     void buscarPorId_DeveRetornarNull_QuandoNaoEncontrado() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(comentarioRepository.findById(id)).thenReturn(Optional.empty());
 
@@ -97,7 +98,7 @@ class ComentarioServiceImplTest {
     @Test
     void atualizar_DeveRetornarComentario_QuandoEncontrado() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Comentario existente = new Comentario();
         existente.setId(id);
@@ -120,7 +121,7 @@ class ComentarioServiceImplTest {
     @Test
     void atualizar_DeveRetornarNull_QuandoNaoEncontrado() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Comentario atualizado = new Comentario();
 
@@ -136,7 +137,7 @@ class ComentarioServiceImplTest {
     @Test
     void deletar_DeveDeletar() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         // Act
         comentarioService.deletar(id);
@@ -148,7 +149,7 @@ class ComentarioServiceImplTest {
     @Test
     void listarComentariosPorSala_DeveRetornarLista() {
         // Arrange
-        Long salaId = 1L;
+        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         List<Comentario> comentarios = List.of(new Comentario());
 
         when(comentarioRepository.findBySaladeAulaId(salaId)).thenReturn(comentarios);
@@ -164,7 +165,7 @@ class ComentarioServiceImplTest {
     @Test
     void listarComentariosPorAtividade_DeveRetornarLista() {
         // Arrange
-        Long atividadeId = 1L;
+        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         List<Comentario> comentarios = List.of(new Comentario());
 
         when(comentarioRepository.findByAtividadeId(atividadeId)).thenReturn(comentarios);
@@ -180,7 +181,7 @@ class ComentarioServiceImplTest {
     @Test
     void listarComentariosPorPostagem_DeveRetornarLista() {
         // Arrange
-        Long postagemId = 1L;
+        Long postagemId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         List<Comentario> comentarios = List.of(new Comentario());
 
         when(comentarioRepository.findByPostagemId(postagemId)).thenReturn(comentarios);
@@ -200,15 +201,15 @@ class ComentarioServiceImplTest {
         comentario.setConteudo("Conteúdo");
 
         SaladeAula sala = new SaladeAula();
-        sala.setId(1L);
+        sala.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         comentario.setSaladeAula(sala);
 
         Usuario autor = new Usuario();
-        autor.setId(1L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         comentario.setAutor(autor);
 
         Comentario saved = new Comentario();
-        saved.setId(2L);
+        saved.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
 
         when(comentarioRepository.save(any(Comentario.class))).thenReturn(saved);
 
@@ -240,7 +241,7 @@ class ComentarioServiceImplTest {
         comentario.setConteudo("Conteúdo");
 
         SaladeAula sala = new SaladeAula();
-        sala.setId(1L);
+        sala.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         comentario.setSaladeAula(sala);
 
         // Act & Assert

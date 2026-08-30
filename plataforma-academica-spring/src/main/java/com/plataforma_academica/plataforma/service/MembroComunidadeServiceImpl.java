@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.model.MembroComunidade;
 import com.plataforma_academica.plataforma.repository.MembroComunidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +44,7 @@ public class MembroComunidadeServiceImpl implements MembroComunidadeService {
      * @return Instância encontrada ou null se não existir.
      */
     @Override
-    public MembroComunidade buscarPorId(Long id) {
+    public MembroComunidade buscarPorId(UUID id) {
         // Passo 1: Consultar banco de dados por ID
         return membroComunidadeRepository.findById(id).orElse(null);
     }
@@ -53,22 +55,22 @@ public class MembroComunidadeServiceImpl implements MembroComunidadeService {
     }
 
     @Override
-    public void deletar(Long id) {
+    public void deletar(UUID id) {
         membroComunidadeRepository.deleteById(id);
     }
 
     @Override
-    public List<MembroComunidade> buscarPorComunidade(Long comunidadeId) {
+    public List<MembroComunidade> buscarPorComunidade(UUID comunidadeId) {
         return membroComunidadeRepository.findByComunidadeId(comunidadeId);
     }
 
     @Override
-    public List<MembroComunidade> buscarPorUsuario(Long usuarioId) {
+    public List<MembroComunidade> buscarPorUsuario(UUID usuarioId) {
         return membroComunidadeRepository.findByUsuarioId(usuarioId);
     }
 
     @Override
-    public MembroComunidade buscarPorUsuarioEComunidade(Long usuarioId, Long comunidadeId) {
+    public MembroComunidade buscarPorUsuarioEComunidade(UUID usuarioId, UUID comunidadeId) {
         return membroComunidadeRepository
                 .findByUsuarioIdAndComunidadeId(usuarioId, comunidadeId)
                 .orElse(null);

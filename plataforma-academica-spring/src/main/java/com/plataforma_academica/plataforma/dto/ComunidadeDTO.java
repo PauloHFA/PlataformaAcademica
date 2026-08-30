@@ -1,10 +1,12 @@
 package com.plataforma_academica.plataforma.dto;
 
+import java.util.UUID;
+
 import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * DTO de transferência para criação/atualização de Comunidades.
+ * DTO de transferÃªncia para criaÃ§Ã£o/atualizaÃ§Ã£o de Comunidades.
  * 
  * Camada: Presentation / DTO (Social Context)
  * 
@@ -14,11 +16,11 @@ import java.time.LocalDateTime;
 @Data
 public class ComunidadeDTO {
 
-    private Long id;
+    private UUID id;
     private String nome;
     private String descricao;
 
     private LocalDateTime criadoEm;
 
-    private Long donoId;
+    private UUID donoId;
 }

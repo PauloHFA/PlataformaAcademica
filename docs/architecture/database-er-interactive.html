@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagrama ER & Modelo Relacional - Plataforma Acadêmica</title>
+    <!-- Importa a biblioteca Mermaid para renderizar gráficos interativos -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+    </script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f6f8fa;
+            color: #24292e;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #0366d6;
+        }
+
+        .container {
+            max-width: 100%;
+            background: #ffffff;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: auto;
+            position: relative;
+        }
+
+        .instructions {
+            background: #e7f5ff;
+            border-left: 4px solid #339af0;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            cursor: grab;
+        }
+
+        .mermaid:active {
+            cursor: grabbing;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Plataforma Acadêmica — Diagrama ER Interativo</h1>
+        <p>Modelo de Dados e Relacionamentos do Banco de Dados Relacional (JPA / PostgreSQL / MySQL)</p>
+    </header>
+
+    <div class="instructions">
+        💡 <strong>Dica de Visualização:</strong> O diagrama abaixo é interativo. Você pode dar zoom utilizando o scroll
+        do mouse ou pinça (trackpad), e clicar e arrastar (pan) para navegar pelo modelo completo.
+    </div>
+
+    <div class="container">
+        <div class="mermaid">
+            erDiagram
+            USUARIO {
+            Long id PK
+            String nome
+            String sobrenome
+            String email UK
+            String senha
+            LocalDate dataNascimento
+            String telefone
+            String descricao
+            String instituicaoEnsino
+            String cep
+            String pais
+            String cidade
+            String site
+            byte[] avatar
+            String fotoPerfil
+            Double pontos
+            Double moedas
+            String nivel
+            }
+
+            PROFESSOR {
+            String matricula
+            }
+
+            ADMIN {
+            -- Sem campos adicionais --
+            }
+
+            PERFIL {
+            String bio
+            String fotoPerfil
+            String curso
+            }
+
+            ARTIGO {
+            Long id PK
+            String titulo
+            String conteudo LOB
+            Long autor_id FK
+            LocalDateTime criadoEm
+            LocalDateTime atualizadoEm
+            }
+
+            COMUNIDADE {
+            Long id PK
+            String nome
+            String descricao
+            LocalDateTime criadoEm
+            Long dono_id FK
+            }
+
+            MEMBRO_COMUNIDADE {
+            Long id PK
+            Long usuario_id FK
+            Long comunidade_id FK
+            String papel
+            LocalDateTime entrouEm
+            }
+
+            SALA_DE_AULA {
+            Long id PK
+            String nome
+            String codigoSala UK
+            Long criador_id FK
+            }
+
+            SALA_MEMBROS {
+            Long sala_id PK, FK
+            Long usuario_id PK, FK
+            }
+
+            ATIVIDADE {
+            Long id PK
+            String titulo
+            String descricao
+            String tipoDocumentoSubmissao
+            LocalDate dataEntrega
+            Double pontos
+            String documentoUrl
+            Long autor_id FK
+            Long sala_id FK
+            }
+
+            COMENTARIO {
+            Long id PK
+            Long autor_id FK
+            Long postagem_id FK
+            Long atividade_id FK
+            Long sala_de_aula_id FK
+            String tipoDestino
+            String conteudo LOB
+            LocalDateTime dataCriacao
+            }
+
+            SUBMISSAO_ATIVIDADE {
+            Long id PK
+            Long atividade_id FK
+            Long aluno_id FK
+            String urlDocumento
+            String descricao
+            LocalDateTime dataSubmissao
+            Double nota
+            String feedback
+            LocalDateTime dataCorrecao
+            Boolean recebida
+            LocalDateTime dataRecebimento
+            }
+
+            AMIZADE {
+            Long id PK
+            Long solicitante_id FK
+            Long destinatario_id FK
+            String status
+            LocalDateTime criadoEm
+            }
+
+            CURTIDA {
+            Long id PK
+            Long usuario_id FK
+            Long postagem_id FK
+            }
+
+            POSTAGEM {
+            Long id PK
+            String titulo
+            String conteudo
+            Long usuario_id FK
+            Long plataforma_id FK
+            Integer curtidas
+            String imagemUrl
+            }
+
+            NOTIFICACAO {
+            Long id PK
+            Long usuario_id FK
+            String mensagem
+            String tipo
+            Long referenciaId
+            Boolean lida
+            LocalDateTime dataCriacao
+            }
+
+            MENSAGEM {
+            Long id PK
+            Long remetenteId
+            Long destinatarioId
+            String conteudo
+            LocalDateTime criadoEm
+            Boolean lida
+            }
+
+            FREQUENCIA {
+            Long id PK
+            Long aluno_id FK
+            Long sala_id FK
+            LocalDate data
+            Boolean presente
+            String justificativa
+            }
+
+            INTERACAO_USUARIO {
+            Long id PK
+            Long usuario_id FK
+            String tipoInteracao
+            String entidadeTipo
+            Long entidadeId
+            Double pesoInteracao
+            LocalDateTime dataInteracao
+            String tags
+            }
+
+            CONTEUDO_MERCADO {
+            Long id PK
+            String titulo
+            String descricao
+            Long autor_id FK
+            String tipoConteudo
+            BigDecimal preco
+            String caminhoArquivo
+            String urlDownload
+            String thumbnailUrl
+            Integer downloads
+            Double avaliacao
+            Integer totalAvaliacoes
+            Boolean ativo
+            LocalDateTime dataCriacao
+            LocalDateTime dataAtualizacao
+            String tags
+            String nivelDificuldade
+            String categoria
+            }
+
+            SOLICITACAO_ENTRADA {
+            Long id PK
+            Long sala_id FK
+            Long usuario_id FK
+            String status
+            LocalDateTime dataSolicitacao
+            LocalDateTime dataResposta
+            }
+
+            RECOMENDACAO_USUARIO {
+            Long id PK
+            Long usuario_id FK
+            Long usuario_recomendado_id FK
+            Double scoreSimilaridade
+            String motivoRecomendacao
+            String tipoRecomendacao
+            LocalDateTime dataCriacao
+            Boolean ativo
+            }
+
+            PLATAFORMA {
+            Long id PK
+            String nome
+            }
+
+            %% Relacionamentos
+            USUARIO ||--o{ ARTIGO : "publica"
+            USUARIO ||--o{ COMUNIDADE : "cria (dono)"
+            USUARIO ||--o{ COMENTARIO : "escreve"
+            USUARIO ||--o{ POSTAGEM : "publica"
+            USUARIO ||--o{ NOTIFICACAO : "recebe"
+            USUARIO ||--o{ FREQUENCIA : "possui"
+            USUARIO ||--o{ INTERACAO_USUARIO : "gera"
+            USUARIO ||--o{ CONTEUDO_MERCADO : "vende"
+            USUARIO ||--o{ RECOMENDACAO_USUARIO : "alvo"
+            USUARIO ||--o{ SUBMISSAO_ATIVIDADE : "submete"
+            USUARIO ||--o{ CURTIDA : "curte"
+            USUARIO ||--o{ MEMBRO_COMUNIDADE : "participa"
+            USUARIO ||--o{ SALA_MEMBROS : "estuda em"
+            USUARIO ||--o{ SOLICITACAO_ENTRADA : "solicita"
+            USUARIO ||--o{ AMIZADE : "solicita / recebe"
+
+            PLATAFORMA ||--o{ USUARIO : "agrupa"
+            PLATAFORMA ||--o{ POSTAGEM : "contém"
+
+            SALA_DE_AULA ||--o{ ATIVIDADE : "contém"
+            SALA_DE_AULA ||--o{ COMENTARIO : "recebe"
+            SALA_DE_AULA ||--o{ FREQUENCIA : "registra"
+            SALA_DE_AULA ||--o{ SALA_MEMBROS : "possui membros"
+            SALA_DE_AULA ||--o{ SOLICITACAO_ENTRADA : "recebe solicitações"
+            SALA_DE_AULA ||--o{ USUARIO : "criada por (criador_id)"
+
+            COMUNIDADE ||--o{ MEMBRO_COMUNIDADE : "possui"
+
+            ATIVIDADE ||--o{ COMENTARIO : "recebe"
+            ATIVIDADE ||--o{ SUBMISSAO_ATIVIDADE : "recebe submissões"
+
+            POSTAGEM ||--o{ COMENTARIO : "recebe"
+            POSTAGEM ||--o{ CURTIDA : "recebe"
+
+            USUARIO |,--o{ PROFESSOR : "herda (JOINED)"
+            USUARIO |,--o{ ADMIN : "herda (JOINED)"
+            USUARIO |,--o{ PERFIL : "herda (JOINED)"
+        </div>
+    </div>
+
+</body>
+
+</html>

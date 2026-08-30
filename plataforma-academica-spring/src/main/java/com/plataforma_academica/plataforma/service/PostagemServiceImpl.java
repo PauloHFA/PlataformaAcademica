@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.PostagemDTO;
 import com.plataforma_academica.plataforma.dto.PostagemResponseDTO;
 import com.plataforma_academica.plataforma.mapper.PostagemMapper;
@@ -113,7 +115,7 @@ public class PostagemServiceImpl implements PostagemService {
     }
 
     @Override
-    public PostagemDTO buscarPorId(Long id) {
+    public PostagemDTO buscarPorId(UUID id) {
         return postagemRepository.findById(id)
                 .map(PostagemMapper::toDTO)
                 .orElse(null);
@@ -134,7 +136,7 @@ public class PostagemServiceImpl implements PostagemService {
 
     @Override
     @Transactional
-    public void deletar(Long id) {
+    public void deletar(UUID id) {
         Postagem postagem = postagemRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Postagem não encontrada"));
         // Deletar comentários relacionados à postagem
@@ -169,7 +171,7 @@ public class PostagemServiceImpl implements PostagemService {
     }
 
     @Override
-    public PostagemResponseDTO buscarPorIdResponse(Long id) {
+    public PostagemResponseDTO buscarPorIdResponse(UUID id) {
         return postagemRepository.findById(id)
                 .map(PostagemMapper::toResponse)
                 .orElse(null);
@@ -213,7 +215,7 @@ public class PostagemServiceImpl implements PostagemService {
 
     @Override
     @Transactional
-    public PostagemResponseDTO curtir(Long postagemId, Long usuarioId) {
+    public PostagemResponseDTO curtir(UUID postagemId, UUID usuarioId) {
         Postagem postagem = postagemRepository.findById(postagemId)
                 .orElseThrow(() -> new RuntimeException("Postagem não encontrada"));
         Usuario usuario = usuarioRepository.findById(usuarioId)
@@ -236,8 +238,8 @@ public class PostagemServiceImpl implements PostagemService {
     }
 
     @Override
-    public List<PostagemResponseDTO> listarDeAmigos(Long usuarioId) {
-        List<Long> amigosIds = amizadeService.listarAmigos(usuarioId)
+    public List<PostagemResponseDTO> listarDeAmigos(UUID usuarioId) {
+        List<UUID> amigosIds = amizadeService.listarAmigos(usuarioId)
                 .stream()
                 .map(amizade -> amizade.getSolicitante().getId().equals(usuarioId)
                         ? amizade.getDestinatario().getId()
@@ -262,7 +264,7 @@ public class PostagemServiceImpl implements PostagemService {
     }
 
     @Override
-    public boolean verificarCurtida(Long postagemId, Long usuarioId) {
+    public boolean verificarCurtida(UUID postagemId, UUID usuarioId) {
         return curtidaRepository.existsByUsuarioIdAndPostagemId(usuarioId, postagemId);
     }
 }

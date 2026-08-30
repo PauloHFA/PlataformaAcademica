@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.repository;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.Frequencia;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,9 +18,9 @@ import java.util.List;
  * @see REQ-025 (Controle de Frequência)
  */
 @Repository
-public interface FrequenciaRepository extends JpaRepository<Frequencia, Long> {
-    List<Frequencia> findByAlunoIdAndSalaDeAulaIdAndDataBetween(Long alunoId, Long salaId, LocalDate inicio,
+public interface FrequenciaRepository extends JpaRepository<Frequencia, UUID> {
+    List<Frequencia> findByAlunoIdAndSalaDeAulaIdAndDataBetween(UUID alunoId, UUID salaId, LocalDate inicio,
             LocalDate fim);
 
-    List<Frequencia> findByAlunoIdAndSalaDeAulaId(Long alunoId, Long salaId);
+    List<Frequencia> findByAlunoIdAndSalaDeAulaId(UUID alunoId, UUID salaId);
 }

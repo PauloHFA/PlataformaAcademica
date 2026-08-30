@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.ComentarioDTO;
 import com.plataforma_academica.plataforma.model.Comentario;
 
@@ -20,17 +22,17 @@ public interface ComentarioService {
 
     Comentario salvarComentario(ComentarioDTO dto);
 
-    Comentario buscarPorId(Long id);
+    Comentario buscarPorId(UUID id);
 
     List<Comentario> listarTodos();
 
-    Comentario atualizar(Long id, Comentario comentarioAtualizado);
+    Comentario atualizar(UUID id, Comentario comentarioAtualizado);
 
-    void deletar(Long id);
+    void deletar(UUID id);
 
-    List<Comentario> listarComentariosPorSala(Long salaId);
+    List<Comentario> listarComentariosPorSala(UUID salaId);
 
-    List<Comentario> listarComentariosPorAtividade(Long atividadeId);
+    List<Comentario> listarComentariosPorAtividade(UUID atividadeId);
 
-    List<Comentario> listarComentariosPorPostagem(Long postagemId);
+    List<Comentario> listarComentariosPorPostagem(UUID postagemId);
 }

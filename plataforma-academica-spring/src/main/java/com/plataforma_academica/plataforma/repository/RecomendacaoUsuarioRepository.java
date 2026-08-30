@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.repository;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.RecomendacaoUsuario;
 import com.plataforma_academica.plataforma.model.Usuario;
@@ -20,7 +21,7 @@ import java.util.List;
  * @see docs/architecture/recommendation-engine.md
  */
 @Repository
-public interface RecomendacaoUsuarioRepository extends JpaRepository<RecomendacaoUsuario, Long> {
+public interface RecomendacaoUsuarioRepository extends JpaRepository<RecomendacaoUsuario, UUID> {
 
     List<RecomendacaoUsuario> findByUsuarioAndAtivoOrderByScoreSimilaridadeDesc(Usuario usuario, Boolean ativo);
 
@@ -32,6 +33,6 @@ public interface RecomendacaoUsuarioRepository extends JpaRepository<Recomendaca
             @Param("tipo") RecomendacaoUsuario.TipoRecomendacao tipo);
 
     @Query("SELECT COUNT(r) FROM RecomendacaoUsuario r WHERE r.usuario = :usuario AND r.usuarioRecomendado = :usuarioRecomendado AND r.ativo = true")
-    Long countExistingRecomendacao(@Param("usuario") Usuario usuario,
+    UUID countExistingRecomendacao(@Param("usuario") Usuario usuario,
             @Param("usuarioRecomendado") Usuario usuarioRecomendado);
 }

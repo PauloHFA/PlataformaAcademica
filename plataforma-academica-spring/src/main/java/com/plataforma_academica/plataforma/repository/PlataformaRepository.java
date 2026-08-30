@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.repository;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.Plataforma;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,5 +16,5 @@ import org.yaml.snakeyaml.events.Event;
  * @see Plataforma
  */
 @Repository
-public interface PlataformaRepository extends JpaRepository<Plataforma, Long> {
+public interface PlataformaRepository extends JpaRepository<Plataforma, UUID> {
 }

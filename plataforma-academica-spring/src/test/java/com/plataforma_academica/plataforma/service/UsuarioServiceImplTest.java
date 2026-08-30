@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.service;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.Usuario;
 import com.plataforma_academica.plataforma.repository.UsuarioRepository;
@@ -142,7 +143,7 @@ class UsuarioServiceImplTest {
     @Test
     void buscarPorId_DeveRetornarUsuario_QuandoEncontrado() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Usuario usuario = new Usuario();
         usuario.setId(id);
@@ -159,7 +160,7 @@ class UsuarioServiceImplTest {
     @Test
     void buscarPorId_DeveRetornarNull_QuandoNaoEncontrado() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(usuarioRepository.findById(id)).thenReturn(Optional.empty());
 

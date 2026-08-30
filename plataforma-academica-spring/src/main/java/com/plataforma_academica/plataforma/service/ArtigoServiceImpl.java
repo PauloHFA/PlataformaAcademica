@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.ArtigoDTO;
 import com.plataforma_academica.plataforma.exception.BadRequestException;
 import com.plataforma_academica.plataforma.exception.ResourceNotFoundException;
@@ -60,15 +62,15 @@ public class ArtigoServiceImpl implements ArtigoService {
     /**
      * Edita um artigo existente, validando que apenas o autor pode modificar.
      * 
-     * @param id ID do artigo a ser editado.
+     * @param id  ID do artigo a ser editado.
      * @param dto DTO com novos dados.
      * @return Artigo atualizado.
      * @throws ResourceNotFoundException se o artigo não for encontrado.
-     * @throws BadRequestException se o usuário que edita não for o autor.
+     * @throws BadRequestException       se o usuário que edita não for o autor.
      */
     @Override
     @Transactional
-    public Artigo editar(Long id, ArtigoDTO dto) {
+    public Artigo editar(UUID id, ArtigoDTO dto) {
         // Passo 1: Recupera o artigo existente
         Artigo artigo = artigoRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Artigo não encontrado"));
@@ -84,13 +86,10 @@ public class ArtigoServiceImpl implements ArtigoService {
         artigo.setAtualizadoEm(LocalDateTime.now());
 
         return artigoRepo.save(artigo);
-    }tualizadoEm(LocalDateTime.now());
-
-        return artigoRepo.save(artigo);
     }
 
     @Override
-    public void deletar(Long id, Long solicitanteId) {
+    public void deletar(UUID id, UUID solicitanteId) {
         Artigo artigo = artigoRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Artigo não encontrado"));
 
@@ -102,7 +101,7 @@ public class ArtigoServiceImpl implements ArtigoService {
     }
 
     @Override
-    public Artigo buscarPorId(Long id) {
+    public Artigo buscarPorId(UUID id) {
         return artigoRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Artigo não encontrado"));
     }
@@ -113,7 +112,7 @@ public class ArtigoServiceImpl implements ArtigoService {
     }
 
     @Override
-    public List<Artigo> listarPorAutor(Long autorId) {
+    public List<Artigo> listarPorAutor(UUID autorId) {
         return artigoRepo.findByAutorId(autorId);
     }
 }

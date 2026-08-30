@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.service;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.dto.PerfilDTO;
 import com.plataforma_academica.plataforma.model.Perfil;
@@ -35,17 +36,17 @@ class PerfilServiceImplTest {
     void salvar_DeveCriarNovoPerfil_QuandoNaoExiste() {
         // Arrange
         PerfilDTO dto = new PerfilDTO();
-        dto.setUsuarioId(1L);
+        dto.setUsuarioId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         dto.setNome("Nome");
 
         Usuario usuario = new Usuario();
-        usuario.setId(1L);
+        usuario.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         Perfil perfil = new Perfil();
-        perfil.setId(1L);
+        perfil.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
-        when(perfilRepository.findById(1L)).thenReturn(Optional.empty());
+        when(usuarioRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.of(usuario));
+        when(perfilRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.empty());
         when(perfilRepository.save(any(Perfil.class))).thenReturn(perfil);
 
         // Act
@@ -61,18 +62,18 @@ class PerfilServiceImplTest {
     void salvar_DeveAtualizarPerfil_QuandoExiste() {
         // Arrange
         PerfilDTO dto = new PerfilDTO();
-        dto.setUsuarioId(1L);
+        dto.setUsuarioId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         dto.setBio("Bio");
 
         Usuario usuario = new Usuario();
-        usuario.setId(1L);
+        usuario.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         Perfil perfil = new Perfil();
-        perfil.setId(1L);
+        perfil.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         perfil.setBio("Old Bio");
 
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
-        when(perfilRepository.findById(1L)).thenReturn(Optional.of(perfil));
+        when(usuarioRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.of(usuario));
+        when(perfilRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.of(perfil));
         when(perfilRepository.save(perfil)).thenReturn(perfil);
 
         // Act
@@ -87,9 +88,9 @@ class PerfilServiceImplTest {
     void salvar_DeveLancarRuntimeException_QuandoUsuarioNaoEncontrado() {
         // Arrange
         PerfilDTO dto = new PerfilDTO();
-        dto.setUsuarioId(1L);
+        dto.setUsuarioId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
+        when(usuarioRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.empty());
 
         // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> perfilService.salvar(dto));
@@ -99,7 +100,7 @@ class PerfilServiceImplTest {
     @Test
     void atualizar_DeveRetornarPerfil_QuandoEncontrado() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         PerfilDTO dto = new PerfilDTO();
         dto.setBio("Nova Bio");
 
@@ -120,7 +121,7 @@ class PerfilServiceImplTest {
     @Test
     void atualizar_DeveLancarRuntimeException_QuandoNaoEncontrado() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         PerfilDTO dto = new PerfilDTO();
 
         when(perfilRepository.findById(id)).thenReturn(Optional.empty());
@@ -148,7 +149,7 @@ class PerfilServiceImplTest {
     @Test
     void buscarPorId_DeveRetornarPerfil_QuandoEncontrado() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Perfil perfil = new Perfil();
         perfil.setId(id);
@@ -165,7 +166,7 @@ class PerfilServiceImplTest {
     @Test
     void buscarPorId_DeveRetornarNull_QuandoNaoEncontrado() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(perfilRepository.findById(id)).thenReturn(Optional.empty());
 
@@ -195,7 +196,7 @@ class PerfilServiceImplTest {
     @Test
     void buscarPorUsuarioId_DeveRetornarPerfil_QuandoEncontrado() {
         // Arrange
-        Long usuarioId = 1L;
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Perfil perfil = new Perfil();
         perfil.setId(usuarioId);
@@ -212,7 +213,7 @@ class PerfilServiceImplTest {
     @Test
     void buscarPorUsuarioId_DeveRetornarNull_QuandoNaoEncontrado() {
         // Arrange
-        Long usuarioId = 1L;
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(perfilRepository.findById(usuarioId)).thenReturn(Optional.empty());
 
@@ -226,7 +227,7 @@ class PerfilServiceImplTest {
     @Test
     void existePerfilDoUsuario_DeveRetornarTrue_QuandoExiste() {
         // Arrange
-        Long usuarioId = 1L;
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(perfilRepository.existsById(usuarioId)).thenReturn(true);
 
@@ -241,7 +242,7 @@ class PerfilServiceImplTest {
     @Test
     void existePerfilDoUsuario_DeveRetornarFalse_QuandoNaoExiste() {
         // Arrange
-        Long usuarioId = 1L;
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(perfilRepository.existsById(usuarioId)).thenReturn(false);
 

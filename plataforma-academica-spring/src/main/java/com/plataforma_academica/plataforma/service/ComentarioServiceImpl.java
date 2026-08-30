@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.ComentarioDTO;
 import com.plataforma_academica.plataforma.mapper.ComentarioMapper;
 import com.plataforma_academica.plataforma.model.*;
@@ -64,7 +66,7 @@ public class ComentarioServiceImpl implements ComentarioService {
     }
 
     @Override
-    public Comentario buscarPorId(Long id) {
+    public Comentario buscarPorId(UUID id) {
         return comentarioRepository.findById(id).orElse(null);
     }
 
@@ -74,7 +76,7 @@ public class ComentarioServiceImpl implements ComentarioService {
     }
 
     @Override
-    public Comentario atualizar(Long id, Comentario comentarioAtualizado) {
+    public Comentario atualizar(UUID id, Comentario comentarioAtualizado) {
         Comentario existente = buscarPorId(id);
 
         if (existente == null) {
@@ -89,22 +91,22 @@ public class ComentarioServiceImpl implements ComentarioService {
     }
 
     @Override
-    public void deletar(Long id) {
+    public void deletar(UUID id) {
         comentarioRepository.deleteById(id);
     }
 
     @Override
-    public List<Comentario> listarComentariosPorSala(Long salaId) {
+    public List<Comentario> listarComentariosPorSala(UUID salaId) {
         return comentarioRepository.findBySaladeAulaId(salaId);
     }
 
     @Override
-    public List<Comentario> listarComentariosPorAtividade(Long atividadeId) {
+    public List<Comentario> listarComentariosPorAtividade(UUID atividadeId) {
         return comentarioRepository.findByAtividadeId(atividadeId);
     }
 
     @Override
-    public List<Comentario> listarComentariosPorPostagem(Long postagemId) {
+    public List<Comentario> listarComentariosPorPostagem(UUID postagemId) {
         return comentarioRepository.findByPostagemId(postagemId);
     }
 

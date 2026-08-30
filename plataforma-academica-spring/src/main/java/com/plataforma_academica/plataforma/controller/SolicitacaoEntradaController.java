@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.controller;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.model.SolicitacaoEntrada;
 import com.plataforma_academica.plataforma.model.SolicitacaoEntrada.StatusSolicitacao;
 import com.plataforma_academica.plataforma.model.SaladeAula;
@@ -42,7 +44,7 @@ public class SolicitacaoEntradaController {
     private UsuarioRepository usuarioRepository;
 
     @PostMapping("/solicitar/{salaId}/{usuarioId}")
-    public ResponseEntity<?> solicitarEntrada(@PathVariable Long salaId, @PathVariable Long usuarioId) {
+    public ResponseEntity<?> solicitarEntrada(@PathVariable UUID salaId, @PathVariable UUID usuarioId) {
         System.out.println("[POST /api/solicitacoes/solicitar] Sala=" + salaId + ", Usuario=" + usuarioId);
 
         SaladeAula sala = salaRepository.findById(salaId)
@@ -68,7 +70,7 @@ public class SolicitacaoEntradaController {
     }
 
     @GetMapping("/sala/{salaId}/pendentes")
-    public ResponseEntity<List<SolicitacaoEntrada>> listarPendentes(@PathVariable Long salaId) {
+    public ResponseEntity<List<SolicitacaoEntrada>> listarPendentes(@PathVariable UUID salaId) {
         System.out.println("[GET /api/solicitacoes/sala/" + salaId + "/pendentes]");
         List<SolicitacaoEntrada> pendentes = solicitacaoRepository.findBySalaIdAndStatus(salaId,
                 StatusSolicitacao.PENDENTE);
@@ -77,7 +79,7 @@ public class SolicitacaoEntradaController {
     }
 
     @PutMapping("/{solicitacaoId}/aprovar/{professorId}")
-    public ResponseEntity<?> aprovar(@PathVariable Long solicitacaoId, @PathVariable Long professorId) {
+    public ResponseEntity<?> aprovar(@PathVariable UUID solicitacaoId, @PathVariable UUID professorId) {
         System.out.println("[PUT /api/solicitacoes/" + solicitacaoId + "/aprovar] Professor=" + professorId);
 
         SolicitacaoEntrada solicitacao = solicitacaoRepository.findById(solicitacaoId)
@@ -103,7 +105,7 @@ public class SolicitacaoEntradaController {
     }
 
     @PutMapping("/{solicitacaoId}/rejeitar/{professorId}")
-    public ResponseEntity<?> rejeitar(@PathVariable Long solicitacaoId, @PathVariable Long professorId) {
+    public ResponseEntity<?> rejeitar(@PathVariable UUID solicitacaoId, @PathVariable UUID professorId) {
         System.out.println("[PUT /api/solicitacoes/" + solicitacaoId + "/rejeitar] Professor=" + professorId);
 
         SolicitacaoEntrada solicitacao = solicitacaoRepository.findById(solicitacaoId)
@@ -123,7 +125,7 @@ public class SolicitacaoEntradaController {
     }
 
     @GetMapping("/usuario/{usuarioId}/minhas")
-    public ResponseEntity<List<SolicitacaoEntrada>> minhasSolicitacoes(@PathVariable Long usuarioId) {
+    public ResponseEntity<List<SolicitacaoEntrada>> minhasSolicitacoes(@PathVariable UUID usuarioId) {
         System.out.println("[GET /api/solicitacoes/usuario/" + usuarioId + "/minhas]");
         List<SolicitacaoEntrada> solicitacoes = solicitacaoRepository.findByUsuarioIdAndStatus(usuarioId,
                 StatusSolicitacao.PENDENTE);

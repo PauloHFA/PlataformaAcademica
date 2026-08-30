@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.controller;
+import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plataforma_academica.plataforma.dto.PostagemDTO;
@@ -47,7 +48,7 @@ class PostagemControllerTest {
     @Test
     void buscarPorId_DeveRetornarPostagem_QuandoEncontrada() throws Exception {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         PostagemResponseDTO postagem = new PostagemResponseDTO();
         postagem.setId(id);
         when(postagemService.buscarPorIdResponse(id)).thenReturn(postagem);
@@ -62,7 +63,7 @@ class PostagemControllerTest {
     @Test
     void buscarPorId_DeveRetornarNotFound_QuandoNaoEncontrada() throws Exception {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         when(postagemService.buscarPorIdResponse(id)).thenReturn(null);
 
         // Act & Assert
@@ -101,10 +102,10 @@ class PostagemControllerTest {
         PostagemDTO request = new PostagemDTO();
         request.setTitulo("Título");
         request.setConteudo("Conteúdo");
-        request.setAutorId(1L);
+        request.setAutorId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         PostagemResponseDTO response = new PostagemResponseDTO();
-        response.setId(1L);
+        response.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         when(postagemService.publicarResponse(any(PostagemDTO.class))).thenReturn(response);
 
@@ -114,13 +115,13 @@ class PostagemControllerTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", "/api/postagens/1"))
-                .andExpect(jsonPath("$.id").value(1L));
+                .andExpect(jsonPath("$.id").value(UUID.fromString("00000000-0000-0000-0000-000000000001")));
     }
 
     @Test
     void atualizar_DeveRetornarOk_QuandoValido() throws Exception {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         PostagemDTO request = new PostagemDTO();
         request.setId(id);
         request.setTitulo("Novo Título");
@@ -141,7 +142,7 @@ class PostagemControllerTest {
     @Test
     void deletar_DeveRetornarNoContent_QuandoValido() throws Exception {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         // Act & Assert
         mockMvc.perform(delete("/api/postagens/{id}", id))
@@ -151,8 +152,8 @@ class PostagemControllerTest {
     @Test
     void curtir_DeveRetornarOk_QuandoValido() throws Exception {
         // Arrange
-        Long id = 1L;
-        Long usuarioId = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         PostagemResponseDTO response = new PostagemResponseDTO();
         response.setId(id);
@@ -169,7 +170,7 @@ class PostagemControllerTest {
     @Test
     void listarDeAmigos_DeveRetornarLista_QuandoValido() throws Exception {
         // Arrange
-        Long usuarioId = 1L;
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         List<PostagemResponseDTO> postagens = List.of(new PostagemResponseDTO());
 
         when(postagemService.listarDeAmigos(usuarioId)).thenReturn(postagens);
@@ -196,8 +197,8 @@ class PostagemControllerTest {
     @Test
     void verificarCurtida_DeveRetornarBoolean_QuandoValido() throws Exception {
         // Arrange
-        Long postagemId = 1L;
-        Long usuarioId = 1L;
+        Long postagemId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(postagemService.verificarCurtida(postagemId, usuarioId)).thenReturn(true);
 

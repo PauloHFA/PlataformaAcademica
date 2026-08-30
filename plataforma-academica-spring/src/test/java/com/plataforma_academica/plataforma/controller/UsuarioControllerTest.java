@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.controller;
+import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plataforma_academica.plataforma.model.Usuario;
@@ -37,7 +38,7 @@ class UsuarioControllerTest {
         request.setSenha("senha123");
 
         Usuario usuario = new Usuario();
-        usuario.setId(1L);
+        usuario.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         usuario.setNome("João Silva");
         usuario.setEmail("joao@email.com");
 

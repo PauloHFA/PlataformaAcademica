@@ -1,10 +1,12 @@
 package com.plataforma_academica.plataforma.dto;
 
+import java.util.UUID;
+
 import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * DTO de resposta para Comentários.
+ * DTO de resposta para ComentÃ¡rios.
  * 
  * Camada: Presentation / DTO (Social Context)
  * 
@@ -14,15 +16,16 @@ import java.time.LocalDateTime;
 @Data
 public class ComentarioResponseDTO {
 
-    private Long id;
+    private UUID id;
     private String conteudo;
     private LocalDateTime dataCriacao;
 
-    // Informações do autor
-    private Long autorId;
+    // InformaÃ§Ãµes do autor
+    private UUID autorId;
     private String autorNome;
 
-    // Destino do comentário
+    // Destino do comentÃ¡rio
     private String tipoDestino; // EX: "POSTAGEM", "ATIVIDADE", "SALA"
-    private Long destinoId; // Pode ser postagemId, atividadeId ou salaId
+    private UUID destinoId; // Pode ser postagemId, atividadeId ou salaId
 }
+

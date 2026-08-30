@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.model.Plataforma;
 
 import java.util.List;
@@ -17,11 +19,11 @@ public interface PlataformaService {
 
     Plataforma salvar(Plataforma plataforma);
 
-    Plataforma atualizar(Long id, Plataforma plataforma);
+    Plataforma atualizar(UUID id, Plataforma plataforma);
 
-    Plataforma buscarPorId(Long id);
+    Plataforma buscarPorId(UUID id);
 
     List<Plataforma> listarTudo();
 
-    void deletar(Long id);
+    void deletar(UUID id);
 }

@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.repository;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.Amizade;
 import com.plataforma_academica.plataforma.model.Usuario;
@@ -24,7 +25,7 @@ import java.util.Optional;
  * @see REQ-020 (Gestão de Conexões e Amizades)
  */
 @Repository
-public interface AmizadeRepository extends JpaRepository<Amizade, Long> {
+public interface AmizadeRepository extends JpaRepository<Amizade, UUID> {
 
         /**
          * Busca amizades de um usuário específico filtradas por status.
@@ -46,7 +47,7 @@ public interface AmizadeRepository extends JpaRepository<Amizade, Long> {
          * @param destinatarioId ID do usuário destinatário.
          * @return Optional contendo a amizade se encontrada.
          */
-        Optional<Amizade> findBySolicitanteIdAndDestinatarioId(Long solicitanteId, Long destinatarioId);
+        Optional<Amizade> findBySolicitanteIdAndDestinatarioId(UUID solicitanteId, UUID destinatarioId);
 
         /**
          * Busca todas as conexões (como solicitante ou destinatário) de um usuário.
@@ -55,7 +56,7 @@ public interface AmizadeRepository extends JpaRepository<Amizade, Long> {
          * @param id2 ID do segundo parâmetro de busca (geralmente igual ao id1).
          * @return Lista de conexões.
          */
-        List<Amizade> findBySolicitanteIdOrDestinatarioId(Long id1, Long id2);
+        List<Amizade> findBySolicitanteIdOrDestinatarioId(UUID id1, UUID id2);
 
         List<Amizade> findBySolicitanteOrDestinatarioAndStatus(Usuario usuario, Usuario usuario1,
                         Amizade.Status status);
@@ -67,8 +68,8 @@ public interface AmizadeRepository extends JpaRepository<Amizade, Long> {
          * @return Lista de amizades com status ACEITO.
          */
         @Query("SELECT a FROM Amizade a WHERE (a.solicitante.id = :usuarioId OR a.destinatario.id = :usuarioId) AND a.status = 'ACEITO'")
-        List<Amizade> findAmigosAceitos(@Param("usuarioId") Long usuarioId);
+        List<Amizade> findAmigosAceitos(@Param("usuarioId") UUID usuarioId);
 
         @Query("SELECT a FROM Amizade a WHERE (a.solicitante.id = :usuarioId OR a.destinatario.id = :usuarioId) AND a.status = 'PENDENTE'")
-        List<Amizade> findSolicitacoesPendentes(@Param("usuarioId") Long usuarioId);
+        List<Amizade> findSolicitacoesPendentes(@Param("usuarioId") UUID usuarioId);
 }

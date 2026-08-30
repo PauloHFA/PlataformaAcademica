@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.controller;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.PostagemDTO;
 import com.plataforma_academica.plataforma.dto.PostagemResponseDTO;
 import com.plataforma_academica.plataforma.service.PostagemService;
@@ -99,7 +101,7 @@ public class PostagemController {
      * @return PostagemDTO encontrada ou erro 404
      */
     @GetMapping("/{id}")
-    public ResponseEntity<PostagemResponseDTO> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<PostagemResponseDTO> buscarPorId(@PathVariable UUID id) {
         PostagemResponseDTO p = postagemService.buscarPorIdResponse(id);
 
         if (p == null) {
@@ -170,8 +172,8 @@ public class PostagemController {
     public ResponseEntity<PostagemResponseDTO> publicarComImagem(
             @RequestParam String titulo,
             @RequestParam String conteudo,
-            @RequestParam Long autorId,
-            @RequestParam(required = false) Long plataformaId,
+            @RequestParam UUID autorId,
+            @RequestParam(required = false) UUID plataformaId,
             @RequestPart(required = false) MultipartFile imagem) {
         PostagemDTO dto = new PostagemDTO();
         dto.setTitulo(titulo);
@@ -203,7 +205,7 @@ public class PostagemController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<PostagemResponseDTO> atualizar(
-            @PathVariable Long id,
+            @PathVariable UUID id,
             @Valid @RequestBody PostagemDTO request) {
         request.setId(id); // garantir consistência
         PostagemResponseDTO atualizado = postagemService.atualizarResponse(request);
@@ -223,7 +225,7 @@ public class PostagemController {
      * @return 204 No Content
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+    public ResponseEntity<Void> deletar(@PathVariable UUID id) {
         postagemService.deletar(id);
         return ResponseEntity.noContent().build();
     }
@@ -233,8 +235,8 @@ public class PostagemController {
     // =========================================================================
     @PostMapping("/{id}/curtir")
     public ResponseEntity<PostagemResponseDTO> curtir(
-            @PathVariable Long id,
-            @RequestParam Long usuarioId) {
+            @PathVariable UUID id,
+            @RequestParam UUID usuarioId) {
         System.out.println("[POST /api/postagens/" + id + "/curtir] Usuario=" + usuarioId);
         PostagemResponseDTO postagem = postagemService.curtir(id, usuarioId);
         System.out.println("[POST /api/postagens/" + id + "/curtir] Curtidas=" + postagem.getCurtidas());
@@ -245,7 +247,7 @@ public class PostagemController {
     // LISTAR POSTAGENS DE AMIGOS
     // =========================================================================
     @GetMapping("/amigos/{usuarioId}")
-    public ResponseEntity<List<PostagemResponseDTO>> listarDeAmigos(@PathVariable Long usuarioId) {
+    public ResponseEntity<List<PostagemResponseDTO>> listarDeAmigos(@PathVariable UUID usuarioId) {
         return ResponseEntity.ok(postagemService.listarDeAmigos(usuarioId));
     }
 
@@ -262,8 +264,8 @@ public class PostagemController {
     // =========================================================================
     @GetMapping("/{postagemId}/curtiu/{usuarioId}")
     public ResponseEntity<Boolean> verificarCurtida(
-            @PathVariable Long postagemId,
-            @PathVariable Long usuarioId) {
+            @PathVariable UUID postagemId,
+            @PathVariable UUID usuarioId) {
         return ResponseEntity.ok(postagemService.verificarCurtida(postagemId, usuarioId));
     }
 }

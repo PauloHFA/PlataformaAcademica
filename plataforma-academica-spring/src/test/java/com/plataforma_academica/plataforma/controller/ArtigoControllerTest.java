@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.controller;
+import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plataforma_academica.plataforma.dto.ArtigoDTO;
@@ -38,16 +39,16 @@ class ArtigoControllerTest {
     void criar_DeveRetornarArtigoCriado_QuandoValido() throws Exception {
         // Arrange
         Usuario autor = new Usuario();
-        autor.setId(1L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("João Silva");
 
         ArtigoDTO request = new ArtigoDTO();
         request.setTitulo("Título do Artigo");
         request.setConteudo("Conteúdo do artigo");
-        request.setAutorId(1L);
+        request.setAutorId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         Artigo artigo = new Artigo();
-        artigo.setId(1L);
+        artigo.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         artigo.setTitulo("Título do Artigo");
         artigo.setConteudo("Conteúdo do artigo");
         artigo.setAutor(autor);
@@ -61,16 +62,16 @@ class ArtigoControllerTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", "/api/artigos/1"))
-                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.id").value(UUID.fromString("00000000-0000-0000-0000-000000000001")))
                 .andExpect(jsonPath("$.titulo").value("Título do Artigo"));
     }
 
     @Test
     void editar_DeveRetornarArtigoAtualizado_QuandoEncontrado() throws Exception {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
-        autor.setId(1L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("João Silva");
 
         ArtigoDTO request = new ArtigoDTO();
@@ -96,8 +97,8 @@ class ArtigoControllerTest {
     @Test
     void deletar_DeveRetornarNoContent_QuandoExiste() throws Exception {
         // Arrange
-        Long id = 1L;
-        Long solicitanteId = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long solicitanteId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         // Act & Assert
         mockMvc.perform(delete("/api/artigos/{id}", id)
@@ -108,9 +109,9 @@ class ArtigoControllerTest {
     @Test
     void buscar_DeveRetornarArtigo_QuandoEncontrado() throws Exception {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
-        autor.setId(1L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("João Silva");
 
         Artigo artigo = new Artigo();
@@ -131,16 +132,16 @@ class ArtigoControllerTest {
     void listar_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
         Usuario autor = new Usuario();
-        autor.setId(1L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("João Silva");
 
         Artigo artigo1 = new Artigo();
-        artigo1.setId(1L);
+        artigo1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         artigo1.setTitulo("Artigo 1");
         artigo1.setAutor(autor);
 
         Artigo artigo2 = new Artigo();
-        artigo2.setId(2L);
+        artigo2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         artigo2.setTitulo("Artigo 2");
         artigo2.setAutor(autor);
 
@@ -158,13 +159,13 @@ class ArtigoControllerTest {
     @Test
     void porAutor_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long autorId = 1L;
+        Long autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
         autor.setId(autorId);
         autor.setNome("João Silva");
 
         Artigo artigo = new Artigo();
-        artigo.setId(1L);
+        artigo.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         artigo.setTitulo("Artigo do Autor");
         artigo.setAutor(autor);
 

@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.controller;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.PerfilDTO;
 import com.plataforma_academica.plataforma.model.Perfil;
 import com.plataforma_academica.plataforma.service.PerfilService;
@@ -107,7 +109,7 @@ public class PerfilController {
      * @return 200 OK se encontrado, ou 404 Not Found se não existir.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Perfil> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<Perfil> buscarPorId(@PathVariable UUID id) {
         Perfil perfil = perfilService.buscarPorId(id);
 
         if (perfil == null) {
@@ -133,7 +135,7 @@ public class PerfilController {
      * @return perfil atualizado.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Perfil> atualizar(@PathVariable Long id, @RequestBody PerfilDTO dto) {
+    public ResponseEntity<Perfil> atualizar(@PathVariable UUID id, @RequestBody PerfilDTO dto) {
         Perfil perfil = perfilService.atualizar(id, dto);
         return ResponseEntity.ok(perfil);
     }
@@ -169,7 +171,7 @@ public class PerfilController {
      * @return o perfil do usuário ou 404 caso não exista.
      */
     @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<Perfil> buscarPorUsuario(@PathVariable Long usuarioId) {
+    public ResponseEntity<Perfil> buscarPorUsuario(@PathVariable UUID usuarioId) {
         Perfil perfil = perfilService.buscarPorUsuarioId(usuarioId);
 
         if (perfil == null) {
@@ -193,7 +195,7 @@ public class PerfilController {
      * @return true se existir perfil, false caso contrário.
      */
     @GetMapping("/existe/{usuarioId}")
-    public ResponseEntity<Boolean> existePerfil(@PathVariable Long usuarioId) {
+    public ResponseEntity<Boolean> existePerfil(@PathVariable UUID usuarioId) {
         return ResponseEntity.ok(perfilService.existePerfilDoUsuario(usuarioId));
     }
 }

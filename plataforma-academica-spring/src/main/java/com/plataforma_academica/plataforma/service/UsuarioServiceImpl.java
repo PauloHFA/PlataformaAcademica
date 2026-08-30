@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.model.Admin;
 import com.plataforma_academica.plataforma.model.Usuario;
 import com.plataforma_academica.plataforma.repository.AdminRepository;
@@ -84,7 +86,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public Usuario buscarPorId(Long id) {
+    public Usuario buscarPorId(UUID id) {
         return usuarioRepository.findById(id).orElse(null);
     }
 

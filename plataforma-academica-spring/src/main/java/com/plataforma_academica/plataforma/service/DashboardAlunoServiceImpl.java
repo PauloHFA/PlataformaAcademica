@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.AlunoDashboardResumoDTO;
 import com.plataforma_academica.plataforma.dto.DashboardAlunoDTO;
 import com.plataforma_academica.plataforma.dto.DashboardSalaDTO;
@@ -53,7 +55,7 @@ public class DashboardAlunoServiceImpl implements DashboardAlunoService {
         }
 
         @Override
-        public DashboardAlunoDTO obterDashboardAluno(Long alunoId, Long salaId, LocalDate inicio, LocalDate fim) {
+        public DashboardAlunoDTO obterDashboardAluno(UUID alunoId, UUID salaId, LocalDate inicio, LocalDate fim) {
                 Usuario aluno = usuarioRepository.findById(alunoId)
                                 .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado."));
 
@@ -116,7 +118,7 @@ public class DashboardAlunoServiceImpl implements DashboardAlunoService {
         }
 
         @Override
-        public DashboardSalaDTO obterDashboardSala(Long salaId, LocalDate inicio, LocalDate fim) {
+        public DashboardSalaDTO obterDashboardSala(UUID salaId, LocalDate inicio, LocalDate fim) {
                 SaladeAula sala = saladeAulaRepository.findById(salaId)
                                 .orElseThrow(() -> new EntityNotFoundException("Sala não encontrada."));
 

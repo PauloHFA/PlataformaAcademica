@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.RecomendacaoUsuarioDTO;
 import com.plataforma_academica.plataforma.model.*;
 import com.plataforma_academica.plataforma.repository.InteracaoUsuarioRepository;
@@ -51,7 +53,7 @@ public class RecomendacaoService {
      * @throws RuntimeException se o usuário não for encontrado.
      */
     @Transactional
-    public List<RecomendacaoUsuarioDTO> gerarRecomendacoes(Long usuarioId) {
+    public List<RecomendacaoUsuarioDTO> gerarRecomendacoes(UUID usuarioId) {
         // Passo 1: Validar e recuperar a entidade raiz do usuário alvo
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
@@ -100,7 +102,7 @@ public class RecomendacaoService {
      * @return Lista de DTOs de recomendações ativas.
      * @throws RuntimeException se o usuário não for encontrado.
      */
-    public List<RecomendacaoUsuarioDTO> buscarRecomendacoes(Long usuarioId) {
+    public List<RecomendacaoUsuarioDTO> buscarRecomendacoes(UUID usuarioId) {
         // Recupera o usuário para validação de existência
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
@@ -132,8 +134,8 @@ public class RecomendacaoService {
      * @throws RuntimeException se o usuário não for encontrado.
      */
     @Transactional
-    public void registrarInteracao(Long usuarioId, InteracaoUsuario.TipoInteracao tipo,
-            String entidadeTipo, Long entidadeId, String tags) {
+    public void registrarInteracao(UUID usuarioId, InteracaoUsuario.TipoInteracao tipo,
+            String entidadeTipo, UUID entidadeId, String tags) {
         // Valida e recupera o usuário
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
@@ -173,13 +175,13 @@ public class RecomendacaoService {
                 .findByUsuarioAndDataInteracaoAfter(usuario, LocalDateTime.now().minusDays(30));
 
         // Passo 2: Extrai o conjunto de entidades com as quais o usuário interagiu
-        Set<Long> entidadesInteragidas = interacoesUsuario.stream()
+        Set<UUID> entidadesInteragidas = interacoesUsuario.stream()
                 .map(InteracaoUsuario::getEntidadeId)
                 .collect(Collectors.toSet());
 
         // Passo 3: Encontra outros usuários que interagiram com essas mesmas entidades
         List<Usuario> usuariosSimilares = new ArrayList<>();
-        for (Long entidadeId : entidadesInteragidas) {
+        for (UUID entidadeId : entidadesInteragidas) {
             // Busca usuários que interagiram com a entidade atual
             List<Usuario> usuariosDaEntidade = interacaoRepository
                     .findUsuariosByEntidade("POSTAGEM", entidadeId);
@@ -312,10 +314,10 @@ public class RecomendacaoService {
                 .findByUsuarioAndDataInteracaoAfter(usuario2, LocalDateTime.now().minusDays(7));
 
         // Passo 2: Extrai os conjuntos de entidades com as quais cada usuário interagiu
-        Set<Long> entidades1 = interacoes1.stream()
+        Set<UUID> entidades1 = interacoes1.stream()
                 .map(InteracaoUsuario::getEntidadeId)
                 .collect(Collectors.toSet());
-        Set<Long> entidades2 = interacoes2.stream()
+        Set<UUID> entidades2 = interacoes2.stream()
                 .map(InteracaoUsuario::getEntidadeId)
                 .collect(Collectors.toSet());
 

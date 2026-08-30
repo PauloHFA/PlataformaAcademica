@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -19,16 +21,16 @@ import java.time.LocalDateTime;
 public class Mensagem {
     /** Identificador único da mensagem. */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     /** ID do usuário remetente. */
     @Column(nullable = false)
-    private Long remetenteId;
+    private UUID remetenteId;
 
     /** ID do usuário destinatário. */
     @Column(nullable = false)
-    private Long destinatarioId;
+    private UUID destinatarioId;
 
     /** Conteúdo textual da mensagem (suporta textos longos). */
     @Column(nullable = false, columnDefinition = "TEXT")
@@ -45,33 +47,33 @@ public class Mensagem {
     public Mensagem() {
     }
 
-    public Mensagem(Long remetenteId, Long destinatarioId, String conteudo) {
+    public Mensagem(UUID remetenteId, UUID destinatarioId, String conteudo) {
         this.remetenteId = remetenteId;
         this.destinatarioId = destinatarioId;
         this.conteudo = conteudo;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public Long getRemetenteId() {
+    public UUID getRemetenteId() {
         return remetenteId;
     }
 
-    public void setRemetenteId(Long remetenteId) {
+    public void setRemetenteId(UUID remetenteId) {
         this.remetenteId = remetenteId;
     }
 
-    public Long getDestinatarioId() {
+    public UUID getDestinatarioId() {
         return destinatarioId;
     }
 
-    public void setDestinatarioId(Long destinatarioId) {
+    public void setDestinatarioId(UUID destinatarioId) {
         this.destinatarioId = destinatarioId;
     }
 
@@ -97,5 +99,13 @@ public class Mensagem {
 
     public void setLida(Boolean lida) {
         this.lida = lida;
+    }
+
+
+    @PrePersist
+    public void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
     }
 }

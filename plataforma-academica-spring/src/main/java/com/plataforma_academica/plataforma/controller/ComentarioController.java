@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.controller;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.model.Comentario;
 import com.plataforma_academica.plataforma.model.SaladeAula;
 import com.plataforma_academica.plataforma.model.Atividade;
@@ -54,7 +56,7 @@ public class ComentarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Comentario> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<Comentario> buscarPorId(@PathVariable UUID id) {
         Comentario comentario = comentarioService.buscarPorId(id);
         if (comentario == null) {
             return ResponseEntity.notFound().build();
@@ -100,7 +102,7 @@ public class ComentarioController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Comentario> atualizar(
-            @PathVariable Long id,
+            @PathVariable UUID id,
             @RequestBody Comentario comentarioAtualizado) {
         Comentario atualizado = comentarioService.atualizar(id, comentarioAtualizado);
         if (atualizado == null) {
@@ -110,7 +112,7 @@ public class ComentarioController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+    public ResponseEntity<Void> deletar(@PathVariable UUID id) {
         Comentario existente = comentarioService.buscarPorId(id);
         if (existente == null) {
             return ResponseEntity.notFound().build();
@@ -120,7 +122,7 @@ public class ComentarioController {
     }
 
     @GetMapping("/sala/{salaId}")
-    public ResponseEntity<List<Comentario>> listarComentariosSala(@PathVariable Long salaId) {
+    public ResponseEntity<List<Comentario>> listarComentariosSala(@PathVariable UUID salaId) {
         System.out.println("Buscando comentários da sala: " + salaId);
         List<Comentario> comentarios = comentarioService.listarComentariosPorSala(salaId);
         List<Comentario> filtrados = comentarios.stream()
@@ -131,7 +133,7 @@ public class ComentarioController {
     }
 
     @GetMapping("/sala/{salaId}/atividades-gerais")
-    public ResponseEntity<List<Comentario>> listarComentariosAtividadesGerais(@PathVariable Long salaId) {
+    public ResponseEntity<List<Comentario>> listarComentariosAtividadesGerais(@PathVariable UUID salaId) {
         System.out.println("Buscando comentários de atividades gerais da sala: " + salaId);
         List<Comentario> comentarios = comentarioService.listarComentariosPorSala(salaId);
         List<Comentario> filtrados = comentarios.stream()
@@ -142,13 +144,13 @@ public class ComentarioController {
     }
 
     @GetMapping("/atividade/{atividadeId}")
-    public ResponseEntity<List<Comentario>> listarComentariosAtividade(@PathVariable Long atividadeId) {
+    public ResponseEntity<List<Comentario>> listarComentariosAtividade(@PathVariable UUID atividadeId) {
         List<Comentario> comentarios = comentarioService.listarComentariosPorAtividade(atividadeId);
         return ResponseEntity.ok(comentarios);
     }
 
     @GetMapping("/postagem/{postagemId}")
-    public ResponseEntity<List<Comentario>> listarComentariosPostagem(@PathVariable Long postagemId) {
+    public ResponseEntity<List<Comentario>> listarComentariosPostagem(@PathVariable UUID postagemId) {
         System.out.println("[GET /comentario/postagem/" + postagemId + "] Buscando comentários");
         List<Comentario> comentarios = comentarioService.listarComentariosPorPostagem(postagemId);
         System.out.println("[GET /comentario/postagem/" + postagemId + "] Total: " + comentarios.size());

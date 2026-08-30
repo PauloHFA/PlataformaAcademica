@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.dto;
 
+import java.util.UUID;
+
 import lombok.Data;
 
 /**
@@ -13,15 +15,16 @@ import lombok.Data;
 @Data
 public class PerfilResponseDTO {
 
-    private Long id;
+    private UUID id;
     private String bio;
     private String fotoPerfil;
     private String curso;
 
-    // Informações do usuário dono do perfil
-    private Long usuarioId;
+    // InformaÃ§Ãµes do usuÃ¡rio dono do perfil
+    private UUID usuarioId;
     private String usuarioNome;
 
     public void setUsuarioEmail(String email) {
     }
 }
+

@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.controller;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.dto.FrequenciaRequestDTO;
 import com.plataforma_academica.plataforma.model.Frequencia;
@@ -33,11 +34,11 @@ class FrequenciaControllerTest {
         MockitoAnnotations.openMocks(this);
 
         frequencia = new Frequencia();
-        frequencia.setId(1L);
+        frequencia.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         requestDTO = new FrequenciaRequestDTO();
-        requestDTO.setAlunoId(1L);
-        requestDTO.setSalaId(1L);
+        requestDTO.setAlunoId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        requestDTO.setSalaId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         requestDTO.setData(LocalDate.now());
         requestDTO.setPresente(true);
         requestDTO.setJustificativa("Presente");
@@ -46,7 +47,7 @@ class FrequenciaControllerTest {
     @Test
     void registrarFrequencia_DeveRetornarFrequenciaRegistrada() {
         // Arrange
-        when(frequenciaService.registrarFrequencia(1L, 1L, LocalDate.now(), true, "Presente")).thenReturn(frequencia);
+        when(frequenciaService.registrarFrequencia(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000001"), LocalDate.now(), true, "Presente")).thenReturn(frequencia);
 
         // Act
         ResponseEntity<?> response = frequenciaController.registrarFrequencia(requestDTO);
@@ -54,7 +55,7 @@ class FrequenciaControllerTest {
         // Assert
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(frequencia, response.getBody());
-        verify(frequenciaService, times(1)).registrarFrequencia(1L, 1L, LocalDate.now(), true, "Presente");
+        verify(frequenciaService, times(1)).registrarFrequencia(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000001"), LocalDate.now(), true, "Presente");
     }
 
     @Test
@@ -73,10 +74,10 @@ class FrequenciaControllerTest {
     void buscarFrequencias_SemDatas_DeveRetornarLista() {
         // Arrange
         List<Frequencia> frequencias = Arrays.asList(frequencia);
-        when(frequenciaService.buscarFrequencias(1L, 1L)).thenReturn(frequencias);
+        when(frequenciaService.buscarFrequencias(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(frequencias);
 
         // Act
-        ResponseEntity<?> response = frequenciaController.buscarFrequencias(1L, 1L, null, null);
+        ResponseEntity<?> response = frequenciaController.buscarFrequencias(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000001"), null, null);
 
         // Assert
         assertEquals(200, response.getStatusCodeValue());
@@ -89,10 +90,10 @@ class FrequenciaControllerTest {
         LocalDate inicio = LocalDate.now().minusDays(7);
         LocalDate fim = LocalDate.now();
         List<Frequencia> frequencias = Arrays.asList(frequencia);
-        when(frequenciaService.buscarFrequencias(1L, 1L, inicio, fim)).thenReturn(frequencias);
+        when(frequenciaService.buscarFrequencias(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000001"), inicio, fim)).thenReturn(frequencias);
 
         // Act
-        ResponseEntity<?> response = frequenciaController.buscarFrequencias(1L, 1L, inicio.toString(), fim.toString());
+        ResponseEntity<?> response = frequenciaController.buscarFrequencias(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000001"), inicio.toString(), fim.toString());
 
         // Assert
         assertEquals(200, response.getStatusCodeValue());
@@ -104,10 +105,10 @@ class FrequenciaControllerTest {
         // Arrange
         LocalDate inicio = LocalDate.now().minusDays(7);
         LocalDate fim = LocalDate.now();
-        when(frequenciaService.calcularPercentualPresenca(1L, 1L, inicio, fim)).thenReturn(85.0);
+        when(frequenciaService.calcularPercentualPresenca(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000001"), inicio, fim)).thenReturn(85.0);
 
         // Act
-        ResponseEntity<?> response = frequenciaController.percentualPresenca(1L, 1L, inicio.toString(), fim.toString());
+        ResponseEntity<?> response = frequenciaController.percentualPresenca(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000001"), inicio.toString(), fim.toString());
 
         // Assert
         assertEquals(200, response.getStatusCodeValue());
@@ -117,7 +118,7 @@ class FrequenciaControllerTest {
     @Test
     void percentualPresenca_FormatoDataInvalido_DeveRetornarBadRequest() {
         // Act
-        ResponseEntity<?> response = frequenciaController.percentualPresenca(1L, 1L, "invalid-date", "2023-12-31");
+        ResponseEntity<?> response = frequenciaController.percentualPresenca(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000001"), "invalid-date", "2023-12-31");
 
         // Assert
         assertEquals(400, response.getStatusCodeValue());

@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.controller;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.ComunidadeDTO;
 import com.plataforma_academica.plataforma.model.Comunidade;
 import com.plataforma_academica.plataforma.model.MembroComunidade;
@@ -27,18 +29,18 @@ public class ComunidadeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id, @RequestParam Long solicitanteId) {
+    public ResponseEntity<Void> deletar(@PathVariable UUID id, @RequestParam UUID solicitanteId) {
         comunidadeService.deletarComunidade(id, solicitanteId);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{id}/entrar")
-    public ResponseEntity<MembroComunidade> entrar(@PathVariable Long id, @RequestParam Long usuarioId) {
+    public ResponseEntity<MembroComunidade> entrar(@PathVariable UUID id, @RequestParam UUID usuarioId) {
         return ResponseEntity.ok(comunidadeService.entrarComunidade(id, usuarioId));
     }
 
     @PostMapping("/{id}/sair")
-    public ResponseEntity<Void> sair(@PathVariable Long id, @RequestParam Long usuarioId) {
+    public ResponseEntity<Void> sair(@PathVariable UUID id, @RequestParam UUID usuarioId) {
         comunidadeService.sairComunidade(id, usuarioId);
         return ResponseEntity.noContent().build();
     }
@@ -49,7 +51,7 @@ public class ComunidadeController {
     }
 
     @GetMapping("/{id}/membros")
-    public ResponseEntity<List<MembroComunidade>> membros(@PathVariable Long id) {
+    public ResponseEntity<List<MembroComunidade>> membros(@PathVariable UUID id) {
         return ResponseEntity.ok(comunidadeService.listarMembros(id));
     }
 }

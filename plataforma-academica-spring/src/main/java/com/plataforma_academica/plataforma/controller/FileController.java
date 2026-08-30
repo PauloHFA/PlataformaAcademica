@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.controller;
 
+import java.util.UUID;
+
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;

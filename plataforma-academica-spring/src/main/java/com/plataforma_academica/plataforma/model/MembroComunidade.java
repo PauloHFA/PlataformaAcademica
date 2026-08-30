@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -33,8 +35,8 @@ import java.time.LocalDateTime;
 public class MembroComunidade {
     /** Identificador único da associação. */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     /** Usuário membro da comunidade. */
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -52,4 +54,12 @@ public class MembroComunidade {
     /** Data e hora de ingresso na comunidade. */
     private LocalDateTime entrouEm = LocalDateTime.now();
 
+
+
+    @PrePersist
+    public void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
 }

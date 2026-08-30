@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.SubmissaoAtividadeDTO;
 import com.plataforma_academica.plataforma.model.SubmissaoAtividade;
 
@@ -16,22 +18,22 @@ import java.util.List;
  */
 public interface SubmissaoAtividadeService {
 
-    SubmissaoAtividade enviarSubmissao(Long atividadeId, Long alunoId, SubmissaoAtividade submissao);
+    SubmissaoAtividade enviarSubmissao(UUID atividadeId, UUID alunoId, SubmissaoAtividade submissao);
 
-    SubmissaoAtividade enviarSubmissao(Long atividadeId, Long alunoId, SubmissaoAtividadeDTO submissao);
+    SubmissaoAtividade enviarSubmissao(UUID atividadeId, UUID alunoId, SubmissaoAtividadeDTO submissao);
 
-    SubmissaoAtividade enviarSubmissaoComArquivo(Long atividadeId, Long alunoId, String descricao,
+    SubmissaoAtividade enviarSubmissaoComArquivo(UUID atividadeId, UUID alunoId, String descricao,
             org.springframework.web.multipart.MultipartFile arquivo);
 
-    List<SubmissaoAtividade> listarSubmissoesPorAtividade(Long atividadeId);
+    List<SubmissaoAtividade> listarSubmissoesPorAtividade(UUID atividadeId);
 
-    List<SubmissaoAtividade> listarSubmissoesPorAluno(Long alunoId);
+    List<SubmissaoAtividade> listarSubmissoesPorAluno(UUID alunoId);
 
-    List<SubmissaoAtividade> listarSubmissoesPorAlunoESala(Long alunoId, Long salaId);
+    List<SubmissaoAtividade> listarSubmissoesPorAlunoESala(UUID alunoId, UUID salaId);
 
-    SubmissaoAtividade buscarSubmissaoDoAluno(Long atividadeId, Long alunoId);
+    SubmissaoAtividade buscarSubmissaoDoAluno(UUID atividadeId, UUID alunoId);
 
-    SubmissaoAtividade corrigirSubmissao(Long submissaoId, Double nota, String feedback);
+    SubmissaoAtividade corrigirSubmissao(UUID submissaoId, Double nota, String feedback);
 
-    SubmissaoAtividade marcarComoRecebida(Long submissaoId);
+    SubmissaoAtividade marcarComoRecebida(UUID submissaoId);
 }

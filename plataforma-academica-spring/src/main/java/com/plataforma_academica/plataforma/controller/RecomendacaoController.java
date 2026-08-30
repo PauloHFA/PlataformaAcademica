@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.controller;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.RecomendacaoUsuarioDTO;
 import com.plataforma_academica.plataforma.model.InteracaoUsuario;
 import com.plataforma_academica.plataforma.service.RecomendacaoService;
@@ -31,7 +33,7 @@ public class RecomendacaoController {
      * Gera novas recomendações para um usuário
      */
     @PostMapping("/gerar/{usuarioId}")
-    public ResponseEntity<List<RecomendacaoUsuarioDTO>> gerarRecomendacoes(@PathVariable Long usuarioId) {
+    public ResponseEntity<List<RecomendacaoUsuarioDTO>> gerarRecomendacoes(@PathVariable UUID usuarioId) {
         try {
             List<RecomendacaoUsuarioDTO> recomendacoes = recomendacaoService.gerarRecomendacoes(usuarioId);
             return ResponseEntity.ok(recomendacoes);
@@ -44,7 +46,7 @@ public class RecomendacaoController {
      * Busca recomendações existentes para um usuário
      */
     @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<List<RecomendacaoUsuarioDTO>> buscarRecomendacoes(@PathVariable Long usuarioId) {
+    public ResponseEntity<List<RecomendacaoUsuarioDTO>> buscarRecomendacoes(@PathVariable UUID usuarioId) {
         try {
             List<RecomendacaoUsuarioDTO> recomendacoes = recomendacaoService.buscarRecomendacoes(usuarioId);
             return ResponseEntity.ok(recomendacoes);
@@ -58,10 +60,10 @@ public class RecomendacaoController {
      */
     @PostMapping("/interacao")
     public ResponseEntity<Void> registrarInteracao(
-            @RequestParam Long usuarioId,
+            @RequestParam UUID usuarioId,
             @RequestParam InteracaoUsuario.TipoInteracao tipoInteracao,
             @RequestParam String entidadeTipo,
-            @RequestParam Long entidadeId,
+            @RequestParam UUID entidadeId,
             @RequestParam(required = false) String tags) {
 
         try {
@@ -77,9 +79,9 @@ public class RecomendacaoController {
      */
     @PostMapping("/auto-registrar")
     public ResponseEntity<Void> autoRegistrarInteracao(
-            @RequestParam Long usuarioId,
+            @RequestParam UUID usuarioId,
             @RequestParam String acao,
-            @RequestParam Long entidadeId) {
+            @RequestParam UUID entidadeId) {
 
         try {
             InteracaoUsuario.TipoInteracao tipo = mapearAcaoParaTipo(acao);

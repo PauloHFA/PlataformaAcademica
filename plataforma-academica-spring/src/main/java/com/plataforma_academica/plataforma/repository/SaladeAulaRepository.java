@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.repository;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.SaladeAula;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,10 +17,10 @@ import java.util.Optional;
  * @see SaladeAula
  */
 @Repository
-public interface SaladeAulaRepository extends JpaRepository<SaladeAula, Long> {
-    Optional<SaladeAula> findById(Long saladeAulaId);
+public interface SaladeAulaRepository extends JpaRepository<SaladeAula, UUID> {
+    Optional<SaladeAula> findById(UUID saladeAulaId);
 
     Optional<SaladeAula> findByCodigoSala(String codigoSala);
 
-    void deleteById(Long saladeAulaId);
+    void deleteById(UUID saladeAulaId);
 }

@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.service;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.Notificacao;
 import com.plataforma_academica.plataforma.model.Usuario;
@@ -36,10 +37,10 @@ class NotificacaoServiceImplTest {
     @Test
     void criarNotificacao_DeveSalvarNotificacao_QuandoUsuarioEncontrado() {
         // Arrange
-        Long usuarioId = 1L;
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         String mensagem = "Nova atividade criada";
         String tipo = "ATIVIDADE_CRIADA";
-        Long referenciaId = 1L;
+        Long referenciaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Usuario usuario = new Usuario();
         usuario.setId(usuarioId);
@@ -48,7 +49,7 @@ class NotificacaoServiceImplTest {
         when(usuarioRepository.findById(usuarioId)).thenReturn(Optional.of(usuario));
 
         Notificacao notificacaoSalva = new Notificacao();
-        notificacaoSalva.setId(1L);
+        notificacaoSalva.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         notificacaoSalva.setUsuario(usuario);
         notificacaoSalva.setMensagem(mensagem);
         notificacaoSalva.setTipo(tipo);
@@ -69,10 +70,10 @@ class NotificacaoServiceImplTest {
     @Test
     void criarNotificacao_DeveLancarException_QuandoUsuarioNaoEncontrado() {
         // Arrange
-        Long usuarioId = 1L;
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         String mensagem = "Nova atividade criada";
         String tipo = "ATIVIDADE_CRIADA";
-        Long referenciaId = 1L;
+        Long referenciaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(usuarioRepository.findById(usuarioId)).thenReturn(Optional.empty());
 
@@ -87,27 +88,27 @@ class NotificacaoServiceImplTest {
     @Test
     void listarNotificacoes_DeveRetornarLista() {
         // Arrange
-        Long usuarioId = 1L;
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Usuario usuario = new Usuario();
         usuario.setId(usuarioId);
         usuario.setNome("João");
 
         Notificacao notificacao1 = new Notificacao();
-        notificacao1.setId(1L);
+        notificacao1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         notificacao1.setUsuario(usuario);
         notificacao1.setMensagem("Notificação 1");
         notificacao1.setTipo("ATIVIDADE_CRIADA");
-        notificacao1.setReferenciaId(1L);
+        notificacao1.setReferenciaId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         notificacao1.setLida(false);
         notificacao1.setDataCriacao(LocalDateTime.now());
 
         Notificacao notificacao2 = new Notificacao();
-        notificacao2.setId(2L);
+        notificacao2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         notificacao2.setUsuario(usuario);
         notificacao2.setMensagem("Notificação 2");
         notificacao2.setTipo("NOTA_ATRIBUIDA");
-        notificacao2.setReferenciaId(2L);
+        notificacao2.setReferenciaId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         notificacao2.setLida(true);
         notificacao2.setDataCriacao(LocalDateTime.now().minusHours(1));
 
@@ -126,10 +127,10 @@ class NotificacaoServiceImplTest {
     @Test
     void marcarComoLida_DeveMarcarComoLida_QuandoNotificacaoEncontrada() {
         // Arrange
-        Long notificacaoId = 1L;
+        Long notificacaoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Usuario usuario = new Usuario();
-        usuario.setId(1L);
+        usuario.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         usuario.setNome("João");
 
         Notificacao notificacao = new Notificacao();
@@ -154,7 +155,7 @@ class NotificacaoServiceImplTest {
     @Test
     void marcarComoLida_DeveLancarException_QuandoNotificacaoNaoEncontrada() {
         // Arrange
-        Long notificacaoId = 1L;
+        Long notificacaoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(notificacaoRepository.findById(notificacaoId)).thenReturn(Optional.empty());
 
@@ -169,8 +170,8 @@ class NotificacaoServiceImplTest {
     @Test
     void contarNaoLidas_DeveRetornarContagem() {
         // Arrange
-        Long usuarioId = 1L;
-        Long expectedCount = 5L;
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long expectedCount = UUID.fromString("00000000-0000-0000-0000-000000000005");
 
         when(notificacaoRepository.countByUsuarioIdAndLida(usuarioId, false)).thenReturn(expectedCount);
 

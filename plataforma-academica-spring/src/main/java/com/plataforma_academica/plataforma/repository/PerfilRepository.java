@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.repository;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.Perfil;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,7 +17,7 @@ import java.util.List;
  * @see Perfil
  */
 @Repository
-public interface PerfilRepository extends JpaRepository<Perfil, Long> {
+public interface PerfilRepository extends JpaRepository<Perfil, UUID> {
 
     List<Perfil> findByCurso(String curso);
 }

@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.dto;
+import java.util.UUID;
 
 import lombok.Data;
 
@@ -6,7 +7,7 @@ import java.util.List;
 
 @Data
 public class DashboardSalaDTO {
-    private Long salaId;
+    private UUID salaId;
     private String salaNome;
     private Integer totalAtividades;
     private Integer totalSubmissoes;

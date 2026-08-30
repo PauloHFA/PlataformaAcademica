@@ -1,9 +1,11 @@
 package com.plataforma_academica.plataforma.dto;
 
+import java.util.UUID;
+
 import lombok.Data;
 
 /**
- * DTO de transferência para criação/atualização de Usuários.
+ * DTO de transferÃªncia para criaÃ§Ã£o/atualizaÃ§Ã£o de UsuÃ¡rios.
  * 
  * Camada: Presentation / DTO (Identity Context)
  * 
@@ -12,7 +14,7 @@ import lombok.Data;
  */
 @Data
 public class UsuarioDTO {
-    private Long id;
+    private UUID id;
     private String nome;
     private String sobrenome;
     private String email;
@@ -27,3 +29,4 @@ public class UsuarioDTO {
     private String site;
     private String avatarBase64;
 }
+

@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -31,8 +33,8 @@ import java.time.LocalDateTime;
 public class SubmissaoAtividade {
     /** Identificador único da submissão. */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     /** Atividade acadêmica associada à submissão. */
     @ManyToOne(fetch = FetchType.LAZY)
@@ -70,4 +72,12 @@ public class SubmissaoAtividade {
     /** Data e hora do recebimento confirmado. */
     private LocalDateTime dataRecebimento;
 
+
+
+    @PrePersist
+    public void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
 }

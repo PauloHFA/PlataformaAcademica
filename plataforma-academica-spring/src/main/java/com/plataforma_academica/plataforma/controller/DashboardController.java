@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.controller;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.DashboardAlunoDTO;
 import com.plataforma_academica.plataforma.service.DashboardAlunoService;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +34,8 @@ public class DashboardController {
 
     @GetMapping("/aluno/{alunoId}")
     public ResponseEntity<?> getDashboardAluno(
-            @PathVariable Long alunoId,
-            @RequestParam Long salaId,
+            @PathVariable UUID alunoId,
+            @RequestParam UUID salaId,
             @RequestParam(required = false) String inicio,
             @RequestParam(required = false) String fim) {
         try {
@@ -50,7 +52,7 @@ public class DashboardController {
 
     @GetMapping("/sala/{salaId}")
     public ResponseEntity<?> getDashboardSala(
-            @PathVariable Long salaId,
+            @PathVariable UUID salaId,
             @RequestParam(required = false) String inicio,
             @RequestParam(required = false) String fim) {
         try {

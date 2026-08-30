@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.model.Notificacao;
 import com.plataforma_academica.plataforma.model.Usuario;
 import com.plataforma_academica.plataforma.repository.NotificacaoRepository;
@@ -37,7 +39,7 @@ public class NotificacaoServiceImpl implements NotificacaoService {
     private NotificationService notificationService;
 
     @Override
-    public void criarNotificacao(Long usuarioId, String mensagem, String tipo, Long referenciaId) {
+    public void criarNotificacao(UUID usuarioId, String mensagem, String tipo, UUID referenciaId) {
         Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow();
         Notificacao notificacao = new Notificacao();
         notificacao.setUsuario(usuario);
@@ -51,19 +53,19 @@ public class NotificacaoServiceImpl implements NotificacaoService {
     }
 
     @Override
-    public List<Notificacao> listarNotificacoes(Long usuarioId) {
+    public List<Notificacao> listarNotificacoes(UUID usuarioId) {
         return notificacaoRepository.findByUsuarioIdOrderByDataCriacaoDesc(usuarioId);
     }
 
     @Override
-    public void marcarComoLida(Long notificacaoId) {
+    public void marcarComoLida(UUID notificacaoId) {
         Notificacao notificacao = notificacaoRepository.findById(notificacaoId).orElseThrow();
         notificacao.setLida(true);
         notificacaoRepository.save(notificacao);
     }
 
     @Override
-    public Long contarNaoLidas(Long usuarioId) {
+    public UUID contarNaoLidas(UUID usuarioId) {
         return notificacaoRepository.countByUsuarioIdAndLida(usuarioId, false);
     }
 }

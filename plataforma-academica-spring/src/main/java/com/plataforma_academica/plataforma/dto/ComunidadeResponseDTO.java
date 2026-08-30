@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.dto;
 
+import java.util.UUID;
+
 import lombok.Data;
 import java.time.LocalDateTime;
 
@@ -14,12 +16,13 @@ import java.time.LocalDateTime;
 @Data
 public class ComunidadeResponseDTO {
 
-    private Long id;
+    private UUID id;
     private String nome;
     private String descricao;
     private LocalDateTime criadoEm;
 
-    // Informações do dono da comunidade
-    private Long donoId;
+    // InformaÃ§Ãµes do dono da comunidade
+    private UUID donoId;
     private String donoNome;
 }
+

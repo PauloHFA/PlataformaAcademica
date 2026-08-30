@@ -11,6 +11,8 @@
  */
 package com.plataforma_academica.plataforma.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -22,8 +24,8 @@ public class ChatTempoRealUsuarios {
 
     /** Identificador único do registro. */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     /** Usuário conectado à sala de chat. */
     @ManyToOne(fetch = FetchType.LAZY)
@@ -39,4 +41,12 @@ public class ChatTempoRealUsuarios {
 
     /** Indicador de sessão ativa. */
     private Boolean ativo = true;
+
+
+    @PrePersist
+    public void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
 }

@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -21,8 +23,8 @@ import java.time.LocalDateTime;
 public class Notificacao {
     /** Identificador único da notificação. */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     /** Usuário destinatário da notificação. */
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,11 +38,19 @@ public class Notificacao {
     private String tipo;
 
     /** ID da entidade relacionada (atividade, sala, etc.). */
-    private Long referenciaId;
+    private UUID referenciaId;
 
     /** Indicador de leitura (false = não lida). */
     private Boolean lida = false;
 
     /** Data e hora de criação da notificação. */
     private LocalDateTime dataCriacao = LocalDateTime.now();
+
+
+    @PrePersist
+    public void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
 }

@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.repository;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.Atividade;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,8 +18,8 @@ import java.util.List;
  * @see REQ-020 (Criação de Atividades)
  */
 @Repository
-public interface AtividadeRepository extends JpaRepository<Atividade, Long> {
-    List<Atividade> findByAutorId(Long autorId);
+public interface AtividadeRepository extends JpaRepository<Atividade, UUID> {
+    List<Atividade> findByAutorId(UUID autorId);
 
-    List<Atividade> findBySalaDeAulaId(Long salaId);
+    List<Atividade> findBySalaDeAulaId(UUID salaId);
 }

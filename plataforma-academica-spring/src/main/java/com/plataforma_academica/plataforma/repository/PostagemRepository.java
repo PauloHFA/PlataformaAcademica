@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.repository;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.Postagem;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,6 +17,6 @@ import java.util.List;
  * @see Postagem
  */
 @Repository
-public interface PostagemRepository extends JpaRepository<Postagem, Long> {
+public interface PostagemRepository extends JpaRepository<Postagem, UUID> {
     List<Postagem> findByTituloContainingIgnoreCase(String titulo);
 }

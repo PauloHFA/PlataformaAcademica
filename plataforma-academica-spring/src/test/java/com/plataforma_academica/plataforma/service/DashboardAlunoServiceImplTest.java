@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.service;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.dto.DashboardAlunoDTO;
 import com.plataforma_academica.plataforma.dto.DashboardSalaDTO;
@@ -53,44 +54,44 @@ class DashboardAlunoServiceImplTest {
         MockitoAnnotations.openMocks(this);
 
         aluno = new Usuario();
-        aluno.setId(1L);
+        aluno.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         aluno.setNome("João Silva");
 
         sala = new SaladeAula();
-        sala.setId(1L);
+        sala.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         sala.setNome("Sala de POO");
 
         atividade = new Atividade();
-        atividade.setId(1L);
+        atividade.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         atividade.setSalaDeAula(sala);
 
         submissao = new SubmissaoAtividade();
-        submissao.setId(1L);
+        submissao.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         submissao.setNota(8.5);
         submissao.setAtividade(atividade);
 
         frequencia = new Frequencia();
-        frequencia.setId(1L);
+        frequencia.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         frequencia.setPresente(true);
     }
 
     @Test
     void obterDashboardAluno_DeveRetornarDashboardCorreto() {
         // Arrange
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(aluno));
-        when(saladeAulaRepository.findById(1L)).thenReturn(Optional.of(sala));
-        when(atividadeRepository.findBySalaDeAulaId(1L)).thenReturn(Arrays.asList(atividade));
-        when(submissaoAtividadeService.listarSubmissoesPorAlunoESala(1L, 1L)).thenReturn(Arrays.asList(submissao));
-        when(frequenciaService.buscarFrequencias(1L, 1L)).thenReturn(Arrays.asList(frequencia));
+        when(usuarioRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.of(aluno));
+        when(saladeAulaRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.of(sala));
+        when(atividadeRepository.findBySalaDeAulaId(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Arrays.asList(atividade));
+        when(submissaoAtividadeService.listarSubmissoesPorAlunoESala(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Arrays.asList(submissao));
+        when(frequenciaService.buscarFrequencias(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Arrays.asList(frequencia));
 
         // Act
-        DashboardAlunoDTO result = dashboardAlunoService.obterDashboardAluno(1L, 1L, null, null);
+        DashboardAlunoDTO result = dashboardAlunoService.obterDashboardAluno(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000001"), null, null);
 
         // Assert
         assertNotNull(result);
-        assertEquals(1L, result.getAlunoId());
+        assertEquals(UUID.fromString("00000000-0000-0000-0000-000000000001"), result.getAlunoId());
         assertEquals("João Silva", result.getAlunoNome());
-        assertEquals(1L, result.getSalaId());
+        assertEquals(UUID.fromString("00000000-0000-0000-0000-000000000001"), result.getSalaId());
         assertEquals("Sala de POO", result.getSalaNome());
         assertEquals(1, result.getTotalAtividades());
         assertEquals(1, result.getTotalSubmissoes());
@@ -105,20 +106,20 @@ class DashboardAlunoServiceImplTest {
     @Test
     void obterDashboardAluno_AlunoNaoEncontrado_DeveLancarExcecao() {
         // Arrange
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
+        when(usuarioRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(RuntimeException.class, () -> dashboardAlunoService.obterDashboardAluno(1L, 1L, null, null));
+        assertThrows(RuntimeException.class, () -> dashboardAlunoService.obterDashboardAluno(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000001"), null, null));
     }
 
     @Test
     void obterDashboardAluno_SalaNaoEncontrada_DeveLancarExcecao() {
         // Arrange
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(aluno));
-        when(saladeAulaRepository.findById(1L)).thenReturn(Optional.empty());
+        when(usuarioRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.of(aluno));
+        when(saladeAulaRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(RuntimeException.class, () -> dashboardAlunoService.obterDashboardAluno(1L, 1L, null, null));
+        assertThrows(RuntimeException.class, () -> dashboardAlunoService.obterDashboardAluno(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000001"), null, null));
     }
 
     @Test
@@ -126,17 +127,17 @@ class DashboardAlunoServiceImplTest {
         // Arrange
         sala.setUsuarios(Arrays.asList(aluno));
 
-        when(saladeAulaRepository.findById(1L)).thenReturn(Optional.of(sala));
-        when(atividadeRepository.findBySalaDeAulaId(1L)).thenReturn(Arrays.asList(atividade));
-        when(submissaoAtividadeService.listarSubmissoesPorAlunoESala(1L, 1L)).thenReturn(Arrays.asList(submissao));
-        when(frequenciaService.buscarFrequencias(1L, 1L)).thenReturn(Arrays.asList(frequencia));
+        when(saladeAulaRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.of(sala));
+        when(atividadeRepository.findBySalaDeAulaId(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Arrays.asList(atividade));
+        when(submissaoAtividadeService.listarSubmissoesPorAlunoESala(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Arrays.asList(submissao));
+        when(frequenciaService.buscarFrequencias(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Arrays.asList(frequencia));
 
         // Act
-        DashboardSalaDTO result = dashboardAlunoService.obterDashboardSala(1L, null, null);
+        DashboardSalaDTO result = dashboardAlunoService.obterDashboardSala(UUID.fromString("00000000-0000-0000-0000-000000000001"), null, null);
 
         // Assert
         assertNotNull(result);
-        assertEquals(1L, result.getSalaId());
+        assertEquals(UUID.fromString("00000000-0000-0000-0000-000000000001"), result.getSalaId());
         assertEquals("Sala de POO", result.getSalaNome());
         assertEquals(1, result.getTotalAtividades());
         assertEquals(1, result.getTotalSubmissoes());
@@ -147,7 +148,7 @@ class DashboardAlunoServiceImplTest {
         assertEquals(100.0, result.getPercentualPresenca());
         assertNotNull(result.getAlunos());
         assertEquals(1, result.getAlunos().size());
-        assertEquals(1L, result.getAlunos().get(0).getAlunoId());
+        assertEquals(UUID.fromString("00000000-0000-0000-0000-000000000001"), result.getAlunos().get(0).getAlunoId());
         assertEquals("João Silva", result.getAlunos().get(0).getAlunoNome());
         assertEquals(1, result.getAlunos().get(0).getTotalSubmissoes());
         assertEquals(1, result.getAlunos().get(0).getTotalSubmissoesComNota());

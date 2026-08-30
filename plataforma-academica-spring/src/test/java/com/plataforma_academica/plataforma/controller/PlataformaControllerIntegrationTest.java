@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.controller;
+import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plataforma_academica.plataforma.model.Plataforma;
@@ -73,7 +74,7 @@ class PlataformaControllerIntegrationTest {
 
     @Test
     void buscarPorId_DeveRetornar404_QuandoNaoEncontrada() throws Exception {
-        mockMvc.perform(get("/api/plataforma/{id}", 999L))
+        mockMvc.perform(get("/api/plataforma/{id}", UUID.randomUUID()))
                 .andExpect(status().isNotFound());
     }
 
@@ -115,7 +116,7 @@ class PlataformaControllerIntegrationTest {
     @Test
     void deletar_DeveFuncionar_QuandoPlataformaNaoExiste() throws Exception {
         // Como o service não lança exceção para ID inexistente, deve retornar 204
-        mockMvc.perform(delete("/api/plataforma/{id}", 999L))
+        mockMvc.perform(delete("/api/plataforma/{id}", UUID.randomUUID()))
                 .andExpect(status().isNoContent());
     }
 

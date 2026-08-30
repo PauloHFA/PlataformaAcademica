@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.model.Atividade;
 import com.plataforma_academica.plataforma.model.Usuario;
 import com.plataforma_academica.plataforma.model.Professor;
@@ -58,7 +60,7 @@ public class SaladeAulaServiceImpl implements SaladeAulaService {
      * @param saladeAulaId ID da sala de aula a ser verificada.
      * @param userId       ID do usuário que tenta realizar a ação.
      */
-    private SaladeAula verificarCriador(Long saladeAulaId, Long userId) {
+    private SaladeAula verificarCriador(UUID saladeAulaId, UUID userId) {
         // Removido o cast desnecessário (SaladeAula)
         SaladeAula sala = salaRepository.findById(saladeAulaId)
                 .orElseThrow(() -> new EntityNotFoundException("Sala de Aula não encontrada com ID: " + saladeAulaId));
@@ -73,7 +75,7 @@ public class SaladeAulaServiceImpl implements SaladeAulaService {
 
     @Override
     @Transactional
-    public SaladeAula criarSala(SaladeAula sala, Long criadorId) {
+    public SaladeAula criarSala(SaladeAula sala, UUID criadorId) {
         Usuario criador = usuarioRepository.findById(criadorId)
                 .orElseThrow(() -> new EntityNotFoundException("Criador não encontrado."));
 
@@ -103,7 +105,7 @@ public class SaladeAulaServiceImpl implements SaladeAulaService {
     }
 
     @Override
-    public SaladeAula buscarSalaPorId(Long saladeAulaId) {
+    public SaladeAula buscarSalaPorId(UUID saladeAulaId) {
         // Removido o cast desnecessário (SaladeAula)
         return salaRepository.findById(saladeAulaId)
                 .orElseThrow(() -> new EntityNotFoundException("Sala de Aula não encontrada."));
@@ -117,7 +119,7 @@ public class SaladeAulaServiceImpl implements SaladeAulaService {
 
     @Override
     @Transactional
-    public void deletarSala(Long saladeAulaId, Long userId) {
+    public void deletarSala(UUID saladeAulaId, UUID userId) {
         // Valida se o usuário é o criador antes de deletar
         verificarCriador(saladeAulaId, userId);
         salaRepository.deleteById(saladeAulaId);
@@ -127,7 +129,7 @@ public class SaladeAulaServiceImpl implements SaladeAulaService {
 
     @Override
     @Transactional
-    public Usuario adicionarMembro(Long saladeAulaId, Long novoMembroId, Long creatorId) {
+    public Usuario adicionarMembro(UUID saladeAulaId, UUID novoMembroId, UUID creatorId) {
         // 1. Verifica se o usuário logado é o criador
         SaladeAula sala = verificarCriador(saladeAulaId, creatorId);
 
@@ -145,14 +147,14 @@ public class SaladeAulaServiceImpl implements SaladeAulaService {
     }
 
     @Override
-    public List<Usuario> listarMembros(Long saladeAulaId) {
+    public List<Usuario> listarMembros(UUID saladeAulaId) {
         SaladeAula sala = buscarSalaPorId(saladeAulaId);
         return sala.getUsuarios();
     }
 
     @Override
     @Transactional
-    public void removerMembro(Long saladeAulaId, Long membroId, Long creatorId) {
+    public void removerMembro(UUID saladeAulaId, UUID membroId, UUID creatorId) {
         // 1. Verifica se o usuário logado é o criador
         SaladeAula sala = verificarCriador(saladeAulaId, creatorId);
 
@@ -171,7 +173,7 @@ public class SaladeAulaServiceImpl implements SaladeAulaService {
 
     @Override
     @Transactional
-    public Atividade cadastrarAtividade(Long saladeAulaId, AtividadeDTO atividadeDTO, Long creatorId) {
+    public Atividade cadastrarAtividade(UUID saladeAulaId, AtividadeDTO atividadeDTO, UUID creatorId) {
         // 1. Verifica se o usuário logado é o criador
         SaladeAula sala = verificarCriador(saladeAulaId, creatorId);
 
@@ -193,13 +195,13 @@ public class SaladeAulaServiceImpl implements SaladeAulaService {
     }
 
     @Override
-    public Atividade buscarAtividadePorId(Long atividadeId) {
+    public Atividade buscarAtividadePorId(UUID atividadeId) {
         return atividadeRepository.findById(atividadeId)
                 .orElseThrow(() -> new EntityNotFoundException("Atividade não encontrada."));
     }
 
     @Override
-    public List<Atividade> listarAtividadesPorSala(Long saladeAulaId) {
+    public List<Atividade> listarAtividadesPorSala(UUID saladeAulaId) {
         // Geralmente implementado usando um método de Repositório:
         // findBySalaDeAulaId(saladeAulaId)
         return atividadeRepository.findAll().stream() // Simulação sem query real
@@ -209,7 +211,7 @@ public class SaladeAulaServiceImpl implements SaladeAulaService {
 
     @Override
     @Transactional
-    public Atividade atualizarAtividade(Long saladeAulaId, AtividadeDTO atividadeDTO, Long creatorId) {
+    public Atividade atualizarAtividade(UUID saladeAulaId, AtividadeDTO atividadeDTO, UUID creatorId) {
         // 1. Verifica se o usuário logado é o criador
         verificarCriador(saladeAulaId, creatorId);
 
@@ -229,7 +231,7 @@ public class SaladeAulaServiceImpl implements SaladeAulaService {
 
     @Override
     @Transactional
-    public void deletarAtividade(Long atividadeId, Long creatorId) {
+    public void deletarAtividade(UUID atividadeId, UUID creatorId) {
         Atividade atividade = atividadeRepository.findById(atividadeId)
                 .orElseThrow(() -> new EntityNotFoundException("Atividade não encontrada."));
 
@@ -242,7 +244,7 @@ public class SaladeAulaServiceImpl implements SaladeAulaService {
 
     @Override
     @Transactional
-    public Atividade cadastrarAtividadeComDocumento(Long saladeAulaId, AtividadeDTO atividadeDTO, Long creatorId,
+    public Atividade cadastrarAtividadeComDocumento(UUID saladeAulaId, AtividadeDTO atividadeDTO, UUID creatorId,
             org.springframework.web.multipart.MultipartFile documento) {
         SaladeAula sala = verificarCriador(saladeAulaId, creatorId);
 

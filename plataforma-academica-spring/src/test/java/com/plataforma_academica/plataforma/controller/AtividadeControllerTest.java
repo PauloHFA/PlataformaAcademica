@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.controller;
+import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plataforma_academica.plataforma.dto.AtividadeDTO;
@@ -37,8 +38,8 @@ class AtividadeControllerTest {
     @Test
     void criarAtividade_DeveRetornarAtividadeCriada_QuandoValido() throws Exception {
         // Arrange
-        Long salaId = 1L;
-        Long autorId = 1L;
+        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
         autor.setId(autorId);
         autor.setNome("Professor Silva");
@@ -55,7 +56,7 @@ class AtividadeControllerTest {
         request.setPontos(10.0);
 
         Atividade atividade = new Atividade();
-        atividade.setId(1L);
+        atividade.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         atividade.setTitulo("Atividade de Matemática");
         atividade.setDescricao("Resolva os exercícios");
         atividade.setTipoDocumentoSubmissao("PDF");
@@ -77,9 +78,9 @@ class AtividadeControllerTest {
     @Test
     void buscarAtividadePorId_DeveRetornarAtividade_QuandoEncontrada() throws Exception {
         // Arrange
-        Long atividadeId = 1L;
+        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
-        autor.setId(1L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("Professor Silva");
 
         Atividade atividade = new Atividade();
@@ -98,18 +99,18 @@ class AtividadeControllerTest {
     @Test
     void listarPorSala_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long salaId = 1L;
+        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
-        autor.setId(1L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("Professor Silva");
 
         Atividade atividade1 = new Atividade();
-        atividade1.setId(1L);
+        atividade1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         atividade1.setTitulo("Atividade 1");
         atividade1.setAutor(autor);
 
         Atividade atividade2 = new Atividade();
-        atividade2.setId(2L);
+        atividade2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         atividade2.setTitulo("Atividade 2");
         atividade2.setAutor(autor);
 
@@ -127,13 +128,13 @@ class AtividadeControllerTest {
     @Test
     void listarPorAutor_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long autorId = 1L;
+        Long autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
         autor.setId(autorId);
         autor.setNome("Professor Silva");
 
         Atividade atividade = new Atividade();
-        atividade.setId(1L);
+        atividade.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         atividade.setTitulo("Atividade do Autor");
         atividade.setAutor(autor);
 
@@ -150,8 +151,8 @@ class AtividadeControllerTest {
     @Test
     void atualizarAtividade_DeveRetornarAtividadeAtualizada_QuandoEncontrada() throws Exception {
         // Arrange
-        Long atividadeId = 1L;
-        Long autorId = 1L;
+        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
         autor.setId(autorId);
         autor.setNome("Professor Silva");
@@ -179,8 +180,8 @@ class AtividadeControllerTest {
     @Test
     void deletarAtividade_DeveRetornarNoContent_QuandoExiste() throws Exception {
         // Arrange
-        Long atividadeId = 1L;
-        Long autorId = 1L;
+        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         // Act & Assert
         mockMvc.perform(delete("/atividades/{atividadeId}/autor/{autorId}", atividadeId, autorId))

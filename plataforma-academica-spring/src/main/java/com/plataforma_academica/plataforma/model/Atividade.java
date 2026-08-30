@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.model;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -39,8 +41,8 @@ import java.util.List;
 public class Atividade {
     /** Identificador único da atividade. */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     /** Título da atividade. */
     private String titulo;
@@ -89,4 +91,12 @@ public class Atividade {
 
     // Submissões de alunos são persistidas via SubmissaoAtividade
     // (entidade separada para evitar acoplamento direto aqui).
+
+
+    @PrePersist
+    public void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
 }

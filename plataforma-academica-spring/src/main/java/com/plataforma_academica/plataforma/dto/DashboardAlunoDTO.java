@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.dto;
+import java.util.UUID;
 
 import lombok.Data;
 
@@ -16,9 +17,9 @@ import com.plataforma_academica.plataforma.dto.SubmissaoAtividadeResponseDTO;
  */
 @Data
 public class DashboardAlunoDTO {
-    private Long alunoId;
+    private UUID alunoId;
     private String alunoNome;
-    private Long salaId;
+    private UUID salaId;
     private String salaNome;
 
     private Integer totalAtividades;

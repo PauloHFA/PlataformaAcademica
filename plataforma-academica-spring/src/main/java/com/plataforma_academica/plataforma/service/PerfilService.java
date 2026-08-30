@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.PerfilDTO;
 import com.plataforma_academica.plataforma.model.Perfil;
 
@@ -18,15 +20,15 @@ public interface PerfilService {
 
     Perfil salvar(PerfilDTO dto);
 
-    Perfil atualizar(Long id, PerfilDTO dto);
+    Perfil atualizar(UUID id, PerfilDTO dto);
 
     List<Perfil> listarTodos();
 
-    Perfil buscarPorId(Long id);
+    Perfil buscarPorId(UUID id);
 
     List<Perfil> buscarPorCurso(String curso);
 
-    Perfil buscarPorUsuarioId(Long usuarioId);
+    Perfil buscarPorUsuarioId(UUID usuarioId);
 
-    boolean existePerfilDoUsuario(Long usuarioId);
+    boolean existePerfilDoUsuario(UUID usuarioId);
 }

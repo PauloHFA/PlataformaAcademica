@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.controller;
+import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plataforma_academica.plataforma.dto.ComunidadeDTO;
@@ -38,16 +39,16 @@ class ComunidadeControllerTest {
     void criar_DeveRetornarComunidadeCriada_QuandoValido() throws Exception {
         // Arrange
         Usuario dono = new Usuario();
-        dono.setId(1L);
+        dono.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         dono.setNome("João Silva");
 
         ComunidadeDTO request = new ComunidadeDTO();
         request.setNome("Comunidade de Matemática");
         request.setDescricao("Discussões sobre matemática");
-        request.setDonoId(1L);
+        request.setDonoId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         Comunidade comunidade = new Comunidade();
-        comunidade.setId(1L);
+        comunidade.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         comunidade.setNome("Comunidade de Matemática");
         comunidade.setDescricao("Discussões sobre matemática");
         comunidade.setDono(dono);
@@ -67,8 +68,8 @@ class ComunidadeControllerTest {
     @Test
     void deletar_DeveRetornarNoContent_QuandoExiste() throws Exception {
         // Arrange
-        Long id = 1L;
-        Long solicitanteId = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long solicitanteId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         // Act & Assert
         mockMvc.perform(delete("/api/comunidades/{id}", id)
@@ -79,8 +80,8 @@ class ComunidadeControllerTest {
     @Test
     void entrar_DeveRetornarMembroComunidade_QuandoValido() throws Exception {
         // Arrange
-        Long id = 1L;
-        Long usuarioId = 2L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000002");
 
         Usuario usuario = new Usuario();
         usuario.setId(usuarioId);
@@ -107,8 +108,8 @@ class ComunidadeControllerTest {
     @Test
     void sair_DeveRetornarNoContent_QuandoExiste() throws Exception {
         // Arrange
-        Long id = 1L;
-        Long usuarioId = 2L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000002");
 
         // Act & Assert
         mockMvc.perform(post("/api/comunidades/{id}/sair", id)
@@ -120,16 +121,16 @@ class ComunidadeControllerTest {
     void listar_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
         Usuario dono = new Usuario();
-        dono.setId(1L);
+        dono.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         dono.setNome("João Silva");
 
         Comunidade comunidade1 = new Comunidade();
-        comunidade1.setId(1L);
+        comunidade1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         comunidade1.setNome("Comunidade 1");
         comunidade1.setDono(dono);
 
         Comunidade comunidade2 = new Comunidade();
-        comunidade2.setId(2L);
+        comunidade2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         comunidade2.setNome("Comunidade 2");
         comunidade2.setDono(dono);
 
@@ -147,10 +148,10 @@ class ComunidadeControllerTest {
     @Test
     void listarMembros_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Usuario usuario = new Usuario();
-        usuario.setId(1L);
+        usuario.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         usuario.setNome("João Silva");
 
         Comunidade comunidade = new Comunidade();

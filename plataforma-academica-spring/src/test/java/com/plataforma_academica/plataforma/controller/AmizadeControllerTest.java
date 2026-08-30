@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.controller;
+import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plataforma_academica.plataforma.dto.AmizadeDTO;
@@ -41,19 +42,19 @@ class AmizadeControllerTest {
     void enviarSolicitacao_DeveRetornarAmizadeCriada_QuandoValido() throws Exception {
         // Arrange
         Usuario solicitante = new Usuario();
-        solicitante.setId(1L);
+        solicitante.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         solicitante.setNome("João Silva");
 
         Usuario destinatario = new Usuario();
-        destinatario.setId(2L);
+        destinatario.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         destinatario.setNome("Maria Santos");
 
         AmizadeDTO request = new AmizadeDTO();
-        request.setSolicitanteId(1L);
-        request.setDestinatarioId(2L);
+        request.setSolicitanteId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        request.setDestinatarioId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
 
         Amizade amizade = new Amizade();
-        amizade.setId(1L);
+        amizade.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         amizade.setSolicitante(solicitante);
         amizade.setDestinatario(destinatario);
         amizade.setStatus(Amizade.Status.PENDENTE);
@@ -67,22 +68,22 @@ class AmizadeControllerTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", "/api/amizades/1"))
-                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.id").value(UUID.fromString("00000000-0000-0000-0000-000000000001")))
                 .andExpect(jsonPath("$.status").value("PENDENTE"));
     }
 
     @Test
     void responderSolicitacao_DeveAceitar_QuandoAcaoAceitar() throws Exception {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         String acao = "aceitar";
 
         Usuario solicitante = new Usuario();
-        solicitante.setId(1L);
+        solicitante.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         solicitante.setNome("João Silva");
 
         Usuario destinatario = new Usuario();
-        destinatario.setId(2L);
+        destinatario.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         destinatario.setNome("Maria Santos");
 
         Amizade amizade = new Amizade();
@@ -103,15 +104,15 @@ class AmizadeControllerTest {
     @Test
     void responderSolicitacao_DeveRecusar_QuandoAcaoRecusar() throws Exception {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         String acao = "recusar";
 
         Usuario solicitante = new Usuario();
-        solicitante.setId(1L);
+        solicitante.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         solicitante.setNome("João Silva");
 
         Usuario destinatario = new Usuario();
-        destinatario.setId(2L);
+        destinatario.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         destinatario.setNome("Maria Santos");
 
         Amizade amizade = new Amizade();
@@ -132,7 +133,7 @@ class AmizadeControllerTest {
     @Test
     void removerAmizade_DeveRetornarNoContent_QuandoExiste() throws Exception {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         // Act & Assert
         mockMvc.perform(delete("/api/amizades/{id}", id))
@@ -142,18 +143,18 @@ class AmizadeControllerTest {
     @Test
     void listarPendentes_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long usuarioId = 1L;
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Usuario solicitante = new Usuario();
-        solicitante.setId(1L);
+        solicitante.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         solicitante.setNome("João Silva");
 
         Usuario destinatario = new Usuario();
-        destinatario.setId(2L);
+        destinatario.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         destinatario.setNome("Maria Santos");
 
         Amizade amizade = new Amizade();
-        amizade.setId(1L);
+        amizade.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         amizade.setSolicitante(solicitante);
         amizade.setDestinatario(destinatario);
         amizade.setStatus(Amizade.Status.PENDENTE);
@@ -165,25 +166,25 @@ class AmizadeControllerTest {
         // Act & Assert
         mockMvc.perform(get("/api/amizades/pendentes/{usuarioId}", usuarioId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].id").value(UUID.fromString("00000000-0000-0000-0000-000000000001")))
                 .andExpect(jsonPath("$[0].status").value("PENDENTE"));
     }
 
     @Test
     void listarAmigos_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long usuarioId = 1L;
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Usuario solicitante = new Usuario();
-        solicitante.setId(1L);
+        solicitante.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         solicitante.setNome("João Silva");
 
         Usuario destinatario = new Usuario();
-        destinatario.setId(2L);
+        destinatario.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         destinatario.setNome("Maria Santos");
 
         Amizade amizade = new Amizade();
-        amizade.setId(1L);
+        amizade.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         amizade.setSolicitante(solicitante);
         amizade.setDestinatario(destinatario);
         amizade.setStatus(Amizade.Status.ACEITO);
@@ -195,7 +196,7 @@ class AmizadeControllerTest {
         // Act & Assert
         mockMvc.perform(get("/api/amizades/amigos/{usuarioId}", usuarioId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].id").value(UUID.fromString("00000000-0000-0000-0000-000000000001")))
                 .andExpect(jsonPath("$[0].status").value("ACEITO"));
     }
 }

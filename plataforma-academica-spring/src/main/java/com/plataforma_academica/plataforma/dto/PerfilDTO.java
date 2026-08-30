@@ -1,9 +1,11 @@
 package com.plataforma_academica.plataforma.dto;
 
+import java.util.UUID;
+
 import lombok.Data;
 
 /**
- * DTO de transferência para criação/atualização de Perfis.
+ * DTO de transferÃªncia para criaÃ§Ã£o/atualizaÃ§Ã£o de Perfis.
  * 
  * Camada: Presentation / DTO (Identity Context)
  * 
@@ -12,7 +14,7 @@ import lombok.Data;
  */
 @Data
 public class PerfilDTO {
-    private Long id;
+    private UUID id;
     private String nome;
     private String sobrenome;
     private String email;
@@ -27,6 +29,7 @@ public class PerfilDTO {
     private String bio;
     private String fotoPerfil;
     private String curso;
-    private String senha; // opcional para edição
-    private Long usuarioId; // mesmo que id, para compatibilidade
+    private String senha; // opcional para ediÃ§Ã£o
+    private UUID usuarioId; // mesmo que id, para compatibilidade
 }
+

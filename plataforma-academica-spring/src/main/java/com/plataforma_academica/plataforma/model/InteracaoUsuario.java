@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,8 +27,8 @@ public class InteracaoUsuario {
 
     /** Identificador único da interação. */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     /** Usuário que realizou a ação. */
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,7 +46,7 @@ public class InteracaoUsuario {
 
     /** ID da entidade alvo da interação. */
     @Column(name = "entidade_id")
-    private Long entidadeId;
+    private UUID entidadeId;
 
     /** Peso numérico atribuído à interação para cálculos de relevância. */
     @Column(name = "peso_interacao", nullable = false)
@@ -70,5 +72,13 @@ public class InteracaoUsuario {
         ENTRADA_COMUNIDADE,
         ENVIO_SOLICITACAO_AMIZADE,
         ACEITACAO_AMIZADE
+    }
+
+
+    @PrePersist
+    public void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
     }
 }

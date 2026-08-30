@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.dto;
 
+import java.util.UUID;
+
 import lombok.Data;
 import java.time.LocalDateTime;
 
@@ -14,14 +16,15 @@ import java.time.LocalDateTime;
 @Data
 public class ArtigoResponseDTO {
 
-    private Long id;
+    private UUID id;
     private String titulo;
     private String conteudo;
 
-    // Informações resumidas do autor
-    private Long autorId;
+    // InformaÃ§Ãµes resumidas do autor
+    private UUID autorId;
     private String autorNome;
 
     private LocalDateTime criadoEm;
     private LocalDateTime atualizadoEm;
 }
+

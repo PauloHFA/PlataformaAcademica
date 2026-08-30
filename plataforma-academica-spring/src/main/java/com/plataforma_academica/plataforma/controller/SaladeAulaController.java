@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.controller;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.AtividadeDTO;
 import com.plataforma_academica.plataforma.dto.AtividadeResponseDTO;
 import com.plataforma_academica.plataforma.dto.SalaDeAulaDTO;
@@ -99,7 +101,7 @@ public class SaladeAulaController {
      */
     @PostMapping("/criar/{criadorId}")
     public ResponseEntity<SalaDeAulaResponseDTO> criarSala(@RequestBody SalaDeAulaDTO salaDTO,
-            @PathVariable Long criadorId) {
+            @PathVariable UUID criadorId) {
         System.out.println("[POST /api/saladeaula/criar] Criador=" + criadorId + ", Nome=" + salaDTO.getNome());
         SaladeAula sala = new SaladeAula();
         sala.setNome(salaDTO.getNome());
@@ -124,7 +126,7 @@ public class SaladeAulaController {
      * Busca uma sala pelo seu ID.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<SalaDeAulaResponseDTO> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<SalaDeAulaResponseDTO> buscarPorId(@PathVariable UUID id) {
         System.out.println("[GET /api/saladeaula/" + id + "] Buscando sala");
         SaladeAula sala = salaService.buscarSalaPorId(id);
         System.out.println("[GET /api/saladeaula/" + id + "] Retornando: " + sala.getNome());
@@ -140,8 +142,8 @@ public class SaladeAulaController {
      * @param userId ID do possível criador
      */
     @DeleteMapping("/{id}/usuario/{userId}")
-    public ResponseEntity<Void> deletarSala(@PathVariable Long id,
-            @PathVariable Long userId) {
+    public ResponseEntity<Void> deletarSala(@PathVariable UUID id,
+            @PathVariable UUID userId) {
         salaService.deletarSala(id, userId);
         return ResponseEntity.noContent().build();
     }
@@ -161,9 +163,9 @@ public class SaladeAulaController {
      */
     @PostMapping("/{salaId}/add-membro/{membroId}/criador/{creatorId}")
     public ResponseEntity<SalaDeAulaResponseDTO> adicionarMembro(
-            @PathVariable Long salaId,
-            @PathVariable Long membroId,
-            @PathVariable Long creatorId) {
+            @PathVariable UUID salaId,
+            @PathVariable UUID membroId,
+            @PathVariable UUID creatorId) {
         salaService.adicionarMembro(salaId, membroId, creatorId);
         SaladeAula sala = salaService.buscarSalaPorId(salaId);
         return ResponseEntity.ok(SalaDeAulaMapper.toResponse(sala));
@@ -173,7 +175,7 @@ public class SaladeAulaController {
      * Lista todos os membros de uma sala.
      */
     @GetMapping("/{salaId}/membros")
-    public ResponseEntity<List<Usuario>> listarMembros(@PathVariable Long salaId) {
+    public ResponseEntity<List<Usuario>> listarMembros(@PathVariable UUID salaId) {
         return ResponseEntity.ok(salaService.listarMembros(salaId));
     }
 
@@ -186,9 +188,9 @@ public class SaladeAulaController {
      */
     @DeleteMapping("/{salaId}/remover-membro/{membroId}/criador/{creatorId}")
     public ResponseEntity<Void> removerMembro(
-            @PathVariable Long salaId,
-            @PathVariable Long membroId,
-            @PathVariable Long creatorId) {
+            @PathVariable UUID salaId,
+            @PathVariable UUID membroId,
+            @PathVariable UUID creatorId) {
         salaService.removerMembro(salaId, membroId, creatorId);
         return ResponseEntity.noContent().build();
     }
@@ -208,8 +210,8 @@ public class SaladeAulaController {
      */
     @PostMapping(value = "/{salaId}/atividade/criar/{creatorId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AtividadeResponseDTO> criarAtividade(
-            @PathVariable Long salaId,
-            @PathVariable Long creatorId,
+            @PathVariable UUID salaId,
+            @PathVariable UUID creatorId,
             @RequestBody AtividadeDTO atividadeDTO) {
         System.out.println("[POST /api/saladeaula/" + salaId + "/atividade/criar] Título=" + atividadeDTO.getTitulo());
         Atividade atividade = salaService.cadastrarAtividade(salaId, atividadeDTO, creatorId);
@@ -219,8 +221,8 @@ public class SaladeAulaController {
 
     @PostMapping(value = "/{salaId}/atividade/criar/{creatorId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<AtividadeResponseDTO> criarAtividadeComDocumento(
-            @PathVariable Long salaId,
-            @PathVariable Long creatorId,
+            @PathVariable UUID salaId,
+            @PathVariable UUID creatorId,
             @RequestParam String titulo,
             @RequestParam String descricao,
             @RequestParam(required = false) String tipoDocumentoSubmissao,
@@ -246,7 +248,7 @@ public class SaladeAulaController {
      * Lista todas as atividades da sala.
      */
     @GetMapping("/{salaId}/atividades")
-    public ResponseEntity<List<AtividadeResponseDTO>> listarAtividades(@PathVariable Long salaId) {
+    public ResponseEntity<List<AtividadeResponseDTO>> listarAtividades(@PathVariable UUID salaId) {
         List<Atividade> atividades = salaService.listarAtividadesPorSala(salaId);
         return ResponseEntity.ok(atividades.stream().map(AtividadeMapper::toResponse).toList());
     }
@@ -255,7 +257,7 @@ public class SaladeAulaController {
      * Busca atividade por ID.
      */
     @GetMapping("/atividade/{atividadeId}")
-    public ResponseEntity<AtividadeResponseDTO> buscarAtividade(@PathVariable Long atividadeId) {
+    public ResponseEntity<AtividadeResponseDTO> buscarAtividade(@PathVariable UUID atividadeId) {
         Atividade atividade = salaService.buscarAtividadePorId(atividadeId);
         return ResponseEntity.ok(AtividadeMapper.toResponse(atividade));
     }
@@ -267,8 +269,8 @@ public class SaladeAulaController {
      */
     @PutMapping("/{salaId}/atividade/atualizar/{creatorId}")
     public ResponseEntity<AtividadeResponseDTO> atualizarAtividade(
-            @PathVariable Long salaId,
-            @PathVariable Long creatorId,
+            @PathVariable UUID salaId,
+            @PathVariable UUID creatorId,
             @RequestBody AtividadeDTO atividadeDTO) {
         Atividade atividade = salaService.atualizarAtividade(salaId, atividadeDTO, creatorId);
         return ResponseEntity.ok(AtividadeMapper.toResponse(atividade));
@@ -281,8 +283,8 @@ public class SaladeAulaController {
      */
     @DeleteMapping("/atividade/{atividadeId}/criador/{creatorId}")
     public ResponseEntity<Void> deletarAtividade(
-            @PathVariable Long atividadeId,
-            @PathVariable Long creatorId) {
+            @PathVariable UUID atividadeId,
+            @PathVariable UUID creatorId) {
         salaService.deletarAtividade(atividadeId, creatorId);
         return ResponseEntity.noContent().build();
     }

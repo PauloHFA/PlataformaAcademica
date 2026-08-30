@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.model.Plataforma;
 import com.plataforma_academica.plataforma.repository.PlataformaRepository;
 import org.springframework.stereotype.Service;
@@ -37,7 +39,7 @@ public class PlataformaServiceImpl implements PlataformaService {
     }
 
     @Override
-    public Plataforma atualizar(Long id, Plataforma plataformaAtualizada) {
+    public Plataforma atualizar(UUID id, Plataforma plataformaAtualizada) {
         Plataforma existente = plataformaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Plataforma não encontrada"));
 
@@ -48,7 +50,7 @@ public class PlataformaServiceImpl implements PlataformaService {
     }
 
     @Override
-    public Plataforma buscarPorId(Long id) {
+    public Plataforma buscarPorId(UUID id) {
         return plataformaRepository.findById(id).orElse(null);
     }
 
@@ -58,7 +60,7 @@ public class PlataformaServiceImpl implements PlataformaService {
     }
 
     @Override
-    public void deletar(Long id) {
+    public void deletar(UUID id) {
         plataformaRepository.deleteById(id);
     }
 }

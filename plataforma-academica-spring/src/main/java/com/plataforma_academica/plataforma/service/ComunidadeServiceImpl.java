@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.ComunidadeDTO;
 import com.plataforma_academica.plataforma.exception.BadRequestException;
 import com.plataforma_academica.plataforma.exception.ResourceNotFoundException;
@@ -65,7 +67,7 @@ public class ComunidadeServiceImpl implements ComunidadeService {
     }
 
     @Override
-    public void deletarComunidade(Long id, Long solicitanteId) {
+    public void deletarComunidade(UUID id, UUID solicitanteId) {
         Comunidade c = comunidadeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Comunidade não encontrada"));
         if (!c.getDono().getId().equals(solicitanteId)) {
@@ -75,7 +77,7 @@ public class ComunidadeServiceImpl implements ComunidadeService {
     }
 
     @Override
-    public MembroComunidade entrarComunidade(Long comunidadeId, Long usuarioId) {
+    public MembroComunidade entrarComunidade(UUID comunidadeId, UUID usuarioId) {
         Comunidade c = comunidadeRepository.findById(comunidadeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Comunidade não encontrada"));
         Usuario u = usuarioRepo.findById(usuarioId)
@@ -91,7 +93,7 @@ public class ComunidadeServiceImpl implements ComunidadeService {
     }
 
     @Override
-    public void sairComunidade(Long comunidadeId, Long usuarioId) {
+    public void sairComunidade(UUID comunidadeId, UUID usuarioId) {
         MembroComunidade m = membroRepo.findByUsuarioIdAndComunidadeId(usuarioId, comunidadeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Associação não encontrada"));
         // se for dono e único admin, poderia proibir — lógica simplificada: permite
@@ -105,7 +107,7 @@ public class ComunidadeServiceImpl implements ComunidadeService {
     }
 
     @Override
-    public List<MembroComunidade> listarMembros(Long comunidadeId) {
+    public List<MembroComunidade> listarMembros(UUID comunidadeId) {
         return membroRepo.findByComunidadeId(comunidadeId);
     }
 }

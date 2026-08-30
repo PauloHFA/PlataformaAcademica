@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.PostagemDTO;
 import com.plataforma_academica.plataforma.dto.PostagemResponseDTO;
 
@@ -28,32 +30,32 @@ public interface PostagemService {
 
     List<PostagemDTO> listarTodas();
 
-    PostagemDTO buscarPorId(Long id);
+    PostagemDTO buscarPorId(UUID id);
 
     List<PostagemDTO> buscarPorTitulo(String titulo);
 
     PostagemDTO atualizar(PostagemDTO postagemDTO);
 
-    void deletar(Long id);
+    void deletar(UUID id);
 
     // Response methods
     PostagemResponseDTO publicarResponse(PostagemDTO postagemDTO);
 
     List<PostagemResponseDTO> listarTodasResponse();
 
-    PostagemResponseDTO buscarPorIdResponse(Long id);
+    PostagemResponseDTO buscarPorIdResponse(UUID id);
 
     List<PostagemResponseDTO> buscarPorTituloResponse(String titulo);
 
     PostagemResponseDTO atualizarResponse(PostagemDTO postagemDTO);
 
-    PostagemResponseDTO curtir(Long postagemId, Long usuarioId);
+    PostagemResponseDTO curtir(UUID postagemId, UUID usuarioId);
 
-    List<PostagemResponseDTO> listarDeAmigos(Long usuarioId);
+    List<PostagemResponseDTO> listarDeAmigos(UUID usuarioId);
 
     List<PostagemResponseDTO> listarMaisCurtidas();
 
-    boolean verificarCurtida(Long postagemId, Long usuarioId);
+    boolean verificarCurtida(UUID postagemId, UUID usuarioId);
 
     // Suporta criação com upload de imagem (multipart)
     PostagemResponseDTO publicarComImagemResponse(PostagemDTO postagemDTO,

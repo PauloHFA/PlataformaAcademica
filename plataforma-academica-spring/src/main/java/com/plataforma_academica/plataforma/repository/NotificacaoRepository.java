@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.repository;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.Notificacao;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,8 +16,8 @@ import java.util.List;
  * @see Notificacao
  */
 @Repository
-public interface NotificacaoRepository extends JpaRepository<Notificacao, Long> {
-    List<Notificacao> findByUsuarioIdOrderByDataCriacaoDesc(Long usuarioId);
+public interface NotificacaoRepository extends JpaRepository<Notificacao, UUID> {
+    List<Notificacao> findByUsuarioIdOrderByDataCriacaoDesc(UUID usuarioId);
 
-    Long countByUsuarioIdAndLida(Long usuarioId, Boolean lida);
+    UUID countByUsuarioIdAndLida(UUID usuarioId, Boolean lida);
 }

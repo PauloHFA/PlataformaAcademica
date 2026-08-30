@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.repository;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.Comentario;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,12 +18,12 @@ import java.util.List;
  * @see REQ-030 (Sistema de Comentários)
  */
 @Repository
-public interface ComentarioRepository extends JpaRepository<Comentario, Long> {
-    List<Comentario> findBySaladeAulaId(Long salaId);
+public interface ComentarioRepository extends JpaRepository<Comentario, UUID> {
+    List<Comentario> findBySaladeAulaId(UUID salaId);
 
-    List<Comentario> findByAtividadeId(Long atividadeId);
+    List<Comentario> findByAtividadeId(UUID atividadeId);
 
-    List<Comentario> findByPostagemId(Long postagemId);
+    List<Comentario> findByPostagemId(UUID postagemId);
 
-    void deleteByPostagemId(Long postagemId);
+    void deleteByPostagemId(UUID postagemId);
 }

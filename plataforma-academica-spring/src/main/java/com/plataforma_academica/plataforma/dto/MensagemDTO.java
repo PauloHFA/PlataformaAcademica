@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.dto;
+import java.util.UUID;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.NotBlank;
@@ -12,10 +13,10 @@ import jakarta.validation.constraints.NotBlank;
  */
 public class MensagemDTO {
     @NotNull
-    private Long remetenteId;
+    private UUID remetenteId;
 
     @NotNull
-    private Long destinatarioId;
+    private UUID destinatarioId;
 
     @NotBlank
     private String conteudo;
@@ -23,19 +24,19 @@ public class MensagemDTO {
     public MensagemDTO() {
     }
 
-    public Long getRemetenteId() {
+    public UUID getRemetenteId() {
         return remetenteId;
     }
 
-    public void setRemetenteId(Long remetenteId) {
+    public void setRemetenteId(UUID remetenteId) {
         this.remetenteId = remetenteId;
     }
 
-    public Long getDestinatarioId() {
+    public UUID getDestinatarioId() {
         return destinatarioId;
     }
 
-    public void setDestinatarioId(Long destinatarioId) {
+    public void setDestinatarioId(UUID destinatarioId) {
         this.destinatarioId = destinatarioId;
     }
 

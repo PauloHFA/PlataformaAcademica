@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,8 +28,8 @@ import java.time.LocalDateTime;
 public class ConteudoMercado {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     @Column(nullable = false, length = 200)
     private String titulo;
@@ -96,5 +98,13 @@ public class ConteudoMercado {
         INICIANTE,
         INTERMEDIARIO,
         AVANCADO
+    }
+
+
+    @PrePersist
+    public void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
     }
 }

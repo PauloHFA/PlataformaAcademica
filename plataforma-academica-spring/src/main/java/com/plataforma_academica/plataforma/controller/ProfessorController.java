@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.controller;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.model.Professor;
 import com.plataforma_academica.plataforma.repository.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;

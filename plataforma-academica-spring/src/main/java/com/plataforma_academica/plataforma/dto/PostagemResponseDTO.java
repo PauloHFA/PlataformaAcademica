@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.dto;
 
+import java.util.UUID;
+
 import lombok.Data;
 
 /**
@@ -13,16 +15,17 @@ import lombok.Data;
 @Data
 public class PostagemResponseDTO {
 
-    private Long id;
+    private UUID id;
     private String titulo;
     private String conteudo;
 
-    private Long autorId;
+    private UUID autorId;
     private String autorNome;
 
-    private Long plataformaId;
+    private UUID plataformaId;
     private String plataformaNome;
 
     private Integer curtidas;
     private String imagemUrl;
 }
+

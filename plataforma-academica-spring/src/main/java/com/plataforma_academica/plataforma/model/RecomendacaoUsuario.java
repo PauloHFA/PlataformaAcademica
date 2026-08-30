@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,8 +35,8 @@ public class RecomendacaoUsuario {
 
     /** Identificador único da recomendação. */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     /** Usuário alvo da recomendação. */
     @ManyToOne(fetch = FetchType.LAZY)
@@ -76,5 +78,13 @@ public class RecomendacaoUsuario {
         AMIZADE,
         MENTORIA,
         COLABORACAO_PROJETO
+    }
+
+
+    @PrePersist
+    public void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
     }
 }

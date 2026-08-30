@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.dto;
 
+import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class RecomendacaoUsuarioDTO {
 
-    private Long id;
+    private UUID id;
     private UsuarioDTO usuario;
     private UsuarioDTO usuarioRecomendado;
     private Double scoreSimilaridade;
@@ -23,7 +25,7 @@ public class RecomendacaoUsuarioDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class UsuarioDTO {
-        private Long id;
+        private UUID id;
         private String nome;
         private String email;
         private String fotoPerfil;

@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.controller;
+import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plataforma_academica.plataforma.dto.MensagemDTO;
@@ -41,8 +42,8 @@ class MensagemControllerIntegrationTest {
     @Test
     void enviarMensagem_DeveCriarMensagem_QuandoValida() throws Exception {
         MensagemDTO dto = new MensagemDTO();
-        dto.setRemetenteId(1L);
-        dto.setDestinatarioId(2L);
+        dto.setRemetenteId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        dto.setDestinatarioId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         dto.setConteudo("Olá, tudo bem?");
 
         mockMvc.perform(post("/api/mensagens/enviar")
@@ -57,7 +58,7 @@ class MensagemControllerIntegrationTest {
 
     @Test
     void obterMensagens_DeveRetornarListaVazia_QuandoNenhumaMensagem() throws Exception {
-        mockMvc.perform(get("/api/mensagens/{usuarioId}/{amigoId}", 1L, 2L))
+        mockMvc.perform(get("/api/mensagens/{usuarioId}/{amigoId}", UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000002")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(0)));
@@ -66,12 +67,12 @@ class MensagemControllerIntegrationTest {
     @Test
     void obterMensagens_DeveRetornarMensagens_QuandoExistem() throws Exception {
         // Setup: criar mensagens no banco de teste
-        Mensagem msg1 = new Mensagem(1L, 2L, "Oi!");
-        Mensagem msg2 = new Mensagem(2L, 1L, "Oi, tudo bom?");
+        Mensagem msg1 = new Mensagem(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000002"), "Oi!");
+        Mensagem msg2 = new Mensagem(UUID.fromString("00000000-0000-0000-0000-000000000002"), UUID.fromString("00000000-0000-0000-0000-000000000001"), "Oi, tudo bom?");
         mensagemRepository.save(msg1);
         mensagemRepository.save(msg2);
 
-        mockMvc.perform(get("/api/mensagens/{usuarioId}/{amigoId}", 1L, 2L))
+        mockMvc.perform(get("/api/mensagens/{usuarioId}/{amigoId}", UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000002")))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].conteudo", is("Oi!")))
@@ -81,19 +82,19 @@ class MensagemControllerIntegrationTest {
     @Test
     void obterMensagens_DeveRetornarMensagensOrdenadas_QuandoMultiplas() throws Exception {
         // Setup: criar mensagens em ordem cronológica
-        Mensagem msg1 = new Mensagem(1L, 2L, "Primeira mensagem");
+        Mensagem msg1 = new Mensagem(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000002"), "Primeira mensagem");
         msg1.setCriadoEm(java.time.LocalDateTime.now().minusMinutes(5));
         mensagemRepository.save(msg1);
 
-        Mensagem msg2 = new Mensagem(1L, 2L, "Segunda mensagem");
+        Mensagem msg2 = new Mensagem(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000002"), "Segunda mensagem");
         msg2.setCriadoEm(java.time.LocalDateTime.now().minusMinutes(3));
         mensagemRepository.save(msg2);
 
-        Mensagem msg3 = new Mensagem(1L, 2L, "Terceira mensagem");
+        Mensagem msg3 = new Mensagem(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000002"), "Terceira mensagem");
         msg3.setCriadoEm(java.time.LocalDateTime.now().minusMinutes(1));
         mensagemRepository.save(msg3);
 
-        mockMvc.perform(get("/api/mensagens/{usuarioId}/{amigoId}", 1L, 2L))
+        mockMvc.perform(get("/api/mensagens/{usuarioId}/{amigoId}", UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000002")))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)))
                 .andExpect(jsonPath("$[0].conteudo", is("Primeira mensagem")))
@@ -105,8 +106,8 @@ class MensagemControllerIntegrationTest {
     void fluxoCompleto_DeveFuncionar_QuandoEnviandoEMostrandoMensagens() throws Exception {
         // Enviar primeira mensagem
         MensagemDTO dto1 = new MensagemDTO();
-        dto1.setRemetenteId(1L);
-        dto1.setDestinatarioId(2L);
+        dto1.setRemetenteId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        dto1.setDestinatarioId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         dto1.setConteudo("Mensagem inicial");
 
         mockMvc.perform(post("/api/mensagens/enviar")
@@ -116,8 +117,8 @@ class MensagemControllerIntegrationTest {
 
         // Enviar segunda mensagem
         MensagemDTO dto2 = new MensagemDTO();
-        dto2.setRemetenteId(2L);
-        dto2.setDestinatarioId(1L);
+        dto2.setRemetenteId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
+        dto2.setDestinatarioId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         dto2.setConteudo("Resposta");
 
         mockMvc.perform(post("/api/mensagens/enviar")
@@ -126,7 +127,7 @@ class MensagemControllerIntegrationTest {
                 .andExpect(status().isOk());
 
         // Verificar lista de mensagens entre os usuários
-        mockMvc.perform(get("/api/mensagens/{usuarioId}/{amigoId}", 1L, 2L))
+        mockMvc.perform(get("/api/mensagens/{usuarioId}/{amigoId}", UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000002")))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].conteudo", is("Mensagem inicial")))

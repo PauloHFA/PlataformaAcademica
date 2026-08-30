@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -23,8 +25,8 @@ import java.util.List;
 public class Plataforma {
     /** Identificador único da plataforma. */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     /** Nome descritivo da instância da plataforma. */
     private String nome; // opcional
@@ -36,4 +38,12 @@ public class Plataforma {
     /** Lista de postagens associadas a esta plataforma. */
     @OneToMany(mappedBy = "plataforma", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Postagem> postagens;
+
+
+    @PrePersist
+    public void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
 }

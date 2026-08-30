@@ -1,11 +1,13 @@
 package com.plataforma_academica.plataforma.dto;
 
+import java.util.UUID;
+
 import lombok.Data;
 
 import java.time.LocalDate;
 
 /**
- * DTO de transferência para criação/atualização de Atividades.
+ * DTO de transferÃªncia para criaÃ§Ã£o/atualizaÃ§Ã£o de Atividades.
  * 
  * Camada: Presentation / DTO (Academic Context)
  * 
@@ -15,13 +17,14 @@ import java.time.LocalDate;
 @Data
 public class AtividadeDTO {
 
-    private Long id;
+    private UUID id;
     private String titulo;
     private String descricao;
     private String tipoDocumentoSubmissao;
     private String dataEntrega;
     private Double pontos;
 
-    private Long salaId;
-    private Long autorId;
+    private UUID salaId;
+    private UUID autorId;
 }
+

@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.repository;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.Curtida;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,12 +17,12 @@ import java.util.Optional;
  * @see REQ-030 (Sistema de Curtidas)
  */
 @Repository
-public interface CurtidaRepository extends JpaRepository<Curtida, Long> {
-    Optional<Curtida> findByUsuarioIdAndPostagemId(Long usuarioId, Long postagemId);
+public interface CurtidaRepository extends JpaRepository<Curtida, UUID> {
+    Optional<Curtida> findByUsuarioIdAndPostagemId(UUID usuarioId, UUID postagemId);
 
-    boolean existsByUsuarioIdAndPostagemId(Long usuarioId, Long postagemId);
+    boolean existsByUsuarioIdAndPostagemId(UUID usuarioId, UUID postagemId);
 
-    void deleteByUsuarioIdAndPostagemId(Long usuarioId, Long postagemId);
+    void deleteByUsuarioIdAndPostagemId(UUID usuarioId, UUID postagemId);
 
-    void deleteByPostagemId(Long postagemId);
+    void deleteByPostagemId(UUID postagemId);
 }

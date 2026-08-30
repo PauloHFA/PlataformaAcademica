@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -26,8 +28,8 @@ public class Usuario {
 
     /** Identificador único do usuário. */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     /** Primeiro nome do usuário. */
     @Column(nullable = false)
@@ -106,5 +108,13 @@ public class Usuario {
     private List<SubmissaoAtividade> submissões;
 
     @Version
-    private Long version;
+    private UUID version;
+
+
+    @PrePersist
+    public void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
 }

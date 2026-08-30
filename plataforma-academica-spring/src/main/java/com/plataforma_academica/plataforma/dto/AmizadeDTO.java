@@ -1,11 +1,13 @@
 package com.plataforma_academica.plataforma.dto;
 
+import java.util.UUID;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * DTO de transferência para solicitações de Amizade.
+ * DTO de transferÃªncia para solicitaÃ§Ãµes de Amizade.
  * 
  * Camada: Presentation / DTO (Social Context)
  * 
@@ -15,15 +17,16 @@ import java.time.LocalDateTime;
 @Data
 public class AmizadeDTO {
 
-    private Long id;
+    private UUID id;
 
-    @NotNull(message = "ID do solicitante é obrigatório")
-    private Long solicitanteId;
+    @NotNull(message = "ID do solicitante Ã© obrigatÃ³rio")
+    private UUID solicitanteId;
 
-    @NotNull(message = "ID do destinatário é obrigatório")
-    private Long destinatarioId;
+    @NotNull(message = "ID do destinatÃ¡rio Ã© obrigatÃ³rio")
+    private UUID destinatarioId;
 
     private String status;
 
     private LocalDateTime criadoEm;
 }
+

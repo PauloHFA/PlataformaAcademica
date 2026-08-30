@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -22,8 +24,8 @@ public class Artigo {
 
     /** Identificador único do artigo. */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     /**
      * Título do artigo (exposto publicamente no feed e indexado para busca).
@@ -58,4 +60,12 @@ public class Artigo {
      * Usada para cache busting e ordenação cronológica.
      */
     private LocalDateTime atualizadoEm;
+
+
+    @PrePersist
+    public void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
 }

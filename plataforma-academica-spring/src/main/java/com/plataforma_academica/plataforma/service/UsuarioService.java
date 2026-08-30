@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.model.Usuario;
 import java.util.List;
 import java.util.Optional; // <-- import necessário
@@ -18,7 +20,7 @@ public interface UsuarioService {
 
     Usuario cadastrarUsuario(Usuario usuario);
 
-    Usuario buscarPorId(Long id);
+    Usuario buscarPorId(UUID id);
 
     List<Usuario> listarTodos();
 }

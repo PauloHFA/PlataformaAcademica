@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.service;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.dto.ArtigoDTO;
 import com.plataforma_academica.plataforma.exception.BadRequestException;
@@ -36,19 +37,19 @@ class ArtigoServiceImplTest {
     void criar_DeveRetornarArtigo_QuandoValido() {
         // Arrange
         ArtigoDTO dto = new ArtigoDTO();
-        dto.setAutorId(1L);
+        dto.setAutorId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         dto.setTitulo("Título");
         dto.setConteudo("Conteúdo");
 
         Usuario autor = new Usuario();
-        autor.setId(1L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         Artigo artigoSalvo = new Artigo();
         artigoSalvo.setTitulo("Título");
         artigoSalvo.setConteudo("Conteúdo");
         artigoSalvo.setAutor(autor);
 
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(autor));
+        when(usuarioRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.of(autor));
         when(artigoRepository.save(any(Artigo.class))).thenReturn(artigoSalvo);
 
         // Act
@@ -64,9 +65,9 @@ class ArtigoServiceImplTest {
     void criar_DeveLancarResourceNotFoundException_QuandoAutorNaoEncontrado() {
         // Arrange
         ArtigoDTO dto = new ArtigoDTO();
-        dto.setAutorId(1L);
+        dto.setAutorId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
+        when(usuarioRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.empty());
 
         // Act & Assert
         ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> artigoService.criar(dto));
@@ -76,14 +77,14 @@ class ArtigoServiceImplTest {
     @Test
     void editar_DeveRetornarArtigo_QuandoValido() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         ArtigoDTO dto = new ArtigoDTO();
-        dto.setAutorId(1L);
+        dto.setAutorId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         dto.setTitulo("Novo Título");
         dto.setConteudo("Novo Conteúdo");
 
         Usuario autor = new Usuario();
-        autor.setId(1L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         Artigo artigo = new Artigo();
         artigo.setId(id);
@@ -103,9 +104,9 @@ class ArtigoServiceImplTest {
     @Test
     void editar_DeveLancarResourceNotFoundException_QuandoArtigoNaoEncontrado() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         ArtigoDTO dto = new ArtigoDTO();
-        dto.setAutorId(1L);
+        dto.setAutorId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         when(artigoRepository.findById(id)).thenReturn(Optional.empty());
 
@@ -117,12 +118,12 @@ class ArtigoServiceImplTest {
     @Test
     void editar_DeveLancarBadRequestException_QuandoNaoEhAutor() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         ArtigoDTO dto = new ArtigoDTO();
-        dto.setAutorId(2L); // Diferente do autor do artigo
+        dto.setAutorId(UUID.fromString("00000000-0000-0000-0000-000000000002")); // Diferente do autor do artigo
 
         Usuario autor = new Usuario();
-        autor.setId(1L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         Artigo artigo = new Artigo();
         artigo.setId(id);
@@ -138,11 +139,11 @@ class ArtigoServiceImplTest {
     @Test
     void deletar_DeveDeletar_QuandoValido() {
         // Arrange
-        Long id = 1L;
-        Long solicitanteId = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long solicitanteId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Usuario autor = new Usuario();
-        autor.setId(1L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         Artigo artigo = new Artigo();
         artigo.setId(id);
@@ -160,8 +161,8 @@ class ArtigoServiceImplTest {
     @Test
     void deletar_DeveLancarResourceNotFoundException_QuandoArtigoNaoEncontrado() {
         // Arrange
-        Long id = 1L;
-        Long solicitanteId = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long solicitanteId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(artigoRepository.findById(id)).thenReturn(Optional.empty());
 
@@ -173,11 +174,11 @@ class ArtigoServiceImplTest {
     @Test
     void deletar_DeveLancarBadRequestException_QuandoNaoEhAutor() {
         // Arrange
-        Long id = 1L;
-        Long solicitanteId = 2L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long solicitanteId = UUID.fromString("00000000-0000-0000-0000-000000000002");
 
         Usuario autor = new Usuario();
-        autor.setId(1L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         Artigo artigo = new Artigo();
         artigo.setId(id);
@@ -193,7 +194,7 @@ class ArtigoServiceImplTest {
     @Test
     void buscarPorId_DeveRetornarArtigo_QuandoEncontrado() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Artigo artigo = new Artigo();
         artigo.setId(id);
@@ -210,7 +211,7 @@ class ArtigoServiceImplTest {
     @Test
     void buscarPorId_DeveLancarResourceNotFoundException_QuandoNaoEncontrado() {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(artigoRepository.findById(id)).thenReturn(Optional.empty());
 
@@ -237,7 +238,7 @@ class ArtigoServiceImplTest {
     @Test
     void listarPorAutor_DeveRetornarLista() {
         // Arrange
-        Long autorId = 1L;
+        Long autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         List<Artigo> artigos = List.of(new Artigo());
 
         when(artigoRepository.findByAutorId(autorId)).thenReturn(artigos);

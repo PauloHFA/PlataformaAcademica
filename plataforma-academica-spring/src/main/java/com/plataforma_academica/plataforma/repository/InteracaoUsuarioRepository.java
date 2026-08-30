@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.repository;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.InteracaoUsuario;
 import com.plataforma_academica.plataforma.model.Usuario;
@@ -21,7 +22,7 @@ import java.util.List;
  * @see docs/architecture/ddd.md
  */
 @Repository
-public interface InteracaoUsuarioRepository extends JpaRepository<InteracaoUsuario, Long> {
+public interface InteracaoUsuarioRepository extends JpaRepository<InteracaoUsuario, UUID> {
 
     List<InteracaoUsuario> findByUsuarioOrderByDataInteracaoDesc(Usuario usuario);
 
@@ -32,9 +33,9 @@ public interface InteracaoUsuarioRepository extends JpaRepository<InteracaoUsuar
 
     @Query("SELECT i FROM InteracaoUsuario i WHERE i.entidadeTipo = :entidadeTipo AND i.entidadeId = :entidadeId ORDER BY i.dataInteracao DESC")
     List<InteracaoUsuario> findByEntidade(@Param("entidadeTipo") String entidadeTipo,
-            @Param("entidadeId") Long entidadeId);
+            @Param("entidadeId") UUID entidadeId);
 
     @Query("SELECT DISTINCT i.usuario FROM InteracaoUsuario i WHERE i.entidadeTipo = :entidadeTipo AND i.entidadeId = :entidadeId")
     List<Usuario> findUsuariosByEntidade(@Param("entidadeTipo") String entidadeTipo,
-            @Param("entidadeId") Long entidadeId);
+            @Param("entidadeId") UUID entidadeId);
 }

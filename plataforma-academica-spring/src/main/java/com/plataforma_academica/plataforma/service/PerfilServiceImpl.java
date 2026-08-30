@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.PerfilDTO;
 import com.plataforma_academica.plataforma.mapper.PerfilMapper;
 import com.plataforma_academica.plataforma.model.Perfil;
@@ -62,7 +64,7 @@ public class PerfilServiceImpl implements PerfilService {
         if (perfil == null) {
             perfil = PerfilMapper.toEntity(dto);
             perfil.setId(dto.getUsuarioId()); // id do perfil é o id do usuario
-            perfil.setVersion(0L); // inicializar version para novo perfil
+            perfil.setVersion(null); // inicializar version para novo perfil (UUID)
         } else {
             // atualizar campos extras e usuario
             perfil.setBio(dto.getBio());
@@ -108,7 +110,7 @@ public class PerfilServiceImpl implements PerfilService {
      */
     @Override
     @Transactional
-    public Perfil atualizar(Long id, PerfilDTO dto) {
+    public Perfil atualizar(UUID id, PerfilDTO dto) {
         // Passo 1: Localizar perfil ou falhar
         Perfil perfil = perfilRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Perfil não encontrado"));
@@ -139,7 +141,7 @@ public class PerfilServiceImpl implements PerfilService {
      * @return Perfil encontrado ou null.
      */
     @Override
-    public Perfil buscarPorId(Long id) {
+    public Perfil buscarPorId(UUID id) {
         return perfilRepository.findById(id).orElse(null);
     }
 
@@ -161,7 +163,7 @@ public class PerfilServiceImpl implements PerfilService {
      * @return Perfil encontrado ou null.
      */
     @Override
-    public Perfil buscarPorUsuarioId(Long usuarioId) {
+    public Perfil buscarPorUsuarioId(UUID usuarioId) {
         return perfilRepository.findById(usuarioId).orElse(null);
     }
 
@@ -172,7 +174,7 @@ public class PerfilServiceImpl implements PerfilService {
      * @return true se existir, false caso contrário.
      */
     @Override
-    public boolean existePerfilDoUsuario(Long usuarioId) {
+    public boolean existePerfilDoUsuario(UUID usuarioId) {
         return perfilRepository.existsById(usuarioId);
     }
 }

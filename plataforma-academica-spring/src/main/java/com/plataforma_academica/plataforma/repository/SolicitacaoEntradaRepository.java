@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.repository;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.SolicitacaoEntrada;
 import com.plataforma_academica.plataforma.model.SolicitacaoEntrada.StatusSolicitacao;
@@ -18,11 +19,11 @@ import java.util.Optional;
  * @see REQ-022 (Controle de Acesso a Salas de Aula)
  */
 @Repository
-public interface SolicitacaoEntradaRepository extends JpaRepository<SolicitacaoEntrada, Long> {
-    List<SolicitacaoEntrada> findBySalaIdAndStatus(Long salaId, StatusSolicitacao status);
+public interface SolicitacaoEntradaRepository extends JpaRepository<SolicitacaoEntrada, UUID> {
+    List<SolicitacaoEntrada> findBySalaIdAndStatus(UUID salaId, StatusSolicitacao status);
 
-    Optional<SolicitacaoEntrada> findBySalaIdAndUsuarioIdAndStatus(Long salaId, Long usuarioId,
+    Optional<SolicitacaoEntrada> findBySalaIdAndUsuarioIdAndStatus(UUID salaId, UUID usuarioId,
             StatusSolicitacao status);
 
-    List<SolicitacaoEntrada> findByUsuarioIdAndStatus(Long usuarioId, StatusSolicitacao status);
+    List<SolicitacaoEntrada> findByUsuarioIdAndStatus(UUID usuarioId, StatusSolicitacao status);
 }

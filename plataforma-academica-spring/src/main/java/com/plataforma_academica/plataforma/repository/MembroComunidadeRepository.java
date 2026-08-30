@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.repository;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.MembroComunidade;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,10 +19,10 @@ import java.util.Optional;
  * @see docs/domain/social_context.md
  */
 @Repository
-public interface MembroComunidadeRepository extends JpaRepository<MembroComunidade, Long> {
-    List<MembroComunidade> findByComunidadeId(Long comunidadeId);
+public interface MembroComunidadeRepository extends JpaRepository<MembroComunidade, UUID> {
+    List<MembroComunidade> findByComunidadeId(UUID comunidadeId);
 
-    List<MembroComunidade> findByUsuarioId(Long usuarioId);
+    List<MembroComunidade> findByUsuarioId(UUID usuarioId);
 
-    Optional<MembroComunidade> findByUsuarioIdAndComunidadeId(Long usuarioId, Long comunidadeId);
+    Optional<MembroComunidade> findByUsuarioIdAndComunidadeId(UUID usuarioId, UUID comunidadeId);
 }

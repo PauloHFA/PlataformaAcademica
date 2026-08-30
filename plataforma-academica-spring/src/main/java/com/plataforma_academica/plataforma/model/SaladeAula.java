@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -29,8 +31,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class SaladeAula {
     /** Identificador único da sala. */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     /** Nome da sala (ex: "POO 2024.1"). */
     private String nome;
@@ -63,4 +65,12 @@ public class SaladeAula {
     @OneToMany(mappedBy = "saladeAula", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("comentarios-sala")
     private List<Comentario> comentarios;
+
+
+    @PrePersist
+    public void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
 }

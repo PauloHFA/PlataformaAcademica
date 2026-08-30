@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.model.Frequencia;
 import com.plataforma_academica.plataforma.model.SaladeAula;
 import com.plataforma_academica.plataforma.model.Usuario;
@@ -38,7 +40,7 @@ public class FrequenciaServiceImpl implements FrequenciaService {
     }
 
     @Override
-    public Frequencia registrarFrequencia(Long alunoId, Long salaId, LocalDate data, Boolean presente,
+    public Frequencia registrarFrequencia(UUID alunoId, UUID salaId, LocalDate data, Boolean presente,
             String justificativa) {
         Usuario aluno = usuarioRepository.findById(alunoId)
                 .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado."));
@@ -57,7 +59,7 @@ public class FrequenciaServiceImpl implements FrequenciaService {
     }
 
     @Override
-    public List<Frequencia> buscarFrequencias(Long alunoId, Long salaId, LocalDate inicio, LocalDate fim) {
+    public List<Frequencia> buscarFrequencias(UUID alunoId, UUID salaId, LocalDate inicio, LocalDate fim) {
         if (inicio == null || fim == null) {
             return buscarFrequencias(alunoId, salaId);
         }
@@ -65,12 +67,12 @@ public class FrequenciaServiceImpl implements FrequenciaService {
     }
 
     @Override
-    public List<Frequencia> buscarFrequencias(Long alunoId, Long salaId) {
+    public List<Frequencia> buscarFrequencias(UUID alunoId, UUID salaId) {
         return frequenciaRepository.findByAlunoIdAndSalaDeAulaId(alunoId, salaId);
     }
 
     @Override
-    public double calcularPercentualPresenca(Long alunoId, Long salaId, LocalDate inicio, LocalDate fim) {
+    public double calcularPercentualPresenca(UUID alunoId, UUID salaId, LocalDate inicio, LocalDate fim) {
         List<Frequencia> lista = buscarFrequencias(alunoId, salaId, inicio, fim);
 
         if (lista.isEmpty())

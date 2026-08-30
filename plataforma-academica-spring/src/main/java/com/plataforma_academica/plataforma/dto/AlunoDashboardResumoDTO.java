@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.dto;
+import java.util.UUID;
 
 import lombok.Data;
 
@@ -12,7 +13,7 @@ import lombok.Data;
  */
 @Data
 public class AlunoDashboardResumoDTO {
-    private Long alunoId;
+    private UUID alunoId;
     private String alunoNome;
     private Integer totalSubmissoes;
     private Integer totalSubmissoesComNota;

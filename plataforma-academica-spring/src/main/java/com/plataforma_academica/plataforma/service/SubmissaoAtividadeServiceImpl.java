@@ -59,7 +59,7 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
     }
 
     @Override
-    public SubmissaoAtividade enviarSubmissao(Long atividadeId, Long alunoId, SubmissaoAtividade submissao) {
+    public SubmissaoAtividade enviarSubmissao(UUID atividadeId, UUID alunoId, SubmissaoAtividade submissao) {
 
         Atividade atividade = atividadeRepository.findById(atividadeId)
                 .orElseThrow(() -> new EntityNotFoundException("Atividade não encontrada."));
@@ -99,7 +99,7 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
     }
 
     @Override
-    public SubmissaoAtividade enviarSubmissao(Long atividadeId, Long alunoId, SubmissaoAtividadeDTO dto) {
+    public SubmissaoAtividade enviarSubmissao(UUID atividadeId, UUID alunoId, SubmissaoAtividadeDTO dto) {
         Atividade atividade = atividadeRepository.findById(atividadeId)
                 .orElseThrow(() -> new EntityNotFoundException("Atividade não encontrada."));
 
@@ -111,7 +111,7 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
     }
 
     @Override
-    public SubmissaoAtividade enviarSubmissaoComArquivo(Long atividadeId, Long alunoId, String descricao,
+    public SubmissaoAtividade enviarSubmissaoComArquivo(UUID atividadeId, UUID alunoId, String descricao,
             MultipartFile arquivo) {
         Atividade atividade = atividadeRepository.findById(atividadeId)
                 .orElseThrow(() -> new EntityNotFoundException("Atividade não encontrada."));
@@ -141,7 +141,7 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
     }
 
     @Override
-    public List<SubmissaoAtividade> listarSubmissoesPorAtividade(Long atividadeId) {
+    public List<SubmissaoAtividade> listarSubmissoesPorAtividade(UUID atividadeId) {
         atividadeRepository.findById(atividadeId)
                 .orElseThrow(() -> new EntityNotFoundException("Atividade não encontrada."));
 
@@ -149,7 +149,7 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
     }
 
     @Override
-    public List<SubmissaoAtividade> listarSubmissoesPorAluno(Long alunoId) {
+    public List<SubmissaoAtividade> listarSubmissoesPorAluno(UUID alunoId) {
         usuarioRepository.findById(alunoId)
                 .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado."));
 
@@ -157,7 +157,7 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
     }
 
     @Override
-    public List<SubmissaoAtividade> listarSubmissoesPorAlunoESala(Long alunoId, Long salaId) {
+    public List<SubmissaoAtividade> listarSubmissoesPorAlunoESala(UUID alunoId, UUID salaId) {
         usuarioRepository.findById(alunoId)
                 .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado."));
 
@@ -167,7 +167,7 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
     }
 
     @Override
-    public SubmissaoAtividade buscarSubmissaoDoAluno(Long atividadeId, Long alunoId) {
+    public SubmissaoAtividade buscarSubmissaoDoAluno(UUID atividadeId, UUID alunoId) {
         SubmissaoAtividade submissao = submissaoRepository.findByAtividadeIdAndAlunoId(atividadeId, alunoId);
 
         if (submissao == null) {
@@ -178,7 +178,7 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
     }
 
     @Override
-    public SubmissaoAtividade corrigirSubmissao(Long submissaoId, Double nota, String feedback) {
+    public SubmissaoAtividade corrigirSubmissao(UUID submissaoId, Double nota, String feedback) {
         SubmissaoAtividade submissao = submissaoRepository.findById(submissaoId)
                 .orElseThrow(() -> new EntityNotFoundException("Submissão não encontrada."));
 
@@ -202,7 +202,7 @@ public class SubmissaoAtividadeServiceImpl implements SubmissaoAtividadeService 
     }
 
     @Override
-    public SubmissaoAtividade marcarComoRecebida(Long submissaoId) {
+    public SubmissaoAtividade marcarComoRecebida(UUID submissaoId) {
         SubmissaoAtividade submissao = submissaoRepository.findById(submissaoId)
                 .orElseThrow(() -> new EntityNotFoundException("Submissão não encontrada."));
 

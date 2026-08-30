@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.controller;
+import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plataforma_academica.plataforma.model.Comunidade;
@@ -37,15 +38,15 @@ class MembroComunidadeControllerTest {
     void listarTodos_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
         Usuario usuario = new Usuario();
-        usuario.setId(1L);
+        usuario.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         usuario.setNome("João");
 
         Comunidade comunidade = new Comunidade();
-        comunidade.setId(1L);
+        comunidade.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         comunidade.setNome("Comunidade Teste");
 
         MembroComunidade membro = new MembroComunidade();
-        membro.setId(1L);
+        membro.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         membro.setUsuario(usuario);
         membro.setComunidade(comunidade);
         membro.setPapel("MEMBRO");
@@ -64,13 +65,13 @@ class MembroComunidadeControllerTest {
     @Test
     void buscarPorId_DeveRetornarMembro_QuandoEncontrado() throws Exception {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario usuario = new Usuario();
-        usuario.setId(1L);
+        usuario.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         usuario.setNome("João");
 
         Comunidade comunidade = new Comunidade();
-        comunidade.setId(1L);
+        comunidade.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         comunidade.setNome("Comunidade Teste");
 
         MembroComunidade membro = new MembroComunidade();
@@ -91,7 +92,7 @@ class MembroComunidadeControllerTest {
     @Test
     void buscarPorId_DeveRetornarNotFound_QuandoNaoEncontrado() throws Exception {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         when(membroComunidadeService.buscarPorId(id)).thenReturn(null);
 
         // Act & Assert
@@ -102,17 +103,17 @@ class MembroComunidadeControllerTest {
     @Test
     void buscarPorUsuario_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long usuarioId = 1L;
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario usuario = new Usuario();
         usuario.setId(usuarioId);
         usuario.setNome("João");
 
         Comunidade comunidade = new Comunidade();
-        comunidade.setId(1L);
+        comunidade.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         comunidade.setNome("Comunidade Teste");
 
         MembroComunidade membro = new MembroComunidade();
-        membro.setId(1L);
+        membro.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         membro.setUsuario(usuario);
         membro.setComunidade(comunidade);
         membro.setPapel("MEMBRO");
@@ -131,9 +132,9 @@ class MembroComunidadeControllerTest {
     @Test
     void buscarPorComunidade_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long comunidadeId = 1L;
+        Long comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario usuario = new Usuario();
-        usuario.setId(1L);
+        usuario.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         usuario.setNome("João");
 
         Comunidade comunidade = new Comunidade();
@@ -141,7 +142,7 @@ class MembroComunidadeControllerTest {
         comunidade.setNome("Comunidade Teste");
 
         MembroComunidade membro = new MembroComunidade();
-        membro.setId(1L);
+        membro.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         membro.setUsuario(usuario);
         membro.setComunidade(comunidade);
         membro.setPapel("MEMBRO");
@@ -160,8 +161,8 @@ class MembroComunidadeControllerTest {
     @Test
     void buscarPorUsuarioEComunidade_DeveRetornarMembro_QuandoEncontrado() throws Exception {
         // Arrange
-        Long usuarioId = 1L;
-        Long comunidadeId = 1L;
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Usuario usuario = new Usuario();
         usuario.setId(usuarioId);
@@ -172,7 +173,7 @@ class MembroComunidadeControllerTest {
         comunidade.setNome("Comunidade Teste");
 
         MembroComunidade membro = new MembroComunidade();
-        membro.setId(1L);
+        membro.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         membro.setUsuario(usuario);
         membro.setComunidade(comunidade);
         membro.setPapel("MEMBRO");
@@ -191,8 +192,8 @@ class MembroComunidadeControllerTest {
     @Test
     void buscarPorUsuarioEComunidade_DeveRetornarNotFound_QuandoNaoEncontrado() throws Exception {
         // Arrange
-        Long usuarioId = 1L;
-        Long comunidadeId = 1L;
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(membroComunidadeService.buscarPorUsuarioEComunidade(usuarioId, comunidadeId)).thenReturn(null);
 
@@ -207,11 +208,11 @@ class MembroComunidadeControllerTest {
     void adicionar_DeveRetornarCreated_QuandoNovo() throws Exception {
         // Arrange
         Usuario usuario = new Usuario();
-        usuario.setId(1L);
+        usuario.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         usuario.setNome("João");
 
         Comunidade comunidade = new Comunidade();
-        comunidade.setId(1L);
+        comunidade.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         comunidade.setNome("Comunidade Teste");
 
         MembroComunidade request = new MembroComunidade();
@@ -220,13 +221,13 @@ class MembroComunidadeControllerTest {
         request.setPapel("MEMBRO");
 
         MembroComunidade salvo = new MembroComunidade();
-        salvo.setId(1L);
+        salvo.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         salvo.setUsuario(usuario);
         salvo.setComunidade(comunidade);
         salvo.setPapel("MEMBRO");
         salvo.setEntrouEm(LocalDateTime.now());
 
-        when(membroComunidadeService.buscarPorUsuarioEComunidade(1L, 1L)).thenReturn(null);
+        when(membroComunidadeService.buscarPorUsuarioEComunidade(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(null);
         when(membroComunidadeService.salvar(any(MembroComunidade.class))).thenReturn(salvo);
 
         // Act & Assert
@@ -241,11 +242,11 @@ class MembroComunidadeControllerTest {
     void adicionar_DeveRetornarConflict_QuandoJaExiste() throws Exception {
         // Arrange
         Usuario usuario = new Usuario();
-        usuario.setId(1L);
+        usuario.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         usuario.setNome("João");
 
         Comunidade comunidade = new Comunidade();
-        comunidade.setId(1L);
+        comunidade.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         comunidade.setNome("Comunidade Teste");
 
         MembroComunidade request = new MembroComunidade();
@@ -254,13 +255,13 @@ class MembroComunidadeControllerTest {
         request.setPapel("MEMBRO");
 
         MembroComunidade existente = new MembroComunidade();
-        existente.setId(1L);
+        existente.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         existente.setUsuario(usuario);
         existente.setComunidade(comunidade);
         existente.setPapel("MEMBRO");
         existente.setEntrouEm(LocalDateTime.now());
 
-        when(membroComunidadeService.buscarPorUsuarioEComunidade(1L, 1L)).thenReturn(existente);
+        when(membroComunidadeService.buscarPorUsuarioEComunidade(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(existente);
 
         // Act & Assert
         mockMvc.perform(post("/api/membrocomunidade")
@@ -272,13 +273,13 @@ class MembroComunidadeControllerTest {
     @Test
     void deletar_DeveRetornarNoContent_QuandoEncontrado() throws Exception {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario usuario = new Usuario();
-        usuario.setId(1L);
+        usuario.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         usuario.setNome("João");
 
         Comunidade comunidade = new Comunidade();
-        comunidade.setId(1L);
+        comunidade.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         comunidade.setNome("Comunidade Teste");
 
         MembroComunidade membro = new MembroComunidade();
@@ -298,7 +299,7 @@ class MembroComunidadeControllerTest {
     @Test
     void deletar_DeveRetornarNotFound_QuandoNaoEncontrado() throws Exception {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         when(membroComunidadeService.buscarPorId(id)).thenReturn(null);
 
         // Act & Assert

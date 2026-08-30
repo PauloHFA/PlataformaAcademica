@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.controller;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.model.*;
 import com.plataforma_academica.plataforma.repository.*;
 import org.springframework.http.ResponseEntity;

@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.controller;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.model.Plataforma;
 import com.plataforma_academica.plataforma.service.PlataformaService;
 import org.springframework.http.ResponseEntity;
@@ -101,7 +103,7 @@ public class PlataformaController {
      * @return 200 OK caso encontrada, 404 Not Found caso não exista.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Plataforma> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<Plataforma> buscarPorId(@PathVariable UUID id) {
         Plataforma plataforma = plataformaService.buscarPorId(id);
 
         if (plataforma == null) {
@@ -126,7 +128,7 @@ public class PlataformaController {
      * @return plataforma atualizada.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Plataforma> atualizar(@PathVariable Long id,
+    public ResponseEntity<Plataforma> atualizar(@PathVariable UUID id,
             @RequestBody Plataforma plataforma) {
 
         Plataforma atualizada = plataformaService.atualizar(id, plataforma);
@@ -146,7 +148,7 @@ public class PlataformaController {
      * @return 204 No Content quando a remoção é realizada com sucesso.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+    public ResponseEntity<Void> deletar(@PathVariable UUID id) {
         plataformaService.deletar(id);
         return ResponseEntity.noContent().build();
     }

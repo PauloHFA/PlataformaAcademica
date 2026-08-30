@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.service;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.dto.SubmissaoAtividadeDTO;
 import com.plataforma_academica.plataforma.model.Atividade;
@@ -44,13 +45,13 @@ class SubmissaoAtividadeServiceImplTest {
     @Test
     void enviarSubmissao_ComSubmissaoObjeto_DeveRetornarSubmissao_QuandoValido() {
         // Arrange
-        Long atividadeId = 1L;
-        Long alunoId = 1L;
+        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long alunoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Atividade atividade = new Atividade();
         atividade.setId(atividadeId);
         Usuario autor = new Usuario();
-        autor.setId(2L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         atividade.setAutor(autor);
 
         Usuario usuarioInSala = new Usuario();
@@ -68,7 +69,7 @@ class SubmissaoAtividadeServiceImplTest {
         submissao.setDescricao("Descrição");
 
         SubmissaoAtividade saved = new SubmissaoAtividade();
-        saved.setId(3L);
+        saved.setId(UUID.fromString("00000000-0000-0000-0000-000000000003"));
 
         when(atividadeRepository.findById(atividadeId)).thenReturn(Optional.of(atividade));
         when(usuarioRepository.findById(alunoId)).thenReturn(Optional.of(aluno));
@@ -88,8 +89,8 @@ class SubmissaoAtividadeServiceImplTest {
     @Test
     void enviarSubmissao_ComSubmissaoObjeto_DeveLancarEntityNotFoundException_QuandoAtividadeNaoEncontrada() {
         // Arrange
-        Long atividadeId = 1L;
-        Long alunoId = 1L;
+        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long alunoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         SubmissaoAtividade submissao = new SubmissaoAtividade();
 
@@ -103,8 +104,8 @@ class SubmissaoAtividadeServiceImplTest {
     @Test
     void enviarSubmissao_ComSubmissaoObjeto_DeveLancarSecurityException_QuandoNaoMembro() {
         // Arrange
-        Long atividadeId = 1L;
-        Long alunoId = 1L;
+        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long alunoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Atividade atividade = new Atividade();
         atividade.setId(atividadeId);
@@ -128,8 +129,8 @@ class SubmissaoAtividadeServiceImplTest {
     @Test
     void enviarSubmissao_ComSubmissaoObjeto_DeveLancarIllegalStateException_QuandoJaEnviada() {
         // Arrange
-        Long atividadeId = 1L;
-        Long alunoId = 1L;
+        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long alunoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Atividade atividade = new Atividade();
         atividade.setId(atividadeId);
@@ -157,7 +158,7 @@ class SubmissaoAtividadeServiceImplTest {
     @Test
     void listarSubmissoesPorAtividade_DeveRetornarLista_QuandoValido() {
         // Arrange
-        Long atividadeId = 1L;
+        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Atividade atividade = new Atividade();
         atividade.setId(atividadeId);
@@ -178,8 +179,8 @@ class SubmissaoAtividadeServiceImplTest {
     @Test
     void buscarSubmissaoDoAluno_DeveRetornarSubmissao_QuandoEncontrada() {
         // Arrange
-        Long atividadeId = 1L;
-        Long alunoId = 1L;
+        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long alunoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         SubmissaoAtividade submissao = new SubmissaoAtividade();
 
@@ -195,8 +196,8 @@ class SubmissaoAtividadeServiceImplTest {
     @Test
     void buscarSubmissaoDoAluno_DeveLancarEntityNotFoundException_QuandoNaoEncontrada() {
         // Arrange
-        Long atividadeId = 1L;
-        Long alunoId = 1L;
+        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long alunoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(submissaoRepository.findByAtividadeIdAndAlunoId(atividadeId, alunoId)).thenReturn(null);
 
@@ -208,7 +209,7 @@ class SubmissaoAtividadeServiceImplTest {
     @Test
     void corrigirSubmissao_DeveRetornarSubmissao_QuandoValido() {
         // Arrange
-        Long submissaoId = 1L;
+        Long submissaoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Double nota = 9.5;
         String feedback = "Bom trabalho";
 
@@ -216,7 +217,7 @@ class SubmissaoAtividadeServiceImplTest {
         atividade.setTitulo("Título");
 
         Usuario aluno = new Usuario();
-        aluno.setId(2L);
+        aluno.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
 
         SubmissaoAtividade submissao = new SubmissaoAtividade();
         submissao.setId(submissaoId);
@@ -244,7 +245,7 @@ class SubmissaoAtividadeServiceImplTest {
     @Test
     void marcarComoRecebida_DeveRetornarSubmissao_QuandoValido() {
         // Arrange
-        Long submissaoId = 1L;
+        Long submissaoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         SubmissaoAtividade submissao = new SubmissaoAtividade();
         submissao.setId(submissaoId);

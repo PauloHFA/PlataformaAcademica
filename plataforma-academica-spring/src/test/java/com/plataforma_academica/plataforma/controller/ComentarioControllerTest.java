@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.controller;
+import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plataforma_academica.plataforma.model.*;
@@ -47,16 +48,16 @@ class ComentarioControllerTest {
     void listarTodos_DeveRetornarListaDeComentarios_QuandoChamado() throws Exception {
         // Arrange
         Usuario autor = new Usuario();
-        autor.setId(1L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("João Silva");
 
         Comentario comentario1 = new Comentario();
-        comentario1.setId(1L);
+        comentario1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         comentario1.setConteudo("Comentário 1");
         comentario1.setAutor(autor);
 
         Comentario comentario2 = new Comentario();
-        comentario2.setId(2L);
+        comentario2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         comentario2.setConteudo("Comentário 2");
         comentario2.setAutor(autor);
 
@@ -68,18 +69,18 @@ class ComentarioControllerTest {
         mockMvc.perform(get("/comentario"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].id").value(UUID.fromString("00000000-0000-0000-0000-000000000001")))
                 .andExpect(jsonPath("$[0].conteudo").value("Comentário 1"))
-                .andExpect(jsonPath("$[1].id").value(2L))
+                .andExpect(jsonPath("$[1].id").value(UUID.fromString("00000000-0000-0000-0000-000000000002")))
                 .andExpect(jsonPath("$[1].conteudo").value("Comentário 2"));
     }
 
     @Test
     void buscarPorId_DeveRetornarComentario_QuandoEncontrado() throws Exception {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
-        autor.setId(1L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("João Silva");
 
         Comentario comentario = new Comentario();
@@ -100,7 +101,7 @@ class ComentarioControllerTest {
     @Test
     void buscarPorId_DeveRetornarNotFound_QuandoNaoEncontrado() throws Exception {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         when(comentarioService.buscarPorId(id)).thenReturn(null);
 
         // Act & Assert
@@ -112,11 +113,11 @@ class ComentarioControllerTest {
     void salvar_DeveRetornarComentarioCriado_QuandoValido() throws Exception {
         // Arrange
         Usuario autor = new Usuario();
-        autor.setId(1L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("João Silva");
 
         SaladeAula sala = new SaladeAula();
-        sala.setId(1L);
+        sala.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         sala.setNome("Sala de Matemática");
 
         Comentario request = new Comentario();
@@ -126,13 +127,13 @@ class ComentarioControllerTest {
         request.setSaladeAula(sala);
 
         Comentario comentarioSalvo = new Comentario();
-        comentarioSalvo.setId(1L);
+        comentarioSalvo.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         comentarioSalvo.setConteudo("Novo comentário");
         comentarioSalvo.setTipoDestino(TipoDestinoComentario.SALADEAULA);
         comentarioSalvo.setAutor(autor);
         comentarioSalvo.setSaladeAula(sala);
 
-        when(salaRepository.findById(1L)).thenReturn(Optional.of(sala));
+        when(salaRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.of(sala));
         when(comentarioService.salvar(any(Comentario.class))).thenReturn(comentarioSalvo);
 
         // Act & Assert
@@ -141,16 +142,16 @@ class ComentarioControllerTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", "/comentario/1"))
-                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.id").value(UUID.fromString("00000000-0000-0000-0000-000000000001")))
                 .andExpect(jsonPath("$.conteudo").value("Novo comentário"));
     }
 
     @Test
     void atualizar_DeveRetornarComentarioAtualizado_QuandoEncontrado() throws Exception {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
-        autor.setId(1L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("João Silva");
 
         Comentario comentarioAtualizado = new Comentario();
@@ -173,7 +174,7 @@ class ComentarioControllerTest {
     @Test
     void atualizar_DeveRetornarNotFound_QuandoNaoEncontrado() throws Exception {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Comentario comentario = new Comentario();
         comentario.setConteudo("Conteúdo");
 
@@ -189,9 +190,9 @@ class ComentarioControllerTest {
     @Test
     void deletar_DeveRetornarNoContent_QuandoComentarioExiste() throws Exception {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
-        autor.setId(1L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         Comentario comentario = new Comentario();
         comentario.setId(id);
@@ -207,7 +208,7 @@ class ComentarioControllerTest {
     @Test
     void deletar_DeveRetornarNotFound_QuandoComentarioNaoExiste() throws Exception {
         // Arrange
-        Long id = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         when(comentarioService.buscarPorId(id)).thenReturn(null);
 
         // Act & Assert
@@ -218,13 +219,13 @@ class ComentarioControllerTest {
     @Test
     void listarComentariosSala_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long salaId = 1L;
+        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
-        autor.setId(1L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("João Silva");
 
         Comentario comentario = new Comentario();
-        comentario.setId(1L);
+        comentario.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         comentario.setConteudo("Comentário da sala");
         comentario.setTipoDestino(TipoDestinoComentario.SALADEAULA);
         comentario.setAutor(autor);
@@ -237,20 +238,20 @@ class ComentarioControllerTest {
         mockMvc.perform(get("/comentario/sala/{salaId}", salaId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].id").value(UUID.fromString("00000000-0000-0000-0000-000000000001")))
                 .andExpect(jsonPath("$[0].conteudo").value("Comentário da sala"));
     }
 
     @Test
     void listarComentariosAtividadesGerais_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long salaId = 1L;
+        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
-        autor.setId(1L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("João Silva");
 
         Comentario comentario = new Comentario();
-        comentario.setId(1L);
+        comentario.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         comentario.setConteudo("Comentário geral");
         comentario.setTipoDestino(TipoDestinoComentario.ATIVIDADES_GERAIS);
         comentario.setAutor(autor);
@@ -263,20 +264,20 @@ class ComentarioControllerTest {
         mockMvc.perform(get("/comentario/sala/{salaId}/atividades-gerais", salaId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].id").value(UUID.fromString("00000000-0000-0000-0000-000000000001")))
                 .andExpect(jsonPath("$[0].conteudo").value("Comentário geral"));
     }
 
     @Test
     void listarComentariosAtividade_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long atividadeId = 1L;
+        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
-        autor.setId(1L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("João Silva");
 
         Comentario comentario = new Comentario();
-        comentario.setId(1L);
+        comentario.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         comentario.setConteudo("Comentário da atividade");
         comentario.setAutor(autor);
 
@@ -288,20 +289,20 @@ class ComentarioControllerTest {
         mockMvc.perform(get("/comentario/atividade/{atividadeId}", atividadeId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].id").value(UUID.fromString("00000000-0000-0000-0000-000000000001")))
                 .andExpect(jsonPath("$[0].conteudo").value("Comentário da atividade"));
     }
 
     @Test
     void listarComentariosPostagem_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long postagemId = 1L;
+        Long postagemId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
-        autor.setId(1L);
+        autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("João Silva");
 
         Comentario comentario = new Comentario();
-        comentario.setId(1L);
+        comentario.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         comentario.setConteudo("Comentário da postagem");
         comentario.setAutor(autor);
 
@@ -313,7 +314,7 @@ class ComentarioControllerTest {
         mockMvc.perform(get("/comentario/postagem/{postagemId}", postagemId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].id").value(UUID.fromString("00000000-0000-0000-0000-000000000001")))
                 .andExpect(jsonPath("$[0].conteudo").value("Comentário da postagem"));
     }
 }

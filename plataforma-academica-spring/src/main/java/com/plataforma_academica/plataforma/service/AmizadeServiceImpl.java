@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.AmizadeDTO;
 import com.plataforma_academica.plataforma.exception.BadRequestException;
 import com.plataforma_academica.plataforma.exception.ResourceNotFoundException;
@@ -62,7 +64,7 @@ public class AmizadeServiceImpl implements AmizadeService {
 
     @Override
     @Transactional
-    public Amizade responderSolicitacao(Long amizadeId, String acao) {
+    public Amizade responderSolicitacao(UUID amizadeId, String acao) {
         Amizade amizade = amizadeRepository.findById(amizadeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Solicitação não encontrada"));
         if (amizade.getStatus() != Amizade.Status.PENDENTE) {
@@ -79,14 +81,14 @@ public class AmizadeServiceImpl implements AmizadeService {
     }
 
     @Override
-    public void removerAmizade(Long amizadeId) {
+    public void removerAmizade(UUID amizadeId) {
         Amizade amizade = amizadeRepository.findById(amizadeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Amizade não encontrada"));
         amizadeRepository.delete(amizade);
     }
 
     @Override
-    public List<Amizade> listarSolicitacoesPendentes(Long usuarioId) {
+    public List<Amizade> listarSolicitacoesPendentes(UUID usuarioId) {
         return amizadeRepository.findAmizades(
                 usuarioRepository.findById(usuarioId)
                         .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado")),
@@ -94,7 +96,7 @@ public class AmizadeServiceImpl implements AmizadeService {
     }
 
     @Override
-    public List<Amizade> listarAmigos(Long usuarioId) {
+    public List<Amizade> listarAmigos(UUID usuarioId) {
         return amizadeRepository.findAmizades(
                 usuarioRepository.findById(usuarioId)
                         .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado")),

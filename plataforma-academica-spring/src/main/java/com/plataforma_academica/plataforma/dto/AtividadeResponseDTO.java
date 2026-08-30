@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.dto;
 
+import java.util.UUID;
+
 import lombok.Data;
 import java.time.LocalDate;
 
@@ -14,7 +16,7 @@ import java.time.LocalDate;
 @Data
 public class AtividadeResponseDTO {
 
-    private Long id;
+    private UUID id;
     private String titulo;
     private String descricao;
     private String tipoDocumentoSubmissao;
@@ -22,11 +24,12 @@ public class AtividadeResponseDTO {
     private Double pontos;
     private String documentoUrl;
 
-    // Informações da sala
-    private Long salaId;
+    // InformaÃ§Ãµes da sala
+    private UUID salaId;
     private String salaNome;
 
-    // Informações do autor
-    private Long autorId;
+    // InformaÃ§Ãµes do autor
+    private UUID autorId;
     private String autorNome;
 }
+

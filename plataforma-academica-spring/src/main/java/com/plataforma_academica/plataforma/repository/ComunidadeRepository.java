@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.repository;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.Comunidade;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,5 +16,5 @@ import org.springframework.stereotype.Repository;
  * @see REQ-015 (Criação de Comunidades)
  */
 @Repository
-public interface ComunidadeRepository extends JpaRepository<Comunidade, Long> {
+public interface ComunidadeRepository extends JpaRepository<Comunidade, UUID> {
 }

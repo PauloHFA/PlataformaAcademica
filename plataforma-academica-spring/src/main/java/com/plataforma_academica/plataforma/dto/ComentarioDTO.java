@@ -1,13 +1,15 @@
 package com.plataforma_academica.plataforma.dto;
 
+import java.util.UUID;
+
 import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * DTO de transferência para criação/atualização de Comentários.
+ * DTO de transferÃªncia para criaÃ§Ã£o/atualizaÃ§Ã£o de ComentÃ¡rios.
  * 
  * Camada: Presentation / DTO
- * Contexto de Negócio: Transporta dados de comentários entre Controller e
+ * Contexto de NegÃ³cio: Transporta dados de comentÃ¡rios entre Controller e
  * Service.
  * 
  * @see Comentario
@@ -16,15 +18,16 @@ import java.time.LocalDateTime;
 @Data
 public class ComentarioDTO {
 
-    private Long id;
-    private Long autorId;
+    private UUID id;
+    private UUID autorId;
 
-    private Long postagemId; // pode ser null
-    private Long atividadeId; // pode ser null
-    private Long salaId; // pode ser null
+    private UUID postagemId; // pode ser null
+    private UUID atividadeId; // pode ser null
+    private UUID salaId; // pode ser null
 
     private String tipoDestino; // enum em String
 
     private String conteudo;
     private LocalDateTime dataCriacao;
 }
+

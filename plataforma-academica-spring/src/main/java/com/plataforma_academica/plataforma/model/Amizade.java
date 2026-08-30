@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -35,8 +37,8 @@ public class Amizade {
 
     /** Identificador único da amizade (chave primária auto-incrementada). */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     /** Usuário que enviou a solicitação de amizade. */
     @ManyToOne(fetch = FetchType.LAZY)
@@ -60,5 +62,13 @@ public class Amizade {
      */
     public enum Status {
         PENDENTE, ACEITO, RECUSADO
+    }
+
+
+    @PrePersist
+    public void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
     }
 }

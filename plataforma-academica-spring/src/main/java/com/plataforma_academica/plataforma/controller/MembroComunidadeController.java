@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.controller;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.model.MembroComunidade;
 import com.plataforma_academica.plataforma.service.MembroComunidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +91,7 @@ public class MembroComunidadeController {
      * @return 200 OK se encontrado, 404 Not Found caso não exista.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<MembroComunidade> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<MembroComunidade> buscarPorId(@PathVariable UUID id) {
         MembroComunidade membro = membroComunidadeService.buscarPorId(id);
 
         if (membro == null) {
@@ -109,7 +111,7 @@ public class MembroComunidadeController {
      * @return lista de vínculos associados ao usuário.
      */
     @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<List<MembroComunidade>> buscarPorUsuario(@PathVariable Long usuarioId) {
+    public ResponseEntity<List<MembroComunidade>> buscarPorUsuario(@PathVariable UUID usuarioId) {
         return ResponseEntity.ok(membroComunidadeService.buscarPorUsuario(usuarioId));
     }
 
@@ -127,7 +129,7 @@ public class MembroComunidadeController {
      * @return lista de membros.
      */
     @GetMapping("/comunidade/{comunidadeId}")
-    public ResponseEntity<List<MembroComunidade>> buscarPorComunidade(@PathVariable Long comunidadeId) {
+    public ResponseEntity<List<MembroComunidade>> buscarPorComunidade(@PathVariable UUID comunidadeId) {
         return ResponseEntity.ok(membroComunidadeService.buscarPorComunidade(comunidadeId));
     }
 
@@ -143,8 +145,8 @@ public class MembroComunidadeController {
      */
     @GetMapping("/existe")
     public ResponseEntity<MembroComunidade> buscarPorUsuarioEComunidade(
-            @RequestParam Long usuarioId,
-            @RequestParam Long comunidadeId) {
+            @RequestParam UUID usuarioId,
+            @RequestParam UUID comunidadeId) {
         MembroComunidade membro = membroComunidadeService.buscarPorUsuarioEComunidade(usuarioId, comunidadeId);
 
         if (membro == null) {
@@ -198,7 +200,7 @@ public class MembroComunidadeController {
      * @return 204 No Content caso exista, 404 se não encontrado.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+    public ResponseEntity<Void> deletar(@PathVariable UUID id) {
 
         MembroComunidade existente = membroComunidadeService.buscarPorId(id);
 

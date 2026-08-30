@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.repository;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.Artigo;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,6 +18,6 @@ import java.util.List;
  * @see REQ-010 (Publicação de Artigos Acadêmicos)
  */
 @Repository
-public interface ArtigoRepository extends JpaRepository<Artigo, Long> {
-    List<Artigo> findByAutorId(Long autorId);
+public interface ArtigoRepository extends JpaRepository<Artigo, UUID> {
+    List<Artigo> findByAutorId(UUID autorId);
 }

@@ -1,10 +1,12 @@
 package com.plataforma_academica.plataforma.dto;
 
+import java.util.UUID;
+
 import lombok.Data;
 import java.util.List;
 
 /**
- * DTO de transferência para Salas de Aula.
+ * DTO de transferÃªncia para Salas de Aula.
  * 
  * Camada: Presentation / DTO (Academic Context)
  * 
@@ -13,9 +15,10 @@ import java.util.List;
  */
 @Data
 public class SalaDeAulaDTO {
-    private Long id;
+    private UUID id;
     private String nome;
-    private Long criadorId; // evita enviar Usuario inteiro
-    private List<Long> membrosIds; // lista simples
-    private List<Long> atividadesIds; // leve
+    private UUID criadorId; // evita enviar Usuario inteiro
+    private List<UUID> membrosIds; // lista simples
+    private List<UUID> atividadesIds; // leve
 }
+

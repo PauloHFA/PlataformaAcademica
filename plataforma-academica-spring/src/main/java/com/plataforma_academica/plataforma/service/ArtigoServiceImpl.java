@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.ArtigoDTO;
 import com.plataforma_academica.plataforma.exception.BadRequestException;
 import com.plataforma_academica.plataforma.exception.ResourceNotFoundException;
@@ -68,7 +70,7 @@ public class ArtigoServiceImpl implements ArtigoService {
      */
     @Override
     @Transactional
-    public Artigo editar(Long id, ArtigoDTO dto) {
+    public Artigo editar(UUID id, ArtigoDTO dto) {
         // Passo 1: Recupera o artigo existente
         Artigo artigo = artigoRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Artigo não encontrado"));
@@ -87,7 +89,7 @@ public class ArtigoServiceImpl implements ArtigoService {
     }
 
     @Override
-    public void deletar(Long id, Long solicitanteId) {
+    public void deletar(UUID id, UUID solicitanteId) {
         Artigo artigo = artigoRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Artigo não encontrado"));
 
@@ -99,7 +101,7 @@ public class ArtigoServiceImpl implements ArtigoService {
     }
 
     @Override
-    public Artigo buscarPorId(Long id) {
+    public Artigo buscarPorId(UUID id) {
         return artigoRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Artigo não encontrado"));
     }
@@ -110,7 +112,7 @@ public class ArtigoServiceImpl implements ArtigoService {
     }
 
     @Override
-    public List<Artigo> listarPorAutor(Long autorId) {
+    public List<Artigo> listarPorAutor(UUID autorId) {
         return artigoRepo.findByAutorId(autorId);
     }
 }

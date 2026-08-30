@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.controller;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.AmizadeDTO;
 import com.plataforma_academica.plataforma.dto.AmizadeResponseDTO;
 import com.plataforma_academica.plataforma.mapper.AmizadeMapper;
@@ -99,7 +101,7 @@ public class AmizadeController {
      */
     @PatchMapping("/{id}/resposta")
     public ResponseEntity<AmizadeResponseDTO> responderSolicitacao(
-            @PathVariable Long id,
+            @PathVariable UUID id,
             @RequestParam String acao) {
         System.out.println("[PATCH /api/amizades/" + id + "/resposta] Ação=" + acao);
         Amizade amizade = amizadeService.responderSolicitacao(id, acao);
@@ -116,7 +118,7 @@ public class AmizadeController {
      * @param id ID da relação de amizade
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> removerAmizade(@PathVariable Long id) {
+    public ResponseEntity<Void> removerAmizade(@PathVariable UUID id) {
         amizadeService.removerAmizade(id);
         return ResponseEntity.noContent().build();
     }
@@ -133,7 +135,7 @@ public class AmizadeController {
      */
     @GetMapping("/pendentes/{usuarioId}")
     public ResponseEntity<List<AmizadeResponseDTO>> listarPendentes(
-            @PathVariable Long usuarioId) {
+            @PathVariable UUID usuarioId) {
         System.out.println("[GET /api/amizades/pendentes/" + usuarioId + "] Buscando pendentes");
         List<Amizade> lista = amizadeService.listarSolicitacoesPendentes(usuarioId);
         System.out.println("[GET /api/amizades/pendentes/" + usuarioId + "] Total: " + lista.size());
@@ -152,7 +154,7 @@ public class AmizadeController {
      */
     @GetMapping("/amigos/{usuarioId}")
     public ResponseEntity<List<AmizadeResponseDTO>> listarAmigos(
-            @PathVariable Long usuarioId) {
+            @PathVariable UUID usuarioId) {
         System.out.println("[GET /api/amizades/amigos/" + usuarioId + "] Listando amigos");
         List<Amizade> lista = amizadeService.listarAmigos(usuarioId);
         System.out.println("[GET /api/amizades/amigos/" + usuarioId + "] Total: " + lista.size());

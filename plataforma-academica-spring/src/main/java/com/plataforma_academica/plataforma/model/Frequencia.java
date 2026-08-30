@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -22,8 +24,8 @@ public class Frequencia {
 
     /** Identificador único do registro de frequência. */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     /** Aluno cuja frequência está sendo registrada. */
     @ManyToOne(fetch = FetchType.LAZY)
@@ -46,4 +48,12 @@ public class Frequencia {
     /** Justificativa opcional para ausências (texto livre). */
     @Column(columnDefinition = "TEXT")
     private String justificativa;
+
+
+    @PrePersist
+    public void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
 }

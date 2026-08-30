@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.controller;
 
+import java.util.UUID;
+
 import com.plataforma_academica.plataforma.dto.ArtigoDTO;
 import com.plataforma_academica.plataforma.dto.ArtigoResponseDTO;
 import com.plataforma_academica.plataforma.mapper.ArtigoMapper;
@@ -34,7 +36,7 @@ public class ArtigoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ArtigoResponseDTO> editar(
-            @PathVariable Long id,
+            @PathVariable UUID id,
             @Valid @RequestBody ArtigoDTO dto) {
         Artigo artigo = artigoService.editar(id, dto);
         return ResponseEntity.ok(ArtigoMapper.toResponse(artigo));
@@ -42,14 +44,14 @@ public class ArtigoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(
-            @PathVariable Long id,
-            @RequestParam Long solicitanteId) {
+            @PathVariable UUID id,
+            @RequestParam UUID solicitanteId) {
         artigoService.deletar(id, solicitanteId);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ArtigoResponseDTO> buscar(@PathVariable Long id) {
+    public ResponseEntity<ArtigoResponseDTO> buscar(@PathVariable UUID id) {
         Artigo artigo = artigoService.buscarPorId(id);
         return ResponseEntity.ok(ArtigoMapper.toResponse(artigo));
     }
@@ -61,7 +63,7 @@ public class ArtigoController {
     }
 
     @GetMapping("/autor/{autorId}")
-    public ResponseEntity<List<ArtigoResponseDTO>> porAutor(@PathVariable Long autorId) {
+    public ResponseEntity<List<ArtigoResponseDTO>> porAutor(@PathVariable UUID autorId) {
         List<Artigo> lista = artigoService.listarPorAutor(autorId);
         return ResponseEntity.ok(lista.stream().map(ArtigoMapper::toResponse).toList());
     }

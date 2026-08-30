@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.service;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.dto.AmizadeDTO;
 import com.plataforma_academica.plataforma.exception.BadRequestException;
@@ -37,23 +38,23 @@ class AmizadeServiceImplTest {
     void enviarSolicitacao_DeveRetornarAmizade_QuandoValida() {
         // Arrange
         AmizadeDTO dto = new AmizadeDTO();
-        dto.setSolicitanteId(1L);
-        dto.setDestinatarioId(2L);
+        dto.setSolicitanteId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        dto.setDestinatarioId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
 
         Usuario solicitante = new Usuario();
-        solicitante.setId(1L);
+        solicitante.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         Usuario destinatario = new Usuario();
-        destinatario.setId(2L);
+        destinatario.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
 
         Amizade amizadeSalva = new Amizade();
         amizadeSalva.setSolicitante(solicitante);
         amizadeSalva.setDestinatario(destinatario);
         amizadeSalva.setStatus(Amizade.Status.PENDENTE);
 
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(solicitante));
-        when(usuarioRepository.findById(2L)).thenReturn(Optional.of(destinatario));
-        when(amizadeRepository.findBySolicitanteIdAndDestinatarioId(1L, 2L)).thenReturn(Optional.empty());
+        when(usuarioRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.of(solicitante));
+        when(usuarioRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000002"))).thenReturn(Optional.of(destinatario));
+        when(amizadeRepository.findBySolicitanteIdAndDestinatarioId(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000002"))).thenReturn(Optional.empty());
         when(amizadeRepository.save(any(Amizade.class))).thenReturn(amizadeSalva);
 
         // Act
@@ -69,8 +70,8 @@ class AmizadeServiceImplTest {
     void enviarSolicitacao_DeveLancarBadRequestException_QuandoSolicitanteIgualDestinatario() {
         // Arrange
         AmizadeDTO dto = new AmizadeDTO();
-        dto.setSolicitanteId(1L);
-        dto.setDestinatarioId(1L);
+        dto.setSolicitanteId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        dto.setDestinatarioId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         // Act & Assert
         BadRequestException exception = assertThrows(BadRequestException.class, () -> amizadeService.enviarSolicitacao(dto));
@@ -81,10 +82,10 @@ class AmizadeServiceImplTest {
     void enviarSolicitacao_DeveLancarResourceNotFoundException_QuandoSolicitanteNaoEncontrado() {
         // Arrange
         AmizadeDTO dto = new AmizadeDTO();
-        dto.setSolicitanteId(1L);
-        dto.setDestinatarioId(2L);
+        dto.setSolicitanteId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        dto.setDestinatarioId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
 
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
+        when(usuarioRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.empty());
 
         // Act & Assert
         ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> amizadeService.enviarSolicitacao(dto));
@@ -95,14 +96,14 @@ class AmizadeServiceImplTest {
     void enviarSolicitacao_DeveLancarResourceNotFoundException_QuandoDestinatarioNaoEncontrado() {
         // Arrange
         AmizadeDTO dto = new AmizadeDTO();
-        dto.setSolicitanteId(1L);
-        dto.setDestinatarioId(2L);
+        dto.setSolicitanteId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        dto.setDestinatarioId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
 
         Usuario solicitante = new Usuario();
-        solicitante.setId(1L);
+        solicitante.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(solicitante));
-        when(usuarioRepository.findById(2L)).thenReturn(Optional.empty());
+        when(usuarioRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.of(solicitante));
+        when(usuarioRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000002"))).thenReturn(Optional.empty());
 
         // Act & Assert
         ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> amizadeService.enviarSolicitacao(dto));
@@ -113,20 +114,20 @@ class AmizadeServiceImplTest {
     void enviarSolicitacao_DeveLancarBadRequestException_QuandoSolicitacaoJaExiste() {
         // Arrange
         AmizadeDTO dto = new AmizadeDTO();
-        dto.setSolicitanteId(1L);
-        dto.setDestinatarioId(2L);
+        dto.setSolicitanteId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        dto.setDestinatarioId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
 
         Usuario solicitante = new Usuario();
-        solicitante.setId(1L);
+        solicitante.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         Usuario destinatario = new Usuario();
-        destinatario.setId(2L);
+        destinatario.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
 
         Amizade amizadeExistente = new Amizade();
 
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(solicitante));
-        when(usuarioRepository.findById(2L)).thenReturn(Optional.of(destinatario));
-        when(amizadeRepository.findBySolicitanteIdAndDestinatarioId(1L, 2L)).thenReturn(Optional.of(amizadeExistente));
+        when(usuarioRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.of(solicitante));
+        when(usuarioRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000002"))).thenReturn(Optional.of(destinatario));
+        when(amizadeRepository.findBySolicitanteIdAndDestinatarioId(UUID.fromString("00000000-0000-0000-0000-000000000001"), UUID.fromString("00000000-0000-0000-0000-000000000002"))).thenReturn(Optional.of(amizadeExistente));
 
         // Act & Assert
         BadRequestException exception = assertThrows(BadRequestException.class, () -> amizadeService.enviarSolicitacao(dto));
@@ -136,7 +137,7 @@ class AmizadeServiceImplTest {
     @Test
     void responderSolicitacao_DeveAceitar_QuandoAcaoAceitar() {
         // Arrange
-        Long amizadeId = 1L;
+        Long amizadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         String acao = "aceitar";
 
         Amizade amizade = new Amizade();
@@ -157,7 +158,7 @@ class AmizadeServiceImplTest {
     @Test
     void responderSolicitacao_DeveRecusar_QuandoAcaoRecusar() {
         // Arrange
-        Long amizadeId = 1L;
+        Long amizadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         String acao = "recusar";
 
         Amizade amizade = new Amizade();
@@ -178,7 +179,7 @@ class AmizadeServiceImplTest {
     @Test
     void responderSolicitacao_DeveLancarBadRequestException_QuandoAcaoInvalida() {
         // Arrange
-        Long amizadeId = 1L;
+        Long amizadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         String acao = "invalida";
 
         Amizade amizade = new Amizade();
@@ -195,7 +196,7 @@ class AmizadeServiceImplTest {
     @Test
     void responderSolicitacao_DeveLancarBadRequestException_QuandoJaRespondida() {
         // Arrange
-        Long amizadeId = 1L;
+        Long amizadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         String acao = "aceitar";
 
         Amizade amizade = new Amizade();
@@ -212,7 +213,7 @@ class AmizadeServiceImplTest {
     @Test
     void responderSolicitacao_DeveLancarResourceNotFoundException_QuandoNaoEncontrada() {
         // Arrange
-        Long amizadeId = 1L;
+        Long amizadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         String acao = "aceitar";
 
         when(amizadeRepository.findById(amizadeId)).thenReturn(Optional.empty());
@@ -225,7 +226,7 @@ class AmizadeServiceImplTest {
     @Test
     void removerAmizade_DeveDeletar_QuandoEncontrada() {
         // Arrange
-        Long amizadeId = 1L;
+        Long amizadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Amizade amizade = new Amizade();
         amizade.setId(amizadeId);
@@ -242,7 +243,7 @@ class AmizadeServiceImplTest {
     @Test
     void removerAmizade_DeveLancarResourceNotFoundException_QuandoNaoEncontrada() {
         // Arrange
-        Long amizadeId = 1L;
+        Long amizadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(amizadeRepository.findById(amizadeId)).thenReturn(Optional.empty());
 
@@ -254,7 +255,7 @@ class AmizadeServiceImplTest {
     @Test
     void listarSolicitacoesPendentes_DeveRetornarLista_QuandoUsuarioEncontrado() {
         // Arrange
-        Long usuarioId = 1L;
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Usuario usuario = new Usuario();
         usuario.setId(usuarioId);
@@ -275,7 +276,7 @@ class AmizadeServiceImplTest {
     @Test
     void listarSolicitacoesPendentes_DeveLancarResourceNotFoundException_QuandoUsuarioNaoEncontrado() {
         // Arrange
-        Long usuarioId = 1L;
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(usuarioRepository.findById(usuarioId)).thenReturn(Optional.empty());
 
@@ -287,7 +288,7 @@ class AmizadeServiceImplTest {
     @Test
     void listarAmigos_DeveRetornarLista_QuandoUsuarioEncontrado() {
         // Arrange
-        Long usuarioId = 1L;
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Usuario usuario = new Usuario();
         usuario.setId(usuarioId);
@@ -308,7 +309,7 @@ class AmizadeServiceImplTest {
     @Test
     void listarAmigos_DeveLancarResourceNotFoundException_QuandoUsuarioNaoEncontrado() {
         // Arrange
-        Long usuarioId = 1L;
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(usuarioRepository.findById(usuarioId)).thenReturn(Optional.empty());
 

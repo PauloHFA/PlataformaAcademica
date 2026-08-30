@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.service;
+import java.util.UUID;
 
 import com.plataforma_academica.plataforma.dto.ComunidadeDTO;
 import com.plataforma_academica.plataforma.exception.BadRequestException;
@@ -41,18 +42,18 @@ class ComunidadeServiceImplTest {
     void criarComunidade_DeveRetornarComunidade_QuandoValida() {
         // Arrange
         ComunidadeDTO dto = new ComunidadeDTO();
-        dto.setDonoId(1L);
+        dto.setDonoId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         dto.setNome("Nome");
         dto.setDescricao("Descrição");
 
         Usuario dono = new Usuario();
-        dono.setId(1L);
+        dono.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         Comunidade saved = new Comunidade();
-        saved.setId(2L);
+        saved.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         saved.setNome("Nome");
 
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(dono));
+        when(usuarioRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.of(dono));
         when(comunidadeRepository.save(any(Comunidade.class))).thenReturn(saved);
         when(membroComunidadeRepository.save(any(MembroComunidade.class))).thenReturn(new MembroComunidade());
 
@@ -70,9 +71,9 @@ class ComunidadeServiceImplTest {
     void criarComunidade_DeveLancarResourceNotFoundException_QuandoDonoNaoEncontrado() {
         // Arrange
         ComunidadeDTO dto = new ComunidadeDTO();
-        dto.setDonoId(1L);
+        dto.setDonoId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
+        when(usuarioRepository.findById(UUID.fromString("00000000-0000-0000-0000-000000000001"))).thenReturn(Optional.empty());
 
         // Act & Assert
         ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> comunidadeService.criarComunidade(dto));
@@ -82,11 +83,11 @@ class ComunidadeServiceImplTest {
     @Test
     void deletarComunidade_DeveDeletar_QuandoValido() {
         // Arrange
-        Long id = 1L;
-        Long solicitanteId = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long solicitanteId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Usuario dono = new Usuario();
-        dono.setId(1L);
+        dono.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         Comunidade comunidade = new Comunidade();
         comunidade.setId(id);
@@ -104,8 +105,8 @@ class ComunidadeServiceImplTest {
     @Test
     void deletarComunidade_DeveLancarResourceNotFoundException_QuandoComunidadeNaoEncontrada() {
         // Arrange
-        Long id = 1L;
-        Long solicitanteId = 1L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long solicitanteId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(comunidadeRepository.findById(id)).thenReturn(Optional.empty());
 
@@ -117,11 +118,11 @@ class ComunidadeServiceImplTest {
     @Test
     void deletarComunidade_DeveLancarBadRequestException_QuandoNaoEhDono() {
         // Arrange
-        Long id = 1L;
-        Long solicitanteId = 2L;
+        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long solicitanteId = UUID.fromString("00000000-0000-0000-0000-000000000002");
 
         Usuario dono = new Usuario();
-        dono.setId(1L);
+        dono.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
         Comunidade comunidade = new Comunidade();
         comunidade.setId(id);
@@ -137,8 +138,8 @@ class ComunidadeServiceImplTest {
     @Test
     void entrarComunidade_DeveRetornarMembro_QuandoValido() {
         // Arrange
-        Long comunidadeId = 1L;
-        Long usuarioId = 1L;
+        Long comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Comunidade comunidade = new Comunidade();
         comunidade.setId(comunidadeId);
@@ -166,8 +167,8 @@ class ComunidadeServiceImplTest {
     @Test
     void entrarComunidade_DeveLancarBadRequestException_QuandoJaEhMembro() {
         // Arrange
-        Long comunidadeId = 1L;
-        Long usuarioId = 1L;
+        Long comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Comunidade comunidade = new Comunidade();
         comunidade.setId(comunidadeId);
@@ -189,8 +190,8 @@ class ComunidadeServiceImplTest {
     @Test
     void sairComunidade_DeveDeletar_QuandoEncontrado() {
         // Arrange
-        Long comunidadeId = 1L;
-        Long usuarioId = 1L;
+        Long comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         MembroComunidade membro = new MembroComunidade();
 
@@ -206,8 +207,8 @@ class ComunidadeServiceImplTest {
     @Test
     void sairComunidade_DeveLancarResourceNotFoundException_QuandoNaoEncontrado() {
         // Arrange
-        Long comunidadeId = 1L;
-        Long usuarioId = 1L;
+        Long comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(membroComunidadeRepository.findByUsuarioIdAndComunidadeId(usuarioId, comunidadeId)).thenReturn(Optional.empty());
 
@@ -234,7 +235,7 @@ class ComunidadeServiceImplTest {
     @Test
     void listarMembros_DeveRetornarLista() {
         // Arrange
-        Long comunidadeId = 1L;
+        Long comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         List<MembroComunidade> membros = List.of(new MembroComunidade());
 
         when(membroComunidadeRepository.findByComunidadeId(comunidadeId)).thenReturn(membros);

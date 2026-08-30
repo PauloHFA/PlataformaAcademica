@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.dto;
 
+import java.util.UUID;
+
 import lombok.Data;
 import java.time.LocalDateTime;
 
@@ -14,17 +16,18 @@ import java.time.LocalDateTime;
 @Data
 public class AmizadeResponseDTO {
 
-    private Long id;
+    private UUID id;
 
     // Dados do solicitante
-    private Long solicitanteId;
+    private UUID solicitanteId;
     private String solicitanteNome;
 
-    // Dados do destinatário
-    private Long destinatarioId;
+    // Dados do destinatÃ¡rio
+    private UUID destinatarioId;
     private String destinatarioNome;
 
     private String status;
 
     private LocalDateTime criadoEm;
 }
+

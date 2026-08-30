@@ -1,5 +1,7 @@
 package com.plataforma_academica.plataforma.service;
 
+import java.util.UUID;
+
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,7 @@ public class NotificationService {
         messagingTemplate.convertAndSend(destino, mensagem);
     }
 
-    public void notificarUsuario(Long usuarioId, String mensagem) {
+    public void notificarUsuario(UUID usuarioId, String mensagem) {
         enviarNotificacao("/topic/notificacoes/" + usuarioId, mensagem);
     }
 }

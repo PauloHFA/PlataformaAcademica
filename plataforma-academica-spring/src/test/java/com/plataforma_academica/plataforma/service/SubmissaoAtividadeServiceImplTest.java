@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.service;
+
 import java.util.UUID;
 
 import com.plataforma_academica.plataforma.dto.SubmissaoAtividadeDTO;
@@ -45,8 +46,8 @@ class SubmissaoAtividadeServiceImplTest {
     @Test
     void enviarSubmissao_ComSubmissaoObjeto_DeveRetornarSubmissao_QuandoValido() {
         // Arrange
-        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long alunoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID alunoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Atividade atividade = new Atividade();
         atividade.setId(atividadeId);
@@ -83,29 +84,30 @@ class SubmissaoAtividadeServiceImplTest {
         assertNotNull(result);
         assertEquals(saved, result);
         verify(submissaoRepository).save(any(SubmissaoAtividade.class));
-        verify(notificacaoService).criarNotificacao(anyLong(), anyString(), anyString(), anyLong());
+        verify(notificacaoService).criarNotificacao(any(UUID), anyString(), anyString(), any(UUID));
     }
 
     @Test
     void enviarSubmissao_ComSubmissaoObjeto_DeveLancarEntityNotFoundException_QuandoAtividadeNaoEncontrada() {
         // Arrange
-        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long alunoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID alunoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         SubmissaoAtividade submissao = new SubmissaoAtividade();
 
         when(atividadeRepository.findById(atividadeId)).thenReturn(Optional.empty());
 
         // Act & Assert
-        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> submissaoService.enviarSubmissao(atividadeId, alunoId, submissao));
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
+                () -> submissaoService.enviarSubmissao(atividadeId, alunoId, submissao));
         assertEquals("Atividade não encontrada.", exception.getMessage());
     }
 
     @Test
     void enviarSubmissao_ComSubmissaoObjeto_DeveLancarSecurityException_QuandoNaoMembro() {
         // Arrange
-        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long alunoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID alunoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Atividade atividade = new Atividade();
         atividade.setId(atividadeId);
@@ -122,15 +124,16 @@ class SubmissaoAtividadeServiceImplTest {
         when(usuarioRepository.findById(alunoId)).thenReturn(Optional.of(aluno));
 
         // Act & Assert
-        SecurityException exception = assertThrows(SecurityException.class, () -> submissaoService.enviarSubmissao(atividadeId, alunoId, submissao));
+        SecurityException exception = assertThrows(SecurityException.class,
+                () -> submissaoService.enviarSubmissao(atividadeId, alunoId, submissao));
         assertEquals("Este usuário não pertence à sala dessa atividade.", exception.getMessage());
     }
 
     @Test
     void enviarSubmissao_ComSubmissaoObjeto_DeveLancarIllegalStateException_QuandoJaEnviada() {
         // Arrange
-        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long alunoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID alunoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Atividade atividade = new Atividade();
         atividade.setId(atividadeId);
@@ -151,14 +154,15 @@ class SubmissaoAtividadeServiceImplTest {
         when(submissaoRepository.findByAtividadeIdAndAlunoId(atividadeId, alunoId)).thenReturn(existente);
 
         // Act & Assert
-        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> submissaoService.enviarSubmissao(atividadeId, alunoId, submissao));
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+                () -> submissaoService.enviarSubmissao(atividadeId, alunoId, submissao));
         assertEquals("Este aluno já enviou essa atividade.", exception.getMessage());
     }
 
     @Test
     void listarSubmissoesPorAtividade_DeveRetornarLista_QuandoValido() {
         // Arrange
-        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Atividade atividade = new Atividade();
         atividade.setId(atividadeId);
@@ -179,8 +183,8 @@ class SubmissaoAtividadeServiceImplTest {
     @Test
     void buscarSubmissaoDoAluno_DeveRetornarSubmissao_QuandoEncontrada() {
         // Arrange
-        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long alunoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID alunoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         SubmissaoAtividade submissao = new SubmissaoAtividade();
 
@@ -196,20 +200,21 @@ class SubmissaoAtividadeServiceImplTest {
     @Test
     void buscarSubmissaoDoAluno_DeveLancarEntityNotFoundException_QuandoNaoEncontrada() {
         // Arrange
-        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long alunoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID alunoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(submissaoRepository.findByAtividadeIdAndAlunoId(atividadeId, alunoId)).thenReturn(null);
 
         // Act & Assert
-        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> submissaoService.buscarSubmissaoDoAluno(atividadeId, alunoId));
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
+                () -> submissaoService.buscarSubmissaoDoAluno(atividadeId, alunoId));
         assertEquals("Submissão não encontrada para este aluno.", exception.getMessage());
     }
 
     @Test
     void corrigirSubmissao_DeveRetornarSubmissao_QuandoValido() {
         // Arrange
-        Long submissaoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID submissaoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Double nota = 9.5;
         String feedback = "Bom trabalho";
 
@@ -239,13 +244,13 @@ class SubmissaoAtividadeServiceImplTest {
         assertEquals(saved, result);
         assertEquals(nota, result.getNota());
         assertEquals(feedback, result.getFeedback());
-        verify(notificacaoService).criarNotificacao(anyLong(), anyString(), anyString(), anyLong());
+        verify(notificacaoService).criarNotificacao(any(UUID), anyString(), anyString(), any(UUID));
     }
 
     @Test
     void marcarComoRecebida_DeveRetornarSubmissao_QuandoValido() {
         // Arrange
-        Long submissaoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID submissaoId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         SubmissaoAtividade submissao = new SubmissaoAtividade();
         submissao.setId(submissaoId);

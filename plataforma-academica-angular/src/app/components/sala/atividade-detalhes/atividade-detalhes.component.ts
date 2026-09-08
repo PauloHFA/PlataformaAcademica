@@ -22,15 +22,15 @@ export class AtividadeDetalhesComponent implements OnInit {
   submissoes: SubmissaoAtividadeResponse[] = [];
   minhaSubmissao: SubmissaoAtividadeResponse | null = null;
   carregando = true;
-  atividadeId: number | null = null;
-  salaId: number | null = null;
-  currentUserId: number | null = null;
-  
+  atividadeId: string | null = null;
+  salaId: string | null = null;
+  currentUserId: string | null = null;
+
   urlDocumento = '';
   descricaoSubmissao = '';
   arquivoSubmissao: File | null = null;
   enviandoSubmissao = false;
-  
+
   comentarios: Comentario[] = [];
   novoComentario = '';
   usuarioId = 0;
@@ -46,7 +46,7 @@ export class AtividadeDetalhesComponent implements OnInit {
   }
 
   getDocumentoPreviewUrl(url: string): string {
-    const fullUrl = url.startsWith('http://localhost:8080') ? url : 'http://localhost:8080' + url;
+    const fullUrl = url.startsWith('http://localhost:8090') ? url : 'http://localhost:8090' + url;
     console.log('Preview URL:', fullUrl);
     return fullUrl;
   }
@@ -64,7 +64,7 @@ export class AtividadeDetalhesComponent implements OnInit {
     private salaContext: SalaContextService,
     private sanitizer: DomSanitizer,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -72,11 +72,10 @@ export class AtividadeDetalhesComponent implements OnInit {
       this.usuarioId = usuarioIdStr ? parseInt(usuarioIdStr, 10) : 0;
       this.isProfessor = localStorage.getItem('isProfessor') === 'true';
     }
-    
+
     this.currentUserId = this.getCurrentUserId();
-    this.atividadeId = Number(this.route.snapshot.paramMap.get('atividadeId'));
-    this.salaId = Number(this.route.snapshot.paramMap.get('id'));
-    
+    this.atividadeId = this.route.snapshot.paramMap.get('atividadeId');
+    this.salaId = this.route.snapshot.paramMap.get('id');
     if (this.atividadeId) {
       this.carregarAtividade();
       this.carregarSubmissoes();
@@ -87,25 +86,25 @@ export class AtividadeDetalhesComponent implements OnInit {
     }
   }
 
-  getCurrentUserId(): number | null {
+  getCurrentUserId(): string | null {
     const id = localStorage.getItem('usuarioId');
-    return id ? Number(id) : null;
+    return id ? id : null;
   }
 
   carregarAtividade(): void {
     if (!this.salaId || !this.atividadeId) return;
-    
-    this.salaService.buscarPorId(this.salaId).subscribe({
+
+    this.salaService.buscarPorId(Number(this.salaId)).subscribe({
       next: (s) => {
         this.salaContext.setNomeSala(s.nome);
-        this.usuarioEhCriadorDaSala = s.criadorId === this.currentUserId;
+        this.usuarioEhCriadorDaSala = s.criadorId === Number(this.currentUserId);
       },
-      error: () => {}
+      error: () => { }
     });
-    
-    this.salaService.listarAtividades(this.salaId).subscribe({
+
+    this.salaService.listarAtividades(Number(this.salaId)).subscribe({
       next: (atividades) => {
-        this.atividade = atividades.find(a => a.id === this.atividadeId) || null;
+        this.atividade = atividades.find(a => a.id === Number(this.atividadeId)) || null;
         this.carregando = false;
       },
       error: () => {
@@ -116,32 +115,32 @@ export class AtividadeDetalhesComponent implements OnInit {
 
   carregarSubmissoes(): void {
     if (!this.atividadeId) return;
-    
+
     this.submissaoService.listarSubmissoesPorAtividade(this.atividadeId).subscribe({
       next: (submissoes) => {
         this.submissoes = submissoes;
       },
-      error: () => {}
+      error: () => { }
     });
   }
 
   carregarMinhaSubmissao(): void {
     if (!this.atividadeId || !this.currentUserId) return;
-    
+
     this.submissaoService.buscarSubmissaoDoAluno(this.atividadeId, this.currentUserId).subscribe({
       next: (submissao) => {
         this.minhaSubmissao = submissao;
         this.urlDocumento = submissao.urlDocumento || '';
       },
-      error: () => {}
+      error: () => { }
     });
   }
 
   carregarComentarios(): void {
     if (!this.atividadeId) return;
-    
+
     console.log('Carregando comentários da atividade:', this.atividadeId);
-    this.comentarioService.listarPorAtividade(this.atividadeId).subscribe({
+    this.comentarioService.listarPorAtividade(Number(this.atividadeId)).subscribe({
       next: (c: Comentario[]) => {
         console.log('Comentários da atividade', this.atividadeId, 'carregados:', c);
         this.comentarios = (c || []).map((comentario: Comentario) => ({
@@ -212,7 +211,7 @@ export class AtividadeDetalhesComponent implements OnInit {
     }
 
     this.enviandoSubmissao = true;
-    
+
     const formData = new FormData();
     if (this.descricaoSubmissao.trim()) {
       formData.append('descricao', this.descricaoSubmissao.trim());

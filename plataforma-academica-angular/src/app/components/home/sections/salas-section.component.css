@@ -1,0 +1,145 @@
+.salas-section {
+    background: var(--paper-warm);
+}
+
+.salas-section .feature-copy {
+    order: 2;
+}
+
+.salas-section .room-demo {
+    order: 1;
+}
+
+.room-demo {
+    background: #fffdf8;
+    color: var(--ink);
+    border-left: 4px solid var(--dust-blue);
+}
+
+.demo-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #e4ded3;
+    color: #778079;
+    font-size: .7rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+.demo-bar b {
+    color: var(--sage);
+    font-size: .68rem;
+}
+
+.room-heading {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem 1.25rem;
+}
+
+.subject-mark {
+    width: 3.5rem;
+    height: 3.5rem;
+    display: grid;
+    place-items: center;
+    background: var(--dust-blue);
+    color: var(--night-study);
+    font: 700 1.1rem var(--font-display);
+}
+
+.room-heading h3 {
+    margin: 0;
+    font: 600 1.45rem var(--font-display);
+}
+
+.room-heading p {
+    margin: .3rem 0 0;
+    color: #78817a;
+    font-size: .8rem;
+}
+
+.room-tabs {
+    display: flex;
+    gap: 1.2rem;
+    padding: 0 1.25rem;
+    border-bottom: 1px solid #e4ded3;
+    font-size: .75rem;
+}
+
+.room-tabs>* {
+    padding-bottom: .8rem;
+}
+
+.room-tabs b {
+    color: var(--copper);
+    border-bottom: 2px solid var(--copper);
+}
+
+.room-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    padding: 1.5rem 1.25rem;
+}
+
+.room-content small,
+.topic-list small {
+    display: block;
+    margin-bottom: .55rem;
+    color: #89918a;
+    font-size: .65rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+.room-content strong {
+    display: block;
+    font-size: .9rem;
+}
+
+.member-row {
+    display: flex;
+    margin-top: 1rem;
+}
+
+.member-row i {
+    width: 2rem;
+    height: 2rem;
+    display: grid;
+    place-items: center;
+    margin-right: -.35rem;
+    border: 2px solid #fffdf8;
+    border-radius: 50%;
+    background: var(--sage);
+    color: white;
+    font-size: .55rem;
+    font-style: normal;
+}
+
+.member-row i:nth-child(2) {
+    background: var(--copper);
+}
+
+.member-row i:nth-child(3) {
+    background: var(--dust-blue);
+    color: var(--ink);
+}
+
+.member-row i:last-child {
+    background: var(--night-study);
+}
+
+.topic-list span {
+    display: flex;
+    justify-content: space-between;
+    padding: .55rem 0;
+    border-bottom: 1px solid #eee8dd;
+    font-size: .76rem;
+}
+
+.topic-list b {
+    color: var(--copper);
+    font-size: .7rem;
+}

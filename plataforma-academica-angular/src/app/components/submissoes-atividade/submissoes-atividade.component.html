@@ -29,7 +29,7 @@
           {{ s.nota !== null && s.nota !== undefined ? 'Avaliada' : 'Pendente' }}
         </div>
       </div>
-      
+
       <div class="submissao-body" *ngIf="s.descricao">
         <p><strong>Descrição:</strong></p>
         <p class="descricao">{{ s.descricao }}</p>
@@ -85,7 +85,8 @@
 
       <div class="form-group">
         <label for="feedback">Feedback:</label>
-        <textarea id="feedback" [(ngModel)]="feedback" rows="4" class="form-control" placeholder="Deixe um comentário para o aluno..."></textarea>
+        <textarea id="feedback" [(ngModel)]="feedback" rows="4" class="form-control"
+          placeholder="Deixe um comentário para o aluno..."></textarea>
       </div>
     </div>
 

@@ -49,6 +49,10 @@ public class Usuario {
     @Column(nullable = false)
     private String senha;
 
+    @com.fasterxml.jackson.annotation.JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY)
+    @Column(name = "senha_hash")
+    private String senhaHash;
+
     /** Data de nascimento. */
     private java.time.LocalDate dataNascimento;
 
@@ -73,6 +77,15 @@ public class Usuario {
 
     /** Website pessoal ou portfólio. */
     private String site;
+
+    @Column(name = "email_confirmado")
+    private boolean emailConfirmado = false;
+
+    @Column(name = "token_confirmacao_email")
+    private String tokenConfirmacaoEmail;
+
+    @Column(name = "token_confirmacao_expira_em")
+    private java.time.LocalDateTime tokenConfirmacaoExpiraEm;
 
     @Lob
     @JsonIgnore
@@ -108,13 +121,25 @@ public class Usuario {
     private List<SubmissaoAtividade> submissões;
 
     @Version
-    private UUID version;
+    private Long version;
 
+    @Column(name = "data_cadastro")
+    private java.time.LocalDateTime dataCadastro;
 
     @PrePersist
-    public void onCreate() {
+    @PreUpdate
+    public void onCreateOrUpdate() {
         if (id == null) {
             id = UUID.randomUUID();
+        }
+        if (dataCadastro == null) {
+            dataCadastro = java.time.LocalDateTime.now();
+        }
+        if (senhaHash == null && senha != null) {
+            senhaHash = senha;
+        }
+        if (senha == null && senhaHash != null) {
+            senha = senhaHash;
         }
     }
 }

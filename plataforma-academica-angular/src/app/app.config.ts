@@ -7,7 +7,7 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { authAndLoggingInterceptor } from './interceptors/auth-and-logging.interceptor';
 import { provideSocketIo, SocketIoConfig } from 'ngx-socket-io';
 
-const config: SocketIoConfig = { url: 'http://localhost:8080', options: {} };
+const config: SocketIoConfig = { url: 'http://localhost:8090', options: {} };
 
 /**
  * Configuração global da aplicação Angular (Padrão Sênior)

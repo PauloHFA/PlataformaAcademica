@@ -15,8 +15,8 @@ import { SubmissaoAtividade } from '../../models/submissao-atividade.model';
 export class SubmissoesAtividadeComponent implements OnInit {
   submissoes: SubmissaoAtividade[] = [];
   carregando = true;
-  atividadeId: number | null = null;
-  salaId: number | null = null;
+  atividadeId: string | null = null;
+  salaId: string | null = null;
   submissaoSelecionada: SubmissaoAtividade | null = null;
   nota: number | null = null;
   feedback: string = '';
@@ -25,12 +25,12 @@ export class SubmissoesAtividadeComponent implements OnInit {
     private route: ActivatedRoute,
     private submissaoService: SubmissaoAtividadeService,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      this.salaId = Number(params.get('id'));
-      this.atividadeId = Number(params.get('atividadeId'));
+      this.salaId = params.get('id');
+      this.atividadeId = params.get('atividadeId');
       if (this.atividadeId) {
         this.carregarSubmissoes();
       }
@@ -66,7 +66,7 @@ export class SubmissoesAtividadeComponent implements OnInit {
 
   salvarAvaliacao(): void {
     if (!this.submissaoSelecionada?.id || this.nota === null) return;
-    
+
     this.submissaoService.corrigirSubmissao(this.submissaoSelecionada.id, this.nota, this.feedback).subscribe({
       next: () => {
         alert('Avaliação salva com sucesso!');
@@ -79,7 +79,7 @@ export class SubmissoesAtividadeComponent implements OnInit {
     });
   }
 
-  marcarComoRecebida(submissaoId: number): void {
+  marcarComoRecebida(submissaoId: string): void {
     this.submissaoService.marcarComoRecebida(submissaoId).subscribe({
       next: () => {
         alert('Submissão marcada como recebida!');
@@ -94,6 +94,6 @@ export class SubmissoesAtividadeComponent implements OnInit {
   getDocumentoUrl(url: string): string {
     if (!url) return '';
     if (url.startsWith('http')) return url;
-    return 'http://localhost:8080' + url;
+    return 'http://localhost:8090' + url;
   }
 }

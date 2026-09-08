@@ -12,7 +12,7 @@ import { Perfil, PerfilDTO } from '../models/perfil.model';
   providedIn: 'root'
 })
 export class PerfilService {
-  private baseUrl = 'http://localhost:8080/api/perfis';
+  private baseUrl = 'http://localhost:8090/api/perfis';
 
   constructor(private http: HttpClient) { }
 

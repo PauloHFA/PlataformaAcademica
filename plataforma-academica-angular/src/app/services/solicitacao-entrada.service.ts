@@ -7,7 +7,7 @@ import { SolicitacaoEntrada } from '../models/solicitacao-entrada.model';
   providedIn: 'root'
 })
 export class SolicitacaoEntradaService {
-  private baseUrl = 'http://localhost:8080/api/solicitacoes';
+  private baseUrl = 'http://localhost:8090/api/solicitacoes';
 
   constructor(private http: HttpClient) {}
 

@@ -11,7 +11,7 @@ export class NotificationService {
     this.socket.connect();
   }
 
-  getNotificacoesUsuario(usuarioId: number): Observable<string> {
+  getNotificacoesUsuario(usuarioId: string | number): Observable<string> {
     return this.socket.fromEvent('/topic/notificacoes/' + usuarioId);
   }
 

@@ -1,0 +1,131 @@
+.activities-section {
+    background: var(--night-study);
+    color: var(--paper-warm);
+}
+
+.activities-section .feature-copy {
+    order: 2;
+}
+
+.activities-section .activity-demo {
+    order: 1;
+}
+
+.activity-demo {
+    background: #202d35;
+    border: 1px solid rgba(154, 175, 193, .32);
+    color: var(--paper-warm);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-dark);
+}
+
+.activity-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(154, 175, 193, .2);
+}
+
+.activity-top h3 {
+    margin: .5rem 0 0;
+    font: 600 1.6rem/1.1 var(--font-display);
+}
+
+.priority {
+    padding: .35rem .55rem;
+    color: var(--copper);
+    border: 1px solid rgba(184, 107, 62, .6);
+    font-size: .65rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+.deadline {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    padding: 1.5rem 0;
+}
+
+.deadline span,
+.progress-copy span {
+    color: var(--dust-blue);
+    font-size: .68rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+}
+
+.deadline strong {
+    color: var(--copper);
+    font: 600 1.1rem var(--font-display);
+}
+
+.deadline i {
+    position: absolute;
+}
+
+.progress-copy {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: .5rem;
+}
+
+.progress-copy b {
+    font-size: .75rem;
+}
+
+.progress-line {
+    height: .35rem;
+    margin-bottom: 1.5rem;
+    background: rgba(154, 175, 193, .2);
+}
+
+.progress-line span {
+    display: block;
+    width: 60%;
+    height: 100%;
+    background: var(--copper);
+}
+
+.activity-demo label {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .6rem 0;
+    color: rgba(245, 241, 232, .72);
+    font-size: .84rem;
+}
+
+.activity-demo input {
+    accent-color: var(--sage);
+}
+
+.activities-section .feature-copy h2 {
+    color: var(--paper-warm);
+}
+
+.activities-section .feature-copy>p:not(.section-kicker) {
+    color: rgba(245, 241, 232, .7);
+}
+
+.note-callout {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(154, 175, 193, .25);
+}
+
+.note-callout span {
+    color: var(--copper);
+    font-size: 1.5rem;
+}
+
+.note-callout p {
+    margin: 0;
+    color: var(--paper-warm);
+    font-size: .85rem;
+}

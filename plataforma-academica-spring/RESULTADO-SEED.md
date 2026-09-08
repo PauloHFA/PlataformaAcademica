@@ -27,10 +27,10 @@ Banco: plataforma_academica (PostgreSQL 18)
 | curtida | postagem_id, usuario_id | bigint |
 | notificacao | usuario_id | bigint |
 
-## Script Executado
-- `seed_final.sql` - Versao adaptada ao schema real
-- `seed_dados_completo.sql` - Versao original (com erros de UUID/bigint)
-- `seed_dados_expandido.sql` - Versao expandida (com erros de schema)
+## Script Mantido
+- `seed_final.sql` - Versao adaptada ao schema real e unica seed operacional mantida.
+
+As versões `seed_dados.sql`, `seed_dados_completo.sql` e `seed_dados_expandido.sql` eram artefatos de tentativa com incompatibilidades de UUID/schema e foram removidas para evitar execução acidental.
 
 ## Proximos Passos Recomendados
 1. Finalizar migracao UUID nas tabelas: postagem, comunidades, curtida, notificacao, professor

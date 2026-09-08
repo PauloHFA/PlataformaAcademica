@@ -1,0 +1,142 @@
+.friends-section {
+    background: var(--night-study);
+    color: var(--paper-warm);
+}
+
+.friends-section .feature-copy {
+    order: 2;
+}
+
+.friends-section .friends-demo {
+    order: 1;
+}
+
+.friends-demo {
+    background: #202d35;
+    border: 1px solid rgba(154, 175, 193, .3);
+    color: var(--paper-warm);
+    padding: 1.25rem;
+}
+
+.friends-demo .demo-bar {
+    padding: 0 0 1.25rem;
+    border-color: rgba(154, 175, 193, .2);
+}
+
+.friends-demo .demo-bar span:last-child {
+    color: var(--sage);
+}
+
+.friend-request {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: 1.2rem 0;
+    border-bottom: 1px solid rgba(154, 175, 193, .2);
+}
+
+.friend-request>i {
+    width: 2.8rem;
+    height: 2.8rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--copper);
+    color: white;
+    font-size: .65rem;
+    font-style: normal;
+}
+
+.friend-request div {
+    flex: 1;
+}
+
+.friend-request strong,
+.friend-request small {
+    display: block;
+}
+
+.friend-request strong {
+    font: 600 1rem var(--font-display);
+}
+
+.friend-request small {
+    margin-top: .2rem;
+    color: var(--dust-blue);
+    font-size: .7rem;
+}
+
+.friend-request button {
+    padding: .55rem .75rem;
+    border: 1px solid var(--copper);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--copper);
+    cursor: pointer;
+    font-size: .7rem;
+}
+
+.friend-request button:hover,
+.friend-request button.sent {
+    background: var(--copper);
+    color: var(--paper-warm);
+}
+
+.friend-request.muted {
+    opacity: .65;
+}
+
+.friend-request.muted>i {
+    background: var(--dust-blue);
+    color: var(--ink);
+}
+
+.friend-request.muted button {
+    border-color: var(--dust-blue);
+    color: var(--dust-blue);
+}
+
+.connection-line {
+    display: flex;
+    align-items: center;
+    gap: .7rem;
+    padding-top: 1.3rem;
+    color: var(--sage);
+    font-size: .68rem;
+    text-align: center;
+}
+
+.connection-line span {
+    flex: 1;
+    height: 1px;
+    background: rgba(114, 140, 105, .55);
+}
+
+.friends-section .feature-copy h2 {
+    color: var(--paper-warm);
+}
+
+.friends-section .feature-copy>p:not(.section-kicker) {
+    color: rgba(245, 241, 232, .7);
+}
+
+.status-legend {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    color: var(--dust-blue);
+    font-size: .7rem;
+}
+
+.status-legend i {
+    display: inline-block;
+    width: .45rem;
+    height: .45rem;
+    margin-right: .35rem;
+    border-radius: 50%;
+    background: var(--copper);
+}
+
+.status-legend span:last-child i {
+    background: var(--sage);
+}

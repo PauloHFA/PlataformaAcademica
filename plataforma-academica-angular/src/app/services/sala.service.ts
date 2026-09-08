@@ -75,7 +75,7 @@ export class SalaService {
       if (err.error instanceof ErrorEvent || err.name === 'HttpErrorResponse') {
         // Verificar se é erro de conexão
         if (err.status === 0 || err.statusText === 'Unknown Error') {
-          errorMessage = 'Não foi possível conectar ao servidor. Verifique se o backend está rodando em http://localhost:8080';
+          errorMessage = 'Não foi possível conectar ao servidor. Verifique se o backend está rodando em http://localhost:8090';
         } else if (err.status >= 500) {
           errorMessage = `Erro no servidor (${err.status}). Tente novamente mais tarde.`;
         } else if (err.status === 404) {

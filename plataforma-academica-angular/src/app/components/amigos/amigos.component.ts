@@ -29,7 +29,7 @@ export class AmigosComponent implements OnInit {
     private usuarioService: UsuarioService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.currentUserId = this.getCurrentUserId();
@@ -48,7 +48,7 @@ export class AmigosComponent implements OnInit {
 
   carregarDados(): void {
     if (!this.currentUserId) return;
-    
+
     this.carregando = true;
     this.amizadeService.listarAmigos(this.currentUserId).subscribe({
       next: (amigos) => {
@@ -64,7 +64,7 @@ export class AmigosComponent implements OnInit {
       next: (pendentes) => {
         this.pendentes = pendentes;
       },
-      error: () => {}
+      error: () => { }
     });
   }
 
@@ -73,19 +73,19 @@ export class AmigosComponent implements OnInit {
       next: (usuarios) => {
         this.usuarios = usuarios.filter(u => {
           if (u.id === this.currentUserId) return false;
-          return !this.jaTemRelacao(u.id!);
+          return !this.jaTemRelacao(Number(u.id));
         });
         this.usuariosFiltrados = this.usuarios;
       },
-      error: () => {}
+      error: () => { }
     });
   }
 
   jaTemRelacao(usuarioId: number): boolean {
-    const jaAmigo = this.amigos.some(a => 
+    const jaAmigo = this.amigos.some(a =>
       a.solicitanteId === usuarioId || a.destinatarioId === usuarioId
     );
-    const jaPendente = this.pendentes.some(p => 
+    const jaPendente = this.pendentes.some(p =>
       p.solicitanteId === usuarioId || p.destinatarioId === usuarioId
     );
     return jaAmigo || jaPendente;
@@ -115,11 +115,11 @@ export class AmigosComponent implements OnInit {
     this.router.navigate(['/usuarios']);
   }
 
-  enviarSolicitacao(destinatarioId: number): void {
+  enviarSolicitacao(destinatarioId: number | string): void {
     if (!this.currentUserId) return;
 
     console.log('Enviando:', { solicitanteId: this.currentUserId, destinatarioId });
-    this.amizadeService.enviarSolicitacao(this.currentUserId, destinatarioId).subscribe({
+    this.amizadeService.enviarSolicitacao(this.currentUserId, Number(destinatarioId)).subscribe({
       next: (res) => {
         console.log('Sucesso:', res);
         alert('Solicitação enviada!');

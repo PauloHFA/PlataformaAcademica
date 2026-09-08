@@ -7,7 +7,7 @@ import { Mensagem, ConversaChat } from '../models/mensagem.model';
   providedIn: 'root'
 })
 export class ChatService {
-  private apiUrl = 'http://localhost:8080/api/mensagens';
+  private apiUrl = 'http://localhost:8090/api/mensagens';
   private mensagensSubject = new BehaviorSubject<Mensagem[]>([]);
   mensagens$ = this.mensagensSubject.asObservable();
 

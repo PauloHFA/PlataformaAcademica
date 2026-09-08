@@ -35,6 +35,7 @@ public class SubmissaoAtividadeMapper {
                 submissao.getAluno() != null ? submissao.getAluno().getId() : null);
 
         dto.setUrlDocumento(submissao.getUrlDocumento());
+        dto.setDescricao(submissao.getDescricao());
         dto.setDataSubmissao(submissao.getDataSubmissao());
         dto.setNota(submissao.getNota());
         dto.setFeedback(submissao.getFeedback());
@@ -91,6 +92,7 @@ public class SubmissaoAtividadeMapper {
         submissao.setAluno(aluno);
 
         submissao.setUrlDocumento(dto.getUrlDocumento());
+        submissao.setDescricao(dto.getDescricao());
         submissao.setDataSubmissao(dto.getDataSubmissao());
         submissao.setNota(dto.getNota());
         submissao.setFeedback(dto.getFeedback());

@@ -1,6 +1,6 @@
 import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { UsuarioService } from '../../services/usuario.service';
 import { LoginResponse } from '../../models/usuario.model';
@@ -20,17 +20,20 @@ export class LoginComponent implements OnInit {
   formulario!: FormGroup;
   carregando = false;
   mensagemErro = '';
+  mensagemSucesso = '';
   usuarioLogado: LoginResponse | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
     private usuarioService: UsuarioService,
     private router: Router,
+    private route: ActivatedRoute,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.inicializarFormulario();
+    this.processarRetornoDeAutenticacao();
   }
 
   /**
@@ -97,14 +100,42 @@ export class LoginComponent implements OnInit {
    * Login com Google (Desabilitado)
    */
   loginComGoogle(): void {
-    // Desabilitado - não fazer nada
+    this.iniciarLoginSocial('google');
   }
 
   /**
    * Login com Facebook (Desabilitado)
    */
   loginComFacebook(): void {
-    // Desabilitado - não fazer nada
+    this.iniciarLoginSocial('facebook');
+  }
+
+  private iniciarLoginSocial(provedor: 'google' | 'facebook'): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+    window.location.assign(`http://localhost:8090/oauth2/authorization/${provedor}`);
+  }
+
+  private processarRetornoDeAutenticacao(): void {
+    this.route.queryParamMap.subscribe(params => {
+      if (params.get('confirmado') === 'true') {
+        this.mensagemSucesso = 'E-mail confirmado. Você já pode entrar na plataforma.';
+      } else if (params.get('confirmado') === 'false') {
+        this.mensagemErro = 'O link de confirmação é inválido ou expirou.';
+      }
+
+      if (params.get('oauth') === 'sucesso') {
+        const id = params.get('id');
+        const nome = params.get('nome') || 'Usuário';
+        const email = params.get('email') || '';
+        if (id && email && isPlatformBrowser(this.platformId)) {
+          this.salvarUsuarioENavegar({ id, nome, email, matricula: null });
+        }
+      } else if (params.get('oauth') === 'erro') {
+        this.mensagemErro = 'Não foi possível concluir o login social.';
+      }
+    });
   }
 
   /**

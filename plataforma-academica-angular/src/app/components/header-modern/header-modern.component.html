@@ -1,0 +1,12 @@
+<header class="header-modern" [@slideDown]>
+    <div class="header-container">
+        <a class="header-brand" (click)="navigate('/')" aria-label="Ir para o início">
+            <span class="brand-mark">PA</span>
+            <span class="brand-text">Plataforma<br>Acadêmica</span>
+        </a>
+        <div class="header-actions">
+            <a class="login-link" (click)="navigate('/login')">Fazer Login</a>
+            <a class="register-link" (click)="navigate('/cadastro')">Criar Conta <span>↗</span></a>
+        </div>
+    </div>
+</header>

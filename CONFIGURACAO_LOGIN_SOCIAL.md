@@ -2,6 +2,8 @@
 
 ## 📋 Visão Geral
 
+> O fluxo está implementado no backend e no Angular. Para habilitá-lo localmente, inicie o Spring com o perfil `oauth` e forneça as variáveis `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `FACEBOOK_APP_ID`, `FACEBOOK_APP_SECRET`, `MAIL_HOST`, `MAIL_USERNAME` e `MAIL_PASSWORD`. Os callbacks OAuth usam `http://localhost:8090/login/oauth2/code/{google|facebook}` e retornam ao Angular em `http://localhost:4200/login`.
+
 Este documento fornece instruções detalhadas para configurar a autenticação social via Google OAuth 2.0 e Facebook Login na Plataforma Acadêmica. A implementação permite login simplificado para usuários, melhorando a experiência de acesso à plataforma.
 
 ## 🎯 Objetivos

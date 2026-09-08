@@ -1,0 +1,24 @@
+<section class="feature-section friends-section reveal reveal-connect" id="amigos">
+    <div class="feature-wrap split-layout">
+        <div class="friends-demo demo-surface">
+            <div class="demo-bar"><span>encontre sua rede</span><span>3 conexões em comum</span></div>
+            <div class="friend-request"><i>MS</i>
+                <div><strong>Marcos Silva</strong><small>Engenharia · sala de Cálculo II</small></div><button
+                    type="button" (click)="requestSent = !requestSent" [class.sent]="requestSent">{{ requestSent ?
+                    'Pedido enviado' : 'Adicionar' }}</button>
+            </div>
+            <div class="friend-request muted"><i>RC</i>
+                <div><strong>Rafaela Costa</strong><small>Arquitetura · 2 salas em comum</small></div><button
+                    type="button">Ver perfil</button>
+            </div>
+            <div class="connection-line"><span></span><small>{{ requestSent ? 'agora vocês podem estudar juntos' : 'uma
+                    rede começa com uma conversa' }}</small><span></span></div>
+        </div>
+        <div class="feature-copy">
+            <p class="section-kicker">04 · encontrar quem caminha junto</p>
+            <h2>Uma boa turma começa com uma <em>conexão.</em></h2>
+            <p>Encontre colegas por matéria, descubra interesses em comum e transforme um pedido em grupo de estudo.</p>
+            <div class="status-legend"><span><i></i> pedido enviado</span><span><i></i> conexão ativa</span></div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,32 @@
+/* ============================================
+   TOKENS — PLATAFORMA ACADEMICA
+   ============================================ */
+:root {
+    --night-study: #17212B;
+    --paper-warm: #F5F1E8;
+    --ink: #263238;
+    --copper: #B86B3E;
+    --sage: #728C69;
+    --dust-blue: #9AAFC1;
+    --correction: #A64232;
+
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'DM Sans', 'Segoe UI', sans-serif;
+
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-7: 3rem;
+    --space-8: 4rem;
+    --space-9: 6rem;
+
+    --radius-sm: 0.35rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1.25rem;
+    --radius-pill: 999px;
+    --shadow-paper: 0 22px 60px rgba(23, 33, 43, 0.14);
+    --shadow-dark: 0 24px 70px rgba(0, 0, 0, 0.28);
+}

@@ -18,6 +18,10 @@ import java.util.Optional; // <-- import necessário
 public interface UsuarioService {
     Optional<Usuario> login(String email, String senha);
 
+    Usuario loginSocial(String email, String nome);
+
+    Usuario confirmarEmail(String token);
+
     Usuario cadastrarUsuario(Usuario usuario);
 
     Usuario buscarPorId(UUID id);

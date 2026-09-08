@@ -62,8 +62,8 @@ export class UsuarioListComponent implements OnInit, OnDestroy {
         },
         error: (err: Error) => {
           console.error('Erro ao listar usuários', err);
-          if (err.message.includes('conectar ao servidor') || err.message.includes('localhost:8080')) {
-            this.mensagemErro = 'O backend não está respondendo. Verifique se o servidor Spring Boot está rodando e acessível em http://localhost:8080';
+          if (err.message.includes('conectar ao servidor') || err.message.includes('localhost:8090')) {
+            this.mensagemErro = 'O backend não está respondendo. Verifique se o servidor Spring Boot está rodando e acessível em http://localhost:8090';
           } else {
             this.mensagemErro = err.message || 'Erro ao carregar a lista de usuários. Tente novamente mais tarde.';
           }

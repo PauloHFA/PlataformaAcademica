@@ -9,7 +9,7 @@ export type { Comentario };
   providedIn: 'root'
 })
 export class ComentarioService {
-  private apiUrl = 'http://localhost:8080/comentario';
+  private apiUrl = 'http://localhost:8090/comentario';
 
   constructor(private http: HttpClient) {}
 

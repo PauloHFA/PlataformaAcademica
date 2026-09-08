@@ -1,0 +1,141 @@
+.profile-section {
+    background: var(--paper-warm);
+}
+
+.profile-section .feature-copy {
+    order: 2;
+}
+
+.profile-section .profile-demo {
+    order: 1;
+}
+
+.profile-demo {
+    max-width: 510px;
+    justify-self: start;
+    background: #fffdf8;
+    color: var(--ink);
+    box-shadow: var(--shadow-paper);
+}
+
+.profile-cover {
+    height: 6rem;
+    padding: 1rem;
+    display: flex;
+    align-items: end;
+    background: var(--dust-blue);
+    color: var(--night-study);
+}
+
+.profile-cover span {
+    font-size: .62rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+.profile-body {
+    padding: 0 1.5rem 1.5rem;
+}
+
+.profile-avatar {
+    width: 4.5rem;
+    height: 4.5rem;
+    display: grid;
+    place-items: center;
+    margin-top: -2.25rem;
+    border: 4px solid #fffdf8;
+    border-radius: 50%;
+    background: var(--copper);
+    color: white;
+    font: 600 1.2rem var(--font-display);
+}
+
+.profile-head {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1rem;
+}
+
+.profile-head h3 {
+    margin: 0;
+    font: 600 1.65rem var(--font-display);
+}
+
+.profile-head p {
+    margin: .3rem 0 0;
+    color: #78817a;
+    font-size: .74rem;
+}
+
+.profile-edit {
+    color: var(--sage);
+    font-size: .62rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.profile-bio {
+    max-width: 32rem;
+    margin: 1.25rem 0;
+    color: #53605a;
+    font-size: .85rem;
+    line-height: 1.55;
+}
+
+.profile-stats {
+    display: flex;
+    gap: 1.4rem;
+    padding: 1rem 0;
+    border-top: 1px solid #e4ded3;
+    border-bottom: 1px solid #e4ded3;
+}
+
+.profile-stats span {
+    color: #78817a;
+    font-size: .7rem;
+}
+
+.profile-stats b {
+    display: block;
+    color: var(--ink);
+    font: 600 1.2rem var(--font-display);
+}
+
+.profile-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .45rem;
+    margin-top: 1rem;
+}
+
+.profile-tags span {
+    padding: .4rem .55rem;
+    background: #edf0e9;
+    color: var(--sage);
+    font-size: .65rem;
+}
+
+.profile-section .feature-copy>p:not(.section-kicker) {
+    color: #66716a;
+}
+
+.profile-signature {
+    display: flex;
+    align-items: center;
+    gap: .7rem;
+    margin-top: 2rem;
+    color: var(--copper);
+}
+
+.profile-signature span {
+    width: 2.5rem;
+    height: 1px;
+    background: var(--copper);
+}
+
+.profile-signature small {
+    font-size: .7rem;
+    letter-spacing: .04em;
+}

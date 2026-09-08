@@ -1,0 +1,53 @@
+/* ============================================
+   CARDS DE SALA — HIERARQUIA CLARA (não SaaS genérico)
+   ============================================ */
+
+.sala-card {
+    background: var(--paper);
+    border: 1px solid var(--library);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    margin-bottom: var(--space-md);
+    transition: all 0.3s ease;
+}
+
+.sala-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.sala-card-title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: var(--space-sm);
+}
+
+.sala-card-meta {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    color: var(--parchment);
+    margin-bottom: var(--space-md);
+}
+
+.sala-card-actions {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.sala-card-button {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.sala-card-button:hover {
+    background: var(--library);
+}

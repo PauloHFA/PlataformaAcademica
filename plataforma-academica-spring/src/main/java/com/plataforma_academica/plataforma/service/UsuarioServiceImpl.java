@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import jakarta.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Implementação do serviço de usuários.
@@ -38,13 +40,57 @@ public class UsuarioServiceImpl implements UsuarioService {
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
+    public Usuario loginSocial(String email, String nome) {
+        Optional<Usuario> existente = usuarioRepository.findByEmail(email);
+        if (existente.isPresent()) {
+            Usuario usuario = existente.get();
+            usuario.setEmailConfirmado(true);
+            usuario.setTokenConfirmacaoEmail(null);
+            usuario.setTokenConfirmacaoExpiraEm(null);
+            return usuarioRepository.save(usuario);
+        }
+
+        Usuario usuario = new Usuario();
+        usuario.setNome(nome == null || nome.isBlank() ? email.split("@")[0] : nome);
+        usuario.setEmail(email);
+        usuario.setSenha(passwordEncoder.encode(UUID.randomUUID().toString()));
+        usuario.setSenhaHash(usuario.getSenha());
+        usuario.setEmailConfirmado(true);
+        return usuarioRepository.save(usuario);
+    }
+
+    @Override
+    public Usuario confirmarEmail(String token) {
+        Usuario usuario = usuarioRepository.findAll().stream()
+                .filter(item -> token.equals(item.getTokenConfirmacaoEmail()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Token de confirmação inválido"));
+        if (usuario.getTokenConfirmacaoExpiraEm() == null
+                || usuario.getTokenConfirmacaoExpiraEm().isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Token de confirmação expirado");
+        }
+        usuario.setEmailConfirmado(true);
+        usuario.setTokenConfirmacaoEmail(null);
+        usuario.setTokenConfirmacaoExpiraEm(null);
+        return usuarioRepository.save(usuario);
+    }
+
+    @Override
     public Optional<Usuario> login(String email, String senha) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(email);
 
         if (usuarioOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
-            // Verifica se a senha informada confere com a senha criptografada
-            if (passwordEncoder.matches(senha, usuario.getSenha())) {
+            // Verifica se a senha informada confere com a senha armazenada
+            // Suporta tanto BCrypt quanto texto plano (para seed/testes)
+            boolean senhaCorreta = false;
+            String storedPassword = usuario.getSenha() != null ? usuario.getSenha() : usuario.getSenhaHash();
+            if (storedPassword != null && storedPassword.startsWith("$2a$")) {
+                senhaCorreta = passwordEncoder.matches(senha, storedPassword);
+            } else if (storedPassword != null) {
+                senhaCorreta = senha.equals(storedPassword);
+            }
+            if (senhaCorreta) {
                 return Optional.of(usuario);
             }
         }
@@ -63,6 +109,10 @@ public class UsuarioServiceImpl implements UsuarioService {
         // Criptografa a senha antes de salvar
         String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
         usuario.setSenha(senhaCriptografada);
+        usuario.setSenhaHash(senhaCriptografada);
+        usuario.setEmailConfirmado(false);
+        usuario.setTokenConfirmacaoEmail(UUID.randomUUID().toString());
+        usuario.setTokenConfirmacaoExpiraEm(LocalDateTime.now().plusHours(24));
 
         // Se for admin, cria como Admin
         if ("admin".equals(usuario.getEmail())) {
@@ -70,6 +120,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             admin.setNome(usuario.getNome());
             admin.setEmail(usuario.getEmail());
             admin.setSenha(senhaCriptografada);
+            admin.setSenhaHash(senhaCriptografada);
             admin.setSobrenome(usuario.getSobrenome());
             admin.setDataNascimento(usuario.getDataNascimento());
             admin.setTelefone(usuario.getTelefone());

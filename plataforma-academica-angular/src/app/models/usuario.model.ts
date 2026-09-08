@@ -3,7 +3,7 @@
  * Correspondente ao modelo Java: com.plataforma_academica.plataforma.model.Usuario
  */
 export interface Usuario {
-  id?: number;
+  id?: string | number;
   nome: string;
   sobrenome?: string;
   email: string;
@@ -18,7 +18,7 @@ export interface Usuario {
   site?: string;
   avatarUrl?: string;
   avatarBase64?: string;
-  plataformaId?: number;
+  plataformaId?: string | number;
   matricula?: string; // Campo para professores
 }
 
@@ -27,11 +27,12 @@ export interface Usuario {
  * Correspondente ao UsuarioResponseDTO do backend
  */
 export interface LoginResponse {
-  id: number;
+  id: string | number;
   nome: string;
   email: string;
   avatarUrl?: string;
   avatarBase64?: string;
+  matricula?: string;
 }
 
 /**

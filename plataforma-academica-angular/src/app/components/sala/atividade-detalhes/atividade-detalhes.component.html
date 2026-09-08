@@ -187,7 +187,7 @@
             </div>
             <div class="info-row" *ngIf="minhaSubmissao.urlDocumento">
               <strong>Documento:</strong>
-              <a [href]="'http://localhost:8080' + minhaSubmissao.urlDocumento" target="_blank">
+              <a [href]="'http://localhost:8090' + minhaSubmissao.urlDocumento" target="_blank">
                 🔗 Ver documento
               </a>
             </div>
@@ -213,7 +213,7 @@
               </div>
               <div class="submissao-body">
                 <p *ngIf="sub.descricao" class="submissao-descricao">{{ sub.descricao }}</p>
-                <a *ngIf="sub.urlDocumento" [href]="'http://localhost:8080' + sub.urlDocumento" target="_blank" class="doc-link">
+                <a *ngIf="sub.urlDocumento" [href]="'http://localhost:8090' + sub.urlDocumento" target="_blank" class="doc-link">
                   🔗 Ver documento
                 </a>
                 <span *ngIf="sub.nota !== null && sub.nota !== undefined" class="nota-badge">

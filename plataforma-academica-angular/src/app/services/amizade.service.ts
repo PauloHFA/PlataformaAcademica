@@ -7,7 +7,7 @@ import { Amizade } from '../models/amizade.model';
   providedIn: 'root'
 })
 export class AmizadeService {
-  private apiUrl = 'http://localhost:8080/api/amizades';
+  private apiUrl = 'http://localhost:8090/api/amizades';
 
   constructor(private http: HttpClient) {}
 

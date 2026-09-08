@@ -22,10 +22,10 @@ public class SubmissaoAtividadeDTO {
     private UUID alunoId;
 
     private String urlDocumento;
+    private String descricao;
 
     private LocalDateTime dataSubmissao;
 
     private Double nota;
     private String feedback;
 }
-

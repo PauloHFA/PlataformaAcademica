@@ -1,7 +1,7 @@
 export interface SubmissaoAtividade {
-  id?: number;
-  atividadeId: number;
-  alunoId: number;
+  id?: string;
+  atividadeId: string;
+  alunoId: string;
   alunoNome?: string;
   urlDocumento?: string;
   descricao?: string;
@@ -13,10 +13,10 @@ export interface SubmissaoAtividade {
 }
 
 export interface SubmissaoAtividadeResponse {
-  id: number;
-  atividadeId: number;
+  id: string;
+  atividadeId: string;
   atividadeTitulo?: string;
-  alunoId: number;
+  alunoId: string;
   alunoNome?: string;
   urlDocumento?: string;
   descricao?: string;

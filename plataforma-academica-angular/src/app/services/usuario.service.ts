@@ -13,7 +13,7 @@ import { Usuario, LoginRequest, LoginResponse } from '../models/usuario.model';
 })
 export class UsuarioService {
 
-  private baseUrl = 'http://localhost:8080/api/usuarios'; // Endpoint do backend
+  private baseUrl = 'http://localhost:8090/api/usuarios'; // Endpoint do backend
 
   constructor(private http: HttpClient) { }
 
@@ -24,7 +24,7 @@ export class UsuarioService {
    * @returns Observable com o usuário criado ou erro
    */
   cadastrarUsuario(usuario: Usuario, endpoint: string = 'usuarios'): Observable<Usuario> {
-    const url = `http://localhost:8080/api/${endpoint}/cadastro`;
+    const url = `http://localhost:8090/api/${endpoint}/cadastro`;
     return this.http.post<Usuario>(url, usuario)
       .pipe(catchError(this.tratarErro));
   }
@@ -49,7 +49,7 @@ export class UsuarioService {
    */
   loginProfessor(email: string, senha: string): Observable<LoginResponse> {
     const credenciais: LoginRequest = { email, senha };
-    return this.http.post<LoginResponse>('http://localhost:8080/api/professores/login', credenciais)
+    return this.http.post<LoginResponse>('http://localhost:8090/api/professores/login', credenciais)
       .pipe(catchError(this.tratarErro));
   }
 
@@ -58,8 +58,8 @@ export class UsuarioService {
    * @param id ID do usuário
    * @returns Observable com dados do usuário ou erro 404
    */
-  buscarPorId(id: number): Observable<Usuario> {
-    return this.http.get<Usuario>(`${this.baseUrl}/buscarporid?id=${id}`)
+  buscarPorId(id: string | number): Observable<Usuario> {
+    return this.http.get<Usuario>(`${this.baseUrl}/${id}`)
       .pipe(catchError(this.tratarErro));
   }
 
@@ -92,7 +92,7 @@ export class UsuarioService {
     } else {
       // Erro do servidor
       if (erro.status === 0) {
-        mensagem = 'Não foi possível conectar ao servidor. Verifique se o backend está rodando em http://localhost:8080';
+        mensagem = 'Não foi possível conectar ao servidor. Verifique se o backend está rodando em http://localhost:8090';
       } else if (erro.status === 404) {
         mensagem = 'Endpoint não encontrado. Verifique se o backend está configurado corretamente.';
       } else if (erro.status === 500) {

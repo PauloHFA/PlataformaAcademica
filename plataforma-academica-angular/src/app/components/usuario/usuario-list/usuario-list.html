@@ -17,8 +17,8 @@
         <p class="help-title">📋 Como resolver:</p>
         <ol class="help-steps">
           <li>Verifique se o backend Spring Boot está rodando</li>
-          <li>Confirme que o servidor está na porta <strong>8080</strong></li>
-          <li>Verifique a URL: <code>http://localhost:8080</code></li>
+          <li>Confirme que o servidor está na porta <strong>8090</strong></li>
+          <li>Verifique a URL: <code>http://localhost:8090</code></li>
           <li>Tente iniciar o backend novamente</li>
         </ol>
       </div>
@@ -53,14 +53,10 @@
           <td class="email-column">{{ usuario.email || '-' }}</td>
           <td class="actions-column">
             <span *ngIf="usuario.id === currentUserId" class="badge-self">Você</span>
-            <button 
-              *ngIf="usuario.id !== currentUserId"
-              (click)="solicitarAmizade(usuario.id!)" 
-              [disabled]="temRelacao(usuario.id!)"
-              [class.btn-disabled]="temRelacao(usuario.id!)"
-              class="btn-add-friend"
-              [title]="getStatusBotao(usuario.id!)">
-              {{ getStatusBotao(usuario.id!) }}
+            <button *ngIf="usuario.id !== currentUserId" (click)="solicitarAmizade($any(usuario.id))"
+              [disabled]="temRelacao($any(usuario.id))" [class.btn-disabled]="temRelacao($any(usuario.id))" class="btn-add-friend"
+              [title]="getStatusBotao($any(usuario.id))">
+              {{ getStatusBotao($any(usuario.id)) }}
             </button>
           </td>
         </tr>

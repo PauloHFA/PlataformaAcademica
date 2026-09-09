@@ -68,7 +68,7 @@ export class FeedComponent implements OnInit {
         this.postagens = postagens.map(p => ({
           ...p,
           imagemUrl: p.imagemUrl && !p.imagemUrl.startsWith('http') 
-            ? `http://localhost:8080${p.imagemUrl}` 
+            ? `http://localhost:8090${p.imagemUrl}` 
             : p.imagemUrl
         }));
         this.postagens = this.filtro === 'curtidas' ? this.postagens : this.postagens.sort((a, b) => (b.id || 0) - (a.id || 0));

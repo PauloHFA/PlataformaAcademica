@@ -82,6 +82,7 @@
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -206,7 +207,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .postagens-list {
@@ -230,6 +233,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -261,7 +265,7 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary-color), #7c3aed);
+  background: var(--night-study);
   color: white;
   display: flex;
   align-items: center;
@@ -512,7 +516,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary-color), #7c3aed);
+  background: var(--night-study);
   color: white;
   display: flex;
   align-items: center;

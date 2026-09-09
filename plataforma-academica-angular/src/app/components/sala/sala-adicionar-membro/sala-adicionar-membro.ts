@@ -63,7 +63,7 @@ export class SalaAdicionarMembroComponent implements OnInit {
     }
   }
 
-  adicionarMembro(membroId: number): void {
+  adicionarMembro(membroId: number | string): void {
     if (!this.salaId) return;
 
     const criadorId = Number(localStorage.getItem('usuarioId'));
@@ -73,7 +73,7 @@ export class SalaAdicionarMembroComponent implements OnInit {
     }
 
     this.carregando = true;
-    this.salaService.adicionarMembro(this.salaId, membroId, criadorId).subscribe({
+    this.salaService.adicionarMembro(this.salaId, Number(membroId), Number(criadorId)).subscribe({
       next: () => {
         this.mensagem = 'Membro adicionado com sucesso';
         setTimeout(() => this.router.navigate([`/salas/${this.salaId}`]), 1500);

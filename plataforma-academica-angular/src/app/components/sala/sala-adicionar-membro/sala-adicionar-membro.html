@@ -16,13 +16,8 @@
 
   <!-- Busca -->
   <div class="search-box">
-    <input
-      type="text"
-      [(ngModel)]="busca"
-      (input)="filtrarUsuarios()"
-      placeholder="🔍 Buscar por nome, email ou ID..."
-      class="search-input"
-    />
+    <input type="text" [(ngModel)]="busca" (input)="filtrarUsuarios()" placeholder="🔍 Buscar por nome, email ou ID..."
+      class="search-input" />
   </div>
 
   <!-- Mensagem -->
@@ -47,11 +42,7 @@
           <span class="user-id">ID: {{ usuario.id }}</span>
         </div>
       </div>
-      <button
-        (click)="adicionarMembro(usuario.id!)"
-        class="btn btn-primary"
-        [disabled]="carregando"
-      >
+      <button (click)="adicionarMembro($any(usuario.id))" class="btn btn-primary" [disabled]="carregando">
         <span class="icon">➕</span>
         Adicionar
       </button>

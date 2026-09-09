@@ -7,7 +7,7 @@ import { Postagem } from '../models/postagem.model';
   providedIn: 'root'
 })
 export class PostagemService {
-  private apiUrl = 'http://localhost:8080/api/postagens';
+  private apiUrl = 'http://localhost:8090/api/postagens';
 
   constructor(private http: HttpClient) {}
 

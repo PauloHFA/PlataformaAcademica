@@ -20,7 +20,7 @@ export class SidebarComponent implements OnInit {
     private usuarioService: UsuarioService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.carregarDadosUsuario();
@@ -29,14 +29,16 @@ export class SidebarComponent implements OnInit {
   carregarDadosUsuario() {
     if (isPlatformBrowser(this.platformId)) {
       const usuarioId = localStorage.getItem('usuarioId');
-      if (usuarioId) {
-        this.usuarioService.buscarPorId(parseInt(usuarioId)).subscribe(
-          usuario => {
-            this.usuarioNome = usuario.nome;
-            this.usuarioEmail = usuario.email;
+      if (usuarioId && usuarioId !== 'NaN' && usuarioId !== 'null' && usuarioId !== 'undefined') {
+        this.usuarioService.buscarPorId(usuarioId).subscribe({
+          next: usuario => {
+            if (usuario) {
+              this.usuarioNome = usuario.nome;
+              this.usuarioEmail = usuario.email;
+            }
           },
-          error => console.error('Erro ao carregar usuário:', error)
-        );
+          error: error => console.error('Erro ao carregar usuário:', error)
+        });
       }
     }
   }

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Inject, PLATFORM_ID } from '@angular/core';
 import { UsuarioService } from '../../services/usuario.service';
 import { Usuario } from '../../models/usuario.model';
 
@@ -43,8 +44,9 @@ export class CadastroComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private usuarioService: UsuarioService,
-    private router: Router
-  ) {}
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
 
   ngOnInit(): void {
     this.inicializarFormulario();
@@ -127,7 +129,7 @@ export class CadastroComponent implements OnInit {
     delete dadosCompletos.tipoUsuario;
 
     const endpoint = tipoUsuario === 'professor' ? 'professores' : 'usuarios';
-    
+
     this.usuarioService.cadastrarUsuario(dadosCompletos, endpoint).subscribe({
       next: (usuarioCadastrado: Usuario) => {
         this.usuarioCadastrado = usuarioCadastrado;
@@ -175,10 +177,16 @@ export class CadastroComponent implements OnInit {
   }
 
   cadastroComGoogle(): void {
-    // Desabilitado
+    this.iniciarCadastroSocial('google');
   }
 
   cadastroComFacebook(): void {
-    // Desabilitado
+    this.iniciarCadastroSocial('facebook');
+  }
+
+  private iniciarCadastroSocial(provedor: 'google' | 'facebook'): void {
+    if (isPlatformBrowser(this.platformId)) {
+      window.location.assign(`http://localhost:8090/oauth2/authorization/${provedor}`);
+    }
   }
 }

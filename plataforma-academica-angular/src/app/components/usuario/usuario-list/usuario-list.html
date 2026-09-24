@@ -1,20 +1,66 @@
 <div class="usuario-list-container">
-  <div class="usuario-list-header">
-    <h2>Gerenciamento de Usuários</h2>
-    <p class="subtitle">Lista de todos os usuários cadastrados na plataforma</p>
-    <button (click)="listarUsuarios()" [disabled]="carregando" class="btn-refresh">
-      🔄 {{ carregando ? 'Carregando...' : 'Atualizar Lista' }}
-    </button>
-  </div>
+  <header class="page-header">
+    <div class="page-heading">
+      <h1>Gestão de Utilizadores</h1>
+      <p>Gerencie permissões, perfis e acessos à plataforma</p>
+    </div>
+
+    <div class="page-toolbar">
+      <label class="search-field">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-4-4"></path>
+        </svg>
+        <input [(ngModel)]="termoBusca" type="search" placeholder="Buscar por nome, e-mail..." />
+      </label>
+      <select [(ngModel)]="filtroPerfil" class="profile-filter" aria-label="Filtrar por perfil">
+        <option value="todos">Todos os Perfis</option>
+        <option value="professor">Professores</option>
+        <option value="aluno">Alunos</option>
+      </select>
+      <button type="button" class="btn-primary" (click)="listarUsuarios()" [disabled]="carregando">
+        + Convidar Utilizador
+      </button>
+      <button type="button" (click)="listarUsuarios()" [disabled]="carregando" class="btn-refresh"
+        title="Atualizar lista" aria-label="Atualizar lista">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20 11a8.1 8.1 0 0 0-14.8-4L3 10"></path>
+          <path d="M3 4v6h6"></path>
+          <path d="M4 13a8.1 8.1 0 0 0 14.8 4L21 14"></path>
+          <path d="M21 20v-6h-6"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <section class="metrics-grid" aria-label="Métricas de utilizadores">
+    <article class="metric-card">
+      <span class="metric-label">Total de Utilizadores</span>
+      <strong>{{ totalUtilizadores }}</strong>
+    </article>
+    <article class="metric-card">
+      <span class="metric-label">Professores Registados</span>
+      <strong>{{ totalProfessores }}</strong>
+    </article>
+    <article class="metric-card">
+      <span class="metric-label">Alunos Ativos</span>
+      <strong>{{ totalAlunos }}</strong>
+    </article>
+  </section>
 
   <!-- Mensagem de erro -->
   <div *ngIf="mensagemErro && !carregando" class="alert alert-error">
-    <div class="error-icon">⚠️</div>
+    <div class="error-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M12 3 2.5 20h19L12 3Z"></path>
+        <path d="M12 9v4M12 17h.01"></path>
+      </svg>
+    </div>
     <div class="error-content">
       <h3 class="error-title">Não foi possível conectar ao servidor</h3>
       <p class="error-message">{{ mensagemErro }}</p>
       <div class="error-help" *ngIf="mensagemErro.includes('conectar ao servidor')">
-        <p class="help-title">📋 Como resolver:</p>
+        <p class="help-title">Como resolver:</p>
         <ol class="help-steps">
           <li>Verifique se o backend Spring Boot está rodando</li>
           <li>Confirme que o servidor está na porta <strong>8090</strong></li>
@@ -24,7 +70,7 @@
       </div>
       <div class="error-actions">
         <button (click)="listarUsuarios()" class="btn-retry">
-          🔄 Tentar Novamente
+          Tentar Novamente
         </button>
       </div>
     </div>
@@ -35,27 +81,37 @@
     <p>Carregando usuários...</p>
   </div>
 
-  <!-- Lista de Usuários -->
-  <div *ngIf="!carregando && usuarios.length > 0" class="usuarios-table-wrapper">
+  <!-- Lista de Utilizadores -->
+  <div *ngIf="!carregando && usuariosFiltrados.length > 0" class="usuarios-table-wrapper">
     <table class="usuarios-table">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Nome</th>
-          <th>Email</th>
-          <th>Ações</th>
+          <th>Utilizador</th>
+          <th>Perfil/Função</th>
+          <th>Estado</th>
+          <th class="actions-heading">Ações</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let usuario of usuarios; trackBy: trackByUsuarioId" class="usuario-row">
-          <td>{{ usuario.id || '-' }}</td>
-          <td class="nome-column">{{ usuario.nome || '-' }}</td>
-          <td class="email-column">{{ usuario.email || '-' }}</td>
+        <tr *ngFor="let usuario of usuariosFiltrados; trackBy: trackByUsuarioId" class="usuario-row">
+          <td>
+            <div class="user-cell">
+              <span class="user-avatar">{{ getInicial(usuario) }}</span>
+              <span class="user-identity">
+                <strong>{{ getNomeCompleto(usuario) }}</strong>
+                <small>{{ usuario.email || 'Sem e-mail' }}</small>
+              </span>
+            </div>
+          </td>
+          <td><span class="profile-badge" [class.professor]="getPerfil(usuario) === 'professor'">{{ getPerfil(usuario)
+              }}</span></td>
+          <td><span class="status-badge" [class.inactive]="usuario.ativo === false">{{ usuario.ativo === false ?
+              'Inativo' : 'Ativo' }}</span></td>
           <td class="actions-column">
             <span *ngIf="usuario.id === currentUserId" class="badge-self">Você</span>
             <button *ngIf="usuario.id !== currentUserId" (click)="solicitarAmizade($any(usuario.id))"
-              [disabled]="temRelacao($any(usuario.id))" [class.btn-disabled]="temRelacao($any(usuario.id))" class="btn-add-friend"
-              [title]="getStatusBotao($any(usuario.id))">
+              [disabled]="temRelacao($any(usuario.id))" [class.btn-disabled]="temRelacao($any(usuario.id))"
+              class="btn-add-friend" [title]="getStatusBotao($any(usuario.id))">
               {{ getStatusBotao($any(usuario.id)) }}
             </button>
           </td>
@@ -64,14 +120,19 @@
     </table>
   </div>
 
-  <!-- Mensagem quando não há usuários -->
-  <div *ngIf="!carregando && usuarios.length === 0 && !mensagemErro" class="empty-state">
-    <p>📋 Nenhum usuário cadastrado ainda na plataforma.</p>
-    <p class="empty-hint">Os usuários aparecerão aqui assim que forem cadastrados.</p>
-  </div>
-
-  <!-- Estatísticas -->
-  <div *ngIf="!carregando && usuarios.length > 0" class="stats">
-    <p>Total de usuários: <strong>{{ usuarios.length }}</strong></p>
+  <!-- Estado vazio -->
+  <div *ngIf="!carregando && usuariosFiltrados.length === 0 && !mensagemErro" class="empty-state">
+    <div class="empty-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+        <circle cx="9" cy="7" r="4"></circle>
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path>
+      </svg>
+    </div>
+    <h2>Nenhum utilizador encontrado</h2>
+    <p>Ainda não existem utilizadores registados com estes critérios. Comece por enviar um convite para a sua equipa.
+    </p>
+    <button type="button" class="btn-primary empty-action" (click)="listarUsuarios()">+ Convidar Primeiro
+      Utilizador</button>
   </div>
 </div>

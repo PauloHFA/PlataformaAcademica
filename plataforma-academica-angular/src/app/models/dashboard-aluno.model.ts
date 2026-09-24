@@ -1,19 +1,19 @@
 export interface SubmissaoAtividadeResponseDTO {
-  id: number;
+  id: string;
   descricao?: string;
   nota?: number;
   feedback?: string;
   dataSubmissao?: string;
   dataCorrecao?: string;
   recebida?: boolean;
-  alunoId?: number;
-  atividadeId?: number;
+  alunoId?: string;
+  atividadeId?: string;
 }
 
 export interface DashboardAluno {
-  alunoId: number;
+  alunoId: string;
   alunoNome: string;
-  salaId: number;
+  salaId: string;
   salaNome: string;
   totalAtividades: number;
   totalSubmissoes: number;

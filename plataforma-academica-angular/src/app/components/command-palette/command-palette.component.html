@@ -1,0 +1,31 @@
+<div class="command-palette-backdrop" *ngIf="isOpen" (click)="close()"></div>
+
+<div class="command-palette-container" *ngIf="isOpen" [@fadeIn]>
+    <div class="command-palette-header">
+        <h2>Comando</h2>
+        <p>Busque por salas, usuários, postagens ou execute ações</p>
+    </div>
+
+    <div class="command-palette-body">
+        <div class="command-palette-search">
+            <input type="text" id="command-palette-input" placeholder="Digite o que você procura..."
+                [(ngModel)]="searchTerm" (input)="onSearchChange()" autocomplete="off" autofocus>
+        </div>
+
+        <div class="command-palette-results">
+            <div *ngIf="resultados.length === 0" class="empty-results">
+                <p>Nenhum resultado encontrado</p>
+            </div>
+
+            <div *ngFor="let item of resultados" class="command-palette-item" (click)="selectItem(item)">
+                <div class="item-icon" [ngClass]="getItemIconClass(item.type)">
+                    {{ getItemIcon(item.type) }}
+                </div>
+                <div class="item-content">
+                    <div class="item-title">{{ item.title }}</div>
+                    <div class="item-subtitle" *ngIf="item.subtitle">{{ item.subtitle }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

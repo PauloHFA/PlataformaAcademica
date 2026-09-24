@@ -1,16 +1,13 @@
 <div class="chat-flutuante">
-  <!-- Botão Flutuante -->
-  <button class="btn-chat-flutuante" (click)="toggleChat()" [class.aberto]="aberto">
-    <span *ngIf="!aberto">💬</span>
-    <span *ngIf="aberto">✕</span>
+  <button class="btn-chat-flutuante" (click)="toggleChat()" [class.aberto]="aberto" aria-label="Abrir mensagens">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    </svg>
   </button>
 
-  <!-- Janela de Chat -->
-  <div class="janela-chat" *ngIf="aberto">
-    <!-- Header -->
+  <div class="janela-chat" *ngIf="aberto && !chatsAbertos.length">
     <div class="chat-header">
-      <h3>Mensagens</h3>
-      <button class="btn-fechar" (click)="fecharChat()">✕</button>
+      <h3>Mensagens</h3><button class="btn-fechar" (click)="fecharChat()">×</button>
     </div>
 
     <!-- Lista de Conversas ou Chat -->
@@ -18,11 +15,7 @@
       <div *ngIf="conversas.length === 0" class="vazio">
         <p>Nenhum amigo disponível</p>
       </div>
-      <button 
-        *ngFor="let conversa of conversas" 
-        class="conversa-item"
-        (click)="selecionarConversa(conversa)"
-      >
+      <button *ngFor="let conversa of conversas" class="conversa-item" (click)="selecionarConversa(conversa)">
         <span class="avatar">{{ conversa.usuarioNome[0].toUpperCase() }}</span>
         <span class="nome">{{ conversa.usuarioNome }}</span>
       </button>
@@ -38,25 +31,42 @@
 
       <!-- Mensagens -->
       <div class="mensagens-container">
-        <div 
-          *ngFor="let msg of mensagens" 
-          class="mensagem"
-          [class.enviada]="msg.remetenteId === usuarioId"
-        >
+        <div *ngFor="let msg of mensagens" class="mensagem" [class.enviada]="msg.remetenteId === usuarioId">
           <p>{{ msg.conteudo }}</p>
         </div>
       </div>
 
       <!-- Input de Mensagem -->
       <div class="input-mensagem">
-        <input 
-          type="text" 
-          [(ngModel)]="novaMensagem"
-          (keyup.enter)="enviarMensagem()"
-          placeholder="Digite uma mensagem..."
-        />
+        <input type="text" [(ngModel)]="novaMensagem" (keyup.enter)="enviarMensagem()"
+          placeholder="Digite uma mensagem..." />
         <button (click)="enviarMensagem()" class="btn-enviar">📤</button>
       </div>
     </div>
   </div>
+
+  <section *ngFor="let contato of chatsAbertos; let i = index; trackBy: trackByChat" class="chat-dock"
+    [class.minimized]="minimizados.has(contato.usuarioId)" [style.right.px]="20 + (i * 332)">
+    <header class="dock-header">
+      <div class="dock-user"><span class="dock-avatar">{{ contato.avatar || contato.usuarioNome[0]
+          }}</span><span><strong>{{ contato.usuarioNome }}</strong><small>{{ contato.usuarioRole || 'Aluno'
+            }}</small></span></div>
+      <div class="dock-controls"><button type="button" (click)="minimizar(contato)"
+          aria-label="Minimizar">_</button><button type="button" (click)="fechar(contato)"
+          aria-label="Fechar">×</button></div>
+    </header>
+    <ng-container *ngIf="!minimizados.has(contato.usuarioId)">
+      <div class="mensagens-container">
+        <div *ngFor="let msg of mensagens" class="mensagem" [class.enviada]="msg.remetenteId === usuarioId">
+          <p>{{ msg.conteudo }}</p><small>{{ msg.criadoEm | date:'HH:mm' }}</small>
+        </div>
+      </div>
+      <div class="input-mensagem"><input type="text" [(ngModel)]="novaMensagem" (keydown.enter)="handleKeyDown($event)"
+          placeholder="Escreva uma mensagem..." /><button type="button" (click)="enviarMensagem()" class="btn-enviar"
+          aria-label="Enviar"><svg viewBox="0 0 24 24">
+            <path d="m22 2-7 20-4-9-9-4Z"></path>
+            <path d="M22 2 11 13"></path>
+          </svg></button></div>
+    </ng-container>
+  </section>
 </div>

@@ -3,11 +3,13 @@
  * Correspondente ao modelo Java: com.plataforma_academica.plataforma.model.Usuario
  */
 export interface Usuario {
-  id?: string | number;
+  id?: string;
   nome: string;
   sobrenome?: string;
   email: string;
   senha?: string;
+  tipoUsuario?: string;
+  ativo?: boolean;
   dataNascimento?: string;
   telefone?: string;
   descricao?: string;

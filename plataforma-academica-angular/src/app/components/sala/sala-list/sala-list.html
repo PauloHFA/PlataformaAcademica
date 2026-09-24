@@ -1,81 +1,187 @@
-<div class="sala-list-container">
-  <!-- Header -->
-  <div class="sala-list-header">
-    <h1>📚 Salas de Aula</h1>
-    <p class="subtitle">Gerencie suas salas de aula e atividades</p>
+<div class="salas-container">
+  <!-- 1. CABEÇALHO DE AÇÕES (Page Header Row) -->
+  <header class="page-header-row">
+    <div class="header-titles">
+      <h1 class="page-title">Salas de Aula</h1>
+      <p class="page-subtitle">Gerencie suas salas de aula e atividades</p>
+    </div>
+
+    <div class="header-toolbar">
+      <!-- Input de Busca Rápida com Ícone Embutido -->
+      <div class="search-box">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" class="search-input" placeholder="Buscar sala..." [(ngModel)]="termoBusca"
+          aria-label="Buscar salas de aula" />
+        <button *ngIf="termoBusca" type="button" class="btn-clear-search" (click)="termoBusca = ''"
+          aria-label="Limpar busca">
+          ✕
+        </button>
+      </div>
+
+      <!-- Botão de Ação Primária (+ Criar Sala) -->
+      <a *ngIf="isProfessor" routerLink="/salas/criar" class="btn-action-primary" title="Criar nova sala de aula">
+        <svg class="action-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        <span>+ Criar Sala</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- 2. NAVEGAÇÃO POR ABAS E DIVISOR ESTRUTURAL -->
+  <div class="tabs-navigation-wrapper">
+    <nav class="filter-tabs" aria-label="Filtro de salas">
+      <button type="button" class="tab-btn" [class.active]="abaAtiva === 'todas'" (click)="selecionarAba('todas')">
+        Todas <span class="tab-badge">{{ salas.length }}</span>
+      </button>
+
+      <button type="button" class="tab-btn" [class.active]="abaAtiva === 'minhas'" (click)="selecionarAba('minhas')">
+        Minhas Salas
+        <span class="tab-badge" *ngIf="salas.length">{{ totalMinhasSalas }}</span>
+      </button>
+
+      <button type="button" class="tab-btn" [class.active]="abaAtiva === 'arquivadas'"
+        (click)="selecionarAba('arquivadas')">
+        Arquivadas
+      </button>
+    </nav>
   </div>
 
-  <!-- Ações -->
-  <div class="sala-actions" *ngIf="isProfessor">
-    <a routerLink="/salas/criar" class="btn-create">
-      <span class="icon">➕</span>
-      Criar Nova Sala
-    </a>
-  </div>
-
-  <!-- Loading -->
+  <!-- Loading State -->
   <div *ngIf="carregando" class="loading-state">
     <div class="spinner"></div>
     <p>Carregando salas...</p>
   </div>
 
-  <!-- Erro -->
+  <!-- Error State -->
   <div *ngIf="erro && !carregando" class="error-state">
-    <span class="icon">⚠️</span>
+    <svg class="error-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="8" x2="12" y2="12"></line>
+      <line x1="12" y1="16" x2="12.01" y2="16"></line>
+    </svg>
     <p>{{ erro }}</p>
   </div>
 
   <!-- Grid de Salas -->
-  <div *ngIf="!carregando && salas.length" class="salas-grid">
-    <div *ngFor="let sala of salas" class="sala-card">
+  <div *ngIf="!carregando && salasFiltradas.length" class="salas-grid">
+    <div *ngFor="let sala of salasFiltradas" class="sala-card">
       <div class="sala-card-header">
-        <div class="sala-icon">📖</div>
-        <h3 class="sala-nome">{{ sala.nome }}</h3>
+        <div class="sala-icon-box">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+            <path d="M6 6h10"></path>
+            <path d="M6 10h10"></path>
+          </svg>
+        </div>
+        <h3 class="sala-nome" [title]="sala.nome">{{ sala.nome }}</h3>
       </div>
-      
+
       <div class="sala-card-body">
         <div class="sala-info">
           <div class="info-item">
-            <span class="info-label">Criador:</span>
+            <span class="info-label">Criador</span>
             <span class="info-value">{{ sala.criadorNome || 'N/A' }}</span>
           </div>
           <div class="info-item">
-            <span class="info-label">Membros:</span>
+            <span class="info-label">Membros</span>
             <span class="info-value">{{ sala.membrosIds?.length || 0 }}</span>
           </div>
         </div>
       </div>
 
       <div class="sala-card-footer">
-        <a [routerLink]="['/salas', sala.id]" class="btn btn-primary">
-          <span class="icon">🚪</span>
-          Entrar
+        <a [routerLink]="['/salas', sala.id]" class="btn btn-enter">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+            <polyline points="10 17 15 12 10 7"></polyline>
+            <line x1="15" y1="12" x2="3" y2="12"></line>
+          </svg>
+          <span>Entrar</span>
         </a>
-        <a [routerLink]="['/salas', sala.id, 'atividades']" class="btn btn-secondary">
-          <span class="icon">📝</span>
-          Atividades
+        <a [routerLink]="['/salas', sala.id, 'atividades']" class="btn btn-activities">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+          <span>Atividades</span>
         </a>
-        <button *ngIf="!isProfessor" (click)="solicitarEntrada(sala)" class="btn btn-info" title="Solicitar entrada">
-          <span class="icon">📬</span>
-          Solicitar
+        <button *ngIf="!isProfessor" (click)="solicitarEntrada(sala)" class="btn btn-request" title="Solicitar entrada">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <line x1="19" y1="8" x2="19" y2="14"></line>
+            <line x1="22" y1="11" x2="16" y2="11"></line>
+          </svg>
+          <span>Solicitar</span>
         </button>
-        <button *ngIf="currentUserId !== null && sala.criadorId === currentUserId" (click)="deleteSala(sala)" class="btn btn-danger" title="Deletar sala">
-          <span class="icon">🗑️</span>
-          Deletar
+        <button *ngIf="currentUserId !== null && sala.criadorId === currentUserId" (click)="deleteSala(sala)"
+          class="btn btn-delete" title="Deletar sala">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+          <span>Deletar</span>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Estado vazio -->
-  <div *ngIf="!carregando && !salas.length && !erro" class="empty-state">
-    <div class="empty-icon">📭</div>
-    <h3>Nenhuma sala encontrada</h3>
-    <p *ngIf="isProfessor">Comece criando sua primeira sala de aula!</p>
-    <p *ngIf="!isProfessor">Aguarde um professor criar uma sala ou adicionar você a uma sala existente.</p>
-    <a *ngIf="isProfessor" routerLink="/salas/criar" class="btn btn-primary">
-      <span class="icon">➕</span>
-      Criar Primeira Sala
-    </a>
+  <!-- 3. AJUSTE DE PROPORÇÃO DO EMPTY STATE (Card Vazio) -->
+  <div *ngIf="!carregando && !salasFiltradas.length && !erro" class="empty-state-card">
+    <div class="empty-icon-box">
+      <svg class="empty-icon-svg" width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 12h-6l-2 3h-4l-2-3H2"></path>
+        <path
+          d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z">
+        </path>
+      </svg>
+    </div>
+
+    <h3 class="empty-title">Nenhuma sala encontrada</h3>
+
+    <p class="empty-description" *ngIf="termoBusca">
+      Não encontramos resultados para a busca "{{ termoBusca }}". Tente buscar por outro termo.
+    </p>
+    <p class="empty-description" *ngIf="!termoBusca && isProfessor">
+      Comece criando sua primeira sala de aula para gerenciar turmas, publicar materiais e acompanhar atividades
+      acadêmicas.
+    </p>
+    <p class="empty-description" *ngIf="!termoBusca && !isProfessor">
+      Nenhuma sala disponível nesta categoria no momento. Solicite entrada ou aguarde seu professor cadastrar a turma.
+    </p>
+
+    <div class="empty-actions" *ngIf="isProfessor && !termoBusca">
+      <a routerLink="/salas/criar" class="btn-action-primary">
+        <svg class="action-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        <span>+ Criar Primeira Sala</span>
+      </a>
+    </div>
+
+    <div class="empty-actions" *ngIf="termoBusca">
+      <button type="button" class="btn-clear-action" (click)="termoBusca = ''">
+        Limpar busca
+      </button>
+    </div>
   </div>
 </div>

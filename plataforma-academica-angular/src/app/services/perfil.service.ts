@@ -40,7 +40,7 @@ export class PerfilService {
    * @param id ID do perfil
    * @returns Observable com o perfil ou erro 404
    */
-  buscarPorId(id: number): Observable<Perfil> {
+  buscarPorId(id: string): Observable<Perfil> {
     return this.http.get<Perfil>(`${this.baseUrl}/${id}`)
       .pipe(catchError(this.tratarErro));
   }
@@ -70,7 +70,7 @@ export class PerfilService {
    * @param usuarioId ID do usuário
    * @returns Observable com o perfil do usuário
    */
-  buscarPorUsuarioId(usuarioId: number): Observable<Perfil> {
+  buscarPorUsuarioId(usuarioId: string): Observable<Perfil> {
     return this.http.get<Perfil>(`${this.baseUrl}/usuario/${usuarioId}`)
       .pipe(catchError(this.tratarErro));
   }
@@ -80,7 +80,7 @@ export class PerfilService {
    * @param usuarioId ID do usuário
    * @returns Observable com boolean indicando se existe
    */
-  existePerfil(usuarioId: number): Observable<boolean> {
+  existePerfil(usuarioId: string): Observable<boolean> {
     return this.http.get<boolean>(`${this.baseUrl}/existe/${usuarioId}`)
       .pipe(catchError(this.tratarErro));
   }

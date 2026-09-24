@@ -15,7 +15,7 @@ import { Usuario } from '../../models/usuario.model';
   styleUrl: './amigos.component.css'
 })
 export class AmigosComponent implements OnInit {
-  currentUserId: number | null = null;
+  currentUserId: string | null = null;
   amigos: Amizade[] = [];
   pendentes: Amizade[] = [];
   usuarios: Usuario[] = [];
@@ -38,10 +38,9 @@ export class AmigosComponent implements OnInit {
     }
   }
 
-  getCurrentUserId(): number | null {
+  getCurrentUserId(): string | null {
     if (isPlatformBrowser(this.platformId)) {
-      const id = localStorage.getItem('usuarioId');
-      return id ? Number(id) : null;
+      return localStorage.getItem('usuarioId');
     }
     return null;
   }
@@ -73,7 +72,7 @@ export class AmigosComponent implements OnInit {
       next: (usuarios) => {
         this.usuarios = usuarios.filter(u => {
           if (u.id === this.currentUserId) return false;
-          return !this.jaTemRelacao(Number(u.id));
+          return !this.jaTemRelacao(u.id!);
         });
         this.usuariosFiltrados = this.usuarios;
       },
@@ -81,7 +80,7 @@ export class AmigosComponent implements OnInit {
     });
   }
 
-  jaTemRelacao(usuarioId: number): boolean {
+  jaTemRelacao(usuarioId: string): boolean {
     const jaAmigo = this.amigos.some(a =>
       a.solicitanteId === usuarioId || a.destinatarioId === usuarioId
     );
@@ -115,11 +114,11 @@ export class AmigosComponent implements OnInit {
     this.router.navigate(['/usuarios']);
   }
 
-  enviarSolicitacao(destinatarioId: number | string): void {
+  enviarSolicitacao(destinatarioId: string): void {
     if (!this.currentUserId) return;
 
     console.log('Enviando:', { solicitanteId: this.currentUserId, destinatarioId });
-    this.amizadeService.enviarSolicitacao(this.currentUserId, Number(destinatarioId)).subscribe({
+    this.amizadeService.enviarSolicitacao(this.currentUserId, destinatarioId).subscribe({
       next: (res) => {
         console.log('Sucesso:', res);
         alert('Solicitação enviada!');
@@ -134,7 +133,7 @@ export class AmigosComponent implements OnInit {
     });
   }
 
-  responder(id: number, acao: 'aceitar' | 'recusar'): void {
+  responder(id: string, acao: 'aceitar' | 'recusar'): void {
     this.amizadeService.responderSolicitacao(id, acao).subscribe({
       next: () => {
         this.carregarDados();
@@ -148,10 +147,10 @@ export class AmigosComponent implements OnInit {
     });
   }
 
-  remover(id: number): void {
+  remover(id: string): void {
     if (!confirm('Deseja remover esta amizade?')) return;
 
-    this.amizadeService.removerAmizade(id).subscribe({
+    this.amizadeService.recusarSolicitacao(id).subscribe({
       next: () => {
         this.carregarDados();
         if (this.usuarios.length) {

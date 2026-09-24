@@ -1,7 +1,7 @@
 export interface Amizade {
-  id?: number;
-  solicitanteId: number;
-  destinatarioId: number;
+  id?: string;
+  solicitanteId: string;
+  destinatarioId: string;
   solicitanteNome?: string;
   destinatarioNome?: string;
   status?: 'PENDENTE' | 'ACEITO' | 'RECUSADO';

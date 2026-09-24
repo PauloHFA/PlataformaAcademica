@@ -5,8 +5,26 @@
             <span class="brand-text">Plataforma<br>Acadêmica</span>
         </a>
         <div class="header-actions">
-            <a class="login-link" (click)="navigate('/login')">Fazer Login</a>
-            <a class="register-link" (click)="navigate('/cadastro')">Criar Conta <span>↗</span></a>
+            <!-- Not Logged In -->
+            <ng-container *ngIf="!isLoggedIn">
+                <a class="login-link" (click)="navigate('/login')">Fazer Login</a>
+                <a class="register-link" (click)="navigate('/cadastro')">Criar Conta <span>↗</span></a>
+            </ng-container>
+            <!-- Logged In -->
+            <ng-container *ngIf="isLoggedIn">
+                <div class="profile-bolinha" (click)="navigate('/perfil')">
+                    {{ usuarioNome[0].toUpperCase() }}
+                </div>
+                <!-- Focus Mode Button -->
+                <button class="focus-mode-btn" (click)="toggleFocusMode()" [class.active]="isFocusMode"
+                    title="Modo Foco">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L15 5L18 2L21 5L18 8L21 11L18 14L15 11L12 14L9 11L12 8L9 5L12 2Z" />
+                        <path
+                            d="M12 17L15 20L18 17L21 20L18 23L21 2L18 5L15 2L12 5L9 2L12 5L9 8L6 5L3 2L6 8L3 11L6 14L3 11Z" />
+                    </svg>
+                </button>
+            </ng-container>
         </div>
     </div>
 </header>

@@ -1,0 +1,207 @@
+<div class="feed-container">
+  <!-- Header -->
+  <div class="feed-header">
+    <div class="header-content">
+      <h1>
+        <span class="icon">📰</span>
+        Feed de Postagens
+      </h1>
+      <p class="header-subtitle">Compartilhe suas ideias e acompanhe o que seus amigos estão fazendo</p>
+    </div>
+    <button (click)="toggleForm()" class="btn btn-primary btn-lg">
+      <span class="icon">{{ mostrarForm ? '✖️' : '➕' }}</span>
+      {{ mostrarForm ? 'Cancelar' : 'Nova Postagem' }}
+    </button>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filtros">
+    <button 
+      (click)="mudarFiltro('todas')" 
+      [class.active]="filtro === 'todas'"
+      class="filtro-btn"
+    >
+      🌍 Todas
+    </button>
+    <button 
+      (click)="mudarFiltro('amigos')" 
+      [class.active]="filtro === 'amigos'"
+      class="filtro-btn"
+    >
+      👥 Amigos
+    </button>
+    <button 
+      (click)="mudarFiltro('curtidas')" 
+      [class.active]="filtro === 'curtidas'"
+      class="filtro-btn"
+    >
+      ⭐ Mais Curtidas
+    </button>
+  </div>
+
+  <!-- Form Nova Postagem -->
+  <div *ngIf="mostrarForm" class="nova-postagem-card">
+    <h2>✍️ Criar Nova Postagem</h2>
+    <form (ngSubmit)="publicar()">
+      <div class="form-group">
+        <label for="titulo">Título</label>
+        <input
+          type="text"
+          id="titulo"
+          [(ngModel)]="novaPostagem.titulo"
+          name="titulo"
+          placeholder="Digite o título da postagem"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="conteudo">Conteúdo</label>
+        <textarea
+          id="conteudo"
+          [(ngModel)]="novaPostagem.conteudo"
+          name="conteudo"
+          rows="5"
+          placeholder="Escreva o conteúdo da sua postagem..."
+          required
+        ></textarea>
+      </div>
+      
+      <!-- Upload de Imagem -->
+      <div class="form-group">
+        <label>Adicionar Imagem</label>
+        <div class="upload-area">
+          <input 
+            type="file" 
+            accept="image/*" 
+            (change)="onImagemSelecionada($event)"
+            id="file-input"
+            hidden
+          />
+          <label for="file-input" class="upload-label">
+            📸 Escolher Imagem
+          </label>
+          <div *ngIf="previewImagem" class="image-preview">
+            <img [src]="previewImagem" alt="Preview" />
+            <button type="button" (click)="removerImagem()" class="btn-remove-image">
+              ✖ Remover
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg" [disabled]="enviando">
+        <span class="icon">{{ enviando ? '⏳' : '📤' }}</span>
+        {{ enviando ? 'Publicando...' : 'Publicar' }}
+      </button>
+    </form>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="carregando" class="loading-state">
+    <div class="spinner"></div>
+    <p>Carregando postagens...</p>
+  </div>
+
+  <!-- Lista de Postagens -->
+  <div *ngIf="!carregando" class="postagens-list">
+    <div *ngFor="let post of postagens" class="postagem-card">
+      <!-- Header -->
+      <div class="postagem-header">
+        <div class="autor-info">
+          <div class="avatar">{{ (post.autorNome || 'U')[0].toUpperCase() }}</div>
+          <div class="autor-details">
+            <h3>{{ post.autorNome || 'Usuário' }}</h3>
+            <span class="post-meta">Post #{{ post.id }}</span>
+          </div>
+        </div>
+        <button
+          *ngIf="post.autorId === currentUserId"
+          (click)="deletar(post.id)"
+          class="btn-delete"
+          title="Deletar postagem"
+        >
+          🗑️
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="postagem-body">
+        <h2 class="postagem-titulo">{{ post.titulo }}</h2>
+        <p class="postagem-conteudo">{{ post.conteudo }}</p>
+        <div *ngIf="post.imagemUrl && post.imagemUrl.trim()" class="postagem-imagem">
+          <img [src]="post.imagemUrl.startsWith('http') ? post.imagemUrl : 'http://localhost:8090' + post.imagemUrl" alt="Imagem da postagem" (error)="$any($event.target).style.display='none'" />
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="postagem-footer">
+        <button (click)="curtir(post.id)" class="btn-curtir">
+          <span class="icon">❤️</span>
+          <span class="curtidas-count">{{ post.curtidas || 0 }}</span>
+          <span class="curtidas-text">{{ (post.curtidas || 0) === 1 ? 'curtida' : 'curtidas' }}</span>
+        </button>
+        <button (click)="toggleComentarios(post.id!)" class="btn-comentar">
+          <span class="icon">💬</span>
+          <span>Comentários</span>
+        </button>
+        <span *ngIf="post.plataformaNome" class="plataforma-badge">
+          🏫 {{ post.plataformaNome }}
+        </span>
+      </div>
+
+      <!-- Seção de Comentários -->
+      <div *ngIf="mostrarComentarios[post.id!]" class="comentarios-section">
+        <div class="comentarios-header">
+          <h4>💬 Comentários</h4>
+        </div>
+        
+        <!-- Form Novo Comentário -->
+        <div class="novo-comentario">
+          <textarea
+            [(ngModel)]="novoComentario[post.id!]"
+            placeholder="Escreva um comentário..."
+            rows="2"
+          ></textarea>
+          <button (click)="adicionarComentario(post.id!)" class="btn btn-sm btn-primary">
+            Comentar
+          </button>
+        </div>
+
+        <!-- Lista de Comentários -->
+        <div class="comentarios-lista">
+          <div *ngFor="let comentario of comentarios[post.id!]" class="comentario-item">
+            <div class="comentario-avatar">{{ (comentario.autorNome || 'U')[0].toUpperCase() }}</div>
+            <div class="comentario-content">
+              <div class="comentario-header">
+                <strong>{{ comentario.autorNome || 'Usuário' }}</strong>
+                <button
+                  *ngIf="comentario.autorId === currentUserId"
+                  (click)="deletarComentario(comentario.id!, post.id!)"
+                  class="btn-delete-comentario"
+                >
+                  🗑️
+                </button>
+              </div>
+              <p>{{ comentario.conteudo }}</p>
+            </div>
+          </div>
+          <div *ngIf="!comentarios[post.id!]?.length" class="empty-comentarios">
+            Seja o primeiro a comentar!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!postagens.length" class="empty-state">
+      <div class="empty-icon">📭</div>
+      <h3>Nenhuma postagem ainda</h3>
+      <p>Seja o primeiro a publicar algo!</p>
+      <button (click)="toggleForm()" class="btn btn-primary">
+        <span class="icon">➕</span>
+        Criar Postagem
+      </button>
+    </div>
+  </div>
+</div>
+

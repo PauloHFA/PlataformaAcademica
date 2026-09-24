@@ -3,49 +3,64 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PostagemService } from '../../services/postagem.service';
 import { ComentarioService } from '../../services/comentario.service';
+import { BadgeService } from '../../services/badge.service';
 import { Postagem } from '../../models/postagem.model';
 import { Comentario } from '../../models/comentario.model';
+import { Badge } from '../../models/badge.model';
+import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
+import { MarkdownPipe } from '../../pipes/markdown.pipe';
+import { forkJoin, of, switchMap, map, catchError } from 'rxjs';
 
 @Component({
   selector: 'app-feed',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TimeAgoPipe, MarkdownPipe],
   templateUrl: './feed.component.html',
   styleUrl: './feed.component.css'
 })
 export class FeedComponent implements OnInit {
   postagens: Postagem[] = [];
   carregando = true;
-  currentUserId: number | null = null;
+  currentUserId: string | null = null;
   filtro: 'todas' | 'amigos' | 'curtidas' = 'todas';
-  
+
   // Form nova postagem
   mostrarForm = false;
   novaPostagem: Postagem = { titulo: '', conteudo: '' };
   enviando = false;
   previewImagem: string | null = null;
   selectedFile: File | null = null;
-  
+
   // Comentários
-  mostrarComentarios: { [key: number]: boolean } = {};
-  comentarios: { [key: number]: Comentario[] } = {};
-  novoComentario: { [key: number]: string } = {};
+  mostrarComentarios: { [key: string]: boolean } = {};
+  comentarios: { [key: string]: Comentario[] } = {};
+  novoComentario: { [key: string]: string } = {};
 
   constructor(
     private postagemService: PostagemService,
     private comentarioService: ComentarioService,
+    private badgeService: BadgeService,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.currentUserId = this.getCurrentUserId();
+    this.usuarioNome = this.getCurrentUserName();
     this.carregarPostagens();
   }
 
-  getCurrentUserId(): number | null {
+  usuarioNome: string | null = null;
+
+  getCurrentUserId(): string | null {
     if (isPlatformBrowser(this.platformId)) {
-      const id = localStorage.getItem('usuarioId');
-      return id ? Number(id) : null;
+      return localStorage.getItem('usuarioId');
+    }
+    return null;
+  }
+
+  getCurrentUserName(): string | null {
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem('usuarioNome');
     }
     return null;
   }
@@ -53,7 +68,7 @@ export class FeedComponent implements OnInit {
   carregarPostagens(): void {
     this.carregando = true;
     let observable;
-    
+
     if (this.filtro === 'amigos' && this.currentUserId) {
       observable = this.postagemService.listarDeAmigos(this.currentUserId);
     } else if (this.filtro === 'curtidas') {
@@ -61,17 +76,42 @@ export class FeedComponent implements OnInit {
     } else {
       observable = this.postagemService.listarTodas();
     }
-    
-    observable.subscribe({
+
+    observable.pipe(
+      map(postagens => postagens.map(p => ({
+        ...p,
+        imagemUrl: p.imagemUrl && !p.imagemUrl.startsWith('http')
+          ? `http://localhost:8090${p.imagemUrl}`
+          : p.imagemUrl
+      }))),
+      switchMap(postagensWithImage => {
+        const uniqueAuthorIds = [...new Set(postagensWithImage.map(p => p.autorId).filter((id): id is string => id !== undefined && id !== null))];
+        if (uniqueAuthorIds.length === 0) {
+          return of(postagensWithImage);
+        }
+        const badgeRequests = uniqueAuthorIds.map(id =>
+          this.badgeService.buscarBadgesDoUsuario(id).pipe(
+            catchError(() => of([] as Badge[]))
+          )
+        );
+        return forkJoin(badgeRequests).pipe(
+          map(badgeArrays => {
+            const badgeMap = new Map<string, Badge[]>();
+            uniqueAuthorIds.forEach((id, index) => {
+              badgeMap.set(id, badgeArrays[index]);
+            });
+            return postagensWithImage.map(post => ({
+              ...post,
+              autorBadges: badgeMap.get(post.autorId!) || []
+            }));
+          })
+        );
+      })
+    ).subscribe({
       next: (postagens) => {
-        console.log('Postagens carregadas:', postagens);
-        this.postagens = postagens.map(p => ({
-          ...p,
-          imagemUrl: p.imagemUrl && !p.imagemUrl.startsWith('http') 
-            ? `http://localhost:8090${p.imagemUrl}` 
-            : p.imagemUrl
-        }));
-        this.postagens = this.filtro === 'curtidas' ? this.postagens : this.postagens.sort((a, b) => (b.id || 0) - (a.id || 0));
+        console.log('Postagens carregadas com badges:', postagens);
+        this.postagens = postagens;
+        this.postagens = this.filtro === 'curtidas' ? this.postagens : this.postagens;
         this.carregando = false;
       },
       error: (err) => {
@@ -86,9 +126,9 @@ export class FeedComponent implements OnInit {
     this.carregarPostagens();
   }
 
-  curtir(id: number | undefined): void {
+  curtir(id: string | undefined): void {
     if (!id || !this.currentUserId) return;
-    
+
     this.postagemService.curtir(id, this.currentUserId).subscribe({
       next: () => {
         this.carregarPostagens();
@@ -191,7 +231,7 @@ export class FeedComponent implements OnInit {
     });
   }
 
-  deletar(id: number | undefined): void {
+  deletar(id: string | undefined): void {
     if (!id || !confirm('Deseja deletar esta postagem?')) return;
 
     this.postagemService.deletar(id).subscribe({
@@ -204,14 +244,14 @@ export class FeedComponent implements OnInit {
     });
   }
 
-  toggleComentarios(postagemId: number): void {
+  toggleComentarios(postagemId: string): void {
     this.mostrarComentarios[postagemId] = !this.mostrarComentarios[postagemId];
     if (this.mostrarComentarios[postagemId] && !this.comentarios[postagemId]) {
       this.carregarComentarios(postagemId);
     }
   }
 
-  carregarComentarios(postagemId: number): void {
+  carregarComentarios(postagemId: string): void {
     this.comentarioService.listarPorPostagem(postagemId).subscribe({
       next: (comentarios) => {
         this.comentarios[postagemId] = comentarios;
@@ -222,7 +262,7 @@ export class FeedComponent implements OnInit {
     });
   }
 
-  adicionarComentario(postagemId: number): void {
+  adicionarComentario(postagemId: string): void {
     const conteudo = this.novoComentario[postagemId]?.trim();
     if (!conteudo || !this.currentUserId) return;
 
@@ -245,7 +285,7 @@ export class FeedComponent implements OnInit {
     });
   }
 
-  deletarComentario(comentarioId: number, postagemId: number): void {
+  deletarComentario(comentarioId: string, postagemId: string): void {
     if (!confirm('Deseja deletar este comentário?')) return;
 
     this.comentarioService.deletar(comentarioId).subscribe({

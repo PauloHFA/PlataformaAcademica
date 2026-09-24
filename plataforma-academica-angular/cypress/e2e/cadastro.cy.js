@@ -41,7 +41,7 @@ describe('Cadastro de Professor', () => {
       matricula: '11223344'
     }
 
-    cy.request('POST', 'http://localhost:8080/api/professores/cadastro', professor)
+    cy.request('POST', 'http://localhost:8090/api/professores/cadastro', professor)
 
     // Segundo cadastro com mesmo email
     cy.get('input[name="nome"]').type('Outro Nome')

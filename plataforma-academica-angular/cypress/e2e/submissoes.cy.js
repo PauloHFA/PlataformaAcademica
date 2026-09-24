@@ -6,7 +6,7 @@ describe('Submissões de Atividades', () => {
 
   before(() => {
     // Criar professor
-    cy.request('POST', 'http://localhost:8080/api/professores/cadastro', {
+    cy.request('POST', 'http://localhost:8090/api/professores/cadastro', {
       nome: 'Professor Atividades',
       email: `prof.ativ.${Date.now()}@edu.com`,
       senha: 'senha123',
@@ -15,13 +15,13 @@ describe('Submissões de Atividades', () => {
       professorId = response.body.id
 
       // Criar sala
-      cy.request('POST', `http://localhost:8080/api/saladeaula/criar/${professorId}`, {
+      cy.request('POST', `http://localhost:8090/api/saladeaula/criar/${professorId}`, {
         nome: 'Sala para Submissões'
       }).then((salaResponse) => {
         salaId = salaResponse.body.id
 
         // Criar atividade
-        cy.request('POST', `http://localhost:8080/api/atividades/criar/${salaId}`, {
+        cy.request('POST', `http://localhost:8090/api/atividades/criar/${salaId}`, {
           titulo: 'Atividade de Teste',
           descricao: 'Descrição da atividade para teste',
           dataEntrega: '2024-12-31T23:59:59',
@@ -34,7 +34,7 @@ describe('Submissões de Atividades', () => {
     })
 
     // Criar aluno
-    cy.request('POST', 'http://localhost:8080/api/usuarios', {
+    cy.request('POST', 'http://localhost:8090/api/usuarios', {
       nome: 'Aluno Teste',
       email: `aluno.teste.${Date.now()}@edu.com`,
       senha: 'senha123',
@@ -43,7 +43,7 @@ describe('Submissões de Atividades', () => {
       alunoId = response.body.id
 
       // Adicionar aluno à sala
-      cy.request('POST', `http://localhost:8080/api/saladeaula/${salaId}/membros`, {
+      cy.request('POST', `http://localhost:8090/api/saladeaula/${salaId}/membros`, {
         usuarioId: alunoId,
         papel: 'ALUNO'
       })
@@ -92,7 +92,7 @@ describe('Submissões de Atividades', () => {
 
   it('deve enviar submissão via API', () => {
     // Testar via API diretamente
-    cy.request('POST', `http://localhost:8080/api/submissoes-atividade`, {
+    cy.request('POST', `http://localhost:8090/api/submissoes-atividade`, {
       atividadeId: atividadeId,
       alunoId: alunoId,
       descricao: 'Submissão via API',
@@ -102,7 +102,7 @@ describe('Submissões de Atividades', () => {
     })
 
     // Verificar listagem
-    cy.request('GET', `http://localhost:8080/api/submissoes-atividade/atividade/${atividadeId}`).then((response) => {
+    cy.request('GET', `http://localhost:8090/api/submissoes-atividade/atividade/${atividadeId}`).then((response) => {
       expect(response.status).to.eq(200)
       expect(response.body).to.be.an('array')
       expect(response.body.length).to.be.greaterThan(0)

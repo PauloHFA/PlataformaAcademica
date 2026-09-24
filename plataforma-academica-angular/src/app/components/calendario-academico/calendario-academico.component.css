@@ -1,0 +1,247 @@
+.calendario-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.calendario-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+    background: #f8f9fa;
+}
+
+.calendario-header h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.calendario-filtros {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-filtro {
+    background: transparent;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    padding: 4px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-filtro:hover {
+    background: #f0f0f0;
+    border-color: #ccc;
+}
+
+.btn-filtro.ativo {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.carregando,
+.erro,
+.vazio {
+    text-align: center;
+    padding: 32px 16px;
+    color: #666;
+}
+
+.carregando {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.btn-retry {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+.btn-retry:hover {
+    background: #0056b3;
+}
+
+.eventos-lista {
+    padding: 16px;
+}
+
+.eventos-section {
+    margin-bottom: 24px;
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #eee;
+}
+
+.evento-item {
+    background: #fafafa;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 8px;
+    border-left: 3px solid #007bff;
+    transition: all 0.2s ease;
+}
+
+.evento-item:hover {
+    background: #f0f8ff;
+    transform: translateX(4px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.evento-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.evento-icone {
+    font-size: 20px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.evento-info {
+    flex: 1;
+}
+
+.evento-titulo {
+    margin: 0 0 4px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.evento-descricao {
+    margin: 0 0 8px 0;
+    font-size: 13px;
+    color: #666;
+    line-height: 1.4;
+}
+
+.evento-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 12px;
+    color: #666;
+}
+
+.evento-data,
+.evento-hora {
+    font-weight: 500;
+}
+
+.evento-tipo-badge {
+    background: #e3f2fd;
+    color: #1976d2;
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-weight: 500;
+    text-transform: capitalize;
+    font-size: 11px;
+}
+
+.evento-tipo-badge.tipo-prova {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.evento-tipo-badge.tipo-entrega {
+    background: #e8f5e8;
+    color: #2e7d32;
+}
+
+.evento-tipo-badge.tipo-evento {
+    background: #fff3e0;
+    color: #f57c00;
+}
+
+.evento-tipo-badge.tipo-feriado {
+    background: #f3e5f5;
+    color: #6a1b9a;
+}
+
+.evento-disciplina {
+    background: #f5f5f5;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.evento-dias-restantes {
+    background: #ff9800;
+    color: white;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+    .calendario-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+
+    .calendario-filtros {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .evento-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .evento-icone {
+        align-self: flex-start;
+    }
+}

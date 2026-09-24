@@ -1,0 +1,67 @@
+<div class="comunidades-container">
+    <!-- Header -->
+    <div class="comunidades-header">
+        <h1>Comunidades de Estudo</h1>
+        <p>Grupos de estudo autônomos para projetos e disciplinas específicas</p>
+        <button class-btn="btn-criar-comunidade" (click)="criarComunidade()">
+            Criar Nova Comunidade
+        </button>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="carregando" class="loading-state">
+        <div class="spinner"></div>
+        <p>Carregando comunidades...</p>
+    </div>
+
+    <!-- Lista de Comunidades -->
+    <div *ngIf="!carregando" class="comunidades-list">
+        <div *ngIf="comunidades.length === 0" class="empty-state">
+            <div class="empty-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                    <path d="M12 8v4" stroke="currentColor" stroke-width="2" />
+                    <path d="M12 16h.01" stroke="currentColor" stroke-width="2" />
+                </svg>
+            </div>
+            <h3>Nenhuma comunidade ainda</h3>
+            <p>Seja o primeiro a criar uma comunidade de estudo!</p>
+            <button class="btn-empty-action" (click)="criarComunidade()">Criar Comunidade</button>
+        </div>
+
+        <div *ngFor="let comunidade of comunidades" class="comunidade-card">
+            <!-- Header da Comunidade -->
+            <div class="comunidade-header">
+                <div class="comunidade-info">
+                    <div class="comunidade-avatar">
+                        {{ (comunidade.nome || 'C')[0].toUpperCase() }}
+                    </div>
+                    <div class="comunidade-details">
+                        <h3 class="comunidade-nome">{{ comunidade.nome }}</h3>
+                        <p class="comunidade-descricao">{{ comunidade.descricao }}</p>
+                        <div class="comunidade-meta">
+                            <span>{{ (comunidade.membros && comunidade.membros.length) || 0 }} membros</span>
+                            <span *ngIf="comunidade.tema">• {{ comunidade.tema }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="comunidade-actions">
+                    <button class="action-btn"
+                        (click)="isMembro(comunidade) ? sairComunidade(comunidade.id!) : entrarComunidade(comunidade.id!)">
+                        {{ isMembro(comunidade) ? 'Sair' : 'Entrar' }}
+                    </button>
+                    <button class="action-btn" (click)="verDetalhes(comunidade.id!)">
+                        Ver Detalhes
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tags da Comunidade -->
+            <div *ngIf="comunidade.tags && comunidade.tags.length > 0" class="comunidade-tags">
+                <span *ngFor="let tag of comunidade.tags" class="tag">
+                    #{{ tag }}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

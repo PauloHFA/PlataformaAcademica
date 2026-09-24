@@ -1,15 +1,15 @@
 export interface Frequencia {
-  id: number;
-  aluno: { id: number; nome?: string };
-  salaDeAula: { id: number; nome?: string };
+  id: string;
+  aluno: { id: string; nome?: string };
+  salaDeAula: { id: string; nome?: string };
   data: string;
   presente: boolean;
   justificativa?: string;
 }
 
 export interface FrequenciaRequest {
-  alunoId: number;
-  salaId: number;
+  alunoId: string;
+  salaId: string;
   data: string;
   presente: boolean;
   justificativa?: string;

@@ -14,25 +14,23 @@ import { SolicitacaoEntrada } from '../../models/solicitacao-entrada.model';
 export class SolicitacoesSalaComponent implements OnInit {
   solicitacoes: SolicitacaoEntrada[] = [];
   carregando = true;
-  salaId: number | null = null;
-  professorId: number | null = null;
+  salaId: string | null = null;
+  professorId: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private solicitacaoService: SolicitacaoEntradaService,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      const uid = localStorage.getItem('usuarioId');
-      this.professorId = uid ? parseInt(uid, 10) : null;
+      this.professorId = localStorage.getItem('usuarioId');
     }
 
     this.route.paramMap.subscribe(params => {
-      const id = Number(params.get('id'));
-      if (!isNaN(id)) {
-        this.salaId = id;
+      this.salaId = params.get('id');
+      if (this.salaId) {
         this.carregarSolicitacoes();
       }
     });
@@ -53,7 +51,7 @@ export class SolicitacoesSalaComponent implements OnInit {
     });
   }
 
-  aprovar(solicitacaoId: number): void {
+  aprovar(solicitacaoId: string): void {
     if (!this.professorId) return;
     this.solicitacaoService.aprovar(solicitacaoId, this.professorId).subscribe({
       next: () => {
@@ -65,7 +63,7 @@ export class SolicitacoesSalaComponent implements OnInit {
     });
   }
 
-  rejeitar(solicitacaoId: number): void {
+  rejeitar(solicitacaoId: string): void {
     if (!this.professorId) return;
     this.solicitacaoService.rejeitar(solicitacaoId, this.professorId).subscribe({
       next: () => {

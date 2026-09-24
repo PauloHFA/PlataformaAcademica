@@ -6,8 +6,8 @@ import { Subject, interval } from 'rxjs';
 import { takeUntil, switchMap } from 'rxjs/operators';
 
 interface Notificacao {
-  id: number;
-  remetenteId: number;
+  id: string;
+  remetenteId: string;
   remetenteNome: string;
   tipo: 'AMIZADE';
   mensagem: string;
@@ -23,20 +23,19 @@ interface Notificacao {
 export class NotificacoesComponent implements OnInit, OnDestroy {
   notificacoes: Notificacao[] = [];
   mostrarDropdown = false;
-  currentUserId: number | null = null;
+  currentUserId: string | null = null;
   private destroy$ = new Subject<void>();
 
   constructor(
     private amizadeService: AmizadeService,
     private usuarioService: UsuarioService,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      const usuarioId = localStorage.getItem('usuarioId');
-      this.currentUserId = usuarioId ? parseInt(usuarioId) : null;
-      
+      this.currentUserId = localStorage.getItem('usuarioId');
+
       if (this.currentUserId) {
         this.carregarNotificacoes();
         // Atualizar notificações a cada 30 segundos

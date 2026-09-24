@@ -4,7 +4,7 @@ describe('Sistema de Notificações', () => {
 
   before(() => {
     // Criar dois usuários para testar notificações
-    cy.request('POST', 'http://localhost:8080/api/professores/cadastro', {
+    cy.request('POST', 'http://localhost:8090/api/professores/cadastro', {
       nome: 'Professor Notif 1',
       email: `prof.notif1.${Date.now()}@edu.com`,
       senha: 'senha123',
@@ -13,7 +13,7 @@ describe('Sistema de Notificações', () => {
       usuario1Id = response.body.id
     })
 
-    cy.request('POST', 'http://localhost:8080/api/professores/cadastro', {
+    cy.request('POST', 'http://localhost:8090/api/professores/cadastro', {
       nome: 'Professor Notif 2',
       email: `prof.notif2.${Date.now()}@edu.com`,
       senha: 'senha123',
@@ -34,7 +34,7 @@ describe('Sistema de Notificações', () => {
   })
 
   it('deve criar notificação via API', () => {
-    cy.request('POST', 'http://localhost:8080/api/notificacoes', {
+    cy.request('POST', 'http://localhost:8090/api/notificacoes', {
       usuarioId: usuario1Id,
       titulo: 'Nova Notificação',
       mensagem: 'Esta é uma notificação de teste criada pelo Cypress',
@@ -59,7 +59,7 @@ describe('Sistema de Notificações', () => {
     cy.request('GET', `http://localhost:8080/api/notificacoes/usuario/${usuario1Id}`).then((response) => {
       if (response.body.length > 0) {
         const notificacaoId = response.body[0].id
-        cy.request('PUT', `http://localhost:8080/api/notificacoes/${notificacaoId}/lida`).then((updateResponse) => {
+        cy.request('PUT', `http://localhost:8090/api/notificacoes/${notificacaoId}/lida`).then((updateResponse) => {
           expect(updateResponse.status).to.eq(200)
         })
       }

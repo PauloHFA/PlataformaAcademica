@@ -51,15 +51,18 @@
         <span class="icon">➕</span>
         Adicionar Membro
       </button>
-      <a *ngIf="isProfessor || isAdmin || usuarioEhCriador" [routerLink]="['/salas', sala.id, 'solicitacoes']" class="btn btn-action">
+      <a *ngIf="isProfessor || isAdmin || usuarioEhCriador" [routerLink]="['/salas', sala.id, 'solicitacoes']"
+        class="btn btn-action">
         <span class="icon">📬</span>
         Solicitações
       </a>
-      <button *ngIf="isProfessor || usuarioEhCriador || isAdmin" (click)="navegarCriarAtividade()" class="btn btn-action">
+      <button *ngIf="isProfessor || usuarioEhCriador || isAdmin" (click)="navegarCriarAtividade()"
+        class="btn btn-action">
         <span class="icon">📝</span>
         Criar Atividade
       </button>
-      <a *ngIf="isProfessor || usuarioEhCriador || isAdmin" [routerLink]="['/salas', sala.id, 'dashboard']" class="btn btn-action">
+      <a *ngIf="isProfessor || usuarioEhCriador || isAdmin" [routerLink]="['/salas', sala.id, 'dashboard']"
+        class="btn btn-action">
         <span class="icon">📊</span>
         Dashboard
       </a>
@@ -140,7 +143,8 @@
             <div class="empty-section">
               <span class="empty-icon">📝</span>
               <p>Nenhuma atividade encontrada</p>
-              <button *ngIf="isProfessor || usuarioEhCriador || isAdmin" (click)="navegarCriarAtividade()" class="btn btn-primary btn-small">
+              <button *ngIf="isProfessor || usuarioEhCriador || isAdmin" (click)="navegarCriarAtividade()"
+                class="btn btn-primary btn-small">
                 Criar Primeira Atividade
               </button>
             </div>
@@ -157,11 +161,8 @@
       <div class="comentarios-container">
         <!-- Input de Novo Comentário -->
         <div class="novo-comentario">
-          <textarea 
-            [(ngModel)]="novoComentario" 
-            placeholder="Deixe um comentário..."
-            class="comentario-input"
-          ></textarea>
+          <textarea [(ngModel)]="novoComentario" placeholder="Deixe um comentário..."
+            class="comentario-input"></textarea>
           <button (click)="adicionarComentario()" class="btn btn-primary">
             Comentar
           </button>
@@ -178,13 +179,484 @@
               <span class="data">{{ c.dataCriacao | date:'short' }}</span>
             </div>
             <p class="comentario-texto">{{ c.conteudo }}</p>
-            <button 
-              *ngIf="usuarioId === c.autorId" 
-              (click)="deletarComentario(c.id!)"
-              class="btn-deletar"
-            >
+            <button *ngIf="usuarioId === c.autorId" (click)="deletarComentario(c.id!)" class="btn-deletar">
               🗑️
             </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fórum de Dúvidas -->
+    <section class="forum-section">
+      <div class="forum-header">
+        <h2>❓ Fórum de Dúvidas</h2>
+        <p class="forum-description">Pergunte e tire dúvidas sobre a sala de aula</p>
+        <button *ngIf="!carregandoForum" (click)="abrirNovaPergunta()" class="btn btn-primary btn-sm">
+          + Nova Pergunta
+        </button>
+      </div>
+
+      <!-- Loading -->
+      <div *ngIf="carregandoForum" class="forum-loading">
+        <div class="spinner-sm"></div>
+        <p>Carregando perguntas...</p>
+      </div>
+
+      <!-- Error -->
+      <div *ngIf="erroForum && !carregandoForum" class="forum-error">
+        <span class="icon">⚠️</span>
+        <p>{{ erroForum }}</p>
+      </div>
+
+      <!-- Lista de Perguntas -->
+      <div *ngIf="!carregandoForum && !erroForum" class="forum-list">
+        <div *ngIf="perguntas.length === 0" class="forum-empty">
+          <span class="empty-icon">❓</span>
+          <p>Nenhuma pergunta ainda. Seja o primeiro a perguntar!</p>
+          <button (click)="abrirNovaPergunta()" class="btn btn-outline-primary btn-sm">
+            Fazer Primeira Pergunta
+          </button>
+        </div>
+        <div *ngFor="let pergunta of perguntas" class="forum-pergunta-card">
+          <div class="forum-pergunta-header">
+            <div class="forum-pergunta-titulo">
+              <h3>{{ pergunta.titulo }}</h3>
+              <span *ngIf="temRespostaAceita(pergunta)" class="badge badge-success">
+                ✅ Solução Oficial
+              </span>
+            </div>
+            <div class="forum-pergunta-meta">
+              <span class="forum-pergunta-autor">
+                <span class="icon">👤</span> {{ pergunta.autorNome }}
+              </span>
+              <span class="forum-pergunta-data">
+                <span class="icon">📅</span> {{ pergunta.dataCriacao | date:'short' }}
+              </span>
+            </div>
+          </div>
+          <div class="forum-pergunta-conteudo">
+            <p>{{ pergunta.conteudo }}</p>
+          </div>
+
+          <!-- Respostas -->
+          <div *ngIf="temRespostas(pergunta)" class="forum-respostas">
+            <div class="forum-respostas-header">
+              <h4>Respostas ({{ pergunta.respostas!.length }})</h4>
+            </div>
+            <div *ngFor="let resposta of pergunta.respostas" class="forum-resposta-item"
+              [class.resposta-aceita]="resposta.aceita">
+              <div class="forum-resposta-header">
+                <strong>{{ resposta.autorNome }}</strong>
+                <span class="forum-resposta-data">{{ resposta.dataCriacao | date:'short' }}</span>
+                <span *ngIf="resposta.aceita" class="badge badge-success ms-2">
+                  ✅ Solução Oficial
+                </span>
+                <button *ngIf="podeMarcarComoAceita(pergunta, resposta)"
+                  (click)="marcarRespostaComoAceita(pergunta.id!, resposta.id!)" class="btn btn-outline-success btn-sm">
+                  Marcar como Solução Oficial
+                </button>
+              </div>
+              <div class="forum-resposta-conteudo">
+                <p>{{ resposta.conteudo }}</p>
+              </div>
+              <div class="forum-resposta-actions">
+                <button *ngIf="usuarioId === resposta.autorId" (click)="excluirResposta(pergunta.id!, resposta.id!)"
+                  class="btn btn-link btn-sm text-danger">
+                  🗑️ Excluir
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Formulário de Resposta -->
+          <div *ngIf="respostaSelecionadaId === pergunta.id" class="forum-resposta-form">
+            <div class="forum-resposta-form-header">
+              <h4>Responder a esta pergunta</h4>
+              <button (click)="cancelarResposta()" class="btn btn-link btn-sm">
+                Cancelar
+              </button>
+            </div>
+            <div class="forum-resposta-form-body">
+              <textarea [(ngModel)]="novaRespostaConteudo" placeholder="Digite sua resposta..."
+                class="forum-resposta-input" rows="3"></textarea>
+              <button (click)="enviarResposta(pergunta.id!)" [disabled]="!novaRespostaConteudo.trim()"
+                class="btn btn-primary btn-sm mt-2">
+                Enviar Resposta
+              </button>
+            </div>
+          </div>
+
+          <div class="forum-pergunta-actions">
+            <button *ngIf="usuarioId === pergunta.autorId" (click)="excluirPergunta(pergunta.id!)"
+              class="btn btn-link btn-sm text-danger">
+              🗑️ Excluir Pergunta
+            </button>
+            <button *ngIf="podeResponder(pergunta)" (click)="abrirResposta(pergunta.id!)"
+              class="btn btn-outline-primary btn-sm">
+              Responder
+            </button>
+          </div>
+
+          <hr class="forum-divider">
+        </div>
+      </div>
+    </section>
+
+    <!-- Mural e Repositório de Materiais -->
+    <section class="materiais-section">
+      <div class="materiais-header">
+        <h2>📚 Mural de Materiais</h2>
+        <p class="materiais-description">Organização de conteúdos por semanas/módulos</p>
+        <div class="materiais-actions">
+          <button *ngIf="podeGerenciarMateriais()" (click)="selecionarSemana('')"
+            class="btn btn-outline-primary btn-sm">
+            Ver Todas as Semanas
+          </button>
+          <button *ngIf="podeGerenciarMateriais()" (click)="criarSemana()" class="btn btn-primary btn-sm">
+            + Nova Semana/Módulo
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div *ngIf="carregandoMateriais" class="materiais-loading">
+        <div class="spinner-sm"></div>
+        <p>Carregando materiais...</p>
+      </div>
+
+      <!-- Error -->
+      <div *ngIf="erroMateriais && !carregandoMateriais" class="materiais-error">
+        <span class="icon">⚠️</span>
+        <p>{{ erroMateriais }}</p>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="!carregandoMateriais && !erroMateriais && (semanas.length === 0)" class="materiais-empty">
+        <span class="empty-icon">📚</span>
+        <p>Nenhuma semana/módulo cadastrado ainda.</p>
+        <button *ngIf="podeGerenciarMateriais()" (click)="criarSemana()" class="btn btn-outline-primary btn-sm">
+          Criar Primeira Semana
+        </button>
+      </div>
+
+      <!-- Semanas List -->
+      <div *ngIf="!carregandoMateriais && !erroMateriais && (semanas.length > 0)" class="semanas-list">
+        <div *ngFor="let semana of semanas" class="semana-card">
+          <div class="semana-header">
+            <div class="semana-title">
+              <h3>Semana {{ semana.numero }}: {{ semana.titulo }}</h3>
+              <button *ngIf="podeGerenciarMateriais()" (click)="selecionarSemana(semana.id!)"
+                [class.active]="semanaSelecionadaId === semana.id" class="btn btn-link btn-sm">
+                {{ semanaSelecionadaId === semana.id ? 'Ocultar Materiais' : 'Ver Materiais' }}
+              </button>
+              <button *ngIf="podeGerenciarMateriais()" (click)="excluirSemana(semana.id!)"
+                class="btn btn-link btn-sm text-danger">
+                🗑️ Excluir Semana
+              </button>
+            </div>
+            <div class="semana-meta">
+              <span *ngIf="semana.descricao" class="semana-descricao">
+                {{ semana.descricao }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Materiais da Semana -->
+          <div *ngIf="semanaSelecionadaId === semana.id" class="materiais-da-semana">
+            <div *ngIf="getMateriaisDaSemana(semana.id).length === 0" class="materiais-vazio">
+              <span class="empty-icon">📄</span>
+              <p>Nenhum material adicionado ainda nesta semana.</p>
+              <button *ngIf="podeGerenciarMateriais()" (click)="abrirAdicionarMaterial(semana.id!)"
+                class="btn btn-outline-primary btn-sm">
+                + Adicionar Primeiro Material
+              </button>
+            </div>
+            <div *ngIf="getMateriaisDaSemana(semana.id).length > 0" class="materiais-grid">
+              <div *ngFor="let material of getMateriaisDaSemana(semana.id)" class="material-card">
+                <div class="material-header">
+                  <div class="material-tipo">
+                    <span class="material-tipo-icon">{{ getTipoIcon(material.tipo) }}</span>
+                    <span class="material-tipo-text">
+                      {{ material.tipo === 'PDF' ? 'PDF' : material.tipo === 'VIDEO' ? 'Vídeo' : material.tipo ===
+                      'LINK' ? 'Link' : material.tipo === 'CODIGO' ? 'Código' : material.tipo === 'IMAGEM' ? 'Imagem' :
+                      'Outro' }}
+                    </span>
+                  </div>
+                  <h4>{{ material.titulo }}</h4>
+                </div>
+                <div class="material-body">
+                  <p *ngIf="material.descricao" class="material-descricao">{{ material.descricao }}</p>
+                  <div class="material-actions">
+                    <button (click)="visualizarMaterial(material)" class="btn btn-outline-primary btn-sm">
+                      👁️ Visualizar
+                    </button>
+                    <button *ngIf="podeGerenciarMateriais()" (click)="excluirMaterial(material.id!, semana.id!)"
+                      class="btn btn-link btn-sm text-danger">
+                      🗑️ Excluir
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulário de Adicionar Material -->
+      <div *ngIf="novoMaterialSemanaId" class="adicionar-material-form">
+        <div class="adicionar-material-header">
+          <h3>Adicionar Novo Material</h3>
+          <button (click)="novoMaterialSemanaId = null; limparFormularioMaterial()" class="btn btn-link btn-sm">
+            Cancelar
+          </button>
+        </div>
+        <div class="adicionar-material-body">
+          <div class="form-group">
+            <label>Título:</label>
+            <input [(ngModel)]="novoMaterialTitulo" placeholder="Título do material" class="form-input">
+          </div>
+          <div class="form-group">
+            <label>Descrição:</label>
+            <textarea [(ngModel)]="novoMaterialDescricao" placeholder="Descrição (opcional)" class="form-input"
+              rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Tipo:</label>
+            <select [(ngModel)]="novoMaterialTipo" class="form-select">
+              <option value="PDF">PDF</option>
+              <option value="VIDEO">Vídeo</option>
+              <option value="LINK">Link</option>
+              <option value="CODIGO">Código</option>
+              <option value="IMAGEM">Imagem</option>
+              <option value="OUTRO">Outro</option>
+            </select>
+          </div>
+          <div class="form-group"
+            *ngIf="novoMaterialTipo === 'LINK' || novoMaterialTipo === 'VIDEO' || novoMaterialTipo === 'CODIGO' || novoMaterialTipo === 'IMAGEM'">
+            <label>URL:</label>
+            <input [(ngModel)]="novoMaterialUrl" placeholder="URL do material" class="form-input">
+          </div>
+          <div class="form-group"
+            *ngIf="novoMaterialTipo !== 'LINK' && novoMaterialTipo !== 'VIDEO' && novoMaterialTipo !== 'CODIGO' && novoMaterialTipo !== 'IMAGEM'">
+            <label>Arquivo:</label>
+            <input type="file" (change)="onArquivoSelecionado($event)" class="form-input">
+            <p *ngIf="arquivoSelecionado" class="arquivo-selecionado">
+              Arquivo selecionado: {{ arquivoSelecionado?.name || '' }}
+            </p>
+          </div>
+          <div class="form-group">
+            <button (click)="criarMaterial()" class="btn btn-primary btn-block">
+              Adicionar Material
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Central de Atividades e Entregas (Assignments Workflow) -->
+    <section class="atividades-section">
+      <div class="atividades-header">
+        <h2>📋 Central de Atividades e Entregas</h2>
+        <p class="atividades-description">Painel de submissão de trabalhos com contador regressivo para o prazo final,
+          suporte a envio de múltiplos arquivos/links do GitHub e campo para o professor retornar nota e feedback
+          privado</p>
+        <div class="atividades-actions">
+          <button *ngIf="isProfessor || isAdmin || usuarioEhCriador" (click)="navegarCriarAtividade()"
+            class="btn btn-primary btn-sm">
+            + Nova Atividade
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div *ngIf="carregando" class="atividades-loading">
+        <div class="spinner-sm"></div>
+        <p>Carregando atividades...</p>
+      </div>
+
+      <!-- Error -->
+      <div *ngIf="erro && !carregando" class="atividades-error">
+        <span class="icon">⚠️</span>
+        <p>{{ erro }}</p>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="!carregando && !erro && (atividades.length === 0)" class="atividades-empty">
+        <span class="empty-icon">📋</span>
+        <p>Nenhuma atividade encontrada nesta sala.</p>
+        <button *ngIf="isProfessor || usuarioEhCriador || isAdmin" (click)="navegarCriarAtividade()"
+          class="btn btn-outline-primary btn-sm">
+          Criar Primeira Atividade
+        </button>
+      </div>
+
+      <!-- Atividades List -->
+      <div *ngIf="!carregando && !erro && (atividades.length > 0)" class="atividades-list">
+        <div *ngFor="let atividade of atividades" class="atividade-card">
+          <div class="atividade-card-header">
+            <div class="atividade-card-title">
+              <h3>{{ atividade.titulo }}</h3>
+              <span class="badge" [class.badge-success]="atividade.dataEntrega && isPrazoFuturo(atividade.dataEntrega)">
+                {{ atividade.dataEntrega ? 'Prazo: ' + (atividade.dataEntrega | date:'short') : 'Sem prazo' }}
+              </span>
+            </div>
+            <div class="atividade-card-meta">
+              <span *ngIf="atividade.pontos" class="meta-badge">
+                ⭐ {{ atividade.pontos }} pontos
+              </span>
+              <span *ngIf="atividade.autorNome" class="meta-badge">
+                👤 {{ atividade.autorNome }}
+              </span>
+            </div>
+          </div>
+          <div class="atividade-card-body">
+            <p *ngIf="atividade.descricao" class="atividade-descricao">{{ atividade.descricao }}</p>
+
+            <!-- Assignments Workflow Details -->
+            <div *ngIf="atividade && atividade.id && getDetalheAtividade(atividade.id) as detalhe"
+              class="atividade-detalhes">
+              <div class="atividade-detalhes-header">
+                <h4>Detalhes da Submissão</h4>
+                <div class="atividade-detalhes-status">
+                  <span *ngIf="detalhe.carregando" class="status-loading">
+                    <div class="spinner-xs"></div> Carregando...
+                  </span>
+                  <span *ngIf="detalhe.erro" class="status-error">
+                    ⚠️ {{ detalhe.erro }}
+                  </span>
+                  <span *ngIf="detalhe.minhaSubmissao" class="status-submitted">
+                    ✅ Submissão Realizada
+                  </span>
+                  <span *ngIf="!detalhe.minhaSubmissao && atividade.id && podeEnviarSubmissao(atividade.id)"
+                    class="status-pending">
+                    ⏰ Pendente de Entrega
+                  </span>
+                </div>
+              </div>
+
+              <!-- My Submission Form -->
+              <div *ngIf="atividade.id && podeEnviarSubmissao(atividade.id) && !detalhe.enviandoSubmissao"
+                class="atividade-submissao-form">
+                <h5>Enviar Submissão</h5>
+
+                <div class="form-group">
+                  <label>Descrição:</label>
+                  <textarea [(ngModel)]="detalhe.descricaoSubmissao" placeholder="Adicione uma descrição..."
+                    class="form-input" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label>Arquivos:</label>
+                  <input type="file" (change)="onArquivoSelecionadoParaAtividade(atividade.id, $event)"
+                    class="form-input" multiple>
+                  <p *ngIf="detalhe.arquivosSubmissao?.length > 0" class="arquivo-count">
+                    {{ detalhe.arquivosSubmissao?.length }} arquivo(s) selecionado(s)
+                  </p>
+                </div>
+
+                <div class="form-group">
+                  <label>Links do GitHub:</label>
+                  <div class="github-links-container">
+                    <div *ngFor="let link of detalhe.linksGitHub; let i = index" class="github-link-item">
+                      <span class="github-link">{{ link }}</span>
+                      <button (click)="removerLinkGitHub(atividade.id, i)" class="btn-link btn-sm text-danger">
+                        🗑️
+                      </button>
+                    </div>
+                    <button (click)="adicionarLinkGitHub(atividade.id)" class="btn btn-outline-primary btn-sm">
+                      + Adicionar Link GitHub
+                    </button>
+                  </div>
+                </div>
+
+                <button (click)="enviarSubmissaoAtividade(atividade.id)" [disabled]="!atividade.id || detalhe.enviandoSubmissao || 
+                                   (!detalhe.arquivosSubmissao?.length && 
+                                    !detalhe.descricaoSubmissao?.trim() && 
+                                    (!detalhe.linksGitHub?.length))" class="btn btn-primary btn-block">
+                  {{ detalhe.enviandoSubmissao ? 'Enviando...' : 'Enviar Submissão' }}
+                </button>
+              </div>
+
+              <!-- My Submission View -->
+              <div *ngIf="atividade.id && detalhe.minhaSubmissao" class="atividade-submissao-view">
+                <div class="submissao-info">
+                  <div class="submissao-meta">
+                    <span class="submissao-data">
+                      📅 Enviado em: {{ detalhe.minhaSubmissao?.dataSubmissao |
+                      date:'short' }}
+                    </span>
+                    <span *ngIf="detalhe.minhaSubmissao?.urlDocumento" class="submissao-documento">
+                      📄 Documento: <a [href]="detalhe.minhaSubmissao.urlDocumento" target="_blank">
+                        Visualizar
+                      </a>
+                    </span>
+                  </div>
+
+                  <div *ngIf="detalhe.minhaSubmissao?.descricao" class="submissao-descricao">
+                    <strong>Descrição:</strong> {{ detalhe.minhaSubmissao?.descricao }}
+                  </div>
+
+                  <!-- Professor Feedback Section -->
+                  <div *ngIf="podeCorrigirSubmissao(atividade.id) && detalhe.minhaSubmissao" class="professor-feedback">
+                    <h6>Feedback do Professor</h6>
+
+                    <div class="form-group">
+                      <label>Nota:</label>
+                      <input type="number" [(ngModel)]="detalhe.nota" class="form-control">
+                    </div>
+                    <div class="form-group">
+                      <label>Feedback Privado:</label>
+                      <textarea [(ngModel)]="detalhe.feedback" class="form-control"></textarea>
+                    </div>
+                    <button (click)="corrigirSubmissaoAtividade(detalhe.minhaSubmissao?.id, 
+                            detalhe.nota, detalhe.feedback)" class="btn btn-success btn-block">
+                      Corrigir e Enviar Feedback
+                    </button>
+                  </div>
+
+                  <!-- Student View of Professor Feedback -->
+                  <div *ngIf="!podeCorrigirSubmissao(atividade.id) && (detalhe.nota !== null || detalhe.feedback)"
+                    class="student-feedback">
+                    <h6>Feedback do Professor</h6>
+
+                    <div *ngIf="detalhe.nota !== null" class="feedback-nota">
+                      <strong>Nota:</strong> {{ detalhe.nota }}/10
+                    </div>
+
+                    <div *ngIf="detalhe.feedback" class="feedback-text">
+                      <strong>Feedback:</strong> {{ detalhe.feedback }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Other Students Submissions (for professors) -->
+              <div *ngIf="podeCorrigirSubmissao(atividade.id) && detalhe.submissoes?.length > 0"
+                class="outras-submissoes">
+                <h5>Outras Submissões ({{ detalhe.submissoes.length }})</h5>
+
+                <div *ngFor="let submissao of detalhe.submissoes" class="outra-submissao-card">
+                  <div class="outra-submissao-header">
+                    <strong>{{ submissao.alunoNome }}</strong>
+                    <span class="submissao-data">
+                      📅 {{ submissao.dataSubmissao | date:'short' }}
+                    </span>
+                    <span *ngIf="submissao.nota !== null" class="submissao-nota">
+                      ⭐ Nota: {{ submissao.nota }}/10
+                    </span>
+                  </div>
+
+                  <div *ngIf="submissao.descricao" class="outra-submissao-descricao">
+                    {{ submissao.descricao }}
+                  </div>
+
+                  <div *ngIf="submissao.urlDocumento" class="outra-submissao-documento">
+                    📄 <a [href]="submissao.urlDocumento" target="_blank">Visualizar Documento</a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

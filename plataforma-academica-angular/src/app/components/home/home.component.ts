@@ -25,10 +25,15 @@ import { AmigosSectionComponent } from './sections/amigos-section.component';
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   title = 'Plataforma Acadêmica';
+  isLoggedIn = false;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.isLoggedIn = !!localStorage.getItem('usuarioId');
+    }
+  }
 
   ngAfterViewInit(): void {
     if (!isPlatformBrowser(this.platformId)) {

@@ -1,0 +1,110 @@
+<div class="calendario-container">
+    <!-- Cabeçalho -->
+    <div class="calendario-header">
+        <h2>Calendário Acadêmico</h2>
+        <div class="calendario-filtros">
+            <button class="btn-filtro" (click)="filtrarHoje()">Hoje</button>
+            <button class="btn-filtro" (click)="filtrarAmanha()">Amanhã</button>
+            <button class="btn-filtro" (click)="filtrarSemana()">Esta Semana</button>
+            <button class="btn-filtro" (click)="filtrarTodos()">Todos</button>
+        </div>
+    </div>
+
+    <!-- Estado de carregamento -->
+    <div *ngIf="carregando" class="carregando">
+        <div class="spinner"></div>
+        <p>Carregando eventos...</p>
+    </div>
+
+    <!-- Estado de erro -->
+    <div *ngIf="!carregando && erroCarregamento" class="erro">
+        <p>{{ erroCarregamento }}</p>
+        <button class="btn-retry" (click)="carregarEventos()">Tentar Novamente</button>
+    </div>
+
+    <!-- Lista de eventos -->
+    <div *ngIf="!carregando && !erroCarregamento" class="eventos-lista">
+
+        <!-- Eventos de Hoje -->
+        <div *ngIf="eventosHoje.length > 0" class="eventos-section">
+            <h3 class="section-title">Hoje</h3>
+            <div class="evento-item" *ngFor="let evento of eventosHoje">
+                <div class="evento-content">
+                    <div class="evento-icone">
+                        {{ getTipoIcone(evento.tipo) }}
+                    </div>
+                    <div class="evento-info">
+                        <h4 class="evento-titulo">{{ evento.titulo }}</h4>
+                        <p class="evento-descricao" *ngIf="evento.descricao">{{ evento.descricao }}</p>
+                        <div class="evento-meta">
+                            <span class="evento-data">
+                                {{ formatarData(evento.dataInicio) }}
+                                <span *ngIf="evento.dataFim && evento.dataFim !== evento.dataInicio">
+                                    - {{ formatarData(evento.dataFim) }}
+                                </span>
+                            </span>
+                            <span class="evento-hora" *ngIf="!evento.todosOsDia">
+                                {{ formatarHora(evento.dataInicio) }}
+                                <span *ngIf="evento.dataFim && evento.dataFim !== evento.dataInicio">
+                                    - {{ formatarHora(evento.dataFim) }}
+                                </span>
+                            </span>
+                            <span class="evento-tipo-badge" [class]="getTipoClasse(evento.tipo)">
+                                {{ evento.tipo | titlecase }}
+                            </span>
+                            <span class="evento-disciplina" *ngIf="evento.disciplina">
+                                {{ evento.disciplina }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Eventos de Amanhã -->
+        <div *ngIf="eventosProximos.length > 0" class="eventos-section">
+            <h3 class="section-title">Próximos Dias</h3>
+            <div class="evento-item" *ngFor="let evento of eventosProximos">
+                <div class="evento-content">
+                    <div class="evento-icone">
+                        {{ getTipoIcone(evento.tipo) }}
+                    </div>
+                    <div class="evento-info">
+                        <h4 class="evento-titulo">{{ evento.titulo }}</h4>
+                        <p class="evento-descricao" *ngIf="evento.descricao">{{ evento.descricao }}</p>
+                        <div class="evento-meta">
+                            <span class="evento-data">
+                                {{ formatarData(evento.dataInicio) }}
+                                <span *ngIf="evento.dataFim && evento.dataFim !== evento.dataInicio">
+                                    - {{ formatarData(evento.dataFim) }}
+                                </span>
+                            </span>
+                            <span class="evento-hora" *ngIf="!evento.todosOsDia">
+                                {{ formatarHora(evento.dataInicio) }}
+                                <span *ngIf="evento.dataFim && evento.dataFim !== evento.dataInicio">
+                                    - {{ formatarHora(evento.dataFim) }}
+                                </span>
+                            </span>
+                            <span class="evento-tipo-badge" [class]="getTipoClasse(evento.tipo)">
+                                {{ evento.tipo | titlecase }}
+                            </span>
+                            <span class="evento-disciplina" *ngIf="evento.disciplina">
+                                {{ evento.disciplina }}
+                            </span>
+                            <span class="evento-dias-restantes"
+                                *ngIf="!isEventoHoje(evento.dataInicio) && !isEventoAmanha(evento.dataInicio)">
+                                {{ calcularDiasRestantes(evento.dataInicio) }} dias
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estado vazio -->
+        <div *ngIf="(eventosHoje.length === 0 && eventosProximos.length === 0) || (eventos.length === 0 && !carregando)"
+            class="vazio">
+            <p>Nenhum evento acadêmico encontrado para o período selecionado.</p>
+        </div>
+    </div>
+</div>

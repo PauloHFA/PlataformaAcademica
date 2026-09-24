@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { UsuarioService } from '../../../services/usuario.service';
 import { AmizadeService } from '../../../services/amizade.service';
 import { Usuario } from '../../../models/usuario.model';
@@ -9,7 +10,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-usuario-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './usuario-list.html',
   styleUrl: './usuario-list.css'
 })
@@ -17,9 +18,11 @@ export class UsuarioListComponent implements OnInit, OnDestroy {
   usuarios: Usuario[] = [];
   carregando = false;
   mensagemErro = '';
-  currentUserId: number | null = null;
-  amigosIds: Set<number> = new Set();
-  pendentesIds: Set<number> = new Set();
+  currentUserId: string | null = null;
+  amigosIds: Set<string> = new Set();
+  pendentesIds: Set<string> = new Set();
+  termoBusca = '';
+  filtroPerfil = 'todos';
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -30,15 +33,14 @@ export class UsuarioListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      const usuarioId = localStorage.getItem('usuarioId');
-      this.currentUserId = usuarioId ? parseInt(usuarioId) : null;
+      this.currentUserId = localStorage.getItem('usuarioId');
     }
     this.carregarDados();
   }
 
   carregarDados(): void {
     if (!this.currentUserId) return;
-    
+
     this.carregarUsuarios();
     this.carregarAmigos();
     this.carregarPendentes();
@@ -75,7 +77,7 @@ export class UsuarioListComponent implements OnInit, OnDestroy {
 
   carregarAmigos(): void {
     if (!this.currentUserId) return;
-    
+
     this.amizadeService.listarAmigos(this.currentUserId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -89,13 +91,13 @@ export class UsuarioListComponent implements OnInit, OnDestroy {
             }
           });
         },
-        error: () => {}
+        error: () => { }
       });
   }
 
   carregarPendentes(): void {
     if (!this.currentUserId) return;
-    
+
     this.amizadeService.listarPendentes(this.currentUserId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -109,25 +111,63 @@ export class UsuarioListComponent implements OnInit, OnDestroy {
             }
           });
         },
-        error: () => {}
+        error: () => { }
       });
   }
 
-  temRelacao(usuarioId: number): boolean {
+  temRelacao(usuarioId: string): boolean {
     return this.amigosIds.has(usuarioId) || this.pendentesIds.has(usuarioId);
   }
 
-  getStatusBotao(usuarioId: number): string {
+  getStatusBotao(usuarioId: string): string {
     if (this.amigosIds.has(usuarioId)) return 'Amigo';
     if (this.pendentesIds.has(usuarioId)) return 'Pendente';
     return 'Adicionar';
+  }
+
+  get usuariosFiltrados(): Usuario[] {
+    const termo = this.termoBusca.trim().toLowerCase();
+
+    return this.usuarios.filter(usuario => {
+      const nome = `${usuario.nome || ''} ${usuario.sobrenome || ''}`.toLowerCase();
+      const email = (usuario.email || '').toLowerCase();
+      const perfil = this.getPerfil(usuario).toLowerCase();
+      const correspondeBusca = !termo || nome.includes(termo) || email.includes(termo);
+      const correspondePerfil = this.filtroPerfil === 'todos' || perfil === this.filtroPerfil;
+      return correspondeBusca && correspondePerfil;
+    });
+  }
+
+  get totalUtilizadores(): number {
+    return this.usuarios.length;
+  }
+
+  get totalProfessores(): number {
+    return this.usuarios.filter(usuario => this.getPerfil(usuario) === 'professor').length;
+  }
+
+  get totalAlunos(): number {
+    return this.usuarios.filter(usuario => this.getPerfil(usuario) === 'aluno').length;
+  }
+
+  getPerfil(usuario: Usuario): string {
+    const perfil = (usuario.tipoUsuario || '').toLowerCase();
+    return perfil.includes('prof') ? 'professor' : 'aluno';
+  }
+
+  getNomeCompleto(usuario: Usuario): string {
+    return `${usuario.nome || ''} ${usuario.sobrenome || ''}`.trim() || 'Utilizador';
+  }
+
+  getInicial(usuario: Usuario): string {
+    return this.getNomeCompleto(usuario).charAt(0).toUpperCase();
   }
 
   trackByUsuarioId(index: number, usuario: Usuario): any {
     return usuario.id || index;
   }
 
-  solicitarAmizade(amigoId: number): void {
+  solicitarAmizade(amigoId: string): void {
     if (!this.currentUserId) {
       alert('Você precisa estar logado');
       return;

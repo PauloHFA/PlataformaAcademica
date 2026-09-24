@@ -1,7 +1,8 @@
-import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, OnInit, PLATFORM_ID, Inject, Input } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { LayoutService } from '../../services/layout.service';
 
 @Component({
     selector: 'app-header-modern',
@@ -18,33 +19,27 @@ import { trigger, transition, style, animate } from '@angular/animations';
         ])
     ]
 })
-export class HeaderModernComponent implements OnInit {
-    isLoggedIn = false;
-    usuarioNome = '';
+export class HeaderModernComponent {
+    @Input() isLoggedIn = false;
+    @Input() usuarioNome = '';
     mobileMenuOpen = false;
+    isFocusMode = false;
 
     constructor(
         private router: Router,
+        private layoutService: LayoutService,
         @Inject(PLATFORM_ID) private platformId: Object
     ) { }
 
     ngOnInit() {
-        this.checkLoginStatus();
+        this.layoutService.focusMode$.subscribe(focusMode => {
+            this.isFocusMode = focusMode;
+        });
     }
 
-    checkLoginStatus() {
-        if (isPlatformBrowser(this.platformId)) {
-            const usuario = localStorage.getItem('usuario');
-            if (usuario) {
-                try {
-                    const usuarioData = JSON.parse(usuario);
-                    this.isLoggedIn = true;
-                    this.usuarioNome = usuarioData.nome?.split(' ')[0] || 'Usuário';
-                } catch (e) {
-                    this.isLoggedIn = false;
-                }
-            }
-        }
+    navigate(path: string) {
+        this.router.navigate([path]);
+        this.mobileMenuOpen = false;
     }
 
     logout() {
@@ -61,8 +56,7 @@ export class HeaderModernComponent implements OnInit {
         this.mobileMenuOpen = !this.mobileMenuOpen;
     }
 
-    navigate(path: string) {
-        this.router.navigate([path]);
-        this.mobileMenuOpen = false;
+    toggleFocusMode() {
+        this.layoutService.toggleFocusMode();
     }
 }

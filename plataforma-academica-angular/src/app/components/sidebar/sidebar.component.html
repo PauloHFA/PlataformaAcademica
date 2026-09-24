@@ -1,78 +1,158 @@
-<div class="sidebar" [class.open]="isOpen">
-  <!-- Header da Sidebar -->
+<aside class="sidebar" [class.open]="isOpen" aria-label="Navegação Principal">
+  <!-- Cabeçalho da Marca -->
   <div class="sidebar-header">
-    <h2>Plataforma Acadêmica</h2>
-    <button class="toggle-btn" (click)="toggleSidebar()">
-      {{ isOpen ? '✕' : '☰' }}
+    <div class="brand-wrapper" *ngIf="isOpen">
+      <div class="brand-icon-box">
+        <svg class="brand-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+          <path d="M6 12v5c3 3 9 3 12 0v-5" />
+        </svg>
+      </div>
+      <div class="brand-info">
+        <h1 class="brand-name">Plataforma Acadêmica</h1>
+        <span class="brand-subtitle">Ensino &amp; Pesquisa</span>
+      </div>
+    </div>
+
+    <button type="button" class="toggle-btn" (click)="toggleSidebar()"
+      [title]="isOpen ? 'Recolher menu lateral' : 'Expandir menu lateral'"
+      [attr.aria-label]="isOpen ? 'Recolher menu lateral' : 'Expandir menu lateral'">
+      <svg class="toggle-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+        <path d="M9 3v18" />
+        <path *ngIf="isOpen" d="m14 9-3 3 3 3" />
+        <path *ngIf="!isOpen" d="m11 9 3 3-3 3" />
+      </svg>
     </button>
   </div>
 
-  <!-- Perfil do Usuário -->
-  <div class="user-profile" *ngIf="usuarioNome">
-    <div class="user-avatar">
-      {{ usuarioNome.charAt(0).toUpperCase() }}
-    </div>
-    <div class="user-info" *ngIf="isOpen">
-      <p class="user-name">{{ usuarioNome }}</p>
-      <p class="user-email">{{ usuarioEmail }}</p>
+  <!-- Card Editorial do Usuário -->
+  <div class="user-card-section">
+    <div class="user-card" [class.collapsed]="!isOpen">
+      <div class="avatar-wrapper">
+        <div class="user-avatar" [attr.aria-label]="usuarioNome || 'Usuário'">
+          {{ usuarioNome ? (usuarioNome.charAt(0) | uppercase) : 'U' }}
+        </div>
+        <span class="status-indicator" title="Status: Online"></span>
+      </div>
+
+      <div class="user-meta" *ngIf="isOpen">
+        <p class="user-name" [title]="usuarioNome || 'Membro Acadêmico'">
+          {{ usuarioNome || 'Membro Acadêmico' }}
+        </p>
+        <span class="user-status-label">
+          <span class="status-dot"></span>
+          Online
+        </span>
+      </div>
     </div>
   </div>
 
   <!-- Menu de Navegação -->
-  <nav class="sidebar-menu">
-    <ul>
-      <!-- Salas -->
-      <li>
-        <button (click)="navegarPara('/salas')" class="menu-item">
-          <span class="icon">📚</span>
-          <span class="label" *ngIf="isOpen">Salas de Aula</span>
-        </button>
+  <nav class="sidebar-nav">
+    <div class="nav-section-title" *ngIf="isOpen">Navegação</div>
+    <ul class="nav-menu">
+      <li class="nav-item">
+        <a [routerLink]="['/salas']" routerLinkActive="active" (click)="navegarPara('/salas')" class="menu-item"
+          title="Salas de Aula">
+          <svg class="menu-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+            <path d="M6 6h10" />
+            <path d="M6 10h10" />
+          </svg>
+          <span class="menu-label" *ngIf="isOpen">Salas de Aula</span>
+        </a>
       </li>
 
-      <!-- Usuários -->
-      <li>
-        <button (click)="navegarPara('/usuarios')" class="menu-item">
-          <span class="icon">👥</span>
-          <span class="label" *ngIf="isOpen">Usuários</span>
-        </button>
+      <li class="nav-item">
+        <a [routerLink]="['/feed']" routerLinkActive="active" (click)="navegarPara('/feed')" class="menu-item"
+          title="Feed Acadêmico">
+          <svg class="menu-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" />
+            <path d="M18 14h-8" />
+            <path d="M15 18h-5" />
+            <path d="M10 6h8v4h-8V6Z" />
+          </svg>
+          <span class="menu-label" *ngIf="isOpen">Feed</span>
+        </a>
       </li>
 
-      <!-- Perfil -->
-      <li>
-        <button (click)="navegarPara('/perfil')" class="menu-item">
-          <span class="icon">👤</span>
-          <span class="label" *ngIf="isOpen">Meu Perfil</span>
-        </button>
+      <li class="nav-item">
+        <a [routerLink]="['/usuarios']" routerLinkActive="active" (click)="navegarPara('/usuarios')" class="menu-item"
+          title="Membros e Comunidade">
+          <svg class="menu-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+          <span class="menu-label" *ngIf="isOpen">Usuários</span>
+        </a>
       </li>
 
-      <!-- Feed -->
-      <li>
-        <button (click)="navegarPara('/feed')" class="menu-item">
-          <span class="icon">📰</span>
-          <span class="label" *ngIf="isOpen">Feed</span>
-        </button>
+      <li class="nav-item">
+        <a [routerLink]="['/perfil']" routerLinkActive="active" (click)="navegarPara('/perfil')" class="menu-item"
+          title="Meu Perfil">
+          <svg class="menu-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="5" />
+            <path d="M20 21a8 8 0 0 0-16 0" />
+          </svg>
+          <span class="menu-label" *ngIf="isOpen">Meu Perfil</span>
+        </a>
       </li>
 
-      <!-- Amigos -->
-      <li>
-        <button (click)="navegarPara('/amigos')" class="menu-item">
-          <span class="icon">👥</span>
-          <span class="label" *ngIf="isOpen">Amigos</span>
-        </button>
+      <li class="nav-item">
+        <a [routerLink]="['/calendario']" routerLinkActive="active" (click)="navegarPara('/calendario')"
+          class="menu-item" title="Calendário Acadêmico">
+          <svg class="menu-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
+          <span class="menu-label" *ngIf="isOpen">Calendário</span>
+        </a>
       </li>
     </ul>
   </nav>
 
-  <!-- Notificações -->
-  <div class="sidebar-notificacoes" *ngIf="isOpen">
-    <app-notificacoes></app-notificacoes>
-  </div>
-
-  <!-- Logout -->
+  <!-- Rodapé Discreto com Flexbox Horizontal (Notificação + Ghost Logout) -->
   <div class="sidebar-footer">
-    <button (click)="logout()" class="logout-btn">
-      <span class="icon">🚪</span>
-      <span class="label" *ngIf="isOpen">Sair</span>
-    </button>
+    <div class="footer-actions-row">
+      <div class="footer-notification-item">
+        <app-notificacoes></app-notificacoes>
+      </div>
+
+      <!-- Theme Toggle Button -->
+      <button type="button" (click)="toggleTheme()" class="theme-btn" title="Alternar tema" [class.active]="isDarkMode"
+        [attr.aria-label]="isDarkMode ? 'Desativar modo escuro' : 'Ativar modo escuro'">
+        <svg class="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg>
+        <span class="theme-label" *ngIf="isOpen">
+          {{ isDarkMode ? 'Modo Claro' : 'Modo Escuro' }}
+        </span>
+      </button>
+
+      <button type="button" (click)="logout()" class="logout-btn" title="Encerrar sessão"
+        [attr.aria-label]="'Encerrar sessão'">
+        <svg class="logout-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+          <polyline points="16 17 21 12 16 7" />
+          <line x1="21" x2="9" y1="12" y2="12" />
+        </svg>
+        <span class="logout-label" *ngIf="isOpen">Sair</span>
+      </button>
+    </div>
   </div>
-</div>
+</aside>

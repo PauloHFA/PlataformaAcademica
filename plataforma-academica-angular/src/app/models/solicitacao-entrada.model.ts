@@ -1,11 +1,11 @@
 export interface SolicitacaoEntrada {
-  id?: number;
+  id?: string;
   sala?: {
-    id: number;
+    id: string;
     nome: string;
   };
   usuario?: {
-    id: number;
+    id: string;
     nome: string;
     email: string;
   };

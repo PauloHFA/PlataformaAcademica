@@ -1,6 +1,7 @@
 import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { SalaService } from '../../../services/sala.service';
 import { SolicitacaoEntradaService } from '../../../services/solicitacao-entrada.service';
 import { SalaDeAula } from '../../../models/sala.model';
@@ -8,7 +9,7 @@ import { SalaDeAula } from '../../../models/sala.model';
 @Component({
   selector: 'app-sala-list',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './sala-list.html',
   styleUrl: './sala-list.css'
 })
@@ -18,20 +19,50 @@ export class SalaListComponent implements OnInit {
   erro = '';
   criando = false;
   mensagemCriar = '';
-  currentUserId: number | null = null;
+  currentUserId: string | null = null;
   isProfessor = false;
+  termoBusca = '';
+  abaAtiva: 'todas' | 'minhas' | 'arquivadas' = 'todas';
 
   constructor(
     private salaService: SalaService,
     private solicitacaoService: SolicitacaoEntradaService,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.currentUserId = this.getCurrentUserId();
     this.isProfessor = this.checkIsProfessor();
     console.log('Usuario ID carregado:', this.currentUserId, 'isProfessor:', this.isProfessor);
     this.carregarSalas();
+  }
+
+  selecionarAba(aba: 'todas' | 'minhas' | 'arquivadas') {
+    this.abaAtiva = aba;
+  }
+
+  get totalMinhasSalas(): number {
+    return this.salas.filter(s => s.criadorId === this.currentUserId || (s.membrosIds && s.membrosIds.includes(this.currentUserId || ''))).length;
+  }
+
+  get salasFiltradas(): SalaDeAula[] {
+    let resultado = this.salas;
+
+    if (this.abaAtiva === 'minhas') {
+      resultado = resultado.filter(s => s.criadorId === this.currentUserId || (s.membrosIds && s.membrosIds.includes(this.currentUserId || '')));
+    } else if (this.abaAtiva === 'arquivadas') {
+      resultado = [];
+    }
+
+    if (this.termoBusca && this.termoBusca.trim() !== '') {
+      const termo = this.termoBusca.toLowerCase().trim();
+      resultado = resultado.filter(s =>
+        (s.nome && s.nome.toLowerCase().includes(termo)) ||
+        (s.criadorNome && s.criadorNome.toLowerCase().includes(termo))
+      );
+    }
+
+    return resultado;
   }
 
   carregarSalas(): void {
@@ -61,13 +92,13 @@ export class SalaListComponent implements OnInit {
     this.mensagemCriar = '';
     this.criando = true;
     const exemplo: SalaDeAula = {
-      nome: 'Sala de Teste ' + new Date().toISOString().slice(0,19)
+      nome: 'Sala de Teste ' + new Date().toISOString().slice(0, 19)
     };
 
-    let criadorId = 0;
+    let criadorId = '';
     try {
       const usuarioStr = localStorage.getItem('usuario');
-      if (usuarioStr) criadorId = JSON.parse(usuarioStr).id || 0;
+      if (usuarioStr) criadorId = JSON.parse(usuarioStr).id || '';
     } catch (e) { }
 
     this.salaService.criarSala(exemplo, criadorId).subscribe({
@@ -86,16 +117,16 @@ export class SalaListComponent implements OnInit {
 
   deleteSala(sala: SalaDeAula): void {
     if (!sala || !sala.id) return;
-    
+
     if (sala.criadorId !== this.currentUserId) {
       alert('Apenas o criador da sala pode deletá-la.');
       return;
     }
-    
+
     const confirmado = confirm(`Tem certeza que deseja deletar a sala "${sala.nome}"?`);
     if (!confirmado) return;
-    
-    const usuarioId = this.currentUserId || sala.criadorId || 1;
+
+    const usuarioId = this.currentUserId || sala.criadorId || '';
     console.log(`Deletando sala ${sala.id} com usuário ${usuarioId}`);
 
     this.salaService.deletarSala(sala.id!, usuarioId).subscribe({
@@ -110,19 +141,10 @@ export class SalaListComponent implements OnInit {
     });
   }
 
-  private getCurrentUserId(): number | null {
+  private getCurrentUserId(): string | null {
     if (!isPlatformBrowser(this.platformId)) return null;
-    
-    try {
-      const usuarioId = localStorage.getItem('usuarioId');
-      if (usuarioId) {
-        const parsed = parseInt(usuarioId);
-        return !isNaN(parsed) ? parsed : null;
-      }
-    } catch (e) {
-      console.error('Erro ao obter usuarioId:', e);
-    }
-    return null;
+
+    return localStorage.getItem('usuarioId');
   }
 
   private checkIsProfessor(): boolean {

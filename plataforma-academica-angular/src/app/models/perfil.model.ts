@@ -10,7 +10,7 @@
  * Contém apenas os campos necessários para o frontend enviar
  */
 export interface PerfilDTO {
-  id?: number;
+  id?: string;
   nome?: string;
   sobrenome?: string;
   email?: string;
@@ -26,10 +26,12 @@ export interface PerfilDTO {
   bio?: string;
   curso?: string;
   fotoPerfil?: string;
-  usuarioId?: number;
+  usuarioId?: string;
+  badges?: Badge[];
 }
 
 import { Usuario } from './usuario.model';
+import { Badge } from './badge.model';
 
 /**
  * Modelo completo de Perfil retornado pelo backend
@@ -41,6 +43,7 @@ export interface Perfil extends Usuario {
   fotoPerfil?: string;
   dataCriacao?: string;
   dataAtualizacao?: string;
+  badges?: Badge[];
 }
 
 /**

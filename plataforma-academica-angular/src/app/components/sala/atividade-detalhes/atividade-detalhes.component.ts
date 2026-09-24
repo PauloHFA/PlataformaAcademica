@@ -33,7 +33,7 @@ export class AtividadeDetalhesComponent implements OnInit {
 
   comentarios: Comentario[] = [];
   novoComentario = '';
-  usuarioId = 0;
+  usuarioId = '';
   isProfessor = false;
   usuarioEhCriadorDaSala = false;
 
@@ -68,8 +68,7 @@ export class AtividadeDetalhesComponent implements OnInit {
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      const usuarioIdStr = localStorage.getItem('usuarioId');
-      this.usuarioId = usuarioIdStr ? parseInt(usuarioIdStr, 10) : 0;
+      this.usuarioId = localStorage.getItem('usuarioId') || '';
       this.isProfessor = localStorage.getItem('isProfessor') === 'true';
     }
 
@@ -94,17 +93,17 @@ export class AtividadeDetalhesComponent implements OnInit {
   carregarAtividade(): void {
     if (!this.salaId || !this.atividadeId) return;
 
-    this.salaService.buscarPorId(Number(this.salaId)).subscribe({
+    this.salaService.buscarPorId(this.salaId).subscribe({
       next: (s) => {
         this.salaContext.setNomeSala(s.nome);
-        this.usuarioEhCriadorDaSala = s.criadorId === Number(this.currentUserId);
+        this.usuarioEhCriadorDaSala = s.criadorId === this.currentUserId;
       },
       error: () => { }
     });
 
-    this.salaService.listarAtividades(Number(this.salaId)).subscribe({
+    this.salaService.listarAtividades(this.salaId).subscribe({
       next: (atividades) => {
-        this.atividade = atividades.find(a => a.id === Number(this.atividadeId)) || null;
+        this.atividade = atividades.find(a => a.id === this.atividadeId) || null;
         this.carregando = false;
       },
       error: () => {
@@ -140,13 +139,13 @@ export class AtividadeDetalhesComponent implements OnInit {
     if (!this.atividadeId) return;
 
     console.log('Carregando comentários da atividade:', this.atividadeId);
-    this.comentarioService.listarPorAtividade(Number(this.atividadeId)).subscribe({
+    this.comentarioService.listarPorAtividade(this.atividadeId).subscribe({
       next: (c: Comentario[]) => {
         console.log('Comentários da atividade', this.atividadeId, 'carregados:', c);
         this.comentarios = (c || []).map((comentario: Comentario) => ({
           ...comentario,
           autorNome: comentario.autor?.nome || 'Usuário',
-          autorId: comentario.autor?.id || comentario.autorId || 0
+          autorId: comentario.autor?.id || comentario.autorId || ''
         }));
         console.log('Comentários processados:', this.comentarios);
       },
@@ -181,7 +180,7 @@ export class AtividadeDetalhesComponent implements OnInit {
     });
   }
 
-  deletarComentario(id: number): void {
+  deletarComentario(id: string): void {
     if (confirm('Tem certeza que deseja deletar este comentário?')) {
       this.comentarioService.deletar(id).subscribe({
         next: () => {

@@ -18,7 +18,7 @@ export class SalaSidebarComponent implements OnInit {
   constructor(
     private salaService: SalaService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.carregarSalas();
@@ -47,7 +47,7 @@ export class SalaSidebarComponent implements OnInit {
     }
   }
 
-  selecionarSala(salaId: number) {
+  selecionarSala(salaId: string) {
     this.router.navigate(['/salas', salaId]);
   }
 }

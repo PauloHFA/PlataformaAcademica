@@ -9,25 +9,25 @@ import { SolicitacaoEntrada } from '../models/solicitacao-entrada.model';
 export class SolicitacaoEntradaService {
   private baseUrl = 'http://localhost:8090/api/solicitacoes';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  solicitarEntrada(salaId: number, usuarioId: number): Observable<SolicitacaoEntrada> {
+  solicitarEntrada(salaId: string, usuarioId: string): Observable<SolicitacaoEntrada> {
     return this.http.post<SolicitacaoEntrada>(`${this.baseUrl}/solicitar/${salaId}/${usuarioId}`, {});
   }
 
-  listarPendentes(salaId: number): Observable<SolicitacaoEntrada[]> {
+  listarPendentes(salaId: string): Observable<SolicitacaoEntrada[]> {
     return this.http.get<SolicitacaoEntrada[]>(`${this.baseUrl}/sala/${salaId}/pendentes`);
   }
 
-  aprovar(solicitacaoId: number, professorId: number): Observable<SolicitacaoEntrada> {
+  aprovar(solicitacaoId: string, professorId: string): Observable<SolicitacaoEntrada> {
     return this.http.put<SolicitacaoEntrada>(`${this.baseUrl}/${solicitacaoId}/aprovar/${professorId}`, {});
   }
 
-  rejeitar(solicitacaoId: number, professorId: number): Observable<SolicitacaoEntrada> {
+  rejeitar(solicitacaoId: string, professorId: string): Observable<SolicitacaoEntrada> {
     return this.http.put<SolicitacaoEntrada>(`${this.baseUrl}/${solicitacaoId}/rejeitar/${professorId}`, {});
   }
 
-  minhasSolicitacoes(usuarioId: number): Observable<SolicitacaoEntrada[]> {
+  minhasSolicitacoes(usuarioId: string): Observable<SolicitacaoEntrada[]> {
     return this.http.get<SolicitacaoEntrada[]>(`${this.baseUrl}/usuario/${usuarioId}/minhas`);
   }
 }

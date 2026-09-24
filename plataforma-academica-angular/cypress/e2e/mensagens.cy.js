@@ -4,7 +4,7 @@ describe('Sistema de Mensagens', () => {
 
   before(() => {
     // Criar dois professores para testar mensagens
-    cy.request('POST', 'http://localhost:8080/api/professores/cadastro', {
+    cy.request('POST', 'http://localhost:8090/api/professores/cadastro', {
       nome: 'Professor Mensagens 1',
       email: `prof.msg1.${Date.now()}@edu.com`,
       senha: 'senha123',
@@ -13,7 +13,7 @@ describe('Sistema de Mensagens', () => {
       usuario1 = response.body
     })
 
-    cy.request('POST', 'http://localhost:8080/api/professores/cadastro', {
+    cy.request('POST', 'http://localhost:8090/api/professores/cadastro', {
       nome: 'Professor Mensagens 2',
       email: `prof.msg2.${Date.now()}@edu.com`,
       senha: 'senha123',
@@ -62,7 +62,7 @@ describe('Sistema de Mensagens', () => {
 
   it('deve enviar mensagem via API', () => {
     // Testar envio via API para garantir backend funciona
-    cy.request('POST', `http://localhost:8080/api/mensagens`, {
+    cy.request('POST', `http://localhost:8090/api/mensagens`, {
       remetenteId: usuario1.id,
       destinatarioId: usuario2.id,
       conteudo: 'Mensagem de teste via API',
@@ -72,7 +72,7 @@ describe('Sistema de Mensagens', () => {
     })
 
     // Verificar se foi salva
-    cy.request('GET', `http://localhost:8080/api/mensagens/conversas/${usuario1.id}`).then((response) => {
+    cy.request('GET', `http://localhost:8090/api/mensagens/conversas/${usuario1.id}`).then((response) => {
       expect(response.status).to.eq(200)
       expect(response.body).to.be.an('array')
     })

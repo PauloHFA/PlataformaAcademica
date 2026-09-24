@@ -83,8 +83,8 @@ class ComunidadeServiceImplTest {
     @Test
     void deletarComunidade_DeveDeletar_QuandoValido() {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long solicitanteId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID solicitanteId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Usuario dono = new Usuario();
         dono.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
@@ -105,8 +105,8 @@ class ComunidadeServiceImplTest {
     @Test
     void deletarComunidade_DeveLancarResourceNotFoundException_QuandoComunidadeNaoEncontrada() {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long solicitanteId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID solicitanteId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(comunidadeRepository.findById(id)).thenReturn(Optional.empty());
 
@@ -118,8 +118,8 @@ class ComunidadeServiceImplTest {
     @Test
     void deletarComunidade_DeveLancarBadRequestException_QuandoNaoEhDono() {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long solicitanteId = UUID.fromString("00000000-0000-0000-0000-000000000002");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID solicitanteId = UUID.fromString("00000000-0000-0000-0000-000000000002");
 
         Usuario dono = new Usuario();
         dono.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
@@ -138,8 +138,8 @@ class ComunidadeServiceImplTest {
     @Test
     void entrarComunidade_DeveRetornarMembro_QuandoValido() {
         // Arrange
-        Long comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Comunidade comunidade = new Comunidade();
         comunidade.setId(comunidadeId);
@@ -167,8 +167,8 @@ class ComunidadeServiceImplTest {
     @Test
     void entrarComunidade_DeveLancarBadRequestException_QuandoJaEhMembro() {
         // Arrange
-        Long comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Comunidade comunidade = new Comunidade();
         comunidade.setId(comunidadeId);
@@ -190,8 +190,8 @@ class ComunidadeServiceImplTest {
     @Test
     void sairComunidade_DeveDeletar_QuandoEncontrado() {
         // Arrange
-        Long comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         MembroComunidade membro = new MembroComunidade();
 
@@ -207,8 +207,8 @@ class ComunidadeServiceImplTest {
     @Test
     void sairComunidade_DeveLancarResourceNotFoundException_QuandoNaoEncontrado() {
         // Arrange
-        Long comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(membroComunidadeRepository.findByUsuarioIdAndComunidadeId(usuarioId, comunidadeId)).thenReturn(Optional.empty());
 
@@ -235,7 +235,7 @@ class ComunidadeServiceImplTest {
     @Test
     void listarMembros_DeveRetornarLista() {
         // Arrange
-        Long comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         List<MembroComunidade> membros = List.of(new MembroComunidade());
 
         when(membroComunidadeRepository.findByComunidadeId(comunidadeId)).thenReturn(membros);

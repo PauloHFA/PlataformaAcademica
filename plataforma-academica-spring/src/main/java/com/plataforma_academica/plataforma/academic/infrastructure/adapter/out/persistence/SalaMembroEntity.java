@@ -7,13 +7,14 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "sala_membro")
+@Table(name = "sala_membro", uniqueConstraints = {
+        @UniqueConstraint(name = "uk_sala_usuario", columnNames = { "sala_id", "usuario_id" }) })
 @Getter
 @Setter
 public class SalaMembroEntity {
     @Id
-    @GeneratedValue
-    private Long id;
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sala_id", nullable = false)
@@ -28,6 +29,13 @@ public class SalaMembroEntity {
 
     @Column(name = "data_entrada", nullable = false)
     private LocalDateTime dataEntrada;
+
+    @PrePersist
+    public void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
 
     public enum PapelMembro {
         DOCENTE, ALUNO

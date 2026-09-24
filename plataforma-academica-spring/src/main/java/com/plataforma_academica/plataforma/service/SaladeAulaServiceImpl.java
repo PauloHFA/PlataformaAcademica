@@ -85,6 +85,7 @@ public class SaladeAulaServiceImpl implements SaladeAulaService {
 
         sala.setCriador(criador);
         sala.setCodigoSala(gerarCodigoUnico());
+        sala.setCodigo(sala.getCodigoSala());
 
         if (sala.getUsuarios() == null) {
             sala.setUsuarios(new ArrayList<>());

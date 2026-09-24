@@ -1,0 +1,25 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Angular: Start Frontend",
+			"type": "shell",
+			"command": "cd plataforma-academica-angular && npm start",
+			"isBackground": true,
+			"problemMatcher": [
+				"$tsc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Angular: Start Frontend",
+			"type": "shell",
+			"command": "Set-Location plataforma-academica-angular; npm start",
+			"isBackground": true,
+			"problemMatcher": [
+				"$tsc"
+			],
+			"group": "build"
+		}
+	]
+}

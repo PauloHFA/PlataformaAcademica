@@ -23,14 +23,36 @@ import org.springframework.security.web.SecurityFilterChain;
  * @see REQ-001 (Autenticação e Autorização)
  *      ==========================================================================================================
  */
+import org.springframework.core.env.Environment;
+import java.util.Arrays;
+
+/**
+ * ==========================================================================================================
+ * SECURITY CONFIG — Plataforma Acadêmica
+ * ==========================================================================================================
+ * Configuração de segurança da aplicação Spring Security.
+ * 
+ * Camada: Infrastructure / Security Configuration
+ * Responsabilidades: Definir regras de autorização de requisições HTTP, filtros
+ * CSRF e políticas de acesso.
+ * 
+ * Regras:
+ * - Desativa CSRF para APIs REST stateless.
+ * - Libera acesso a recursos estáticos/uploads e endpoints públicos.
+ * 
+ * @see REQ-001 (Autenticação e Autorização)
+ *      ==========================================================================================================
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private final Environment environment;
 
-    public SecurityConfig(OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler) {
+    public SecurityConfig(OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler, Environment environment) {
         this.oAuth2LoginSuccessHandler = oAuth2LoginSuccessHandler;
+        this.environment = environment;
     }
 
     @Bean
@@ -39,8 +61,12 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/uploads/**").permitAll()
-                        .anyRequest().permitAll())
-                    .oauth2Login(oauth -> oauth.successHandler(oAuth2LoginSuccessHandler));
+                        .anyRequest().permitAll());
+
+        if (Arrays.asList(environment.getActiveProfiles()).contains("oauth")) {
+            http.oauth2Login(oauth -> oauth.successHandler(oAuth2LoginSuccessHandler));
+        }
+
         return http.build();
     }
 }

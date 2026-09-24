@@ -66,7 +66,7 @@ class MembroComunidadeServiceImplTest {
     @Test
     void buscarPorId_DeveRetornarMembro_QuandoEncontrado() {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario usuario = new Usuario();
         usuario.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         usuario.setNome("João");
@@ -94,7 +94,7 @@ class MembroComunidadeServiceImplTest {
     @Test
     void buscarPorId_DeveRetornarNull_QuandoNaoEncontrado() {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         when(membroComunidadeRepository.findById(id)).thenReturn(Optional.empty());
 
         // Act
@@ -142,7 +142,7 @@ class MembroComunidadeServiceImplTest {
     @Test
     void deletar_DeveDeletarPorId() {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         // Act
         membroComunidadeService.deletar(id);
@@ -154,7 +154,7 @@ class MembroComunidadeServiceImplTest {
     @Test
     void buscarPorComunidade_DeveRetornarLista() {
         // Arrange
-        Long comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario usuario = new Usuario();
         usuario.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         usuario.setNome("João");
@@ -184,7 +184,7 @@ class MembroComunidadeServiceImplTest {
     @Test
     void buscarPorUsuario_DeveRetornarLista() {
         // Arrange
-        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario usuario = new Usuario();
         usuario.setId(usuarioId);
         usuario.setNome("João");
@@ -214,8 +214,8 @@ class MembroComunidadeServiceImplTest {
     @Test
     void buscarPorUsuarioEComunidade_DeveRetornarMembro_QuandoEncontrado() {
         // Arrange
-        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Usuario usuario = new Usuario();
         usuario.setId(usuarioId);
@@ -245,8 +245,8 @@ class MembroComunidadeServiceImplTest {
     @Test
     void buscarPorUsuarioEComunidade_DeveRetornarNull_QuandoNaoEncontrado() {
         // Arrange
-        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(membroComunidadeRepository.findByUsuarioIdAndComunidadeId(usuarioId, comunidadeId))
                 .thenReturn(Optional.empty());

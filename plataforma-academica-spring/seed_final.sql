@@ -45,13 +45,14 @@ VALUES
 ON CONFLICT (codigo_sala) DO NOTHING;
 
 -- 3. MEMBROS DAS SALAS (sala_id UUID, usuario_id UUID)
-INSERT INTO sala_membro (sala_id, usuario_id, papel, data_entrada)
-SELECT s.id, u.id, 'ALUNO', NOW()
+ALTER TABLE sala_membro ADD CONSTRAINT uk_sala_usuario UNIQUE (sala_id, usuario_id);
+INSERT INTO sala_membro (id, sala_id, usuario_id, papel, data_entrada)
+SELECT gen_random_uuid(), s.id, u.id, 'ALUNO', NOW()
 FROM sala_de_aula s
 CROSS JOIN usuario u
 WHERE s.codigo_sala IN ('MAT-101', 'FIS-202', 'QUI-303', 'BIO-404', 'ENG-505')
 AND u.tipo_usuario = 'Aluno'
-ON CONFLICT DO NOTHING;
+ON CONFLICT (sala_id, usuario_id) DO NOTHING;
 
 -- 4. POSTAGENS (id bigint, usuario_id bigint)
 INSERT INTO postagem (titulo, conteudo, usuario_id, tipo, curtidas)

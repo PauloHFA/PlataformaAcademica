@@ -24,8 +24,6 @@ public class SaladeAulaEntity {
     @Column(name = "criador_id", nullable = false)
     private UUID criadorId;
 
-    @ElementCollection
-    @CollectionTable(name = "sala_membros", joinColumns = @JoinColumn(name = "sala_id"))
-    @Column(name = "usuario_id")
-    private List<UUID> membrosIds;
+    @OneToMany(mappedBy = "sala", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SalaMembroEntity> membros;
 }

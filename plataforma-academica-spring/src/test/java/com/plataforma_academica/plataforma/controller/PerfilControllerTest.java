@@ -96,7 +96,7 @@ class PerfilControllerTest {
     @Test
     void buscarPorId_DeveRetornarPerfil_QuandoEncontrado() throws Exception {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Perfil perfil = new Perfil();
         perfil.setId(id);
         perfil.setNome("João Silva");
@@ -118,7 +118,7 @@ class PerfilControllerTest {
     @Test
     void buscarPorId_DeveRetornarNotFound_QuandoNaoEncontrado() throws Exception {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         when(perfilService.buscarPorId(id)).thenReturn(null);
 
         // Act & Assert
@@ -129,7 +129,7 @@ class PerfilControllerTest {
     @Test
     void atualizar_DeveRetornarPerfilAtualizado_QuandoValido() throws Exception {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         PerfilDTO request = new PerfilDTO();
         request.setBio("Bio atualizada");
         request.setCurso("Novo curso");
@@ -184,7 +184,7 @@ class PerfilControllerTest {
     @Test
     void buscarPorUsuario_DeveRetornarPerfil_QuandoEncontrado() throws Exception {
         // Arrange
-        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Perfil perfil = new Perfil();
         perfil.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         perfil.setNome("João Silva");
@@ -204,7 +204,7 @@ class PerfilControllerTest {
     @Test
     void buscarPorUsuario_DeveRetornarNotFound_QuandoNaoEncontrado() throws Exception {
         // Arrange
-        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         when(perfilService.buscarPorUsuarioId(usuarioId)).thenReturn(null);
 
         // Act & Assert
@@ -215,7 +215,7 @@ class PerfilControllerTest {
     @Test
     void existePerfil_DeveRetornarTrue_QuandoPerfilExiste() throws Exception {
         // Arrange
-        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         when(perfilService.existePerfilDoUsuario(usuarioId)).thenReturn(true);
 
         // Act & Assert
@@ -227,7 +227,7 @@ class PerfilControllerTest {
     @Test
     void existePerfil_DeveRetornarFalse_QuandoPerfilNaoExiste() throws Exception {
         // Arrange
-        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         when(perfilService.existePerfilDoUsuario(usuarioId)).thenReturn(false);
 
         // Act & Assert

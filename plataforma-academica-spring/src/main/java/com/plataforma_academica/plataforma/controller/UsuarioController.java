@@ -77,7 +77,8 @@ public class UsuarioController {
         if (resultado.isPresent()) {
             return ResponseEntity.ok(resultado.get());
         }
-        return ResponseEntity.status(401).body("Email ou senha incorretos");
+        return ResponseEntity.status(401)
+                .body(java.util.Collections.singletonMap("error", "Email ou senha incorretos"));
     }
 
     @PostMapping("/cadastro")

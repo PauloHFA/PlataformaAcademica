@@ -51,7 +51,7 @@ class PlataformaServiceImplTest {
     @Test
     void atualizar_DeveRetornarPlataformaAtualizada_QuandoEncontrada() {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Plataforma existente = new Plataforma();
         existente.setId(id);
@@ -81,7 +81,7 @@ class PlataformaServiceImplTest {
     @Test
     void atualizar_DeveLancarException_QuandoNaoEncontrada() {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Plataforma atualizadaRequest = new Plataforma();
         atualizadaRequest.setNome("Nome Novo");
@@ -100,7 +100,7 @@ class PlataformaServiceImplTest {
     @Test
     void buscarPorId_DeveRetornarPlataforma_QuandoEncontrada() {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Plataforma plataforma = new Plataforma();
         plataforma.setId(id);
@@ -119,7 +119,7 @@ class PlataformaServiceImplTest {
     @Test
     void buscarPorId_DeveRetornarNull_QuandoNaoEncontrada() {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(plataformaRepository.findById(id)).thenReturn(Optional.empty());
 
@@ -157,7 +157,7 @@ class PlataformaServiceImplTest {
     @Test
     void deletar_DeveDeletarPorId() {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         // Act
         plataformaService.deletar(id);

@@ -1,52 +1,56 @@
 # Plano de Refatoração: Migração completa para UUID
 
 ## Objetivo
-Alinhar todas as entidades, DTOs, services, controllers e o frontend para usar `UUID` como identificador do `Usuario`, eliminando o conflito `bigint` × `uuid` no PostgreSQL.
+Alinhar todas as entidades, DTOs, services, controllers e o frontend para usar `UUID` como identificador, eliminando o conflito `bigint` × `uuid` no PostgreSQL.
 
 ## Estado Atual
-- `Usuario.java` (model package): alterado para `UUID id` ✅
-- Demais entidades: ainda usam `Long id` para chaves estrangeiras
-- DTOs e Services: usam `Long`
-- Frontend: usa `id: number`
+- **Entidades JPA:** A maioria das entidades (`Usuario`, `Postagem`, `Comentario`, `Atividade`, etc.) já utiliza `UUID` como `@Id`. ✅
+- **DTOs, Services, Controllers:** Ainda precisam de revisão para garantir consistência com `UUID`.
+- **Frontend:** Ainda utiliza `id: number` ou `string | number` em alguns modelos.
 
 ## Etapas
 
-### Etapa 1: Backend - Entidades JPA
-Alterar `id` e chaves estrangeiras de `Long` para `UUID` em:
-- `Usuario.java` (já feito)
-- `Postagem.java`
-- `Comentario.java`
-- `Atividade.java`
-- `SubmissaoAtividade.java`
-- `Plataforma.java`
-- `RecomendacaoUsuario.java`
-- `SalaDeAulaEntity.java` (já é UUID)
-- `Mensagem.java`
-- `Comunidade.java`
-- `Perfil.java` / entidades de herança (Aluno, Professor, Admin)
-- `ConexaoAmizade.java`
-- `SalaMembros.java`
-- `SolicitacaoEntrada.java`
-- `Artigo.java`
-- `Curtida.java`
-- `Frequencia.java`
-- `Dashboard.java` (se existir)
+### Etapa 1: Backend - Entidades JPA (Concluído)
+- [x] `Usuario.java`
+- [x] `Postagem.java`
+- [x] `Comentario.java`
+- [x] `Atividade.java`
+- [x] `SubmissaoAtividade.java`
+- [x] `Plataforma.java`
+- [x] `RecomendacaoUsuario.java`
+- [x] `SalaDeAulaEntity.java`
+- [x] `Mensagem.java`
+- [x] `Comunidade.java`
+- [x] `Perfil.java`
+- [x] `ConexaoAmizade.java`
+- [x] `SalaMembros.java`
+- [x] `SolicitacaoEntrada.java`
+- [x] `Artigo.java`
+- [x] `Curtida.java`
+- [x] `Frequencia.java`
 
-### Etapa 2: Backend - DTOs e Mappers
-- `UsuarioResponseDTO`
-- `LoginRequest` / `LoginResponse`
-- `UsuarioMapper`
-- DTOs de outras entidades que expõem `id` numérico
+### Etapa 2: Backend - DTOs e Mappers (Pendente)
+- [ ] Revisar `UsuarioResponseDTO` e outros DTOs para garantir que IDs sejam `UUID`.
+- [ ] Atualizar `UsuarioMapper` e outros mappers.
 
-### Etapa 3: Backend - Repositories
-- `UsuarioRepository.java` - métodos com `Long` → `UUID`
-- `PostagemRepository.java`
-- Demais repositories
+### Etapa 3: Backend - Repositories (Revisar)
+- [ ] Verificar se todos os métodos de busca utilizam `UUID`.
 
-### Etapa 4: Backend - Services
-- `UsuarioService.java`
-- `PostagemService.java`
-- Demais services que recebem/retornam `Long id`
+### Etapa 4: Backend - Services (Pendente)
+- [ ] Atualizar assinaturas de métodos que recebem/retornam `Long id`.
+
+### Etapa 5: Backend - Controllers (Pendente)
+- [ ] Atualizar parâmetros de controllers (`@PathVariable`, `@RequestParam`) para `UUID`.
+
+### Etapa 6: Frontend - Models (Pendente)
+- [ ] `usuario.model.ts` - definir `id: string` (UUID).
+- [ ] Atualizar outros modelos que referenciam IDs.
+
+### Etapa 7: Frontend - Services & Components (Pendente)
+- [ ] Atualizar chamadas de serviço e componentes que manipulam IDs.
+
+### Etapa 8: Teste de Comunicação (Pendente)
+- [ ] Validar fluxo completo de login/cadastro.
 
 ### Etapa 5: Backend - Controllers
 - `UsuarioController.java` - parâmetros `Long` → `UUID`

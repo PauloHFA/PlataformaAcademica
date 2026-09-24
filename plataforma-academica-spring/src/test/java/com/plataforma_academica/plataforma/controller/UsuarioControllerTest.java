@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.controller;
+
 import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,8 +47,24 @@ class UsuarioControllerTest {
 
         // Act & Assert
         mockMvc.perform(post("/api/usuarios/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nome").value("João Silva"));
+    }
+
+    @Test
+    void buscar_DeveRetornarUsuario_QuandoIdValido() throws Exception {
+        // Arrange
+        UUID id = UUID.randomUUID();
+        Usuario usuario = new Usuario();
+        usuario.setId(id);
+        usuario.setNome("João Silva");
+
+        when(usuarioService.buscarPorId(id)).thenReturn(usuario);
+
+        // Act & Assert
+        mockMvc.perform(get("/api/usuarios/" + id.toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.nome").value("João Silva"));
     }

@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.controller;
+
 import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,8 +39,8 @@ class AtividadeControllerTest {
     @Test
     void criarAtividade_DeveRetornarAtividadeCriada_QuandoValido() throws Exception {
         // Arrange
-        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
         autor.setId(autorId);
         autor.setNome("Professor Silva");
@@ -69,8 +70,8 @@ class AtividadeControllerTest {
 
         // Act & Assert
         mockMvc.perform(post("/atividades/sala/{salaId}/autor/{autorId}", salaId, autorId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.titulo").value("Atividade de Matemática"));
     }
@@ -78,7 +79,7 @@ class AtividadeControllerTest {
     @Test
     void buscarAtividadePorId_DeveRetornarAtividade_QuandoEncontrada() throws Exception {
         // Arrange
-        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
         autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("Professor Silva");
@@ -99,7 +100,7 @@ class AtividadeControllerTest {
     @Test
     void listarPorSala_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
         autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("Professor Silva");
@@ -128,7 +129,7 @@ class AtividadeControllerTest {
     @Test
     void listarPorAutor_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
         autor.setId(autorId);
         autor.setNome("Professor Silva");
@@ -151,8 +152,8 @@ class AtividadeControllerTest {
     @Test
     void atualizarAtividade_DeveRetornarAtividadeAtualizada_QuandoEncontrada() throws Exception {
         // Arrange
-        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
         autor.setId(autorId);
         autor.setNome("Professor Silva");
@@ -171,8 +172,8 @@ class AtividadeControllerTest {
 
         // Act & Assert
         mockMvc.perform(put("/atividades/{atividadeId}/autor/{autorId}", atividadeId, autorId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.titulo").value("Atividade Atualizada"));
     }
@@ -180,8 +181,8 @@ class AtividadeControllerTest {
     @Test
     void deletarAtividade_DeveRetornarNoContent_QuandoExiste() throws Exception {
         // Arrange
-        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         // Act & Assert
         mockMvc.perform(delete("/atividades/{atividadeId}/autor/{autorId}", atividadeId, autorId))

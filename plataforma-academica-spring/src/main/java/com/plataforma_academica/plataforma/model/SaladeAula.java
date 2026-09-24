@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import com.plataforma_academica.plataforma.academic.infrastructure.adapter.out.persistence.SalaMembroEntity;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -41,6 +42,10 @@ public class SaladeAula {
     @Column(unique = true, nullable = false, length = 8)
     private String codigoSala;
 
+    /** Código da sala (ex: "MAT-101"). */
+    @Column(nullable = false)
+    private String codigo;
+
     /** Criador (professor) da sala. */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "criador_id", nullable = false)
@@ -49,10 +54,23 @@ public class SaladeAula {
     // 2. Membros da Sala (Relação Many-to-Many)
     // Usamos uma tabela de junção para mapear a relação de que um usuário pode
     // estar em várias salas.
-    @ManyToMany
-    @JoinTable(name = "sala_membros", // Nome da tabela de junção
-            joinColumns = @JoinColumn(name = "sala_id"), inverseJoinColumns = @JoinColumn(name = "usuario_id"))
-    private List<Usuario> usuarios; // Lista de membros/alunos
+    @OneToMany(mappedBy = "sala", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SalaMembroEntity> membros; // Lista de membros/alunos
+
+    @Transient
+    private List<Usuario> usuarios;
+
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
+
+    public List<UUID> getUsuarioIds() {
+        return membros.stream().map(SalaMembroEntity::getUsuarioId).collect(java.util.stream.Collectors.toList());
+    }
 
     // 3. Atividades da Sala (Relação One-to-Many)
     // Uma sala tem muitas atividades
@@ -65,7 +83,6 @@ public class SaladeAula {
     @OneToMany(mappedBy = "saladeAula", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("comentarios-sala")
     private List<Comentario> comentarios;
-
 
     @PrePersist
     public void onCreate() {

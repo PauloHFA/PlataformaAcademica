@@ -112,7 +112,7 @@ class PostagemServiceImplTest {
     @Test
     void deletar_DeveDeletar_QuandoEncontrada() {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Postagem postagem = new Postagem();
         postagem.setId(id);
@@ -131,7 +131,7 @@ class PostagemServiceImplTest {
     @Test
     void deletar_DeveLancarRuntimeException_QuandoNaoEncontrada() {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(postagemRepository.findById(id)).thenReturn(Optional.empty());
 
@@ -143,7 +143,7 @@ class PostagemServiceImplTest {
     @Test
     void buscarPorId_DeveRetornarPostagemDTO_QuandoEncontrada() {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Postagem postagem = new Postagem();
         postagem.setId(id);
@@ -160,7 +160,7 @@ class PostagemServiceImplTest {
     @Test
     void buscarPorId_DeveRetornarNull_QuandoNaoEncontrada() {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(postagemRepository.findById(id)).thenReturn(Optional.empty());
 

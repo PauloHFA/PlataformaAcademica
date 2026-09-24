@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.service;
+
 import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.Usuario;
@@ -111,7 +112,39 @@ class UsuarioServiceImplTest {
         Field encoderField = UsuarioServiceImpl.class.getDeclaredField("passwordEncoder");
         encoderField.setAccessible(true);
         BCryptPasswordEncoder mockEncoder = mock(BCryptPasswordEncoder.class);
-        when(mockEncoder.encode("password")).thenReturn("encoded");
+        when(mockEncoder.encode("password")).thenReturn("encodedPassword");
+        encoderField.set(usuarioService, mockEncoder);
+
+        // Act
+        Usuario result = usuarioService.cadastrarUsuario(usuario);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals("encodedPassword", result.getSenha());
+        verify(usuarioRepository, times(1)).save(usuario);
+    }
+
+    @Test
+    void buscarPorId_DeveRetornarUsuario_QuandoEncontrado() {
+        // Arrange
+        UUID id = UUID.randomUUID();
+        Usuario usuario = new Usuario();
+        usuario.setId(id);
+
+        when(usuarioRepository.findById(id)).thenReturn(Optional.of(usuario));
+
+        // Act
+        Usuario result = usuarioService.buscarPorId(id);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(id, result.getId());
+    }}
+
+    Field encoderField = UsuarioServiceImpl.class.getDeclaredField("passwordEncoder");encoderField.setAccessible(true);
+    BCryptPasswordEncoder mockEncoder = mock(BCryptPasswordEncoder.class);
+
+    when(mockEncoder.encode("password")).thenReturn("encoded");
         encoderField.set(usuarioService, mockEncoder);
 
         // Act
@@ -143,7 +176,7 @@ class UsuarioServiceImplTest {
     @Test
     void buscarPorId_DeveRetornarUsuario_QuandoEncontrado() {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Usuario usuario = new Usuario();
         usuario.setId(id);
@@ -160,7 +193,7 @@ class UsuarioServiceImplTest {
     @Test
     void buscarPorId_DeveRetornarNull_QuandoNaoEncontrado() {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(usuarioRepository.findById(id)).thenReturn(Optional.empty());
 

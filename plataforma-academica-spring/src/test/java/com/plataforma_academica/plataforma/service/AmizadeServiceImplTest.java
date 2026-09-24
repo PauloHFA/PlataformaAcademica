@@ -137,7 +137,7 @@ class AmizadeServiceImplTest {
     @Test
     void responderSolicitacao_DeveAceitar_QuandoAcaoAceitar() {
         // Arrange
-        Long amizadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID amizadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         String acao = "aceitar";
 
         Amizade amizade = new Amizade();
@@ -158,7 +158,7 @@ class AmizadeServiceImplTest {
     @Test
     void responderSolicitacao_DeveRecusar_QuandoAcaoRecusar() {
         // Arrange
-        Long amizadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID amizadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         String acao = "recusar";
 
         Amizade amizade = new Amizade();
@@ -179,7 +179,7 @@ class AmizadeServiceImplTest {
     @Test
     void responderSolicitacao_DeveLancarBadRequestException_QuandoAcaoInvalida() {
         // Arrange
-        Long amizadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID amizadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         String acao = "invalida";
 
         Amizade amizade = new Amizade();
@@ -196,7 +196,7 @@ class AmizadeServiceImplTest {
     @Test
     void responderSolicitacao_DeveLancarBadRequestException_QuandoJaRespondida() {
         // Arrange
-        Long amizadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID amizadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         String acao = "aceitar";
 
         Amizade amizade = new Amizade();
@@ -213,7 +213,7 @@ class AmizadeServiceImplTest {
     @Test
     void responderSolicitacao_DeveLancarResourceNotFoundException_QuandoNaoEncontrada() {
         // Arrange
-        Long amizadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID amizadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         String acao = "aceitar";
 
         when(amizadeRepository.findById(amizadeId)).thenReturn(Optional.empty());
@@ -226,7 +226,7 @@ class AmizadeServiceImplTest {
     @Test
     void removerAmizade_DeveDeletar_QuandoEncontrada() {
         // Arrange
-        Long amizadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID amizadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Amizade amizade = new Amizade();
         amizade.setId(amizadeId);
@@ -243,7 +243,7 @@ class AmizadeServiceImplTest {
     @Test
     void removerAmizade_DeveLancarResourceNotFoundException_QuandoNaoEncontrada() {
         // Arrange
-        Long amizadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID amizadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(amizadeRepository.findById(amizadeId)).thenReturn(Optional.empty());
 
@@ -255,7 +255,7 @@ class AmizadeServiceImplTest {
     @Test
     void listarSolicitacoesPendentes_DeveRetornarLista_QuandoUsuarioEncontrado() {
         // Arrange
-        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Usuario usuario = new Usuario();
         usuario.setId(usuarioId);
@@ -276,7 +276,7 @@ class AmizadeServiceImplTest {
     @Test
     void listarSolicitacoesPendentes_DeveLancarResourceNotFoundException_QuandoUsuarioNaoEncontrado() {
         // Arrange
-        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(usuarioRepository.findById(usuarioId)).thenReturn(Optional.empty());
 
@@ -288,7 +288,7 @@ class AmizadeServiceImplTest {
     @Test
     void listarAmigos_DeveRetornarLista_QuandoUsuarioEncontrado() {
         // Arrange
-        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Usuario usuario = new Usuario();
         usuario.setId(usuarioId);
@@ -309,7 +309,7 @@ class AmizadeServiceImplTest {
     @Test
     void listarAmigos_DeveLancarResourceNotFoundException_QuandoUsuarioNaoEncontrado() {
         // Arrange
-        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(usuarioRepository.findById(usuarioId)).thenReturn(Optional.empty());
 

@@ -53,14 +53,26 @@ public class ProfessorController {
 
         Optional<Professor> professorOpt = professorRepository.findByEmail(professor.getEmail());
 
-        if (professorOpt.isPresent() && passwordEncoder.matches(professor.getSenha(), professorOpt.get().getSenha())) {
+        if (professorOpt.isPresent()) {
             Professor prof = professorOpt.get();
-            System.out.println(
-                    "[POST /api/professores/login] Sucesso: ID=" + prof.getId() + ", Matricula=" + prof.getMatricula());
-            return ResponseEntity.ok(prof);
+            boolean senhaCorreta = false;
+            String storedPassword = prof.getSenha();
+            if (storedPassword != null && storedPassword.startsWith("$2a$")) {
+                senhaCorreta = passwordEncoder.matches(professor.getSenha(), storedPassword);
+            } else if (storedPassword != null) {
+                senhaCorreta = professor.getSenha().equals(storedPassword);
+            }
+
+            if (senhaCorreta) {
+                System.out.println(
+                        "[POST /api/professores/login] Sucesso: ID=" + prof.getId() + ", Matricula="
+                                + prof.getMatricula());
+                return ResponseEntity.ok(prof);
+            }
         }
 
         System.out.println("[POST /api/professores/login] Falha: credenciais inválidas");
-        return ResponseEntity.status(401).body("Email ou senha incorretos");
+        return ResponseEntity.status(401)
+                .body(java.util.Collections.singletonMap("error", "Email ou senha incorretos"));
     }
 }

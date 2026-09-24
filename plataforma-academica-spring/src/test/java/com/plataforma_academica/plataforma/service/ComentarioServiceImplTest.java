@@ -52,7 +52,7 @@ class ComentarioServiceImplTest {
     @Test
     void buscarPorId_DeveRetornarComentario_QuandoEncontrado() {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Comentario comentario = new Comentario();
         comentario.setId(id);
@@ -69,7 +69,7 @@ class ComentarioServiceImplTest {
     @Test
     void buscarPorId_DeveRetornarNull_QuandoNaoEncontrado() {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(comentarioRepository.findById(id)).thenReturn(Optional.empty());
 
@@ -98,7 +98,7 @@ class ComentarioServiceImplTest {
     @Test
     void atualizar_DeveRetornarComentario_QuandoEncontrado() {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Comentario existente = new Comentario();
         existente.setId(id);
@@ -121,7 +121,7 @@ class ComentarioServiceImplTest {
     @Test
     void atualizar_DeveRetornarNull_QuandoNaoEncontrado() {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Comentario atualizado = new Comentario();
 
@@ -137,7 +137,7 @@ class ComentarioServiceImplTest {
     @Test
     void deletar_DeveDeletar() {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         // Act
         comentarioService.deletar(id);
@@ -149,7 +149,7 @@ class ComentarioServiceImplTest {
     @Test
     void listarComentariosPorSala_DeveRetornarLista() {
         // Arrange
-        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         List<Comentario> comentarios = List.of(new Comentario());
 
         when(comentarioRepository.findBySaladeAulaId(salaId)).thenReturn(comentarios);
@@ -165,7 +165,7 @@ class ComentarioServiceImplTest {
     @Test
     void listarComentariosPorAtividade_DeveRetornarLista() {
         // Arrange
-        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         List<Comentario> comentarios = List.of(new Comentario());
 
         when(comentarioRepository.findByAtividadeId(atividadeId)).thenReturn(comentarios);
@@ -181,7 +181,7 @@ class ComentarioServiceImplTest {
     @Test
     void listarComentariosPorPostagem_DeveRetornarLista() {
         // Arrange
-        Long postagemId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID postagemId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         List<Comentario> comentarios = List.of(new Comentario());
 
         when(comentarioRepository.findByPostagemId(postagemId)).thenReturn(comentarios);

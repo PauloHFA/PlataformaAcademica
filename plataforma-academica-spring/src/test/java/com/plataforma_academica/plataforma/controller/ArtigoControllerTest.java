@@ -69,7 +69,7 @@ class ArtigoControllerTest {
     @Test
     void editar_DeveRetornarArtigoAtualizado_QuandoEncontrado() throws Exception {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
         autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("João Silva");
@@ -97,8 +97,8 @@ class ArtigoControllerTest {
     @Test
     void deletar_DeveRetornarNoContent_QuandoExiste() throws Exception {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long solicitanteId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID solicitanteId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         // Act & Assert
         mockMvc.perform(delete("/api/artigos/{id}", id)
@@ -109,7 +109,7 @@ class ArtigoControllerTest {
     @Test
     void buscar_DeveRetornarArtigo_QuandoEncontrado() throws Exception {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
         autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("João Silva");
@@ -159,7 +159,7 @@ class ArtigoControllerTest {
     @Test
     void porAutor_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
         autor.setId(autorId);
         autor.setNome("João Silva");

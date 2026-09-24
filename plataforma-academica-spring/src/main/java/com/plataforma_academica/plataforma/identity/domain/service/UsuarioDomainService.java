@@ -1,5 +1,6 @@
 package com.plataforma_academica.plataforma.identity.domain.service;
 
+import org.springframework.stereotype.Service;
 import com.plataforma_academica.plataforma.identity.domain.model.Email;
 import com.plataforma_academica.plataforma.identity.domain.model.Papel;
 import com.plataforma_academica.plataforma.identity.domain.model.SenhaHash;
@@ -11,6 +12,7 @@ import com.plataforma_academica.plataforma.identity.domain.repository.UsuarioRep
  * Serviço de domínio para regras de negócio que envolvem múltiplos agregados
  * ou validações complexas de unicidade.
  */
+@Service
 public class UsuarioDomainService {
     private final UsuarioRepository usuarioRepository;
     private final PasswordHasherPort passwordHasher;

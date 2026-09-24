@@ -1,4 +1,5 @@
 package com.plataforma_academica.plataforma.service;
+
 import java.util.UUID;
 
 import com.plataforma_academica.plataforma.model.*;
@@ -39,7 +40,7 @@ class SaladeAulaServiceImplTest {
     @Test
     void buscarSalaPorId_DeveRetornarSala_QuandoEncontrada() {
         // Arrange
-        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         SaladeAula sala = new SaladeAula();
         sala.setId(salaId);
         sala.setNome("Sala Teste");
@@ -57,12 +58,11 @@ class SaladeAulaServiceImplTest {
     @Test
     void buscarSalaPorId_DeveLancarException_QuandoNaoEncontrada() {
         // Arrange
-        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         when(salaRepository.findById(salaId)).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(jakarta.persistence.EntityNotFoundException.class, () ->
-            salaService.buscarSalaPorId(salaId));
+        assertThrows(jakarta.persistence.EntityNotFoundException.class, () -> salaService.buscarSalaPorId(salaId));
         verify(salaRepository).findById(salaId);
     }
 
@@ -92,7 +92,7 @@ class SaladeAulaServiceImplTest {
     @Test
     void criarSala_DeveRetornarSalaCriada_QuandoProfessor() {
         // Arrange
-        Long criadorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID criadorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario criador = new Professor(); // Professor extends Usuario
         criador.setId(criadorId);
         criador.setNome("Professor João");
@@ -123,7 +123,7 @@ class SaladeAulaServiceImplTest {
     @Test
     void criarSala_DeveLancarException_QuandoNaoProfessor() {
         // Arrange
-        Long criadorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID criadorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario criador = new Usuario(); // Não é Professor
         criador.setId(criadorId);
         criador.setNome("Aluno João");
@@ -134,8 +134,8 @@ class SaladeAulaServiceImplTest {
         when(usuarioRepository.findById(criadorId)).thenReturn(Optional.of(criador));
 
         // Act & Assert
-        SecurityException exception = assertThrows(SecurityException.class, () ->
-            salaService.criarSala(sala, criadorId));
+        SecurityException exception = assertThrows(SecurityException.class,
+                () -> salaService.criarSala(sala, criadorId));
 
         assertEquals("Apenas professores podem criar salas de aula.", exception.getMessage());
         verify(usuarioRepository).findById(criadorId);
@@ -144,8 +144,8 @@ class SaladeAulaServiceImplTest {
     @Test
     void deletarSala_DeveDeletar_QuandoCriador() {
         // Arrange
-        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long userId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID userId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Usuario criador = new Professor();
         criador.setId(userId);
@@ -167,8 +167,8 @@ class SaladeAulaServiceImplTest {
     @Test
     void deletarSala_DeveLancarException_QuandoNaoCriador() {
         // Arrange
-        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long userId = UUID.fromString("00000000-0000-0000-0000-000000000002");
+        UUID salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID userId = UUID.fromString("00000000-0000-0000-0000-000000000002");
 
         Usuario criador = new Professor();
         criador.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
@@ -180,8 +180,8 @@ class SaladeAulaServiceImplTest {
         when(salaRepository.findById(salaId)).thenReturn(Optional.of(sala));
 
         // Act & Assert
-        SecurityException exception = assertThrows(SecurityException.class, () ->
-            salaService.deletarSala(salaId, userId));
+        SecurityException exception = assertThrows(SecurityException.class,
+                () -> salaService.deletarSala(salaId, userId));
 
         assertEquals("Apenas o criador da sala de aula pode realizar esta operação.", exception.getMessage());
         verify(salaRepository).findById(salaId);

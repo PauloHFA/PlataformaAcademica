@@ -75,7 +75,7 @@ class AmizadeControllerTest {
     @Test
     void responderSolicitacao_DeveAceitar_QuandoAcaoAceitar() throws Exception {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         String acao = "aceitar";
 
         Usuario solicitante = new Usuario();
@@ -104,7 +104,7 @@ class AmizadeControllerTest {
     @Test
     void responderSolicitacao_DeveRecusar_QuandoAcaoRecusar() throws Exception {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         String acao = "recusar";
 
         Usuario solicitante = new Usuario();
@@ -133,7 +133,7 @@ class AmizadeControllerTest {
     @Test
     void removerAmizade_DeveRetornarNoContent_QuandoExiste() throws Exception {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         // Act & Assert
         mockMvc.perform(delete("/api/amizades/{id}", id))
@@ -143,7 +143,7 @@ class AmizadeControllerTest {
     @Test
     void listarPendentes_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Usuario solicitante = new Usuario();
         solicitante.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
@@ -173,7 +173,7 @@ class AmizadeControllerTest {
     @Test
     void listarAmigos_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Usuario solicitante = new Usuario();
         solicitante.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));

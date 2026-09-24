@@ -47,8 +47,8 @@ class AtividadeServiceImplTest {
     @Test
     void criarAtividade_ComAtividadeObjeto_DeveRetornarAtividade_QuandoValido() {
         // Arrange
-        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         SaladeAula sala = new SaladeAula();
         sala.setId(salaId);
@@ -80,8 +80,8 @@ class AtividadeServiceImplTest {
     @Test
     void criarAtividade_ComAtividadeObjeto_DeveLancarRuntimeException_QuandoSalaNaoEncontrada() {
         // Arrange
-        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Atividade atividade = new Atividade();
 
         when(salaDeAulaRepository.findById(salaId)).thenReturn(Optional.empty());
@@ -94,8 +94,8 @@ class AtividadeServiceImplTest {
     @Test
     void criarAtividade_ComAtividadeObjeto_DeveLancarRuntimeException_QuandoAutorNaoEncontrado() {
         // Arrange
-        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Atividade atividade = new Atividade();
 
         SaladeAula sala = new SaladeAula();
@@ -112,8 +112,8 @@ class AtividadeServiceImplTest {
     @Test
     void criarAtividade_ComAtividadeObjeto_DeveLancarSecurityException_QuandoNaoEhProfessor() {
         // Arrange
-        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Atividade atividade = new Atividade();
 
         SaladeAula sala = new SaladeAula();
@@ -133,8 +133,8 @@ class AtividadeServiceImplTest {
     @Test
     void criarAtividade_ComAtividadeDTO_DeveRetornarAtividade_QuandoValido() {
         // Arrange
-        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         AtividadeDTO dto = new AtividadeDTO();
         dto.setTitulo("Título");
@@ -167,7 +167,7 @@ class AtividadeServiceImplTest {
     @Test
     void buscarAtividadePorId_DeveRetornarAtividade_QuandoEncontrada() {
         // Arrange
-        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Atividade atividade = new Atividade();
         atividade.setId(atividadeId);
@@ -184,7 +184,7 @@ class AtividadeServiceImplTest {
     @Test
     void buscarAtividadePorId_DeveLancarRuntimeException_QuandoNaoEncontrada() {
         // Arrange
-        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(atividadeRepository.findById(atividadeId)).thenReturn(Optional.empty());
 
@@ -196,7 +196,7 @@ class AtividadeServiceImplTest {
     @Test
     void listarAtividadesPorSala_DeveRetornarLista() {
         // Arrange
-        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         List<Atividade> atividades = List.of(new Atividade());
 
         when(atividadeRepository.findBySalaDeAulaId(salaId)).thenReturn(atividades);
@@ -212,8 +212,8 @@ class AtividadeServiceImplTest {
     @Test
     void atualizarAtividade_ComAtividadeObjeto_DeveRetornarAtividade_QuandoValido() {
         // Arrange
-        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Atividade existente = new Atividade();
         existente.setId(atividadeId);
@@ -238,8 +238,8 @@ class AtividadeServiceImplTest {
     @Test
     void atualizarAtividade_ComAtividadeObjeto_DeveLancarRuntimeException_QuandoNaoEhAutor() {
         // Arrange
-        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long autorId = UUID.fromString("00000000-0000-0000-0000-000000000002");
+        UUID atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID autorId = UUID.fromString("00000000-0000-0000-0000-000000000002");
 
         Atividade existente = new Atividade();
         existente.setId(atividadeId);
@@ -259,8 +259,8 @@ class AtividadeServiceImplTest {
     @Test
     void deletarAtividade_DeveDeletar_QuandoValido() {
         // Arrange
-        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Atividade existente = new Atividade();
         existente.setId(atividadeId);
@@ -280,8 +280,8 @@ class AtividadeServiceImplTest {
     @Test
     void deletarAtividade_DeveLancarRuntimeException_QuandoNaoEhAutor() {
         // Arrange
-        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long autorId = UUID.fromString("00000000-0000-0000-0000-000000000002");
+        UUID atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID autorId = UUID.fromString("00000000-0000-0000-0000-000000000002");
 
         Atividade existente = new Atividade();
         existente.setId(atividadeId);
@@ -299,7 +299,7 @@ class AtividadeServiceImplTest {
     @Test
     void listarAtividadesPorAutor_DeveRetornarLista() {
         // Arrange
-        Long autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID autorId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         List<Atividade> atividades = List.of(new Atividade());
 
         when(atividadeRepository.findByAutorId(autorId)).thenReturn(atividades);

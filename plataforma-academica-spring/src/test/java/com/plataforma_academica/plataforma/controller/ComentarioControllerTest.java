@@ -78,7 +78,7 @@ class ComentarioControllerTest {
     @Test
     void buscarPorId_DeveRetornarComentario_QuandoEncontrado() throws Exception {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
         autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("João Silva");
@@ -101,7 +101,7 @@ class ComentarioControllerTest {
     @Test
     void buscarPorId_DeveRetornarNotFound_QuandoNaoEncontrado() throws Exception {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         when(comentarioService.buscarPorId(id)).thenReturn(null);
 
         // Act & Assert
@@ -149,7 +149,7 @@ class ComentarioControllerTest {
     @Test
     void atualizar_DeveRetornarComentarioAtualizado_QuandoEncontrado() throws Exception {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
         autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("João Silva");
@@ -174,7 +174,7 @@ class ComentarioControllerTest {
     @Test
     void atualizar_DeveRetornarNotFound_QuandoNaoEncontrado() throws Exception {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Comentario comentario = new Comentario();
         comentario.setConteudo("Conteúdo");
 
@@ -190,7 +190,7 @@ class ComentarioControllerTest {
     @Test
     void deletar_DeveRetornarNoContent_QuandoComentarioExiste() throws Exception {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
         autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
 
@@ -208,7 +208,7 @@ class ComentarioControllerTest {
     @Test
     void deletar_DeveRetornarNotFound_QuandoComentarioNaoExiste() throws Exception {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         when(comentarioService.buscarPorId(id)).thenReturn(null);
 
         // Act & Assert
@@ -219,7 +219,7 @@ class ComentarioControllerTest {
     @Test
     void listarComentariosSala_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
         autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("João Silva");
@@ -245,7 +245,7 @@ class ComentarioControllerTest {
     @Test
     void listarComentariosAtividadesGerais_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID salaId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
         autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("João Silva");
@@ -271,7 +271,7 @@ class ComentarioControllerTest {
     @Test
     void listarComentariosAtividade_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID atividadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
         autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("João Silva");
@@ -296,7 +296,7 @@ class ComentarioControllerTest {
     @Test
     void listarComentariosPostagem_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long postagemId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID postagemId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario autor = new Usuario();
         autor.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         autor.setNome("João Silva");

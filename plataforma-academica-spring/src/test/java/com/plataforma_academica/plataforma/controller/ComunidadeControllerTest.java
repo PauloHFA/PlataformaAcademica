@@ -68,8 +68,8 @@ class ComunidadeControllerTest {
     @Test
     void deletar_DeveRetornarNoContent_QuandoExiste() throws Exception {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long solicitanteId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID solicitanteId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         // Act & Assert
         mockMvc.perform(delete("/api/comunidades/{id}", id)
@@ -80,8 +80,8 @@ class ComunidadeControllerTest {
     @Test
     void entrar_DeveRetornarMembroComunidade_QuandoValido() throws Exception {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000002");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000002");
 
         Usuario usuario = new Usuario();
         usuario.setId(usuarioId);
@@ -108,8 +108,8 @@ class ComunidadeControllerTest {
     @Test
     void sair_DeveRetornarNoContent_QuandoExiste() throws Exception {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000002");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000002");
 
         // Act & Assert
         mockMvc.perform(post("/api/comunidades/{id}/sair", id)
@@ -148,7 +148,7 @@ class ComunidadeControllerTest {
     @Test
     void listarMembros_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Usuario usuario = new Usuario();
         usuario.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));

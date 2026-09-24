@@ -65,7 +65,7 @@ class MembroComunidadeControllerTest {
     @Test
     void buscarPorId_DeveRetornarMembro_QuandoEncontrado() throws Exception {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario usuario = new Usuario();
         usuario.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         usuario.setNome("João");
@@ -92,7 +92,7 @@ class MembroComunidadeControllerTest {
     @Test
     void buscarPorId_DeveRetornarNotFound_QuandoNaoEncontrado() throws Exception {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         when(membroComunidadeService.buscarPorId(id)).thenReturn(null);
 
         // Act & Assert
@@ -103,7 +103,7 @@ class MembroComunidadeControllerTest {
     @Test
     void buscarPorUsuario_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario usuario = new Usuario();
         usuario.setId(usuarioId);
         usuario.setNome("João");
@@ -132,7 +132,7 @@ class MembroComunidadeControllerTest {
     @Test
     void buscarPorComunidade_DeveRetornarLista_QuandoChamado() throws Exception {
         // Arrange
-        Long comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario usuario = new Usuario();
         usuario.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         usuario.setNome("João");
@@ -161,8 +161,8 @@ class MembroComunidadeControllerTest {
     @Test
     void buscarPorUsuarioEComunidade_DeveRetornarMembro_QuandoEncontrado() throws Exception {
         // Arrange
-        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         Usuario usuario = new Usuario();
         usuario.setId(usuarioId);
@@ -192,8 +192,8 @@ class MembroComunidadeControllerTest {
     @Test
     void buscarPorUsuarioEComunidade_DeveRetornarNotFound_QuandoNaoEncontrado() throws Exception {
         // Arrange
-        Long usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        Long comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID usuarioId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID comunidadeId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
         when(membroComunidadeService.buscarPorUsuarioEComunidade(usuarioId, comunidadeId)).thenReturn(null);
 
@@ -273,7 +273,7 @@ class MembroComunidadeControllerTest {
     @Test
     void deletar_DeveRetornarNoContent_QuandoEncontrado() throws Exception {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         Usuario usuario = new Usuario();
         usuario.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         usuario.setNome("João");
@@ -299,7 +299,7 @@ class MembroComunidadeControllerTest {
     @Test
     void deletar_DeveRetornarNotFound_QuandoNaoEncontrado() throws Exception {
         // Arrange
-        Long id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
         when(membroComunidadeService.buscarPorId(id)).thenReturn(null);
 
         // Act & Assert

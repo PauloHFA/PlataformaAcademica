@@ -19,7 +19,7 @@ export class SalaAdicionarMembroComponent implements OnInit {
   busca = '';
   carregando = false;
   mensagem = '';
-  salaId: number | null = null;
+  salaId: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -27,8 +27,7 @@ export class SalaAdicionarMembroComponent implements OnInit {
     private usuarioService: UsuarioService,
     private router: Router
   ) {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.salaId = isNaN(id) ? null : id;
+    this.salaId = this.route.snapshot.paramMap.get('id');
   }
 
   ngOnInit(): void {
@@ -58,22 +57,22 @@ export class SalaAdicionarMembroComponent implements OnInit {
       this.usuariosFiltrados = this.usuarios.filter(u =>
         u.nome?.toLowerCase().includes(termo) ||
         u.email?.toLowerCase().includes(termo) ||
-        u.id?.toString().includes(termo)
+        u.id?.toLowerCase().includes(termo)
       );
     }
   }
 
-  adicionarMembro(membroId: number | string): void {
+  adicionarMembro(membroId: string): void {
     if (!this.salaId) return;
 
-    const criadorId = Number(localStorage.getItem('usuarioId'));
+    const criadorId = localStorage.getItem('usuarioId') || '';
     if (!criadorId) {
       this.mensagem = 'Você precisa estar logado';
       return;
     }
 
     this.carregando = true;
-    this.salaService.adicionarMembro(this.salaId, Number(membroId), Number(criadorId)).subscribe({
+    this.salaService.adicionarMembro(this.salaId, membroId, criadorId).subscribe({
       next: () => {
         this.mensagem = 'Membro adicionado com sucesso';
         setTimeout(() => this.router.navigate([`/salas/${this.salaId}`]), 1500);

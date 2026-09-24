@@ -18,11 +18,11 @@ import { Comentario } from '../../../models/comentario.model';
 export class AtividadeListComponent implements OnInit {
   atividades: Atividade[] = [];
   carregando = true;
-  salaId: number | null = null;
-  comentariosPorAtividade: { [atividadeId: number]: Comentario[] } = {};
-  novoComentarioPorAtividade: { [atividadeId: number]: string } = {};
-  usuarioId: number | null = null;
-  atividadeExpandida: number | null = null;
+  salaId: string | null = null;
+  comentariosPorAtividade: { [atividadeId: string]: Comentario[] } = {};
+  novoComentarioPorAtividade: { [atividadeId: string]: string } = {};
+  usuarioId: string | null = null;
+  atividadeExpandida: string | null = null;
   isProfessor = false;
 
   constructor(
@@ -32,11 +32,9 @@ export class AtividadeListComponent implements OnInit {
     private salaContext: SalaContextService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.salaId = isNaN(id) ? null : id;
+    this.salaId = this.route.snapshot.paramMap.get('id');
     if (isPlatformBrowser(this.platformId)) {
-      const uid = localStorage.getItem('usuarioId');
-      this.usuarioId = uid ? parseInt(uid, 10) : null;
+      this.usuarioId = localStorage.getItem('usuarioId');
     }
   }
 
@@ -47,10 +45,10 @@ export class AtividadeListComponent implements OnInit {
     if (!this.salaId) { this.carregando = false; return; }
     this.salaService.buscarPorId(this.salaId).subscribe({
       next: (s) => this.salaContext.setNomeSala(s.nome),
-      error: () => {}
+      error: () => { }
     });
     this.salaService.listarAtividades(this.salaId).subscribe({
-      next: (a) => { 
+      next: (a) => {
         this.atividades = a || [];
         this.atividades.forEach(ativ => this.carregarComentarios(ativ.id!));
         this.carregando = false;
@@ -59,18 +57,18 @@ export class AtividadeListComponent implements OnInit {
     });
   }
 
-  carregarComentarios(atividadeId: number): void {
+  carregarComentarios(atividadeId: string): void {
     this.comentarioService.listarPorAtividade(atividadeId).subscribe({
-      next: (c: Comentario[]) => { 
+      next: (c: Comentario[]) => {
         this.comentariosPorAtividade[atividadeId] = c || [];
       },
-      error: (err: any) => { 
+      error: (err: any) => {
         console.error('Erro ao carregar comentários da atividade', atividadeId, err);
       }
     });
   }
 
-  adicionarComentario(atividadeId: number): void {
+  adicionarComentario(atividadeId: string): void {
     const texto = this.novoComentarioPorAtividade[atividadeId];
     if (!texto || !texto.trim() || !this.usuarioId) return;
     const comentario: any = {
@@ -80,7 +78,7 @@ export class AtividadeListComponent implements OnInit {
       tipoDestino: 'ATIVIDADE'
     };
     this.comentarioService.criar(comentario).subscribe({
-      next: () => { 
+      next: () => {
         this.novoComentarioPorAtividade[atividadeId] = '';
         this.carregarComentarios(atividadeId);
       },
@@ -90,18 +88,18 @@ export class AtividadeListComponent implements OnInit {
     });
   }
 
-  deletarComentario(id: number, atividadeId: number): void {
+  deletarComentario(id: string, atividadeId: string): void {
     this.comentarioService.deletar(id).subscribe({
       next: () => this.carregarComentarios(atividadeId),
       error: (err: Error) => console.warn('Erro ao deletar comentário', err)
     });
   }
 
-  toggleComentarios(atividadeId: number): void {
+  toggleComentarios(atividadeId: string): void {
     this.atividadeExpandida = this.atividadeExpandida === atividadeId ? null : atividadeId;
   }
 
-  getComentarios(atividadeId: number): Comentario[] {
+  getComentarios(atividadeId: string): Comentario[] {
     return this.comentariosPorAtividade[atividadeId] || [];
   }
 }

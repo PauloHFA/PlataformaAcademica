@@ -35,12 +35,9 @@ export class SalaCriarComponent {
       nome: this.form.value.nome
     };
 
-    let criadorId = 0;
+    let criadorId = '';
     if (isPlatformBrowser(this.platformId)) {
-      const usuarioId = localStorage.getItem('usuarioId');
-      if (usuarioId) {
-        criadorId = parseInt(usuarioId);
-      }
+      criadorId = localStorage.getItem('usuarioId') || '';
     }
 
     console.log('Criando sala com criadorId:', criadorId);

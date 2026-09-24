@@ -1,0 +1,200 @@
+<div class="connections-drawer" [class.closed]="!isDrawerOpen">
+    <div class="connections-panel">
+        <!-- Cabeçalho do Painel -->
+        <header class="panel-header">
+            <div class="header-content">
+                <h2 class="panel-title">Conexões</h2>
+                <span class="online-count" *ngIf="!isLoading">
+                    {{ onlineCount }} online
+                </span>
+            </div>
+            <div class="header-actions">
+                <button type="button" class="btn-drawer-toggle" (click)="toggleDrawer()"
+                    [attr.aria-label]="isDrawerOpen ? 'Recolher conexões' : 'Abrir conexões'">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="m15 18-6-6 6-6"></path>
+                    </svg>
+                </button>
+                <button type="button" class="btn-refresh" title="Atualizar conexões" [disabled]="isLoading">
+                    <svg class="refresh-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="23 4 23 10 17 10"></polyline>
+                        <path d="M20.49 15a9 9 0 1-2.12 3.93"></path>
+                        <polyline points="16 20 20 20 20 16"></polyline>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Campo de Busca -->
+        <div class="search-container">
+            <div class="search-box">
+                <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" class="search-input" placeholder="Buscar conexões..." [(ngModel)]="searchTerm"
+                    aria-label="Buscar conexões" />
+                <button *ngIf="searchTerm" type="button" class="btn-clear-search" (click)="searchTerm = ''"
+                    aria-label="Limpar busca">
+                    ✕
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div *ngIf="isLoading" class="loading-state">
+            <div class="spinner"></div>
+            <p>Carregando conexões...</p>
+        </div>
+
+        <!-- Lista de Conexões Online -->
+        <section class="connections-section">
+            <h3 class="section-title">
+                <span class="title-icon">●</span>
+                Online ({{ onlineConnections.length }})
+            </h3>
+
+            <div class="connections-list">
+                <div *ngIf="!isLoading && onlineConnections.length === 0" class="empty-state">
+                    <p>Nenhuma conexão online no momento.</p>
+                </div>
+
+                <div *ngFor="let conexao of onlineConnections" class="connection-card"
+                    [class.highlighted]="conexao.sala === 'Spring Boot Advanced'">
+                    <div class="connection-avatar">
+                        <div class="avatar-circle" [style.backgroundColor]="getStatusColor(conexao.status)">
+                            {{ conexao.avatar }}
+                        </div>
+                        <span class="status-indicator" [style.backgroundColor]="getStatusColor(conexao.status)"></span>
+                    </div>
+
+                    <div class="connection-info">
+                        <h4 class="connection-name">{{ conexao.name }}</h4>
+                        <div class="connection-meta">
+                            <span class="role-badge" [class]="'role-' + conexao.role.toLowerCase()">
+                                {{ conexao.role }}
+                            </span>
+                            <span class="sala-info" *ngIf="conexao.sala">
+                                <svg class="sala-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                                    <path d="M6 6h10"></path>
+                                    <path d="M6 10h10"></path>
+                                </svg>
+                                {{ conexao.sala }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="connection-actions">
+                        <button type="button" class="btn-chat" (click)="abrirChat(conexao)" title="Iniciar conversa">
+                            <svg class="chat-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                            <span>Chat</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lista de Conexões Offline -->
+        <section class="connections-section">
+            <h3 class="section-title">
+                <span class="title-icon">○</span>
+                Offline ({{ offlineConnections.length }})
+            </h3>
+
+            <div class="connections-list">
+                <div *ngIf="!isLoading && offlineConnections.length === 0" class="empty-state">
+                    <p>Nenhuma conexão offline no momento.</p>
+                </div>
+
+                <div *ngFor="let conexao of offlineConnections" class="connection-card"
+                    [class.highlighted]="conexao.sala === 'Spring Boot Advanced'">
+                    <div class="connection-avatar">
+                        <div class="avatar-circle" [style.backgroundColor]="getStatusColor(conexao.status)">
+                            {{ conexao.avatar }}
+                        </div>
+                        <span class="status-indicator" [style.backgroundColor]="getStatusColor(conexao.status)"></span>
+                    </div>
+
+                    <div class="connection-info">
+                        <h4 class="connection-name">{{ conexao.name }}</h4>
+                        <div class="connection-meta">
+                            <span class="role-badge" [class]="'role-' + conexao.role.toLowerCase()">
+                                {{ conexao.role }}
+                            </span>
+                            <span class="last-seen" *ngIf="conexao.lastSeen">
+                                {{ conexao.lastSeen }}
+                            </span>
+                            <span class="sala-info" *ngIf="conexao.sala">
+                                <svg class="sala-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                                    <path d="M6 6h10"></path>
+                                    <path d="M6 10h10"></path>
+                                </svg>
+                                {{ conexao.sala }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="connection-actions">
+                        <button type="button" class="btn-chat" (click)="abrirChat(conexao)" title="Iniciar conversa">
+                            <svg class="chat-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                            <span>Chat</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Card Secundário de Avisos/Sugestões -->
+        <aside class="secondary-card">
+            <h4 class="secondary-title">Próximas Entregas</h4>
+            <div class="secondary-content">
+                <div class="notification-item">
+                    <div class="notification-icon">📝</div>
+                    <div class="notification-text">
+                        <p class="notification-title">Atividade: Projeto Final</p>
+                        <p class="notification-desc">Entrega: 2 de outubro, 23:59</p>
+                    </div>
+                </div>
+
+                <div class="notification-item">
+                    <div class="notification-icon">📚</div>
+                    <div class="notification-text">
+                        <p class="notification-title">Revisão: Capítulo 5</p>
+                        <p class="notification-desc">Material para estudo da próxima aula</p>
+                    </div>
+                </div>
+
+                <div class="notification-item">
+                    <div class="notification-icon">💬</div>
+                    <div class="notification-text">
+                        <p class="notification-title">Novo comentário</p>
+                        <p class="notification-desc">Prof. Ana Silva comentou na sua sala</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <button *ngIf="!isDrawerOpen" type="button" class="drawer-fab" (click)="toggleDrawer()" aria-label="Abrir conexões">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M16 17v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M19 8v6M22 11h-6"></path>
+        </svg>
+        <span>{{ onlineCount }}</span>
+    </button>
+</div>

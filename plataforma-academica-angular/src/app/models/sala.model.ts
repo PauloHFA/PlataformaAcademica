@@ -2,12 +2,12 @@
  * Modelo SalaDeAula
  */
 export interface SalaDeAula {
-  id?: number;
+  id?: string;
   nome: string;
   codigoSala?: string;
-  criadorId?: number;
+  criadorId?: string;
   criadorNome?: string;
-  membrosIds?: number[];
+  membrosIds?: string[];
   membrosNomes?: string[];
-  atividadesIds?: number[];
+  atividadesIds?: string[];
 }

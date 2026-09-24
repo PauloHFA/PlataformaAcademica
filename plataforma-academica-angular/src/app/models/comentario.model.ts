@@ -1,12 +1,12 @@
 export interface Comentario {
-  id?: number;
+  id?: string;
   conteudo: string;
-  autorId: number;
+  autorId: string;
   autorNome?: string;
-  autor?: { id: number; nome: string };
-  saladeAulaId?: number;
-  atividadeId?: number;
-  postagemId?: number;
+  autor?: { id: string; nome: string };
+  saladeAulaId?: string;
+  atividadeId?: string;
+  postagemId?: string;
   tipoDestino?: string;
   dataCriacao?: string;
 }

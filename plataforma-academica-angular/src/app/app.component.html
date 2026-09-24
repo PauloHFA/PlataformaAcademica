@@ -1,20 +1,20 @@
-<!-- Header Moderno no topo (sempre visível) -->
-<app-header-modern></app-header-modern>
+<!-- Header Moderno (apenas visível nas páginas públicas / quando deslogado) -->
+<app-header-modern *ngIf="!isLoggedIn" [isLoggedIn]="isAuthenticated" [usuarioNome]="usuarioNome"></app-header-modern>
 
-<!-- Layout para salas com sidebar -->
-<div *ngIf="isSalaPage && isLoggedIn" class="sala-layout">
-  <div class="sala-layout-main">
-    <app-sala-sidebar></app-sala-sidebar>
-    <div class="sala-content" [@routeAnimations]>
-      <router-outlet></router-outlet>
-    </div>
-  </div>
+<!-- Layout Raiz Autenticado com Sidebar Fixa, Conteúdo Principal e Painel Direito de Conexões -->
+<div class="main-layout" *ngIf="isLoggedIn" [class.focus-mode]="isFocusMode">
+  <app-sidebar *ngIf="!isFocusMode"></app-sidebar>
+  <main class="main-content" [class.full-width]="isFocusMode">
+    <router-outlet></router-outlet>
+  </main>
+  <app-connections-panel *ngIf="!isFocusMode"></app-connections-panel>
+  <app-command-palette></app-command-palette>
 </div>
 
-<!-- Layout normal para outras páginas -->
-<div *ngIf="!isSalaPage" [class.with-navbar]="isLoggedIn" [@routeAnimations]>
+<!-- Layout normal para quando não está logado -->
+<div class="public-layout" *ngIf="!isLoggedIn" [@routeAnimations]>
   <router-outlet></router-outlet>
 </div>
 
-<!-- Chat Flutuante -->
+<!-- Chat Flutuante (apenas autenticado) -->
 <app-chat-flutuante *ngIf="isLoggedIn"></app-chat-flutuante>

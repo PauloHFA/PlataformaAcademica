@@ -1,9 +1,312 @@
 .perfil-container {
-  max-width: 1000px;
+  width: min(100%, 980px);
   margin: 0 auto;
-  padding: 30px 20px;
+  padding: 2.5rem 1.25rem 4rem;
   min-height: 100vh;
+  color: #17212B;
+  font-family: var(--font-body, 'DM Sans', sans-serif);
 }
+
+.profile-hero,
+.form-card,
+.welcome-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(23, 33, 43, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.cover-banner {
+  height: 140px;
+  background: linear-gradient(118deg, #17212B 0%, #263844 52%, #B86B3E 150%);
+}
+
+.profile-hero-content {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  padding: 0 1.75rem 1.5rem;
+}
+
+.profile-hero .perfil-foto {
+  width: 96px;
+  height: 96px;
+  margin-top: -48px;
+  border: 4px solid #FFFFFF;
+  box-shadow: 0 4px 16px rgba(23, 33, 43, 0.18);
+}
+
+.profile-summary {
+  flex: 1;
+  padding-top: 0.65rem;
+}
+
+.profile-summary h1 {
+  margin: 0;
+  color: #17212B;
+  font: 700 1.5rem/1.2 var(--font-display, 'Fraunces', Georgia, serif);
+}
+
+.profile-summary p {
+  margin: 0.45rem 0 0;
+  color: #718096;
+  font-size: 0.82rem;
+}
+
+.profile-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 0.45rem;
+  color: #52606D;
+  font-size: 0.85rem;
+}
+
+.profile-badge {
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  background: #F4E9E2;
+  color: #9F5934;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.foto-imagem,
+.foto-placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.foto-placeholder {
+  display: grid;
+  place-items: center;
+  background: #17212B;
+  color: #FFFFFF;
+  font: 700 2rem var(--font-display, 'Fraunces', Georgia, serif);
+}
+
+.btn-primary,
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0.65rem 1rem;
+  border-radius: 8px;
+  font: 600 .85rem var(--font-body, 'DM Sans', sans-serif);
+  cursor: pointer;
+}
+
+.btn-primary {
+  border: 0;
+  background: var(--copper, #B86B3E);
+  color: #FFFFFF;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #9F5934;
+}
+
+.btn-primary:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+.btn-outline {
+  border: 1px solid rgba(23, 33, 43, .18);
+  background: #FFFFFF;
+  color: #263238;
+}
+
+.btn-outline:hover {
+  border-color: var(--copper, #B86B3E);
+  color: var(--copper, #B86B3E);
+}
+
+.welcome-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  padding: 1.5rem 1.75rem;
+}
+
+.welcome-card h2,
+.section-heading h2 {
+  margin: 0;
+  color: #17212B;
+  font: 700 1.25rem/1.25 var(--font-display, 'Fraunces', Georgia, serif);
+}
+
+.welcome-card p,
+.section-heading p {
+  margin: .55rem 0 0;
+  color: #718096;
+  line-height: 1.6;
+  font-size: .88rem;
+}
+
+/* Badges Styles */
+.badges-section {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(23, 33, 43, 0.08);
+}
+
+.badge-label {
+  font-weight: 600;
+  color: #52606D;
+  margin-right: 0.75rem;
+  font-size: 0.85rem;
+}
+
+.badges-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  cursor: default;
+}
+
+.badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.badge i {
+  margin-right: 0.25rem;
+  font-size: 0.8rem;
+}
+
+/* Badge color variations */
+.badge.monitor {
+  background: #E0F2FE;
+  color: #0284C7;
+  border-color: #BAE6FD;
+}
+
+.badge.contribuidor-destaque {
+  background: #FEF3C7;
+  color: #92400E;
+  border-color: #FDE68A;
+}
+
+.badge.pesquisador {
+  background: #F3E8FF;
+  color: #7C3AED;
+  border-color: #E9D5FF;
+}
+
+.badge.top-resposta {
+  background: #FEE2E2;
+  color: #B91C1C;
+  border-color: #FECACA;
+}
+
+/* Default badge style when no specific color is set */
+.badge:not(.monitor):not(.contribuidor-destaque):not(.pesquisador):not(.top-resposta) {
+  background: #F1F5F9;
+  color: #334155;
+  border-color: #E2E8F0;
+}
+
+.profile-form {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.form-card {
+  padding: 1.5rem 1.75rem;
+}
+
+.section-heading {
+  margin-bottom: 1.25rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.form-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+  color: #52606D;
+  font-size: .78rem;
+  font-weight: 700;
+}
+
+.form-grid input,
+.form-grid textarea,
+.form-grid select {
+  width: 100%;
+  border: 1px solid rgba(23, 33, 43, .15);
+  border-radius: 8px;
+  padding: .72rem .8rem;
+  background: #FFFFFF;
+  color: #17212B;
+  font: 400 .88rem var(--font-body, 'DM Sans', sans-serif);
+}
+
+.form-grid textarea {
+  resize: vertical;
+  min-height: 78px;
+}
+
+.form-grid input:focus,
+.form-grid textarea:focus,
+.form-grid select:focus {
+  outline: 0;
+  border-color: var(--copper, #B86B3E);
+  box-shadow: 0 0 0 3px rgba(184, 107, 62, .12);
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.input-with-icon {
+  position: relative;
+  padding-left: 0;
+}
+
+.input-with-icon input {
+  padding-left: 2.6rem;
+}
+
+.field-icon {
+  position: absolute;
+  left: .8rem;
+  bottom: .72rem;
+  color: var(--copper, #B86B3E);
+  font-size: .72rem;
+  font-weight: 800;
+}
+
+.form-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: .65rem;
+  padding: .5rem 0 0;
+}
+
 
 .perfil-header {
   text-align: center;
@@ -240,7 +543,55 @@
 /* Responsivo */
 @media (max-width: 768px) {
   .perfil-container {
-    padding: 20px 10px;
+    padding: 1.5rem .85rem 3rem;
+  }
+
+  .profile-hero-content {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding-inline: 1rem;
+  }
+
+  .profile-summary {
+    min-width: calc(100% - 112px);
+  }
+
+  .profile-hero-content>.btn-outline {
+    width: 100%;
+  }
+
+  .welcome-card {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 1.25rem;
+  }
+
+  .welcome-card .btn-primary {
+    width: 100%;
+  }
+
+  .form-card {
+    padding: 1.25rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .full-width {
+    grid-column: auto;
+  }
+
+  .form-footer {
+    padding-bottom: 1rem;
+  }
+
+  .form-footer button {
+    flex: 1;
+  }
+
+  .perfil-container .perfil-header {
+    display: none;
   }
 
   .perfil-header h1 {

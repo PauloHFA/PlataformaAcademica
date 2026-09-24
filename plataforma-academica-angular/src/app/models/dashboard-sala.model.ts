@@ -1,5 +1,5 @@
 export interface AlunoDashboardResumo {
-  alunoId: number;
+  alunoId: string;
   alunoNome: string;
   totalSubmissoes: number;
   totalSubmissoesComNota: number;
@@ -8,7 +8,7 @@ export interface AlunoDashboardResumo {
 }
 
 export interface DashboardSala {
-  salaId: number;
+  salaId: string;
   salaNome: string;
   totalAtividades: number;
   totalSubmissoes: number;

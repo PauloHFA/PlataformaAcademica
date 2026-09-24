@@ -3,6 +3,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { UsuarioService } from '../../services/usuario.service';
 import { NotificacoesComponent } from '../notificacoes/notificacoes.component';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -15,15 +16,20 @@ export class SidebarComponent implements OnInit {
   isOpen = true;
   usuarioNome = '';
   usuarioEmail = '';
+  isDarkMode = false;
 
   constructor(
     private usuarioService: UsuarioService,
     private router: Router,
+    private themeService: ThemeService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
   ngOnInit() {
     this.carregarDadosUsuario();
+    this.themeService.isDarkMode$.subscribe(isDark => {
+      this.isDarkMode = isDark;
+    });
   }
 
   carregarDadosUsuario() {
@@ -45,6 +51,10 @@ export class SidebarComponent implements OnInit {
 
   toggleSidebar() {
     this.isOpen = !this.isOpen;
+  }
+
+  toggleTheme() {
+    this.themeService.toggleTheme();
   }
 
   logout() {

@@ -1,17 +1,22 @@
 describe('Sistema de Artigos', () => {
+  let professorId;
+  let professorEmail = `prof.artigos.${Date.now()}@edu.com`;
+
   before(() => {
     // Criar professor para os testes
-    cy.request('POST', 'http://localhost:8080/api/professores/cadastro', {
+    cy.request('POST', 'http://localhost:8090/api/professores/cadastro', {
       nome: 'Professor Artigos',
-      email: `prof.artigos.${Date.now()}@edu.com`,
+      email: professorEmail,
       senha: 'senha123',
       matricula: '66666666'
+    }).then((response) => {
+      professorId = response.body.id;
     })
   })
 
   it('deve acessar página de artigos', () => {
     cy.visit('/login')
-    cy.get('input[name="email"]').type(`prof.artigos.${Date.now()}@edu.com`)
+    cy.get('input[name="email"]').type(professorEmail)
     cy.get('input[name="senha"]').type('senha123')
     cy.get('button[type="submit"]').click()
 
@@ -20,27 +25,28 @@ describe('Sistema de Artigos', () => {
   })
 
   it('deve criar um artigo via API', () => {
-    cy.request('POST', 'http://localhost:8080/api/artigos', {
+    cy.request('POST', 'http://localhost:8090/api/artigos', {
       titulo: 'Artigo de Teste Cypress',
       conteudo: 'Conteúdo completo do artigo criado para testes automatizados.',
       resumo: 'Resumo do artigo de teste',
       categoria: 'Tecnologia',
-      tags: ['teste', 'cypress', 'automação']
+      tags: ['teste', 'cypress', 'automação'],
+      autorId: professorId
     }).then((response) => {
-      expect(response.status).to.eq(200)
+      expect(response.status).to.eq(201)
       expect(response.body).to.have.property('id')
     })
   })
 
   it('deve listar artigos via API', () => {
-    cy.request('GET', 'http://localhost:8080/api/artigos').then((response) => {
+    cy.request('GET', 'http://localhost:8090/api/artigos').then((response) => {
       expect(response.status).to.eq(200)
       expect(response.body).to.be.an('array')
     })
   })
 
   it('deve buscar artigos por categoria', () => {
-    cy.request('GET', 'http://localhost:8080/api/artigos/categoria/Tecnologia').then((response) => {
+    cy.request('GET', 'http://localhost:8090/api/artigos/categoria/Tecnologia').then((response) => {
       expect(response.status).to.eq(200)
       expect(response.body).to.be.an('array')
     })

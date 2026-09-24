@@ -27,7 +27,7 @@ export class PerfilEditarComponent implements OnInit, OnDestroy {
   mensagemSucesso = '';
   modo: 'criar' | 'editar' = 'criar';
   usuarioLogado: any = null;
-  perfilId?: number;
+  perfilId?: string;
   previewFoto: string | null = null;
   private destroy$ = new Subject<void>();
 
@@ -38,7 +38,7 @@ export class PerfilEditarComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -48,7 +48,7 @@ export class PerfilEditarComponent implements OnInit, OnDestroy {
       if (usuarioId) {
         try {
           this.usuarioLogado = usuarioStr ? JSON.parse(usuarioStr) : {};
-          this.usuarioLogado.id = parseInt(usuarioId);
+          this.usuarioLogado.id = usuarioId;
           this.inicializarFormulario();
           this.verificarPerfilExistente();
         } catch (e) {

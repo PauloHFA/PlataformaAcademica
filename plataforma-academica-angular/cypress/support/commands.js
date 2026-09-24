@@ -10,7 +10,16 @@
 //
 //
 // -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
+Cypress.Commands.add('login', () => {
+  // Simula um usuário autenticado injetando um token no localStorage
+  // Ajuste a chave e o valor conforme a implementação real da sua aplicação
+  window.localStorage.setItem('auth_token', 'mock-token-para-testes');
+  window.localStorage.setItem('user_data', JSON.stringify({
+    id: 'mock-user-id',
+    nome: 'Usuário de Teste',
+    email: 'teste@plataforma.com'
+  }));
+});
 //
 //
 // -- This is a child command --

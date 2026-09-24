@@ -16,7 +16,7 @@ export class AtividadeCriarComponent {
   form!: FormGroup;
   carregando = false;
   mensagem = '';
-  private salaId: number | null = null;
+  private salaId: string | null = null;
   selectedFile: File | null = null;
   previewDocumento: string | null = null;
 
@@ -34,8 +34,7 @@ export class AtividadeCriarComponent {
       dataEntrega: ['', Validators.required],
       pontos: [0, [Validators.required, Validators.min(0)]]
     });
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.salaId = isNaN(id) ? null : id;
+    this.salaId = this.route.snapshot.paramMap.get('id');
   }
 
   submit(): void {
@@ -45,10 +44,10 @@ export class AtividadeCriarComponent {
     }
 
     this.carregando = true;
-    
-    let criadorId = 0;
+
+    let criadorId = '';
     if (isPlatformBrowser(this.platformId)) {
-      criadorId = parseInt(localStorage.getItem('usuarioId') || '0', 10);
+      criadorId = localStorage.getItem('usuarioId') || '';
     }
 
     if (!criadorId) {
@@ -65,8 +64,8 @@ export class AtividadeCriarComponent {
       formData.append('tipoDocumentoSubmissao', this.form.value.tipoDocumentoSubmissao || 'PDF');
       formData.append('dataEntrega', this.form.value.dataEntrega);
       formData.append('pontos', this.form.value.pontos || '0');
-      formData.append('salaId', this.salaId.toString());
-      formData.append('autorId', criadorId.toString());
+      formData.append('salaId', this.salaId);
+      formData.append('autorId', criadorId);
 
       this.salaService.criarAtividadeComDocumento(this.salaId, criadorId, formData).subscribe({
         next: () => {

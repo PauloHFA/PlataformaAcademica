@@ -2,16 +2,16 @@
  * Modelo Atividade
  */
 export interface Atividade {
-  id?: number;
+  id?: string;
   titulo: string;
   descricao: string;
   tipoDocumentoSubmissao?: string;
   dataEntrega: string;
   pontos?: number;
   dataCriacao?: string;
-  criadoPorId?: number;
-  salaId?: number;
-  autorId?: number;
+  criadoPorId?: string;
+  salaId?: string;
+  autorId?: string;
   autorNome?: string;
   salaNome?: string;
   documentoUrl?: string;

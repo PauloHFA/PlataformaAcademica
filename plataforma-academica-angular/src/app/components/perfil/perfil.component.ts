@@ -1,8 +1,11 @@
 import { Component, OnInit, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { PerfilService } from '../../services/perfil.service';
+import { BadgeService } from '../../services/badge.service';
 import { Perfil } from '../../models/perfil.model';
+import { Badge } from '../../models/badge.model';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -13,7 +16,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.css'
 })
@@ -22,14 +25,30 @@ export class PerfilComponent implements OnInit, OnDestroy {
   carregando = true;
   mensagemErro = '';
   usuarioLogado: any = null;
+  hasProfile = false;
+  isEditing = false;
+  salvando = false;
+  dadosPerfil = {
+    nomeCompleto: '',
+    nomeExibicao: '',
+    bio: '',
+    papel: 'Aluno',
+    cursoDepartamento: '',
+    matricula: '',
+    github: '',
+    linkedin: '',
+    lattes: ''
+  };
+  badges: Badge[] = [];
   private destroy$ = new Subject<void>();
 
   constructor(
     private perfilService: PerfilService,
+    private badgeService: BadgeService,
     private route: ActivatedRoute,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Obter usuário logado do localStorage
@@ -60,18 +79,25 @@ export class PerfilComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // Carregar perfil e badges em paralelo
     this.perfilService.buscarPorUsuarioId(this.usuarioLogado.id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (perfil: Perfil) => {
           this.perfil = perfil;
+          this.hasProfile = true;
+          this.isEditing = false;
+          this.preencherDadosPerfil(perfil);
+          // Carregar badges do usuário
+          this.carregarBadgesUsuario(this.usuarioLogado.id);
           this.carregando = false;
         },
         error: (err: Error) => {
           console.error('Erro ao carregar perfil:', err);
           // Mensagem mais amigável para erro 404 (perfil não encontrado)
           if (err.message.includes('não encontrado') || err.message.includes('404')) {
-            this.mensagemErro = 'Você ainda não possui um perfil cadastrado. Clique no botão abaixo para criar seu perfil e personalizar suas informações!';
+            this.hasProfile = false;
+            this.mensagemErro = '';
           } else {
             this.mensagemErro = err.message || 'Erro ao carregar o perfil. Tente novamente mais tarde.';
           }
@@ -81,14 +107,78 @@ export class PerfilComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Carrega os badges do usuário
+   */
+  private carregarBadgesUsuario(usuarioId: string): void {
+    this.badgeService.buscarBadgesDoUsuario(usuarioId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (badges: Badge[]) => {
+          this.badges = badges;
+        },
+        error: (err: Error) => {
+          console.error('Erro ao carregar badges:', err);
+          // Não interrompe o fluxo se falhar ao carregar badges
+          this.badges = [];
+        }
+      });
+  }
+
+  /**
+   * Preenche os dados do perfil para edição
+   */
+  private preencherDadosPerfil(perfil: Perfil): void {
+    this.dadosPerfil = {
+      nomeCompleto: `${perfil.nome || ''} ${perfil.sobrenome || ''}`.trim(),
+      nomeExibicao: perfil.nome || '',
+      bio: perfil.bio || perfil.descricao || '',
+      papel: perfil.tipoUsuario?.toLowerCase().includes('prof') ? 'Professor' : 'Aluno',
+      cursoDepartamento: perfil.curso || perfil.instituicaoEnsino || '',
+      matricula: perfil.matricula || '',
+      github: '',
+      linkedin: '',
+      lattes: ''
+    };
+  }
+
+  /**
    * Navega para o formulário de edição do perfil
    */
   editarPerfil(): void {
-    if (this.perfil) {
-      this.router.navigate(['/perfil-editar'], { queryParams: { id: this.perfil.id } });
-    } else {
-      this.router.navigate(['/perfil-criar']);
-    }
+    this.isEditing = true;
+  }
+
+  salvarPerfil(): void {
+    if (!this.usuarioLogado?.id) return;
+    this.salvando = true;
+    const partesNome = this.dadosPerfil.nomeCompleto.trim().split(/\\s+/);
+    const dto = {
+      id: this.perfil?.id,
+      usuarioId: this.usuarioLogado.id,
+      nome: partesNome.shift() || this.dadosPerfil.nomeExibicao,
+      sobrenome: partesNome.join(' '),
+      bio: this.dadosPerfil.bio,
+      curso: this.dadosPerfil.cursoDepartamento
+    };
+    const request$ = this.hasProfile ? this.perfilService.atualizar(dto) : this.perfilService.criar(dto);
+    request$.pipe(takeUntil(this.destroy$)).subscribe({
+      next: (perfil) => {
+        this.perfil = perfil;
+        this.hasProfile = true;
+        this.isEditing = false;
+        this.salvando = false;
+        this.preencherDadosPerfil(perfil);
+      },
+      error: (err: Error) => {
+        this.mensagemErro = err.message || 'Não foi possível salvar o perfil.';
+        this.salvando = false;
+      }
+    });
+  }
+
+  cancelarEdicao(): void {
+    if (this.perfil) this.preencherDadosPerfil(this.perfil);
+    this.isEditing = false;
   }
 
   getAvatarSrc(): string {

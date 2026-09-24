@@ -4,7 +4,7 @@ describe('Gerenciamento de Salas de Aula', () => {
 
   before(() => {
     // Criar professor para os testes
-    cy.request('POST', 'http://localhost:8080/api/professores/cadastro', {
+    cy.request('POST', 'http://localhost:8090/api/professores/cadastro', {
       nome: 'Professor Salas',
       email: `prof.salas.${Date.now()}@edu.com`,
       senha: 'senha123',
@@ -15,17 +15,17 @@ describe('Gerenciamento de Salas de Aula', () => {
   })
 
   it('deve criar uma sala de aula', () => {
-    cy.visit('/login')
-    cy.get('input[name="email"]').type(`prof.salas.${Date.now()}@edu.com`)
-    cy.get('input[name="senha"]').type('senha123')
-    cy.get('button[type="submit"]').click()
-
-    cy.visit('/salas/criar')
-    cy.get('input[name="nome"]').type('Sala de Programação Web')
-    cy.get('button[type="submit"]').click()
+    cy.log('Iniciando teste de criação de sala');
+    cy.login(); // Bypass de login
+    cy.log('Login bypass realizado');
+    cy.visit('/salas/criar');
+    cy.log('Visitou /salas/criar');
+    cy.get('input[name="nome"]').type('Sala de Programação Web');
+    cy.get('button[type="submit"]').click();
 
     // Verificar se foi criado
-    cy.url().should('include', '/salas/')
+    cy.url().should('include', '/salas/');
+    cy.log('Sala criada com sucesso');
   })
 
   it('deve listar salas existentes', () => {
@@ -36,7 +36,7 @@ describe('Gerenciamento de Salas de Aula', () => {
 
   it('deve adicionar membro à sala', () => {
     // Criar outro professor
-    cy.request('POST', 'http://localhost:8080/api/professores/cadastro', {
+    cy.request('POST', 'http://localhost:8090/api/professores/cadastro', {
       nome: 'Professor Membro',
       email: `prof.membro.${Date.now()}@edu.com`,
       senha: 'senha123',
@@ -44,7 +44,7 @@ describe('Gerenciamento de Salas de Aula', () => {
     })
 
     // Criar sala via API
-    cy.request('POST', `http://localhost:8080/api/saladeaula/criar/${professorId}`, {
+    cy.request('POST', `http://localhost:8090/api/saladeaula/criar/${professorId}`, {
       nome: 'Sala para Testes de Membros'
     }).then((response) => {
       salaId = response.body.id

@@ -9,13 +9,13 @@ import { Postagem } from '../models/postagem.model';
 export class PostagemService {
   private apiUrl = 'http://localhost:8090/api/postagens';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   listarTodas(): Observable<Postagem[]> {
     return this.http.get<Postagem[]>(this.apiUrl);
   }
 
-  buscarPorId(id: number): Observable<Postagem> {
+  buscarPorId(id: string): Observable<Postagem> {
     return this.http.get<Postagem>(`${this.apiUrl}/${id}`);
   }
 
@@ -34,23 +34,23 @@ export class PostagemService {
     return this.http.post<Postagem>(this.apiUrl, form);
   }
 
-  atualizar(id: number, postagem: Postagem): Observable<Postagem> {
+  atualizar(id: string, postagem: Postagem): Observable<Postagem> {
     return this.http.put<Postagem>(`${this.apiUrl}/${id}`, postagem);
   }
 
-  deletar(id: number): Observable<void> {
+  deletar(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  curtir(id: number, usuarioId: number): Observable<Postagem> {
+  curtir(id: string, usuarioId: string): Observable<Postagem> {
     return this.http.post<Postagem>(`${this.apiUrl}/${id}/curtir?usuarioId=${usuarioId}`, null);
   }
-  
-  verificarCurtida(postagemId: number, usuarioId: number): Observable<boolean> {
+
+  verificarCurtida(postagemId: string, usuarioId: string): Observable<boolean> {
     return this.http.get<boolean>(`${this.apiUrl}/${postagemId}/curtiu/${usuarioId}`);
   }
 
-  listarDeAmigos(usuarioId: number): Observable<Postagem[]> {
+  listarDeAmigos(usuarioId: string): Observable<Postagem[]> {
     return this.http.get<Postagem[]>(`${this.apiUrl}/amigos/${usuarioId}`);
   }
 

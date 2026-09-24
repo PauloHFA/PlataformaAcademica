@@ -17,6 +17,8 @@ import { AmigosComponent } from './components/amigos/amigos.component';
 import { SolicitacoesSalaComponent } from './components/solicitacoes-sala/solicitacoes-sala.component';
 import { SubmissoesAtividadeComponent } from './components/submissoes-atividade/submissoes-atividade.component';
 import { DashboardComponent } from './components/dashboard/dashboard';
+import { ComunidadesListComponent } from './comunidades/comunidades-list/comunidades-list.component';
+import { CalendarioAcademicoComponent } from './components/calendario-academico/calendario-academico.component';
 
 /**
  * Rotas principais da aplicação SPA
@@ -43,5 +45,7 @@ export const routes: Routes = [
   { path: 'perfil-editar', component: PerfilEditarComponent },
   { path: 'feed', component: FeedComponent },
   { path: 'amigos', component: AmigosComponent },
+  { path: 'comunidades', component: ComunidadesListComponent },
+  { path: 'calendario', component: CalendarioAcademicoComponent },
   { path: '**', redirectTo: '' }
 ];

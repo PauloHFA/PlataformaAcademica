@@ -1,14 +1,14 @@
 export interface Mensagem {
-  id?: number;
-  remetenteId: number;
-  destinatarioId: number;
+  id?: string;
+  remetenteId: string;
+  destinatarioId: string;
   conteudo: string;
   criadoEm?: string;
   lida?: boolean;
 }
 
 export interface ConversaChat {
-  usuarioId: number;
+  usuarioId: string;
   usuarioNome: string;
   ultimaMensagem?: string;
   ultimaAtualizado?: string;

@@ -1,30 +1,41 @@
 <div class="notificacoes-container">
-  <button class="notificacoes-btn" (click)="toggleDropdown()" title="Notificações">
-    🔔
+  <button type="button" class="notificacoes-btn" (click)="toggleDropdown()" title="Notificações"
+    aria-label="Notificações">
+    <svg class="notif-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+      <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+    </svg>
     <span *ngIf="totalNotificacoes > 0" class="badge">{{ totalNotificacoes }}</span>
   </button>
 
   <div *ngIf="mostrarDropdown" class="notificacoes-dropdown">
     <div class="dropdown-header">
       <h3>Notificações</h3>
-      <button (click)="toggleDropdown()" class="btn-close">✕</button>
+      <button type="button" (click)="toggleDropdown()" class="btn-close" aria-label="Fechar notificações">✕</button>
     </div>
 
     <div class="notificacoes-list">
       <div *ngIf="notificacoes.length === 0" class="empty-state">
-        <p>📭 Nenhuma notificação</p>
+        <p>Nenhuma notificação</p>
       </div>
 
       <div *ngFor="let notificacao of notificacoes" class="notificacao-item">
-        <div class="notificacao-icon">👤</div>
+        <div class="notificacao-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+        </div>
         <div class="notificacao-content">
           <p class="notificacao-mensagem">{{ notificacao.mensagem }}</p>
           <div class="notificacao-actions">
             <button (click)="aceitarAmizade(notificacao)" class="btn-aceitar">
-              ✓ Aceitar
+              Aceitar
             </button>
             <button (click)="recusarAmizade(notificacao)" class="btn-recusar">
-              ✕ Recusar
+              Recusar
             </button>
           </div>
         </div>

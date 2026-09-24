@@ -1,7 +1,7 @@
 describe('Gerenciamento de Comunidades', () => {
   before(() => {
     // Criar professor para os testes
-    cy.request('POST', 'http://localhost:8080/api/professores/cadastro', {
+    cy.request('POST', 'http://localhost:8090/api/professores/cadastro', {
       nome: 'Professor Comunidades',
       email: `prof.comunidades.${Date.now()}@edu.com`,
       senha: 'senha123',
@@ -21,7 +21,7 @@ describe('Gerenciamento de Comunidades', () => {
 
   it('deve criar uma comunidade via API e verificar', () => {
     // Como o frontend pode não estar implementado, testar via API
-    cy.request('POST', 'http://localhost:8080/api/comunidades', {
+    cy.request('POST', 'http://localhost:8090/api/comunidades', {
       nome: 'Comunidade de Teste Cypress',
       descricao: 'Comunidade criada para testes automatizados',
       regras: 'Sem spam',
@@ -32,7 +32,7 @@ describe('Gerenciamento de Comunidades', () => {
     })
 
     // Verificar listagem
-    cy.request('GET', 'http://localhost:8080/api/comunidades').then((response) => {
+    cy.request('GET', 'http://localhost:8090/api/comunidades').then((response) => {
       expect(response.status).to.eq(200)
       expect(response.body).to.be.an('array')
       expect(response.body.length).to.be.greaterThan(0)

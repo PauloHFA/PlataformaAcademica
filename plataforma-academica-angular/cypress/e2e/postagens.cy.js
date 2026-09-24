@@ -1,7 +1,7 @@
 describe('Gerenciamento de Postagens', () => {
   before(() => {
     // Criar professor para os testes
-    cy.request('POST', 'http://localhost:8080/api/professores/cadastro', {
+    cy.request('POST', 'http://localhost:8090/api/professores/cadastro', {
       nome: 'Professor Postagens',
       email: `prof.postagens.${Date.now()}@edu.com`,
       senha: 'senha123',

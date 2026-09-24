@@ -65,7 +65,7 @@
 .register-link {
     text-decoration: none;
     background: transparent;
-    color: rgba(245, 241, 232, .75);
+    color: rgba(245, 241, 232, 1);
     cursor: pointer;
     font-size: .78rem;
     font-weight: 700;
